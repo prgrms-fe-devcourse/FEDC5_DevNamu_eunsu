@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 import { formatDate } from "@/utils/formatDate";
@@ -14,8 +16,24 @@ interface Props {
 }
 
 const ThreadListItem = ({ id, title, author, createdAt }: Props) => {
+  const [hoveredListId, setHoveredListId] = useState<string | null>(null);
+
+  const handleMouseEnter = () => {
+    setHoveredListId(id);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredListId(null);
+  };
+
   return (
-    <li key={id} className="relative cursor-pointer px-2.5 py-5 hover:bg-gray-100" tabIndex={0}>
+    <li
+      key={id}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className="relative cursor-pointer px-2.5 py-5 hover:bg-gray-100"
+      tabIndex={0}
+    >
       <div className="flex items-center">
         <Avatar className="mr-3">
           <AvatarImage src="/public/svg/userProfile.svg" alt="프로필" />
@@ -32,9 +50,11 @@ const ThreadListItem = ({ id, title, author, createdAt }: Props) => {
             {title}
           </div>
         </div>
-        <div className="absolute right-0 top-0 z-10">
-          <ThreadToolbar />
-        </div>
+        {hoveredListId === id && (
+          <div className="absolute right-0 top-0 z-10">
+            <ThreadToolbar />
+          </div>
+        )}
       </div>
     </li>
   );
