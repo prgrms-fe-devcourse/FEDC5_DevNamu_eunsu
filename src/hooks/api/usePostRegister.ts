@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 
-import { postRegister, RegisterRequest } from "./queryFn";
+import { RegisterRequest, postRegister } from "@/apis/auth";
 
 const useRegister = () => {
   return useMutation({

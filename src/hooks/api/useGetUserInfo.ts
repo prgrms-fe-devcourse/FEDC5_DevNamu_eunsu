@@ -2,11 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 
 import { getLocalStorage } from "@/utils/localStorage";
 
-import auth from "./queryKey";
+import { authKeys } from "./queryKeyFactory";
 
 const useGetUserInfo = () => {
   const token = getLocalStorage("token", "");
-  const { data, isPending } = useQuery(auth.userInfo(token));
+  const { data, isPending } = useQuery({
+    queryKey: authKeys.userInfo(token),
+  });
 
   return {
     user: data,

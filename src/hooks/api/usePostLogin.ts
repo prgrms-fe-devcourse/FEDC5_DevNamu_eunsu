@@ -2,9 +2,9 @@ import { useMutation } from "@tanstack/react-query";
 
 import useUserStore from "@/stores/user";
 
-import { setLocalStorage } from "@/utils/localStorage";
+import { AuthResponse, LoginRequest, postLogin } from "@/apis/auth";
 
-import { postLogin, LoginRequest, AuthResponse } from "./queryFn";
+import { setLocalStorage } from "@/utils/localStorage";
 
 interface Props {
   toggleOpen: (open: boolean) => void;
