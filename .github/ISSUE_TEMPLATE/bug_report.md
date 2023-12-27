@@ -2,9 +2,8 @@
 name: Bug report
 about: 버그 이슈 템플릿입니다ㅜ-ㅜ
 title: "[Bug] 이슈 제목"
-labels: ''
-assignees: ''
-
+labels: ""
+assignees: ""
 ---
 
 ## 어떤 버그인가요?
