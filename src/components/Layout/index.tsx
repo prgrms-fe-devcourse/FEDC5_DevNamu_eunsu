@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 
 const Layout = () => {
+  // TODO: 테마 설정에 따라 배경색 변경하기
   return (
     <div className="flex flex-row w-screen h-screen bg">
       <Sidebar />

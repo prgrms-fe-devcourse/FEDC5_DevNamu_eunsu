@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
+import { MoonIcon, SunIcon } from "lucide-react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { LINKS } from "./config";
+import { DarkModeDropdown } from "./DarkModeDropdown";
+import { ButtonWrappingCSS, IconCSS, IconDescriptionCSS, IconWrappingCSS } from "./styles";
 
 import { cn } from "@/lib/utils";
 
@@ -15,9 +18,17 @@ interface Props {
   notifications: {
     text: string;
   }[];
+  theme: "light" | "dark" | "system-light" | "system-dark";
 }
 
-export const SidebarView = ({ pathname, user, notifications }: Props) => {
+const themeIconConfig = {
+  light: SunIcon,
+  "system-light": SunIcon,
+  dark: MoonIcon,
+  "system-dark": MoonIcon,
+};
+
+export const SidebarView = ({ pathname, user, notifications, theme }: Props) => {
   const { nickname, profileImgUrl } = user;
   const numberOfNotifications = notifications.length;
   const shortenedNickname = nickname
@@ -25,6 +36,16 @@ export const SidebarView = ({ pathname, user, notifications }: Props) => {
     .map((str) => str.at(0))
     .join("");
 
+  const CurrentThemeIcon = themeIconConfig[theme];
+
+  /*
+    Link Button과 DarkMode Dropdown 버튼이 공유하는 CSS가 많아서 styles로 상수화함.
+    (Link를 쓰지 말고 navigate를 써도 될 듯)
+
+    안타깝게도 Link vs div 차이와 일부 relative, hover CSS 차이가 있어서 그대로 재활용은 어려움.
+
+    TODO: 더 좋은 Tailwind 방식의 재활용 방법 찾기
+  */
   return (
     <div className="flex flex-col items-center w-20 gap-8">
       <div className="flex flex-col items-center gap-2 mt-4 cursor-pointer select-none">
@@ -36,30 +57,33 @@ export const SidebarView = ({ pathname, user, notifications }: Props) => {
           const isSelectedPage = pathname === url;
 
           return (
-            <Link
-              key={url}
-              to={url}
-              className="flex flex-col items-center gap-1 py-2 text-xl hover:text-2xl"
-            >
+            <Link key={url} to={url} className={ButtonWrappingCSS}>
               <div
                 className={cn(
-                  "relative flex h-11 w-11 items-center justify-center rounded-xl transition-colors hover:bg-[rgba(124,40,82,0.25)]",
+                  "relative",
+                  IconWrappingCSS,
                   isSelectedPage && "bg-[rgba(124,40,82,0.25)] text-2xl",
                 )}
               >
-                <Icon className="h-[1em] w-[1em] text-[rgb(124,40,82)] transition-[width,height]" />
+                <Icon className={IconCSS} />
                 {url === "/my-notifications" && numberOfNotifications > 0 && (
                   <div className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-2xl bg-[rgba(124,40,82,0.75)] text-xs text-white">
                     {numberOfNotifications}
                   </div>
                 )}
               </div>
-              <span className="text-xs font-bold tracking-tighter text-[rgb(124,40,82)]">
-                {name}
-              </span>
+              <span className={IconDescriptionCSS}>{name}</span>
             </Link>
           );
         })}
+        <DarkModeDropdown>
+          <div className={ButtonWrappingCSS}>
+            <div className={IconWrappingCSS}>
+              <CurrentThemeIcon className={IconCSS} />
+            </div>
+            <span className={IconDescriptionCSS}>테마 설정</span>
+          </div>
+        </DarkModeDropdown>
       </div>
     </div>
   );
