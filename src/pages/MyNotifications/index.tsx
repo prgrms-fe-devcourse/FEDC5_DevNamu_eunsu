@@ -1,3 +1,5 @@
-export default function MyNotificationsPage() {
+const MyNotificationsPage = () => {
   return <div></div>;
-}
+};
+
+export default MyNotificationsPage;

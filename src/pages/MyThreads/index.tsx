@@ -1,3 +1,5 @@
-export default function MyThreadsPage() {
+const MyThreadsPage = () => {
   return <div></div>;
-}
+};
+
+export default MyThreadsPage;
