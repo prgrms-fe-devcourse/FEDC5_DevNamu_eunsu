@@ -1,16 +1,20 @@
-import { useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import Home from "/public/svg/home.svg";
+import Layout from "./Layout";
+import HomePage from "./pages/Home";
+import MyThreadsPage from "./pages/MyThreads";
+import MyNotificationsPage from "./pages/MyNotifications";
+import NotFoundPage from "./pages/NotFound";
 
-const App = () => {
-  const [count, setCount] = useState(0);
-
-  return (
-    <h1 className="text-[10rem]">
-      <Home />
-      어서오세요 데나무숲입니다!
-    </h1>
-  );
-};
-
-export default App;
+export const AllRoutes = () => (
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route path="my-threads" element={<MyThreadsPage />} />
+        <Route path="my-notifications" element={<MyNotificationsPage />} />
+      </Route>
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
+  </BrowserRouter>
+);
