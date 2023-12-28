@@ -1,4 +1,11 @@
 /** @type {import('tailwindcss').Config} */
+
+const pxToRem = (px, base = 16) => `${px / base}rem`;
+
+const range = (start, end) => {
+  return Array.from({ length: end - start + 1 }, (_, index) => index + start);
+};
+
 export default {
   darkMode: ["class"],
   content: ["./src/**/*.{ts,tsx}"],
@@ -11,10 +18,13 @@ export default {
         "2xl": "1400px",
       },
     },
+    spacing: {
+      ...range(1, 100).reduce((accumulate, px) => {
+        accumulate[`${px}pxr`] = pxToRem(px);
+        return accumulate;
+      }, {}),
+    },
     extend: {
-      fontSize: {
-        base: "62.5%",
-      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
