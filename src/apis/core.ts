@@ -1,5 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, Method } from "axios";
 
+import { getLocalStorage } from "@/utils/localStorage";
+
 const HTTP_METHODS = {
   GET: "get",
   POST: "post",
@@ -12,6 +14,16 @@ const axiosInstance: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
   timeout: 10000,
   headers: { "Content-Type": "application/json" },
+});
+
+axiosInstance.interceptors.request.use((config) => {
+  const token = getLocalStorage("token", "");
+
+  if (token && config.headers) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
 });
 
 const createApiMethod =
