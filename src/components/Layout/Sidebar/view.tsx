@@ -66,6 +66,7 @@ export const SidebarView = ({ pathname, user, notifications, theme }: Props) => 
                 )}
               >
                 <Icon className={IconCSS} />
+                {/* TODO: 지금처럼 url로 분기하지 않고 showBubble로 추상화하기 */}
                 {url === "/my-notifications" && numberOfNotifications > 0 && (
                   <div className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-2xl bg-[rgba(124,40,82,0.75)] text-xs text-white">
                     {numberOfNotifications}
