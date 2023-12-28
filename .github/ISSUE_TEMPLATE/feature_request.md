@@ -1,9 +1,10 @@
 ---
 name: Feature request
 about: 기능 추가 이슈 템플릿입니다~.~
-title: "[Feat] 이슈 제목"
-labels: ""
-assignees: ""
+title: 이슈 제목
+labels: ''
+assignees: ''
+
 ---
 
 ## 어떤 기능인가요?
