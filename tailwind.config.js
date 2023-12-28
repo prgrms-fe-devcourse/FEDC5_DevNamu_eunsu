@@ -18,13 +18,13 @@ export default {
         "2xl": "1400px",
       },
     },
-    spacing: {
-      ...range(1, 100).reduce((accumulate, px) => {
-        accumulate[`${px}pxr`] = pxToRem(px);
-        return accumulate;
-      }, {}),
-    },
     extend: {
+      spacing: {
+        ...range(1, 100).reduce((accumulate, px) => {
+          accumulate[`${px}pxr`] = pxToRem(px);
+          return accumulate;
+        }, {}),
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
