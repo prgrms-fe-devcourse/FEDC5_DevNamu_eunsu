@@ -16,7 +16,7 @@ import { IconCSS, IconDescriptionCSS } from "./styles";
  *
  * children은 클릭 시 드롭다운을 여는 트리거 영역이 됨.
  */
-export const DarkModeDropdown = ({ children }: PropsWithChildren) => {
+export const ThemeConfigDropdown = ({ children }: PropsWithChildren) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>

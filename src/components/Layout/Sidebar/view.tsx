@@ -4,7 +4,7 @@ import { MoonIcon, SunIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { LINKS } from "./config";
-import { DarkModeDropdown } from "./DarkModeDropdown";
+import { ThemeConfigDropdown } from "./ThemeConfigDropdown";
 import { ButtonWrappingCSS, IconCSS, IconDescriptionCSS, IconWrappingCSS } from "./styles";
 
 import { cn } from "@/lib/utils";
@@ -77,14 +77,14 @@ export const SidebarView = ({ pathname, user, notifications, theme }: Props) => 
             </Link>
           );
         })}
-        <DarkModeDropdown>
+        <ThemeConfigDropdown>
           <div className={ButtonWrappingCSS}>
             <div className={IconWrappingCSS}>
               <CurrentThemeIcon className={IconCSS} />
             </div>
             <span className={IconDescriptionCSS}>테마 설정</span>
           </div>
-        </DarkModeDropdown>
+        </ThemeConfigDropdown>
       </div>
     </div>
   );
