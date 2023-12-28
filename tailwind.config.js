@@ -20,7 +20,7 @@ export default {
     },
     extend: {
       spacing: {
-        ...range(1, 100).reduce((accumulate, px) => {
+        ...range(1, 1400).reduce((accumulate, px) => {
           accumulate[`${px}pxr`] = pxToRem(px);
           return accumulate;
         }, {}),
