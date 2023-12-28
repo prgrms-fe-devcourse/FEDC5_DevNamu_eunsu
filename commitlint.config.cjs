@@ -18,7 +18,7 @@ module.exports = {
       // 아래의 type만 사용 가능
       2,
       "always",
-      ["Feat", "Fix", "Docs", "Style", "Refactor", "Test", "Chore", "Modify", "Rename", "Clanup"],
+      ["Feat", "Fix", "Docs", "Style", "Refactor", "Test", "Chore", "Modify", "Rename", "Cleanup"],
     ],
   },
 };
