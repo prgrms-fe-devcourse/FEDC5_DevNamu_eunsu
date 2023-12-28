@@ -47,6 +47,10 @@
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
   }
+
+  html {
+    font-size: 100%;
+  }
 }
 
 @layer base {
@@ -58,6 +62,7 @@
     /* font-feature-settings: "rlig" 1, "calt" 1; */
     font-synthesis-weight: none;
     text-rendering: optimizeLegibility;
+    font-size: 16px;
   }
 }
 
