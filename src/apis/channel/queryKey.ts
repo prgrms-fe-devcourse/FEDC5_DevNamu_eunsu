@@ -5,7 +5,7 @@ import { getChannels } from "./channel";
 const channels = createQueryKeys("channel", {
   allChannels: {
     queryKey: ["channels"],
-    queryFn: () => getChannels(),
+    queryFn: getChannels,
   },
 });
 
