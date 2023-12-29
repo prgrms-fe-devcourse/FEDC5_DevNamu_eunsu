@@ -1,6 +1,6 @@
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 
-import { getChannels } from "./channel";
+import { getChannels } from "./queryFn";
 
 const channels = createQueryKeys("channel", {
   allChannels: {
