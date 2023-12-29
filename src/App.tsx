@@ -17,6 +17,8 @@ const App = () => (
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
+          <Route path="channels" element={<HomePage />} />
+          <Route path="channel/*" element={<HomePage />} />
           <Route path="my-threads" element={<MyThreadsPage />} />
           <Route path="my-notifications" element={<MyNotificationsPage />} />
         </Route>
