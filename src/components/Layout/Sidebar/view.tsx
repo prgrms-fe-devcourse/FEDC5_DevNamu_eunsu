@@ -4,8 +4,8 @@ import { useState } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-import LoginModal from "../Modals/login";
-import RegisterModal from "../Modals/register";
+import LoginModal from "../Modals/Login";
+import RegisterModal from "../Modals/Register";
 
 import { LINKS } from "./config";
 import { ThemeConfigDropdown } from "./ThemeConfigDropdown";
@@ -39,6 +39,9 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
 
   const CurrentThemeIcon = themeIconConfig[theme];
 
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const [registerModalOpen, setRegisterModalOpen] = useState(false);
+
   /*
     Link Button과 DarkMode Dropdown 버튼이 공유하는 CSS가 많아서 styles로 상수화함.
     (Link를 쓰지 말고 navigate를 써도 될 듯)
@@ -47,10 +50,6 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
 
     TODO: [2023-12-29] 더 좋은 Tailwind 방식의 재활용 방법 찾기
   */
-
-  const [loginModalOpen, setLoginModalOpen] = useState(false);
-  const [registerModalOpen, setRegisterModalOpen] = useState(false);
-
   return (
     <>
       <LoginModal

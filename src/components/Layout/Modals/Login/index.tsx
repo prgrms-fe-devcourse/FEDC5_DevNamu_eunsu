@@ -1,6 +1,11 @@
+import { z } from "zod";
+
 import { Button } from "@/components/ui/button";
 
-import SimpleModalFrame from "./base";
+import SimpleBaseForm from "../Base/form";
+import SimpleBaseModal from "../Base/modal";
+
+import { LOGIN_FIELDS, LOGIN_FIELDS_SCHEMA } from "./config";
 
 interface Props {
   open: boolean;
@@ -8,34 +13,24 @@ interface Props {
   openRegisterModal: (open: boolean) => void;
 }
 
-const LOGIN_FIELDS = [
-  {
-    id: "email",
-    type: "email",
-    label: "이메일",
-    autoFocus: true,
-  },
-  {
-    id: "password",
-    type: "password",
-    label: "비밀번호",
-  },
-];
-
 const LoginModal = ({ open, toggleOpen, openRegisterModal }: Props) => {
   const handleRegisterClick = () => {
     toggleOpen(!open);
     openRegisterModal(true);
   };
 
+  const handleSubmit = (values: z.infer<typeof LOGIN_FIELDS_SCHEMA>) => {
+    // TODO: [2023-12-30] 로그인 API 연동하기
+    console.log(values);
+  };
+
   return (
-    <SimpleModalFrame
+    <SimpleBaseModal
       dialogOptions={{
         open,
         onOpenChange: toggleOpen,
       }}
       title="로그인"
-      fields={LOGIN_FIELDS}
       header={
         <>
           <span>혹시 회원이 아니신가요?</span>
@@ -44,8 +39,14 @@ const LoginModal = ({ open, toggleOpen, openRegisterModal }: Props) => {
           </Button>
         </>
       }
-      footer={<Button type="submit">로그인</Button>}
-    />
+    >
+      <SimpleBaseForm
+        fields={LOGIN_FIELDS}
+        validationSchema={LOGIN_FIELDS_SCHEMA}
+        onSubmit={handleSubmit}
+        submitText="로그인"
+      />
+    </SimpleBaseModal>
   );
 };
 
