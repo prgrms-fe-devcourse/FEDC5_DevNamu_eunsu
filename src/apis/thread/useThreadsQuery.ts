@@ -2,8 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 
 import threads from "./queryKey";
 
-const useThreadsQuery = (id: string) => {
-  const { data, isLoading, isError, error } = useQuery(threads.threadsByChannel(id));
+const useThreadsQuery = (channelId: string | undefined) => {
+  const { data, isLoading, isError, error } = useQuery(threads.threadsByChannel(channelId));
 
   return {
     threads: data,
