@@ -5,7 +5,7 @@ const getNavLinkClass = (isActive: boolean) =>
     isActive ? "bg-gray-100" : ""
   }`;
 
-const ChannelMenu = () => {
+const ChannelNavigationMenu = () => {
   return (
     <nav className="border-b-2 border-gray-500 py-2">
       <ul className="flex">
@@ -38,4 +38,4 @@ const ChannelMenu = () => {
   );
 };
 
-export default ChannelMenu;
+export default ChannelNavigationMenu;
