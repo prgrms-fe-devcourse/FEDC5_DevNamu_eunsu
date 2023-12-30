@@ -26,6 +26,11 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
+axiosInstance.interceptors.response.use(
+  (response) => response.data,
+  (error) => Promise.reject(error),
+);
+
 const createApiMethod =
   (_axiosInstance: AxiosInstance, methodType: Method) =>
   <T>(config: AxiosRequestConfig): Promise<T> => {
