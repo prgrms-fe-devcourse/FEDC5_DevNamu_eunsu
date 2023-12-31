@@ -1,12 +1,14 @@
 import { useForm } from "react-hook-form";
 import { SendHorizontal } from "lucide-react";
 import { FormEvent } from "react";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 
 import { Textarea } from "@/components/ui/textarea.tsx";
 
-import { cn } from "@/lib/utils.ts";
+import { cn } from "@/lib/utils";
+import { useCreatePostMutate, usePatchPostMutate } from "@/apis/post/usePostMutate.ts";
+import { useCreateCommentMutate } from "@/apis/comment/useCommentMutate.ts";
+import { useCreateNotificationMutate } from "@/apis/notification/useNotificationMutate.ts";
+import { CreateNotification } from "@/apis/notification/queryFn.ts";
 
 /* TODO 12/28
  * 1. user 정보 중 userName props로 받기
@@ -15,29 +17,6 @@ import { cn } from "@/lib/utils.ts";
  * -
  *
  * */
-
-interface CustomBody {
-  content: string;
-  userName: string | undefined;
-}
-
-interface CreatePostRequest {
-  title: CustomBody;
-  image: null;
-  channelId: string;
-}
-
-interface CreateCommentRequest {
-  comment: CustomBody;
-  postId: string;
-}
-
-interface NotificationRequest {
-  notificationType: "COMMENT" | "FOLLOW" | "LIKE" | "MESSAGE";
-  notificationTypeId: string;
-  userId: string;
-  postId: string | null;
-}
 
 interface TextEditProps {
   contentType: "post" | "comment";
@@ -53,13 +32,8 @@ const TextEdit = ({ contentType, submitType, userName, postId, channelId }: Text
   });
 
   // todo 12/28 post 업로드 / 수정
-  const { mutate: postMutate } = useMutation({
-    mutationKey: ["postRequest"],
-    mutationFn:
-      submitType === "create"
-        ? async (data: CreatePostRequest) => await axios.post("/posts/create", data)
-        : async (data: CreatePostRequest) => await axios.post("/posts/update", data),
-  });
+  const { mutate: createPostMutate } = useCreatePostMutate();
+  const { mutate: patchPostMutate } = usePatchPostMutate();
 
   const uploadPost = ({ anonymous, content }: { anonymous: boolean; content: string }) => {
     const postReq = {
@@ -71,34 +45,21 @@ const TextEdit = ({ contentType, submitType, userName, postId, channelId }: Text
       channelId,
     };
 
-    // 업로드
     if (submitType === "create") {
-      postMutate(postReq);
-    }
-    // 수정
-    else {
+      createPostMutate(postReq);
+    } else {
       const patchReq = {
         postId,
         ...postReq,
       };
-      postMutate(patchReq);
+      patchPostMutate(patchReq);
     }
   };
 
   // todo 12/28 comment 업로드
-  const { mutateAsync: commentMutate } = useMutation({
-    mutationKey: ["commentRequest"],
-    mutationFn: async (data: CreateCommentRequest) => {
-      const res = await axios.post("/comments/create", data);
-      return res.data;
-    },
-  });
+  const { mutateAsync: commentMutate } = useCreateCommentMutate();
+  const { mutate: notificationMutate } = useCreateNotificationMutate();
 
-  const { mutate: notificationMutate } = useMutation({
-    mutationKey: ["notificationRequest"],
-    mutationFn: async (data: NotificationRequest) =>
-      await axios.post("/notifications/create", data),
-  });
   const uploadComment = async ({ anonymous, content }: { anonymous: boolean; content: string }) => {
     const commentReq = {
       comment: {
@@ -116,7 +77,7 @@ const TextEdit = ({ contentType, submitType, userName, postId, channelId }: Text
       userId: commentRes.author._id,
       postId,
     };
-    notificationMutate(notificationReq as NotificationRequest);
+    notificationMutate(notificationReq as CreateNotification);
   };
 
   const upload = ({ anonymous, content }: { anonymous: boolean; content: string }) => {
