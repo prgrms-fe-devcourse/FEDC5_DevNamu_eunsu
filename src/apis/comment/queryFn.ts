@@ -11,5 +11,5 @@ interface CreateComment {
 }
 
 export const createComment = async (data: CreateComment) => {
-  return await api.post<Comment>({ url: "/notifications/create", data });
+  return await api.post<Comment>({ url: `/notifications/create`, data });
 };
