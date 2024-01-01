@@ -13,7 +13,7 @@ const ThreadList = ({ threads }: Props) => {
         <li key={thread._id} className="px-10pxr py-5pxr">
           <div className="flex items-center">
             <Avatar className="mr-3">
-              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+              <AvatarImage src="/public/svg/userProfile.svg" alt="프로필" />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <div className="min-w-0 flex-grow">
