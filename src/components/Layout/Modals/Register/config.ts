@@ -16,6 +16,12 @@ export const REGISTER_FIELDS: FieldProps[] = [
     autoComplete: "username",
   },
   {
+    name: "nickname",
+    type: "text",
+    label: "닉네임(선택)",
+    placeholder: "미기입 시 프롱이로 설정됩니다.",
+  },
+  {
     name: "password",
     type: "password",
     label: "비밀번호",
@@ -33,6 +39,7 @@ export const REGISTER_FIELDS_SCHEMA = z.object({
       message: "이메일을 입력해주세요",
     })
     .email("이메일 형식이 아닙니다"),
+  nickname: z.string().trim(),
   password: z.string().min(8, {
     message: "비밀번호는 8글자 이상이어야 합니다",
   }),
