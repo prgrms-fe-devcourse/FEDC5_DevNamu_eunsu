@@ -15,7 +15,7 @@ const ChannelNavigationMenu = () => {
       <ul className="flex">
         <li>
           <NavLink
-            to="/channel/compliment"
+            to="/channels/compliment"
             className={({ isActive }) => `${getNavLinkClass(isActive)}`}
           >
             칭찬 게시판
@@ -23,7 +23,7 @@ const ChannelNavigationMenu = () => {
         </li>
         <li>
           <NavLink
-            to="/channel/cheering"
+            to="/channels/cheering"
             className={({ isActive }) => `${getNavLinkClass(isActive)}`}
           >
             응원 게시판
@@ -31,7 +31,7 @@ const ChannelNavigationMenu = () => {
         </li>
         <li>
           <NavLink
-            to="/channel/incompetent"
+            to="/channels/incompetent"
             className={({ isActive }) => `${getNavLinkClass(isActive)}`}
           >
             무능 게시판
