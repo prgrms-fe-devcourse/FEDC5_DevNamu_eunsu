@@ -4,6 +4,7 @@ interface State {
   user: StoredUser | null;
 }
 
+// TODO: 스토어에 저장되는 유저 정보 줄여보기 (24.01.01)
 interface StoredUser {
   id: string;
   email: string;
