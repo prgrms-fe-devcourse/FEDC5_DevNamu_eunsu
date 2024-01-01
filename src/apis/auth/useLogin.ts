@@ -7,7 +7,7 @@ import { setLocalStorage } from "@/utils/localStorage";
 import postLogin, { LoginRequest } from "./queryFn";
 
 const useLogin = () => {
-  const userState = useUserStore((state) => state.updateUser);
+  const { updateUser } = useUserStore();
 
   return useMutation({
     mutationFn: (body: LoginRequest) => postLogin(body),
@@ -25,7 +25,7 @@ const useLogin = () => {
         token,
         isLoggedIn: true,
       };
-      userState(userData);
+      updateUser(userData);
       setLocalStorage("token", token);
     },
   });
