@@ -21,7 +21,6 @@ export const REGISTER_FIELDS: FieldProps[] = [
     type: "text",
     label: "닉네임(선택)",
     placeholder: "미기입 시 프롱이로 설정됩니다.",
-    autoComplete: "nickname",
   },
   {
     name: "password",
@@ -37,24 +36,18 @@ export const REGISTER_FIELDS: FieldProps[] = [
   },
 ];
 
-export const REGISTER_FIELDS_SCHEMA = z
-  .object({
-    name: z.string().min(1, {
-      message: "이름을 입력해주세요",
-    }),
-    email: z
-      .string()
-      .min(1, {
-        message: "이메일을 입력해주세요",
-      })
-      .email("이메일 형식이 아닙니다"),
-    nickname: z.string().trim(),
-    password: z.string().min(8, {
-      message: "비밀번호는 8글자 이상이어야 합니다",
-    }),
-    passwordConfirm: z.string(),
-  })
-  .refine(({ password, passwordConfirm }) => password === passwordConfirm, {
-    message: "비밀번호가 일치하지 않습니다",
-    path: ["passwordConfirm"],
-  });
+export const REGISTER_FIELDS_SCHEMA = z.object({
+  name: z.string().min(1, {
+    message: "이름을 입력해주세요",
+  }),
+  email: z
+    .string()
+    .min(1, {
+      message: "이메일을 입력해주세요",
+    })
+    .email("이메일 형식이 아닙니다"),
+  nickname: z.string().trim(),
+  password: z.string().min(8, {
+    message: "비밀번호는 8글자 이상이어야 합니다",
+  }),
+});
