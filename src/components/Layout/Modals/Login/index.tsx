@@ -7,6 +7,8 @@ import SimpleBaseModal from "../Base/modal";
 
 import { LOGIN_FIELDS, LOGIN_FIELDS_SCHEMA } from "./config";
 
+import useLogin from "@/apis/auth/useLogin";
+
 interface Props {
   open: boolean;
   toggleOpen: (open: boolean) => void;
@@ -14,14 +16,15 @@ interface Props {
 }
 
 const LoginModal = ({ open, toggleOpen, openRegisterModal }: Props) => {
+  const { mutate: mutateLogin } = useLogin();
+
   const handleRegisterClick = () => {
     toggleOpen(!open);
     openRegisterModal(true);
   };
 
-  const handleSubmit = (values: z.infer<typeof LOGIN_FIELDS_SCHEMA>) => {
-    // TODO: [2023-12-30] 로그인 API 연동하기
-    console.log(values);
+  const handleSubmit = (loginInfo: z.infer<typeof LOGIN_FIELDS_SCHEMA>) => {
+    mutateLogin(loginInfo);
   };
 
   return (
