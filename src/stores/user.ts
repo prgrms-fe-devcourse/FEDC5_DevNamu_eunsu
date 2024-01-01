@@ -1,10 +1,10 @@
 import { create } from "zustand";
 
 type State = {
-  user: User;
+  user: StoredUser | null;
 };
 
-interface User {
+interface StoredUser {
   id: string;
   email: string;
   name: string;
@@ -14,17 +14,11 @@ interface User {
 }
 
 type Action = {
-  updateUser: (user: User) => void;
+  updateUser: (user: StoredUser) => void;
 };
 
 const useUserStore = create<State & Action>((set) => ({
-  user: {
-    id: "",
-    email: "",
-    name: "",
-    nickname: "",
-    token: "",
-  },
+  user: null,
   updateUser: (user) => set(() => ({ user })),
   logout: () => set(() => ({ user: null })),
 }));
