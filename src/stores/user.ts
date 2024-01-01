@@ -1,8 +1,8 @@
 import { create } from "zustand";
 
-type State = {
+interface State {
   user: StoredUser | null;
-};
+}
 
 interface StoredUser {
   id: string;
@@ -13,9 +13,10 @@ interface StoredUser {
   isLoggedIn: boolean;
 }
 
-type Action = {
+interface Action {
   updateUser: (user: StoredUser) => void;
-};
+  logout: () => void;
+}
 
 const useUserStore = create<State & Action>((set) => ({
   user: null,
