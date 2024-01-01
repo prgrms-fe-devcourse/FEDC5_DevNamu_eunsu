@@ -9,34 +9,34 @@ export interface ListProps {
 }
 
 interface MentionListProps extends ListProps {
-  focusIdx: number;
+  focusIndex: number;
 }
 
-const MentionList = ({ users, onClick, focusIdx }: MentionListProps) => {
+const AutoCompleteMentionList = ({ users, onClick, focusIndex }: MentionListProps) => {
   if (!users.length) return "";
   return (
     <div className="mt-2 overflow-hidden scroll-auto border p-2">
       {users.map(({ name, userId }, idx) => {
         return (
-          <div
+          <ul
             key={userId}
-            className={cn("hover:bg-gray-100", focusIdx === idx ? "bg-gray-100" : "")}
+            className={cn("hover:bg-gray-100", focusIndex === idx ? "bg-gray-100" : "")}
           >
-            <p
+            <li
               onClick={() => onClick({ name, userId })}
               className={cn(
                 "cursor-pointer py-2 hover:font-bold",
-                focusIdx === idx ? "font-bold" : "",
+                focusIndex === idx ? "font-bold" : "",
               )}
             >
               {name}
-            </p>
+            </li>
             {idx !== users.length - 1 && <Separator />}
-          </div>
+          </ul>
         );
       })}
     </div>
   );
 };
 
-export default MentionList;
+export default AutoCompleteMentionList;

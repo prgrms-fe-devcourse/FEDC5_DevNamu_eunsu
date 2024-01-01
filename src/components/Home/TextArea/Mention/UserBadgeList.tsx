@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge.tsx";
 
-import { ListProps } from "@/components/Home/TextArea/Mention/MentionList.tsx";
+import { ListProps } from "@/components/Home/TextArea/Mention/AutoCompleteMentionList.tsx";
 
 const UserBadgeList = ({ users, onClick }: ListProps) => {
   if (!users.length) return "";

@@ -1,11 +1,5 @@
-import ExMentionInput from "@/components/example/ExMentionInput.tsx";
-
 const HomePage = () => {
-  return (
-    <div>
-      <ExMentionInput />
-    </div>
-  );
+  return <div></div>;
 };
 
 export default HomePage;

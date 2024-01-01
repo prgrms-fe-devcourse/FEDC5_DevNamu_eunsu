@@ -2,7 +2,7 @@ import { FormEvent, useRef, useState, KeyboardEvent, useEffect } from "react";
 
 import { Input } from "@/components/ui/input.tsx";
 
-import MentionList from "@/components/Home/TextArea/Mention/MentionList.tsx";
+import AutoCompleteMentionList from "@/components/Home/TextArea/Mention/AutoCompleteMentionList.tsx";
 import UserBadgeList from "@/components/Home/TextArea/Mention/UserBadgeList.tsx";
 import autoComplete from "@/lib/autoComplete.ts";
 import { MyType, USER_LIST } from "@/constants/dummyData.ts";
@@ -11,7 +11,7 @@ const MentionInput = () => {
   const [mentionList, setMentionList] = useState<Array<MyType>>([]);
   const [choiceList, setChoiceList] = useState<Array<MyType>>([]);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [focusIdx, setFocusIdx] = useState(-1);
+  const [focusIndex, setFocusIndex] = useState(-1);
 
   const searchPeople = (event: FormEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -47,15 +47,15 @@ const MentionInput = () => {
 
     switch (event.key) {
       case "ArrowDown":
-        setFocusIdx((prev) => (prev + 1) % mentionLength);
+        setFocusIndex((prev) => (prev + 1) % mentionLength);
         break;
       case "ArrowUp":
-        setFocusIdx((prev) => (prev - 1 + mentionLength) % mentionLength);
+        setFocusIndex((prev) => (prev - 1 + mentionLength) % mentionLength);
         break;
       case "Enter":
         setChoiceList((prev) => [
           ...prev,
-          { name: mentionList[focusIdx].name, userId: mentionList[focusIdx].userId },
+          { name: mentionList[focusIndex].name, userId: mentionList[focusIndex].userId },
         ]);
         emptyUserInput();
         break;
@@ -63,7 +63,7 @@ const MentionInput = () => {
   };
 
   useEffect(() => {
-    setFocusIdx(0);
+    setFocusIndex(0);
   }, [mentionList]);
 
   return (
@@ -78,7 +78,11 @@ const MentionInput = () => {
         placeholder="멘션할 대상을 선택해주세요."
       />
 
-      <MentionList users={mentionList} onClick={handleAddChoiceList} focusIdx={focusIdx} />
+      <AutoCompleteMentionList
+        users={mentionList}
+        onClick={handleAddChoiceList}
+        focusIndex={focusIndex}
+      />
     </div>
   );
 };
