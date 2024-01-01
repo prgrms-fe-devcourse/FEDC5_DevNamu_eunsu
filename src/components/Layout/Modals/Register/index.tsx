@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { AxiosError } from "axios";
 
 import { Button } from "@/components/ui/button";
 
@@ -7,6 +8,8 @@ import SimpleBaseModal from "../Base/modal";
 
 import { REGISTER_FIELDS, REGISTER_FIELDS_SCHEMA } from "./config";
 
+import useRegister from "@/apis/auth/useRegister";
+
 interface Props {
   open: boolean;
   toggleOpen: (open: boolean) => void;
@@ -14,14 +17,23 @@ interface Props {
 }
 
 const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
+  const register = useRegister();
+
   const handleLoginClick = () => {
     toggleOpen(!open);
     openLoginModal(true);
   };
 
-  const handleSubmit = (values: z.infer<typeof REGISTER_FIELDS_SCHEMA>) => {
-    // TODO: [2023-12-30] 회원가입 API 연동하기
-    console.log(values);
+  const handleSubmit = (registerInfo: z.infer<typeof REGISTER_FIELDS_SCHEMA>) => {
+    const { email, name, nickname, password } = registerInfo;
+    const fullName = JSON.stringify({ name, nickname: nickname || "프롱이" });
+    register.mutate({ email, fullName, password });
+    if (register.isSuccess) handleLoginClick();
+    if (register.isError) {
+      // TODO: 에러 처리 및 타입 단언 개선 (2024-01-01)
+      const error = register.error as AxiosError<string>;
+      alert(error.response?.data);
+    }
   };
 
   return (
