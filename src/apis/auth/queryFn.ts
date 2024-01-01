@@ -12,6 +12,7 @@ export interface LoginResponse {
   token: string;
 }
 
-const postLogin = (data: LoginRequest) => api.post<LoginResponse>({ url: "/login", data });
+const postLogin = (loginInfo: LoginRequest) =>
+  api.post<LoginResponse>({ url: "/login", data: loginInfo });
 
 export default postLogin;

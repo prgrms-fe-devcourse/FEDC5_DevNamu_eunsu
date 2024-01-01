@@ -16,15 +16,15 @@ interface Props {
 }
 
 const LoginModal = ({ open, toggleOpen, openRegisterModal }: Props) => {
-  const { mutate } = useLogin();
+  const { mutate: mutateLogin } = useLogin();
 
   const handleRegisterClick = () => {
     toggleOpen(!open);
     openRegisterModal(true);
   };
 
-  const handleSubmit = (values: z.infer<typeof LOGIN_FIELDS_SCHEMA>) => {
-    mutate(values);
+  const handleSubmit = (loginInfo: z.infer<typeof LOGIN_FIELDS_SCHEMA>) => {
+    mutateLogin(loginInfo);
   };
 
   return (
