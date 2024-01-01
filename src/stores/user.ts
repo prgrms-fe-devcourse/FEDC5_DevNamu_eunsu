@@ -10,6 +10,7 @@ interface User {
   name: string;
   nickname: string;
   token: string;
+  isLoggedIn: boolean;
 }
 
 type Action = {

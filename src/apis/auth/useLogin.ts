@@ -23,6 +23,7 @@ const useLogin = () => {
         name,
         nickname,
         token,
+        isLoggedIn: true,
       };
       userState(userData);
       setLocalStorage("token", token);
