@@ -1,3 +1,7 @@
+export interface MyType {
+  name: string;
+  userId: string;
+}
 export const USER_LIST = [
   { name: "김성빈", userId: "1" },
   { name: "김재민", userId: "2" },

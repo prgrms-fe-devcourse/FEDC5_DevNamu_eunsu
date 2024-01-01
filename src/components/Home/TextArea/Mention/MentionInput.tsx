@@ -2,9 +2,10 @@ import { FormEvent, useRef, useState, KeyboardEvent, useEffect } from "react";
 
 import { Input } from "@/components/ui/input.tsx";
 
-import trie, { MyType } from "@/lib/trie.ts";
 import MentionList from "@/components/Home/TextArea/Mention/MentionList.tsx";
 import UserBadgeList from "@/components/Home/TextArea/Mention/UserBadgeList.tsx";
+import autoComplete from "@/lib/autoComplete.ts";
+import { MyType, USER_LIST } from "@/constants/dummyData.ts";
 
 const MentionInput = () => {
   const [mentionList, setMentionList] = useState<Array<MyType>>([]);
@@ -15,7 +16,8 @@ const MentionInput = () => {
   const searchPeople = (event: FormEvent<HTMLInputElement>) => {
     event.preventDefault();
 
-    const list = trie.search(event.currentTarget.value.trim());
+    const { search } = autoComplete<MyType>({ list: USER_LIST, key: "name" });
+    const list = search(event.currentTarget.value.trim());
     list && setMentionList(list);
   };
 

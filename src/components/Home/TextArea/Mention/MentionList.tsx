@@ -1,7 +1,7 @@
 import { Separator } from "@/components/ui/separator.tsx";
 
 import { cn } from "@/lib/utils.ts";
-import { MyType } from "@/lib/trie.ts";
+import { MyType } from "@/constants/dummyData.ts";
 
 export interface ListProps {
   users: MyType[];
