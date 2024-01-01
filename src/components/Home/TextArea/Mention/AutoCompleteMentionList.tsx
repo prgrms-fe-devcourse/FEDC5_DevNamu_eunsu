@@ -15,27 +15,24 @@ interface MentionListProps extends ListProps {
 const AutoCompleteMentionList = ({ users, onClick, focusIndex }: MentionListProps) => {
   if (!users.length) return "";
   return (
-    <div className="mt-2 overflow-hidden scroll-auto border p-2">
-      {users.map(({ name, userId }, idx) => {
+    <ul className="mt-2 overflow-hidden scroll-auto border p-2">
+      {users.map(({ name, userId }, index) => {
         return (
-          <ul
-            key={userId}
-            className={cn("hover:bg-gray-100", focusIndex === idx ? "bg-gray-100" : "")}
-          >
+          <>
             <li
               onClick={() => onClick({ name, userId })}
               className={cn(
-                "cursor-pointer py-2 hover:font-bold",
-                focusIndex === idx ? "font-bold" : "",
+                "cursor-pointer py-2 hover:bg-gray-100 hover:font-bold",
+                focusIndex === index ? "bg-gray-100 font-bold" : "",
               )}
             >
               {name}
             </li>
-            {idx !== users.length - 1 && <Separator />}
-          </ul>
+            {index !== users.length - 1 && <Separator />}
+          </>
         );
       })}
-    </div>
+    </ul>
   );
 };
 
