@@ -7,6 +7,10 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface RegisterRequest extends LoginRequest {
+  fullName: string;
+}
+
 export interface AuthResponse {
   user: User;
   token: string;
@@ -15,4 +19,5 @@ export interface AuthResponse {
 export const postLogin = (loginInfo: LoginRequest) =>
   api.post<AuthResponse>({ url: "/login", data: loginInfo });
 
-export default postLogin;
+export const postRegister = (registerInfo: RegisterRequest) =>
+  api.post<AuthResponse>({ url: "/signup", data: registerInfo });
