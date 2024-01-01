@@ -2,8 +2,8 @@ import { FormEvent, useRef, useState, KeyboardEvent, useEffect } from "react";
 
 import { Input } from "@/components/ui/input.tsx";
 
-import AutoCompleteMentionList from "@/components/Home/TextArea/Mention/AutoCompleteMentionList.tsx";
-import UserBadgeList from "@/components/Home/TextArea/Mention/UserBadgeList.tsx";
+import AutoCompleteMentionList from "@/components/Common/Mention/AutoCompleteMentionList.tsx";
+import UserBadgeList from "@/components/Common/Mention/UserBadgeList.tsx";
 import autoComplete from "@/lib/autoComplete.ts";
 import { MyType, USER_LIST } from "@/constants/dummyData.ts";
 
