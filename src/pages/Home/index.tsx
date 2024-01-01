@@ -17,7 +17,9 @@ const HomePage = () => {
       <div className="w-full max-w-4xl px-4">
         <ChannelNavigationMenu />
       </div>
-      <main>{threadsQuery.threads && <ThreadList threads={threadsQuery.threads} />}</main>
+      <main className="w-full max-w-4xl px-4">
+        {threadsQuery.threads && <ThreadList threads={threadsQuery.threads} />}
+      </main>
     </div>
   );
 };
