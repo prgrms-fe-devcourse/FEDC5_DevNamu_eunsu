@@ -3,8 +3,8 @@ import { FormEvent, useRef, useState, KeyboardEvent, useEffect } from "react";
 import { Input } from "@/components/ui/input.tsx";
 
 import trie, { MyType } from "@/lib/trie.ts";
-import MentionList from "@/components/Home/MentionList.tsx";
-import ChoiceList from "@/components/Home/ChoiceList.tsx";
+import MentionList from "@/components/MyThreads/MentionList.tsx";
+import ChoiceList from "@/components/MyThreads/ChoiceList.tsx";
 
 const MentionInput = () => {
   const [mentionList, setMentionList] = useState<Array<MyType>>([]);

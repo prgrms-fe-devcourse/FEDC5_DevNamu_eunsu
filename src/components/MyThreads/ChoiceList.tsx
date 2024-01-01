@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge.tsx";
 
-import { ListProps } from "@/components/Home/MentionList.tsx";
+import { ListProps } from "@/components/MyThreads/MentionList.tsx";
 
 const ChoiceList = ({ list, onClick }: ListProps) => {
   return (
