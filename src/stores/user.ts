@@ -26,6 +26,7 @@ const useUserStore = create<State & Action>((set) => ({
     token: "",
   },
   updateUser: (user) => set(() => ({ user })),
+  logout: () => set(() => ({ user: null })),
 }));
 
 export default useUserStore;
