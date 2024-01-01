@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils.ts";
 import { MyType } from "@/lib/trie.ts";
 
 export interface ListProps {
-  list: MyType[];
+  users: MyType[];
   onClick: (people: MyType) => void;
 }
 
@@ -12,10 +12,11 @@ interface MentionListProps extends ListProps {
   focusIdx: number;
 }
 
-const MentionList = ({ list, onClick, focusIdx }: MentionListProps) => {
+const MentionList = ({ users, onClick, focusIdx }: MentionListProps) => {
+  if (!users.length) return "";
   return (
     <div className="mt-2 overflow-hidden scroll-auto border p-2">
-      {list.map(({ name, userId }, idx) => {
+      {users.map(({ name, userId }, idx) => {
         return (
           <div
             key={userId}
@@ -30,7 +31,7 @@ const MentionList = ({ list, onClick, focusIdx }: MentionListProps) => {
             >
               {name}
             </p>
-            {idx !== list.length - 1 && <Separator />}
+            {idx !== users.length - 1 && <Separator />}
           </div>
         );
       })}

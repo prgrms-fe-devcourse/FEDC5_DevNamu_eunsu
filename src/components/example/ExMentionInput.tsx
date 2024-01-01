@@ -1,4 +1,4 @@
-import MentionInput from "@/components/MyThreads/MentionInput.tsx";
+import MentionInput from "@/components/Home/TextArea/Mention/MentionInput.tsx";
 
 const ExMentionInput = () => {
   return (

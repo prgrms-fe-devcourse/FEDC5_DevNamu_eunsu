@@ -3,8 +3,8 @@ import { FormEvent, useRef, useState, KeyboardEvent, useEffect } from "react";
 import { Input } from "@/components/ui/input.tsx";
 
 import trie, { MyType } from "@/lib/trie.ts";
-import MentionList from "@/components/MyThreads/MentionList.tsx";
-import ChoiceList from "@/components/MyThreads/ChoiceList.tsx";
+import MentionList from "@/components/Home/TextArea/Mention/MentionList.tsx";
+import UserBadgeList from "@/components/Home/TextArea/Mention/UserBadgeList.tsx";
 
 const MentionInput = () => {
   const [mentionList, setMentionList] = useState<Array<MyType>>([]);
@@ -19,7 +19,7 @@ const MentionInput = () => {
     list && setMentionList(list);
   };
 
-  const initInput = () => {
+  const emptyUserInput = () => {
     if (!inputRef.current) return;
     setMentionList([]);
     inputRef.current.value = "";
@@ -27,7 +27,7 @@ const MentionInput = () => {
 
   const handleAddChoiceList = (people: MyType) => {
     setChoiceList((prev) => [...prev, people]);
-    initInput();
+    emptyUserInput();
   };
 
   const handleDeleteChoiceList = (people: MyType) => {
@@ -37,7 +37,7 @@ const MentionInput = () => {
     setChoiceList(newChoiceList);
   };
 
-  const handleFocus = (event: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     const mentionLength = mentionList.length;
 
     if (mentionLength <= 0 || !inputRef.current) return;
@@ -55,7 +55,7 @@ const MentionInput = () => {
           ...prev,
           { name: mentionList[focusIdx].name, userId: mentionList[focusIdx].userId },
         ]);
-        initInput();
+        emptyUserInput();
         break;
     }
   };
@@ -66,19 +66,17 @@ const MentionInput = () => {
 
   return (
     <div>
-      {!!choiceList.length && <ChoiceList list={choiceList} onClick={handleDeleteChoiceList} />}
+      <UserBadgeList users={choiceList} onClick={handleDeleteChoiceList} />
 
       <Input
         type="text"
         onChange={searchPeople}
-        onKeyDown={handleFocus}
+        onKeyDown={handleKeyDown}
         ref={inputRef}
         placeholder="멘션할 대상을 선택해주세요."
       />
 
-      {!!mentionList.length && (
-        <MentionList list={mentionList} onClick={handleAddChoiceList} focusIdx={focusIdx} />
-      )}
+      <MentionList users={mentionList} onClick={handleAddChoiceList} focusIdx={focusIdx} />
     </div>
   );
 };
