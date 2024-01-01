@@ -16,11 +16,11 @@ const ThreadList = ({ threads }: Props) => {
           <div className="flex items-center">
             <Avatar className="mr-3">
               <AvatarImage src="/public/svg/userProfile.svg" alt="프로필" />
-              <AvatarFallback>CN</AvatarFallback>
+              <AvatarFallback>{author.fullName.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className="min-w-0 flex-grow">
               <div className="flex justify-between">
-                <span className="text-lg font-semibold">{author.fullName}</span>
+                <span className="text-lg font-semibold">{author.nickname || "프롱이"}</span>
                 <span className="text-gray-400">{formatDate(createdAt)}</span>
               </div>
               <div className="overflow-hidden truncate text-ellipsis pr-50pxr text-gray-500">
