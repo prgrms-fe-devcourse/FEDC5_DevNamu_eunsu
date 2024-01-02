@@ -18,11 +18,19 @@ interface Props {
 const ThreadListItem = ({ id, title, author, createdAt }: Props) => {
   const [hoveredThreadId, setHoveredThreadId] = useState<string | null>(null);
 
+  const handleMouseEnter = () => {
+    setHoveredThreadId(id);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredThreadId(null);
+  };
+
   return (
     <li
       key={id}
-      onMouseEnter={() => setHoveredThreadId(id)}
-      onMouseLeave={() => setHoveredThreadId(null)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       className="relative cursor-pointer px-2.5 py-5 hover:bg-gray-100"
       tabIndex={0}
     >
