@@ -6,14 +6,14 @@ import { cn } from "@/lib/utils";
 
 interface LikeToggleButtonProps {
   clicked: boolean;
-  handleClick: () => void;
+  onClick: () => void;
   numberOfLikes: number;
 }
 
-const LikeToggleButton = ({ clicked, handleClick, numberOfLikes }: LikeToggleButtonProps) => {
+const LikeToggleButton = ({ clicked, onClick, numberOfLikes }: LikeToggleButtonProps) => {
   return (
     <Button
-      onClick={handleClick}
+      onClick={onClick}
       className={cn(
         "h-7 select-none gap-1 rounded-2xl border-2 border-gray-100 bg-gray-100 px-2 text-xs text-gray-600",
         clicked
