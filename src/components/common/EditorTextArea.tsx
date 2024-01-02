@@ -24,7 +24,14 @@ interface Props {
 }
 
 // todo [24/1/2] : contentType, submitType에 따라 props값 다르게 넘겨주기
-const TextEdit = ({ isMention, contentType, submitType, nickName, postId, channelId }: Props) => {
+const EditorTextArea = ({
+  isMention,
+  contentType,
+  submitType,
+  nickName,
+  postId,
+  channelId,
+}: Props) => {
   const { register, handleSubmit, watch, setValue } = useForm({
     defaultValues: { anonymous: true, content: "" },
   });
@@ -97,4 +104,4 @@ const TextEdit = ({ isMention, contentType, submitType, nickName, postId, channe
   );
 };
 
-export default TextEdit;
+export default EditorTextArea;

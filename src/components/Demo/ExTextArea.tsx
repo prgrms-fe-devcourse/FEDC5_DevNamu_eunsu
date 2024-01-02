@@ -1,4 +1,4 @@
-import TextEdit from "@/components/common/TextEdit.tsx";
+import EditorTextArea from "@/components/common/EditorTextArea.tsx";
 
 const ExTextArea = () => {
   // todo 24/1/2 : 닉네임 어디서 받아올지 미정. 일단은 textAreat 사용하는 곳에서 넘겨주는 형태로 구현
@@ -11,7 +11,7 @@ const ExTextArea = () => {
       <div className="flex h-screen w-full justify-center">
         <p> post 작성</p>
         <div className="relative flex h-screen w-400pxr justify-center" id="parent">
-          <TextEdit
+          <EditorTextArea
             isMention={true}
             contentType="post"
             submitType="create"
@@ -22,7 +22,7 @@ const ExTextArea = () => {
         </div>
         <p> comment 작성</p>
         <div className="relative flex h-screen w-400pxr justify-center" id="parent">
-          <TextEdit
+          <EditorTextArea
             isMention={false}
             contentType="comment"
             submitType="create"
