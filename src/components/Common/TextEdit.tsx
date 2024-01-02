@@ -48,7 +48,7 @@ const TextEdit = ({ isMention, contentType, submitType, userName, postId, channe
   };
 
   return (
-    <div className="fixed bottom-0" style={{ width: parentWidth }} ref={ref}>
+    <div className="fixed bottom-0 flex flex-col gap-2" style={{ width: parentWidth }} ref={ref}>
       {isMention && <MentionInput />}
       <form className="relative">
         <Textarea
