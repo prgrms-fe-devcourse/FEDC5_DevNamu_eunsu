@@ -1,5 +1,5 @@
 import { SubmitType } from "@/components/common/EditorTextArea.tsx";
-import { useCreateThreadMutate, usePatchThreadMutate } from "@/apis/thread/useThreadMutate.ts";
+import { usePostThread, usePutThread } from "@/apis/thread/useThreadMutate.ts";
 import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickName.ts";
 
 interface Props {
@@ -10,8 +10,8 @@ interface Props {
 }
 
 const useUploadThread = ({ submitType, nickName, channelId, postId }: Props) => {
-  const { mutate: createThreadMutate } = useCreateThreadMutate();
-  const { mutate: patchThreadMutate } = usePatchThreadMutate();
+  const { mutate: createThreadMutate } = usePostThread();
+  const { mutate: patchThreadMutate } = usePutThread();
 
   const uploadThread = ({ anonymous, content }: { anonymous: boolean; content: string }) => {
     const threadRequest = {

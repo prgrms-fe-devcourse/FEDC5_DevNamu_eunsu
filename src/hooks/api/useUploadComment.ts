@@ -1,5 +1,5 @@
-import { useCreateCommentMutate } from "@/apis/comment/useCommentMutate.ts";
-import { useCreateNotificationMutate } from "@/apis/notification/useNotificationMutate.ts";
+import { usePostComment } from "@/apis/comment/useCommentMutate.ts";
+import { usePostNotification } from "@/apis/notification/useNotificationMutate.ts";
 import { NotificationTypes } from "@/apis/notification/queryFn.ts";
 import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickName.ts";
 
@@ -9,8 +9,8 @@ interface Props {
 }
 
 const useUploadComment = ({ nickName, postId }: Props) => {
-  const { mutateAsync: commentMutate } = useCreateCommentMutate();
-  const { mutate: notificationMutate } = useCreateNotificationMutate();
+  const { mutateAsync: commentMutate } = usePostComment();
+  const { mutate: notificationMutate } = usePostNotification();
 
   const uploadComment = async ({ anonymous, content }: { anonymous: boolean; content: string }) => {
     const commentRequest = {
