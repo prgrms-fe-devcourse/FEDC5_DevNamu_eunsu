@@ -32,7 +32,7 @@ export interface FieldProps {
 export interface SimpleFormProps {
   fields: FieldProps[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  validationSchema: z.ZodObject<any>;
+  validationSchema: z.ZodEffects<z.ZodObject<any>> | z.ZodObject<any>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSubmit: (values: any) => void;
   submitText: string;
