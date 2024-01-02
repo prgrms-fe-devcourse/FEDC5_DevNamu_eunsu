@@ -16,12 +16,12 @@ const ThreadList = ({ threads }: Props) => {
           <div className="flex items-center">
             <Avatar className="mr-3">
               <AvatarImage src="/public/svg/userProfile.svg" alt="프로필" />
-              // TODO: 로그인/회원가입 추가시 옵셔널 삭제 예정 (2023.01.02)
+              {/*TODO: 로그인/회원가입 추가시 옵셔널 삭제 예정 (2023.01.02)*/}
               <AvatarFallback>{author.nickname?.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className="min-w-0 flex-grow">
               <div className="flex justify-between">
-                // TODO: 로그인/회원가입 추가시 기본값 "프롱이" 삭제 예정 (2023.01.02)
+                {/* TODO: 로그인/회원가입 추가시 기본값 "프롱이" 삭제 예정 (2023.01.02)*/}
                 <span className="text-lg font-semibold">{author.nickname || "프롱이"}</span>
                 <span className="text-gray-400">{formatDate(createdAt)}</span>
               </div>
