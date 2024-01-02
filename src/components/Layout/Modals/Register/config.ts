@@ -20,6 +20,7 @@ export const REGISTER_FIELDS: FieldProps[] = [
     type: "text",
     label: "닉네임(선택)",
     placeholder: "미기입 시 프롱이로 설정됩니다.",
+    autoComplete: "nickname",
   },
   {
     name: "password",
