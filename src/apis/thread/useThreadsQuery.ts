@@ -10,7 +10,7 @@ const useThreadsQuery = (channelId: string | undefined) => {
   );
 
   return {
-    threads: data,
+    threads: data?.slice().reverse(),
     isLoading,
     isError,
     error,
