@@ -1,4 +1,4 @@
-import TextEdit from "@/components/Common/TextEdit.tsx";
+import TextEdit from "@/components/common/TextEdit.tsx";
 
 const ExTextArea = () => {
   // todo 24/1/2 : 닉네임 어디서 받아올지 미정. 일단은 textAreat 사용하는 곳에서 넘겨주는 형태로 구현

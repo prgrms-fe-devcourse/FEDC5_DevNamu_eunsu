@@ -9,7 +9,7 @@ import useParentWidth from "@/hooks/useParentWidth.ts";
 import { Textarea } from "@/components/ui/textarea.tsx";
 
 import { cn } from "@/lib/utils";
-import MentionInput from "@/components/Common/Mention/MentionInput.tsx";
+import MentionInput from "@/components/common/Mention/MentionInput.tsx";
 import RegisterModal from "@/components/Layout/Modals/Register";
 
 export type ContentType = "post" | "comment";

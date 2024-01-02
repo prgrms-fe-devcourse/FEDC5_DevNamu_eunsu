@@ -1,5 +1,5 @@
 import { useCreatePostMutate, usePatchPostMutate } from "@/apis/post/usePostMutate.ts";
-import { SubmitType } from "@/components/Common/TextEdit.tsx";
+import { SubmitType } from "@/components/common/TextEdit.tsx";
 
 interface Props {
   submitType: SubmitType;
