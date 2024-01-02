@@ -16,7 +16,7 @@ const ThreadList = ({ threads }: Props) => {
           <div className="flex items-center">
             <Avatar className="mr-3">
               <AvatarImage src="/public/svg/userProfile.svg" alt="프로필" />
-              <AvatarFallback>{author.fullName.charAt(0)}</AvatarFallback>
+              <AvatarFallback>{author.nickname.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className="min-w-0 flex-grow">
               <div className="flex justify-between">
