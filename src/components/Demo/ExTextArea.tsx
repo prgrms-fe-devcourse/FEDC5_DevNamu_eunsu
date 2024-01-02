@@ -1,7 +1,7 @@
 import EditorTextArea from "@/components/common/EditorTextArea.tsx";
 
 const ExTextArea = () => {
-  // todo 24/1/2 : 닉네임 어디서 받아올지 미정. 일단은 textAreat 사용하는 곳에서 넘겨주는 형태로 구현
+  // TODO: [24/1/2] 닉네임 어디서 받아올지 미정. 일단은 textAreat 사용하는 곳에서 넘겨주는 형태로 구현
   const nickName = "";
   const channelId = "658d50d74f228a47fec343bd"; // 칭찬게시판id
   const postId = "659379f479fd2531a0091d62"; // {"content":"알겠죠~?"} 게시물

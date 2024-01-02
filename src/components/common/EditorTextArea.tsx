@@ -2,12 +2,12 @@ import { useForm } from "react-hook-form";
 import { SendHorizontal } from "lucide-react";
 import { FormEvent, useState } from "react";
 
-import useUploadPost from "@/hooks/useUploadPost.ts";
-import useUploadComment from "@/hooks/useUploadComment.ts";
 import useParentWidth from "@/hooks/useParentWidth.ts";
 
 import { Textarea } from "@/components/ui/textarea.tsx";
 
+import useUploadThread from "@/hooks/api/useUploadThread.ts";
+import useUploadComment from "@/hooks/api/useUploadComment.ts";
 import { cn } from "@/lib/utils";
 import MentionInput from "@/components/common/Mention/MentionInput.tsx";
 import RegisterModal from "@/components/Layout/Modals/Register";
@@ -23,7 +23,7 @@ interface Props {
   channelId: string;
 }
 
-// todo [24/1/2] : contentType, submitType에 따라 props값 다르게 넘겨주기
+// TODO: [24/1/2] contentType, submitType에 따라 props값 다르게 넘겨주기
 const EditorTextArea = ({
   isMention,
   contentType,
@@ -38,23 +38,23 @@ const EditorTextArea = ({
 
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
 
-  const { uploadPost } = useUploadPost({ submitType, nickName, channelId, postId });
+  const { uploadThread } = useUploadThread({ submitType, nickName, channelId, postId });
   const { uploadComment } = useUploadComment({ nickName, postId });
 
   const { ref, parentWidth } = useParentWidth();
 
   const handleUpload = ({ anonymous, content }: { anonymous: boolean; content: string }) => {
     contentType === "post"
-      ? uploadPost({ anonymous, content })
+      ? uploadThread({ anonymous, content })
       : uploadComment({ anonymous, content });
 
     setValue("content", "");
   };
 
-  const handleCheckBoxClick = (e: FormEvent<HTMLInputElement>) => {
+  const handleClickCheckBox = (e: FormEvent<HTMLInputElement>) => {
     if (!e.currentTarget.checked && !nickName) {
       setValue("anonymous", true);
-      // todo 12/28 모달 창과 연결
+      // TODO: [24/1/2] 모달 창과 연결
       setRegisterModalOpen((prev) => !prev);
       return;
     }
@@ -78,7 +78,7 @@ const EditorTextArea = ({
               type="checkbox"
               id="anonymous"
               {...register("anonymous")}
-              onClick={handleCheckBoxClick}
+              onClick={handleClickCheckBox}
             />
             <p className="text-gray-500">익명</p>
           </label>
@@ -94,7 +94,7 @@ const EditorTextArea = ({
         </div>
       </form>
 
-      {/*todo [24/1/2] : openLoginModal 선택값을 변경, 정보 수정 모달 필요 성빈님께 말하기*/}
+      {/*TODO: [24/1/2] openLoginModal 선택값을 변경, 정보 수정 모달 필요 성빈님께 말하기*/}
       <RegisterModal
         open={registerModalOpen}
         toggleOpen={setRegisterModalOpen}
