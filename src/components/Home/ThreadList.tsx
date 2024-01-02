@@ -1,6 +1,6 @@
 import { Thread } from "@/types/thread";
 
-import ThreadListItem from "../common/threads/ThreadListItem";
+import ThreadListItem from "@/components/Common/threads/ThreadListItem";
 
 interface Props {
   threads: Thread[];

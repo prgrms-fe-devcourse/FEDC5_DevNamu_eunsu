@@ -6,7 +6,7 @@ import { formatDate } from "@/utils/formatDate";
 
 import { User } from "@/types/user";
 
-import ThreadToolbar from "./ThreadToolbar";
+import ThreadToolbar from "@/components/Common/threads/ThreadToolbar";
 
 interface Props {
   id: string;
