@@ -8,7 +8,7 @@ import MyNotificationsPage from "./pages/MyNotifications";
 import NotFoundPage from "./pages/NotFound";
 import Layout from "./components/Layout";
 
-import ExMentionInput from "@/components/Demo/ExMentionInput.tsx";
+import ExTextArea from "@/components/Demo/ExTextArea.tsx";
 
 const queryClient = new QueryClient();
 
@@ -22,7 +22,7 @@ const App = () => (
           <Route path="channels/*" element={<HomePage />} />
           <Route path="my-threads" element={<MyThreadsPage />} />
           <Route path="my-notifications" element={<MyNotificationsPage />} />
-          <Route path="demo" element={<ExMentionInput />} />
+          <Route path="demo" element={<ExTextArea />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
