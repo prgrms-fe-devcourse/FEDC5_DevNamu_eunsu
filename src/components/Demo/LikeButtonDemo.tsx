@@ -30,7 +30,7 @@ const LikeButtonDemoPage = () => {
             <div className="text-gray-800">좋아요 버튼 예시입니다</div>
             <LikeToggleButton
               clicked={pressed}
-              handleClick={() => togglePressed(!pressed)}
+              onClick={() => togglePressed(!pressed)}
               numberOfLikes={13}
             />
           </div>
