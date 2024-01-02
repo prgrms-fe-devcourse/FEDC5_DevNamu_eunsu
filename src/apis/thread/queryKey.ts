@@ -13,13 +13,14 @@ const threads = createQueryKeys("thread", {
     enabled: !!channelId,
     select: (data: Thread[]) =>
       data.map((thread) => {
-        const parsedFullName = parseFullName(thread.author.fullName);
+        const { nickname, name } = parseFullName(thread.author.fullName);
+
         return {
           ...thread,
           author: {
             ...thread.author,
-            name: parsedFullName.user,
-            nickname: parsedFullName.nickname,
+            name,
+            nickname,
           },
         };
       }),
