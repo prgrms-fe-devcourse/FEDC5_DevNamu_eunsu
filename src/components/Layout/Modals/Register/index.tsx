@@ -17,7 +17,13 @@ interface Props {
 }
 
 const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
-  const { mutate: registerMutate, isSuccess, isError, error } = useRegister();
+  const {
+    mutate: registerMutate,
+    isSuccess: isRegisterSuccess,
+    isError: isRegisterError,
+    error: registerError,
+  } = useRegister();
+
 
   const handleLoginClick = () => {
     toggleOpen(!open);
