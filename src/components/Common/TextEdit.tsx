@@ -1,9 +1,10 @@
 import { useForm } from "react-hook-form";
 import { SendHorizontal } from "lucide-react";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent } from "react";
 
-import useUploadPost from "@/hooks/useUploadPost.tsx";
-import useUploadComment from "@/hooks/useUploadComment.tsx";
+import useUploadPost from "@/hooks/useUploadPost.ts";
+import useUploadComment from "@/hooks/useUploadComment.ts";
+import useParentWidth from "@/hooks/useParentWidth.ts";
 
 import { Textarea } from "@/components/ui/textarea.tsx";
 
@@ -29,6 +30,8 @@ const TextEdit = ({ isMention, contentType, submitType, userName, postId, channe
   const { uploadPost } = useUploadPost({ submitType, userName, channelId, postId });
   const { uploadComment } = useUploadComment({ userName, postId });
 
+  const { ref, parentWidth } = useParentWidth();
+
   const handleUpload = ({ anonymous, content }: { anonymous: boolean; content: string }) => {
     contentType === "post"
       ? uploadPost({ anonymous, content })
@@ -44,14 +47,8 @@ const TextEdit = ({ isMention, contentType, submitType, userName, postId, channe
     }
   };
 
-  // todo 24/1/2 부모 너비 가져오기
-  const [parentWidth, setParentWidth] = useState(0);
-  useEffect(() => {
-    setParentWidth(document.getElementById("parent")?.offsetWidth);
-  }, []);
-
   return (
-    <div className="fixed bottom-0" style={{ width: parentWidth }}>
+    <div className="fixed bottom-0" style={{ width: parentWidth }} ref={ref}>
       {isMention && <MentionInput />}
       <form className="relative">
         <Textarea
