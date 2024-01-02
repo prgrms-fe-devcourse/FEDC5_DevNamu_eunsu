@@ -12,7 +12,7 @@ const ThreadList = ({ threads }: Props) => {
   return (
     <ul className="max-h-500pxr min-h-500pxr overflow-auto rounded-sm border border-t-0">
       {threads.map(({ _id, createdAt, title, author }) => (
-        <li key={_id} className="px-10pxr py-5pxr">
+        <li key={_id} className="cursor-pointer px-10pxr py-5pxr hover:bg-gray-100">
           <div className="flex items-center">
             <Avatar className="mr-3">
               <AvatarImage src="/public/svg/userProfile.svg" alt="프로필" />
