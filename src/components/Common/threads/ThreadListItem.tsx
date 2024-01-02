@@ -16,14 +16,14 @@ interface Props {
 }
 
 const ThreadListItem = ({ id, title, author, createdAt }: Props) => {
-  const [hoveredThreadId, setHoveredThreadId] = useState<string | null>(null);
+  const [hoveredListId, setHoveredListId] = useState<string | null>(null);
 
   const handleMouseEnter = () => {
-    setHoveredThreadId(id);
+    setHoveredListId(id);
   };
 
   const handleMouseLeave = () => {
-    setHoveredThreadId(null);
+    setHoveredListId(null);
   };
 
   return (
@@ -50,7 +50,7 @@ const ThreadListItem = ({ id, title, author, createdAt }: Props) => {
             {title}
           </div>
         </div>
-        {hoveredThreadId === id && (
+        {hoveredListId === id && (
           <div className="absolute right-0 top-0 z-10">
             <ThreadToolbar />
           </div>
