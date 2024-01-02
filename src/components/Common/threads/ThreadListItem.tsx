@@ -24,6 +24,7 @@ const ThreadListItem = ({ id, title, author, createdAt }: Props) => {
       onMouseEnter={() => setHoveredThreadId(id)}
       onMouseLeave={() => setHoveredThreadId(null)}
       className="relative cursor-pointer px-2.5 py-5 hover:bg-gray-100"
+      tabIndex={0}
     >
       <div className="flex items-center">
         <Avatar className="mr-3">
