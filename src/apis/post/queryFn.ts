@@ -2,13 +2,13 @@ import api from "@/apis/core";
 
 import { Thread } from "@/types/thread.ts";
 
-interface CustomBody {
-  content: string;
-  userName: string | undefined;
-}
+// interface CustomBody {
+//   content: string;
+//   userName: string | undefined;
+// }
 
 interface CreatePost {
-  title: CustomBody;
+  title: string; // JSON.stringify(CustomBody)
   image: null;
   channelId: string;
 }

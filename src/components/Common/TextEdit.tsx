@@ -36,13 +36,15 @@ const TextEdit = ({ isMention, contentType, submitType, userName, postId, channe
     contentType === "post"
       ? uploadPost({ anonymous, content })
       : uploadComment({ anonymous, content });
+
+    setValue("content", "");
   };
 
   const handleCheckClick = (e: FormEvent<HTMLInputElement>) => {
     if (!e.currentTarget.checked && !userName) {
       setValue("anonymous", true);
       // todo 12/28 모달 창과 연결
-      alert("개인정보 수정 모달 창 띄우기");
+
       return;
     }
   };

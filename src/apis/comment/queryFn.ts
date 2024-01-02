@@ -3,10 +3,7 @@ import api from "@/apis/core";
 import { Comment } from "@/types/thread.ts";
 
 interface CreateComment {
-  comment: {
-    content: string;
-    userName: string | undefined;
-  };
+  comment: string; // JSON.stringify(CustomBody)
   postId: string;
 }
 

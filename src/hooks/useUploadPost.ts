@@ -14,10 +14,10 @@ const useUploadPost = ({ submitType, userName, channelId, postId }: Props) => {
 
   const uploadPost = ({ anonymous, content }: { anonymous: boolean; content: string }) => {
     const postReq = {
-      title: {
+      title: JSON.stringify({
         content,
         userName: anonymous ? undefined : userName,
-      },
+      }),
       image: null,
       channelId,
     };

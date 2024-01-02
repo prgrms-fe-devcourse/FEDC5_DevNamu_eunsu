@@ -3,7 +3,7 @@ import TextEdit from "@/components/Common/TextEdit.tsx";
 const ExTextArea = () => {
   const userName = undefined;
   const postId = "1";
-  const channelId = "2";
+  const channelId = "658d50d74f228a47fec343bd"; // 칭찬게시판id
 
   return (
     <div className="flex h-screen w-full justify-center">
