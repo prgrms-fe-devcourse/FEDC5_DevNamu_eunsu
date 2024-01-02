@@ -8,6 +8,7 @@ export const REGISTER_FIELDS: FieldProps[] = [
     type: "text",
     label: "이름",
     autoFocus: true,
+    autoComplete: "off",
   },
   {
     name: "email",

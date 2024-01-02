@@ -26,7 +26,7 @@ export interface FieldProps {
    * <input>의 autocomplete 속성 문서 참고:
    * @see https://www.chromium.org/developers/design-documents/form-styles-that-chromium-understands/
    */
-  autoComplete?: "username" | "current-password" | "new-password" | "nickname";
+  autoComplete?: "username" | "current-password" | "new-password" | "nickname" | "off";
 }
 
 export interface SimpleFormProps {
