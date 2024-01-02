@@ -30,7 +30,7 @@ const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
     register.mutate({ email, fullName, password });
     if (register.isSuccess) handleLoginClick();
     if (register.isError) {
-      // TODO: 에러 처리 및 타입 단언 개선 (2024-01-01)
+      // TODO: 에러 모달 처리 (2024-01-01)
       if (isAxiosError(register.error)) {
         const { response } = register.error;
         alert(response?.data || "An unknown error occurred");
