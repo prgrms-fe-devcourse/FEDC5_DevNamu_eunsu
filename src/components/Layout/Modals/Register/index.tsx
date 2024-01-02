@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { isAxiosError } from "axios";
 
 import { Button } from "@/components/ui/button";
@@ -25,6 +25,11 @@ const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
     error: registerError,
   } = useRegister();
 
+  const handleLoginClick = useCallback(() => {
+    toggleOpen(!open);
+    openLoginModal(true);
+  }, [open, toggleOpen, openLoginModal]);
+
   useEffect(() => {
     if (isRegisterSuccess) handleLoginClick();
     if (isRegisterError) {
@@ -33,13 +38,7 @@ const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
         alert(registerError.response?.data || "An unknown error occurred");
       } else alert("An unknown error occurred");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isRegisterSuccess, isRegisterError]);
-
-  const handleLoginClick = () => {
-    toggleOpen(!open);
-    openLoginModal(true);
-  };
+  }, [isRegisterSuccess, isRegisterError, registerError, handleLoginClick]);
 
   const handleSubmit = (registerInfo: z.infer<typeof REGISTER_FIELDS_SCHEMA>) => {
     const { email, name, nickname, password } = registerInfo;
