@@ -15,11 +15,11 @@ interface MentionListProps extends ListProps {
 const AutoCompleteMentionList = ({ users, onClick, focusIndex }: MentionListProps) => {
   if (!users.length) return "";
   return (
-    <ul className="mt-2 overflow-hidden scroll-auto border p-2">
+    <ul className="absolute bottom-12 left-0 right-0 mt-2 overflow-hidden scroll-auto border p-2">
       {users.map(({ name, userId }, index) => {
         return (
-          <>
-            <li
+          <li key={userId}>
+            <p
               onClick={() => onClick({ name, userId })}
               className={cn(
                 "cursor-pointer py-2 hover:bg-gray-100 hover:font-bold",
@@ -27,9 +27,9 @@ const AutoCompleteMentionList = ({ users, onClick, focusIndex }: MentionListProp
               )}
             >
               {name}
-            </li>
+            </p>
             {index !== users.length - 1 && <Separator />}
-          </>
+          </li>
         );
       })}
     </ul>
