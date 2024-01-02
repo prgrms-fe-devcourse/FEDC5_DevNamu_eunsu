@@ -23,7 +23,7 @@ const ExTextArea = () => {
         <p> comment 작성</p>
         <div className="relative flex h-screen w-400pxr justify-center" id="parent">
           <TextEdit
-            isMention={true}
+            isMention={false}
             contentType="comment"
             submitType="create"
             postId={postId}
