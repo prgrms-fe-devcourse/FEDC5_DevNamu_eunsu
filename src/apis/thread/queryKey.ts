@@ -1,6 +1,6 @@
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 
-import { parseFullName } from "@/utils/\bparsingJson";
+import { parseFullName } from "@/utils/parsingJson";
 
 import { Thread } from "@/types/thread";
 
