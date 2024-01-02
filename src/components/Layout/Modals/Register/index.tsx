@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { useEffect } from "react";
 import { isAxiosError } from "axios";
 
 import { Button } from "@/components/ui/button";
@@ -24,6 +25,16 @@ const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
     error: registerError,
   } = useRegister();
 
+  useEffect(() => {
+    if (isRegisterSuccess) handleLoginClick();
+    if (isRegisterError) {
+      // TODO: 에러 모달 처리 (2024-01-01)
+      if (isAxiosError(registerError)) {
+        alert(registerError.response?.data || "An unknown error occurred");
+      } else alert("An unknown error occurred");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isRegisterSuccess, isRegisterError]);
 
   const handleLoginClick = () => {
     toggleOpen(!open);
@@ -34,12 +45,6 @@ const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
     const { email, name, nickname, password } = registerInfo;
     const fullName = JSON.stringify({ name, nickname: nickname || "프롱이" });
     registerMutate({ email, fullName, password });
-    if (isSuccess) handleLoginClick();
-    if (isError) {
-      // TODO: 에러 모달 처리 (2024-01-01)
-      if (isAxiosError(error)) alert(error.response?.data || "An unknown error occurred");
-      else alert("An unknown error occurred");
-    }
   };
 
   return (
