@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { AxiosError } from "axios";
+import { isAxiosError } from "axios";
 
 import { Button } from "@/components/ui/button";
 
@@ -31,8 +31,10 @@ const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
     if (register.isSuccess) handleLoginClick();
     if (register.isError) {
       // TODO: 에러 처리 및 타입 단언 개선 (2024-01-01)
-      const error = register.error as AxiosError<string>;
-      alert(error.response?.data);
+      if (isAxiosError(register.error)) {
+        const { response } = register.error;
+        alert(response?.data || "An unknown error occurred");
+      } else alert("An unknown error occurred");
     }
   };
 
