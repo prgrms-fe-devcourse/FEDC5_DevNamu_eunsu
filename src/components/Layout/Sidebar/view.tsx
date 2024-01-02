@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import { MoonIcon, SunIcon } from "lucide-react";
+import { useState } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+import LoginModal from "../Modals/Login";
+import RegisterModal from "../Modals/Register";
 
 import { LINKS } from "./config";
 import { ThemeConfigDropdown } from "./ThemeConfigDropdown";
@@ -35,6 +39,9 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
 
   const CurrentThemeIcon = themeIconConfig[theme];
 
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const [registerModalOpen, setRegisterModalOpen] = useState(false);
+
   /*
     Link Button과 DarkMode Dropdown 버튼이 공유하는 CSS가 많아서 styles로 상수화함.
     (Link를 쓰지 말고 navigate를 써도 될 듯)
@@ -44,45 +51,57 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
     TODO: [2023-12-29] 더 좋은 Tailwind 방식의 재활용 방법 찾기
   */
   return (
-    <div className="flex w-20 flex-col items-center gap-8">
-      <div className="mt-4 flex cursor-pointer select-none flex-col items-center gap-2">
-        <Avatar className="flex items-center">
-          <AvatarImage src={profileImgUrl} alt={nickname} />
-          <AvatarFallback>{shortenedNickname}</AvatarFallback>
-        </Avatar>
-        {LINKS.map(({ url, name, icon: Icon }) => {
-          const isSelectedPage = pathname === url;
+    <>
+      <LoginModal
+        open={loginModalOpen}
+        toggleOpen={setLoginModalOpen}
+        openRegisterModal={setRegisterModalOpen}
+      />
+      <RegisterModal
+        open={registerModalOpen}
+        toggleOpen={setRegisterModalOpen}
+        openLoginModal={setLoginModalOpen}
+      />
+      <div className="flex flex-col items-center w-20 gap-8">
+        <div className="flex flex-col items-center gap-2 mt-4 cursor-pointer select-none">
+          <Avatar onClick={() => setLoginModalOpen(true)} className="flex items-center">
+            <AvatarImage src={profileImgUrl} alt={nickname} />
+            <AvatarFallback>{shortenedNickname}</AvatarFallback>
+          </Avatar>
+          {LINKS.map(({ url, name, icon: Icon }) => {
+            const isSelectedPage = pathname === url;
 
-          return (
-            <Link key={url} to={url} className={ButtonWrappingCSS}>
-              <div
-                className={cn(
-                  "relative",
-                  IconWrappingCSS,
-                  isSelectedPage && "bg-[rgba(124,40,82,0.25)] text-2xl",
-                )}
-              >
-                <Icon className={IconCSS} />
-                {/* TODO: [2023-12-29] 지금처럼 url로 분기하지 않고 showBubble로 추상화하기 */}
-                {url === "/my-notifications" && numberOfNotifications > 0 && (
-                  <div className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-2xl bg-[rgba(124,40,82,0.75)] text-xs text-white">
-                    {numberOfNotifications}
-                  </div>
-                )}
+            return (
+              <Link key={url} to={url} className={ButtonWrappingCSS}>
+                <div
+                  className={cn(
+                    "relative",
+                    IconWrappingCSS,
+                    isSelectedPage && "bg-[rgba(124,40,82,0.25)] text-2xl",
+                  )}
+                >
+                  <Icon className={IconCSS} />
+                  {/* TODO: [2023-12-29] 지금처럼 url로 분기하지 않고 showBubble로 추상화하기 */}
+                  {url === "/my-notifications" && numberOfNotifications > 0 && (
+                    <div className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-2xl bg-[rgba(124,40,82,0.75)] text-xs text-white">
+                      {numberOfNotifications}
+                    </div>
+                  )}
+                </div>
+                <span className={IconDescriptionCSS}>{name}</span>
+              </Link>
+            );
+          })}
+          <ThemeConfigDropdown>
+            <div className={ButtonWrappingCSS}>
+              <div className={IconWrappingCSS}>
+                <CurrentThemeIcon className={IconCSS} />
               </div>
-              <span className={IconDescriptionCSS}>{name}</span>
-            </Link>
-          );
-        })}
-        <ThemeConfigDropdown>
-          <div className={ButtonWrappingCSS}>
-            <div className={IconWrappingCSS}>
-              <CurrentThemeIcon className={IconCSS} />
+              <span className={IconDescriptionCSS}>테마 설정</span>
             </div>
-            <span className={IconDescriptionCSS}>테마 설정</span>
-          </div>
-        </ThemeConfigDropdown>
+          </ThemeConfigDropdown>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
