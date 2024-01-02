@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { SendHorizontal } from "lucide-react";
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 
 import useUploadPost from "@/hooks/useUploadPost.ts";
 import useUploadComment from "@/hooks/useUploadComment.ts";
@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea.tsx";
 
 import { cn } from "@/lib/utils";
 import MentionInput from "@/components/Common/Mention/MentionInput.tsx";
+import RegisterModal from "@/components/Layout/Modals/Register";
 
 export type ContentType = "post" | "comment";
 export type SubmitType = "create" | "patch";
@@ -28,6 +29,8 @@ const TextEdit = ({ isMention, contentType, submitType, nickName, postId, channe
     defaultValues: { anonymous: true, content: "" },
   });
 
+  const [registerModalOpen, setRegisterModalOpen] = useState(false);
+
   const { uploadPost } = useUploadPost({ submitType, nickName, channelId, postId });
   const { uploadComment } = useUploadComment({ nickName, postId });
 
@@ -41,11 +44,11 @@ const TextEdit = ({ isMention, contentType, submitType, nickName, postId, channe
     setValue("content", "");
   };
 
-  const handleCheckClick = (e: FormEvent<HTMLInputElement>) => {
+  const handleCheckBoxClick = (e: FormEvent<HTMLInputElement>) => {
     if (!e.currentTarget.checked && !nickName) {
       setValue("anonymous", true);
       // todo 12/28 모달 창과 연결
-
+      setRegisterModalOpen((prev) => !prev);
       return;
     }
   };
@@ -68,7 +71,7 @@ const TextEdit = ({ isMention, contentType, submitType, nickName, postId, channe
               type="checkbox"
               id="anonymous"
               {...register("anonymous")}
-              onClick={handleCheckClick}
+              onClick={handleCheckBoxClick}
             />
             <p className="text-gray-500">익명</p>
           </label>
@@ -83,6 +86,13 @@ const TextEdit = ({ isMention, contentType, submitType, nickName, postId, channe
           </button>
         </div>
       </form>
+
+      {/*todo [24/1/2] : openLoginModal 선택값을 변경, 정보 수정 모달 필요 성빈님께 말하기*/}
+      <RegisterModal
+        open={registerModalOpen}
+        toggleOpen={setRegisterModalOpen}
+        openLoginModal={() => {}}
+      />
     </div>
   );
 };
