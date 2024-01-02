@@ -27,7 +27,7 @@ const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
   const handleSubmit = (registerInfo: z.infer<typeof REGISTER_FIELDS_SCHEMA>) => {
     const { email, name, nickname, password } = registerInfo;
     const fullName = JSON.stringify({ name, nickname: nickname || "프롱이" });
-    register.mutate({ email, fullName, password });
+    registerMutate({ email, fullName, password });
     if (isSuccess) handleLoginClick();
     if (isError) {
       // TODO: 에러 모달 처리 (2024-01-01)
