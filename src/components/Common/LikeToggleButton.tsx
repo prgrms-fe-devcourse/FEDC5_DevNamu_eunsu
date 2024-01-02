@@ -1,6 +1,6 @@
 import thumbsUpIcon from "/thumbs-up.png";
 
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
 import { cn } from "@/lib/utils";
 

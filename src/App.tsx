@@ -7,7 +7,6 @@ import MyThreadsPage from "./pages/MyThreads";
 import MyNotificationsPage from "./pages/MyNotifications";
 import NotFoundPage from "./pages/NotFound";
 import Layout from "./components/Layout";
-import LikeButtonDemoPage from "./components/Demo/LikeButtonDemo";
 
 import ExMentionInput from "@/components/Demo/ExMentionInput.tsx";
 
@@ -24,7 +23,6 @@ const App = () => (
           <Route path="my-threads" element={<MyThreadsPage />} />
           <Route path="my-notifications" element={<MyNotificationsPage />} />
           <Route path="demo" element={<ExMentionInput />} />
-          <Route path="demo/like-button" element={<LikeButtonDemoPage />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
