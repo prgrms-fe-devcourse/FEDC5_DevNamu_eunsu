@@ -17,7 +17,7 @@ interface Props {
 }
 
 const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
-  const register = useRegister();
+  const { mutate: registerMutate, isSuccess, isError, error } = useRegister();
 
   const handleLoginClick = () => {
     toggleOpen(!open);
@@ -28,13 +28,11 @@ const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
     const { email, name, nickname, password } = registerInfo;
     const fullName = JSON.stringify({ name, nickname: nickname || "프롱이" });
     register.mutate({ email, fullName, password });
-    if (register.isSuccess) handleLoginClick();
-    if (register.isError) {
+    if (isSuccess) handleLoginClick();
+    if (isError) {
       // TODO: 에러 모달 처리 (2024-01-01)
-      if (isAxiosError(register.error)) {
-        const { response } = register.error;
-        alert(response?.data || "An unknown error occurred");
-      } else alert("An unknown error occurred");
+      if (isAxiosError(error)) alert(error.response?.data || "An unknown error occurred");
+      else alert("An unknown error occurred");
     }
   };
 
