@@ -11,8 +11,8 @@ const threads = createQueryKeys("thread", {
     queryKey: ["threads", channelId],
     queryFn: channelId ? () => getThreadsByChannelId(channelId) : undefined,
     enabled: !!channelId,
-    select: (data: Thread[]) =>
-      data.map((thread) => {
+    select: (threads: Thread[]) =>
+      threads.map((thread) => {
         const { nickname, name } = parseFullName(thread.author.fullName);
 
         return {
