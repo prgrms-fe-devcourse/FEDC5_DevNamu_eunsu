@@ -7,6 +7,6 @@ interface CreateComment {
   postId: string;
 }
 
-export const createComment = async (data: CreateComment) => {
-  return await api.post<Comment>({ url: `/notifications/create`, data });
+export const createComment = async (commentInfo: CreateComment) => {
+  return await api.post<Comment>({ url: `/comments/create`, data: commentInfo });
 };

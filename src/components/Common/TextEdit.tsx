@@ -17,18 +17,19 @@ interface Props {
   isMention: boolean;
   contentType: ContentType;
   submitType: SubmitType;
-  userName: string | undefined;
+  nickName: string | undefined;
   postId: string;
   channelId: string;
 }
 
-const TextEdit = ({ isMention, contentType, submitType, userName, postId, channelId }: Props) => {
+// todo [24/1/2] : contentType, submitType에 따라 props값 다르게 넘겨주기
+const TextEdit = ({ isMention, contentType, submitType, nickName, postId, channelId }: Props) => {
   const { register, handleSubmit, watch, setValue } = useForm({
     defaultValues: { anonymous: true, content: "" },
   });
 
-  const { uploadPost } = useUploadPost({ submitType, userName, channelId, postId });
-  const { uploadComment } = useUploadComment({ userName, postId });
+  const { uploadPost } = useUploadPost({ submitType, nickName, channelId, postId });
+  const { uploadComment } = useUploadComment({ nickName, postId });
 
   const { ref, parentWidth } = useParentWidth();
 
@@ -41,7 +42,7 @@ const TextEdit = ({ isMention, contentType, submitType, userName, postId, channe
   };
 
   const handleCheckClick = (e: FormEvent<HTMLInputElement>) => {
-    if (!e.currentTarget.checked && !userName) {
+    if (!e.currentTarget.checked && !nickName) {
       setValue("anonymous", true);
       // todo 12/28 모달 창과 연결
 

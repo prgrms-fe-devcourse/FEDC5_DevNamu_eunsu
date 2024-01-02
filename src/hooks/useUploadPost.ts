@@ -3,12 +3,12 @@ import { SubmitType } from "@/components/Common/TextEdit.tsx";
 
 interface Props {
   submitType: SubmitType;
-  userName: string | undefined;
+  nickName: string | undefined;
   channelId: string;
-  postId: string;
+  postId?: string;
 }
 
-const useUploadPost = ({ submitType, userName, channelId, postId }: Props) => {
+const useUploadPost = ({ submitType, nickName, channelId, postId }: Props) => {
   const { mutate: createPostMutate } = useCreatePostMutate();
   const { mutate: patchPostMutate } = usePatchPostMutate();
 
@@ -16,7 +16,7 @@ const useUploadPost = ({ submitType, userName, channelId, postId }: Props) => {
     const postReq = {
       title: JSON.stringify({
         content,
-        userName: anonymous ? undefined : userName,
+        nickName: anonymous ? undefined : nickName,
       }),
       image: null,
       channelId,
@@ -25,6 +25,11 @@ const useUploadPost = ({ submitType, userName, channelId, postId }: Props) => {
     if (submitType === "create") {
       createPostMutate(postReq);
     } else {
+      /// todo [24/1/2] : create, patch 분기 처리 리펙토링 할 것
+      if (!postId) {
+        console.error("postId 가 필요합니다.");
+        return;
+      }
       const patchReq = {
         postId,
         ...postReq,
