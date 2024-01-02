@@ -1,17 +1,10 @@
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 
+import { parseFullName } from "@/utils/\bparsingJson";
+
 import { Thread } from "@/types/thread";
 
 import { getThreadsByChannelId } from "./queryFn";
-
-const parseFullName = (fullName: string) => {
-  try {
-    return JSON.parse(fullName);
-  } catch (error) {
-    console.error("Error parsing fullName:", error);
-    return { name: "", nickname: "프롱이" };
-  }
-};
 
 const threads = createQueryKeys("thread", {
   threadsByChannel: (channelId: string | undefined) => ({
