@@ -17,6 +17,8 @@ export interface User {
   messages: Message[];
   _id: string;
   fullName: string;
+  nickname: string;
+  name: string;
   email: string;
   createdAt: string;
   updatedAt: string;

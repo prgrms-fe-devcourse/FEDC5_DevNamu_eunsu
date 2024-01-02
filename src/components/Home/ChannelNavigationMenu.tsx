@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 const getNavLinkClass = (isActive: boolean) => {
-  cn(
+  return cn(
     `text-gray-600 rounded-t-md hover:bg-gray-100 hover:text-gray-800 text-center text-lg font-medium px-4 py-3 border border-b-0`,
     isActive ? "bg-gray-100" : "",
   );

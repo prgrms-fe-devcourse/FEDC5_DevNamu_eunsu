@@ -11,3 +11,5 @@ interface Channel {
 }
 
 export const getChannels = () => api.get<Channel[]>({ url: `/channels` });
+
+export const getChannelById = (id: string) => api.get<Channel>({ url: `/channels/${id}` });
