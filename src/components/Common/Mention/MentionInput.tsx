@@ -67,7 +67,7 @@ const MentionInput = () => {
   }, [mentionList]);
 
   return (
-    <div>
+    <div className="relative">
       <UserBadgeList users={choiceList} onClick={handleDeleteChoiceList} />
 
       <Input
