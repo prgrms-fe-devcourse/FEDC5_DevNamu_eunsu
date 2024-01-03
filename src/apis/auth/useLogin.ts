@@ -4,12 +4,12 @@ import useUserStore from "@/stores/user";
 
 import { setLocalStorage } from "@/utils/localStorage";
 
-import postLogin, { LoginRequest, LoginResponse } from "./queryFn";
+import { postLogin, LoginRequest, AuthResponse } from "./queryFn";
 
 const useLogin = () => {
   const { updateUser } = useUserStore();
 
-  const parseUser = (data: LoginResponse) => {
+  const parseUser = (data: AuthResponse) => {
     const {
       token,
       user: { _id: id, email, fullName },

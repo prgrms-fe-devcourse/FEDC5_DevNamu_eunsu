@@ -16,7 +16,7 @@ interface Props {
 }
 
 const LoginModal = ({ open, toggleOpen, openRegisterModal }: Props) => {
-  const { mutate: mutateLogin } = useLogin();
+  const { mutate: loginMutate } = useLogin();
 
   const handleRegisterClick = () => {
     toggleOpen(!open);
@@ -24,7 +24,8 @@ const LoginModal = ({ open, toggleOpen, openRegisterModal }: Props) => {
   };
 
   const handleSubmit = (loginInfo: z.infer<typeof LOGIN_FIELDS_SCHEMA>) => {
-    mutateLogin(loginInfo);
+    // TODO: 에러 모달 처리 (2024-01-01)
+    loginMutate(loginInfo);
   };
 
   return (
