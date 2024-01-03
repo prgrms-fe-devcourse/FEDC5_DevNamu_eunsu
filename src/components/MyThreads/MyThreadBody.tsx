@@ -8,7 +8,7 @@ const Date = ({ date }: { date?: string }) => {
   return <p className="text-m mt-40pxr py-1pxr font-bold">{date}</p>;
 };
 
-//TODO) Comments는 API에서 GET으로 받아올 수 없는 문제 처리 논의 (2023.12.30)
+//TODO: Comments는 API에서 GET으로 받아올 수 없는 문제 처리 논의 (2023.12.30)
 
 const MyThreadBody = () => {
   const user = useUserStore((state) => state.user);
