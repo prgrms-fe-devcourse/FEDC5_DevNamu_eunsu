@@ -1,5 +1,7 @@
 import { Separator } from "@/components/ui/separator";
 
+import { formatDate } from "@/utils/formatDate";
+
 import MyPost from "./MyPost";
 import MyComment from "./MyComment";
 
@@ -18,16 +20,13 @@ const channelMap = {
 };
 
 const MyThreadItem = ({ title, type, channel, createdAt }: Props) => {
-  const createdTime = new Date(createdAt).toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const createdDate = formatDate(createdAt);
 
   return (
     <ul className="list-none">
       <div className="flex items-center justify-between gap-6 pt-3">
         <p className="text-sm text-muted-foreground">#{channelMap[channel]}게시판</p>
-        <p className="text-xs font-extralight">{createdTime}</p>
+        <p className="text-xs font-extralight">{createdDate}</p>
       </div>
       {type === "post" ? <MyPost title={title} /> : <MyComment />}
       <Separator />
