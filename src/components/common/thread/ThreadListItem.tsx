@@ -43,10 +43,17 @@ const ThreadListItem = ({ id, title, author, createdAt }: Props) => {
         <div className="min-w-0 flex-grow">
           <div className="flex justify-between">
             {/* TODO: 로그인/회원가입 추가시 기본값 "프롱이" 삭제 예정 (2023.01.02)*/}
-            <span className="text-lg font-semibold">{author.nickname || "프롱이"}</span>
-            <span className="text-gray-400">{formatDate(createdAt)}</span>
+            <span tabIndex={0} className="text-lg font-semibold">
+              {author.nickname || "프롱이"}
+            </span>
+            <span tabIndex={0} className="text-gray-400">
+              {formatDate(createdAt)}
+            </span>
           </div>
-          <div className="overflow-hidden truncate text-ellipsis pr-50pxr text-gray-500">
+          <div
+            tabIndex={0}
+            className="overflow-hidden truncate text-ellipsis pr-50pxr text-gray-500"
+          >
             {title}
           </div>
         </div>
