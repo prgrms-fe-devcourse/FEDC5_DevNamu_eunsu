@@ -9,19 +9,19 @@ const ThreadToolbar = ({ className }: Props) => {
     <section
       className={`flex items-center justify-between space-x-5pxr rounded-md bg-gray-400 p-2 text-white ${className}`}
     >
-      <button>
+      <button aria-label="좋아요">
         <ThumbsUp />
       </button>
-      <button>
+      <button aria-label="댓글 열기">
         <MessageSquareText />
       </button>
-      <button>
+      <button aria-label="편집">
         <PencilLine />
       </button>
-      <button>
+      <button aria-label="삭제">
         <Trash2 />
       </button>
-      <button className="text-red-500">
+      <button aria-label="신고" className="text-red-500">
         <Siren />
       </button>
     </section>
