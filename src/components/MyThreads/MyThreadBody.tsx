@@ -15,16 +15,16 @@ const MyThreadBody = () => {
   const id = user?.id;
 
   //TODO: 현재는 비로그인 시에도 list목록이 보이게 id 직접 넣어줬지만, 비로그인시 동작 논의(2024.01.02)
-  const { data, isPending } = useGetMyThread(id ? id : "658f0f92c31af67084101253");
+  const { myThreads, isPending } = useGetMyThread(id ? id : "658f0f92c31af67084101253");
 
-  if (isPending || data === undefined) {
+  if (isPending || myThreads === undefined) {
     return <span>Loading...</span>;
   }
 
   return (
     <main className="p-10pxr">
       <Date date="날짜 구분 필요..." />
-      {data.map(({ _id, channel, title, createdAt }) => {
+      {myThreads.map(({ _id, channel, title, createdAt }) => {
         return (
           <MyThreadItem
             key={_id}
