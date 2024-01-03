@@ -36,7 +36,7 @@ const ThreadListItem = ({ id, title, author, createdAt }: Props) => {
     >
       <div className="flex items-center">
         <Avatar className="mr-3">
-          <AvatarImage src="/public/svg/userProfile.svg" alt="프로필" />
+          <AvatarImage src="/svg/userProfile.svg" alt="프로필" />
           {/*TODO: 로그인/회원가입 추가시 옵셔널 삭제 예정 (2023.01.02)*/}
           <AvatarFallback>{author.nickname?.charAt(0)}</AvatarFallback>
         </Avatar>
