@@ -1,10 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 
+import { getLocalStorage } from "@/utils/localStorage";
 
 import auth from "./queryKey";
 
-const useGetUserInfo = (isInvalidUserId: boolean, token: string) => {
-  return useQuery(auth.userInfo(isInvalidUserId, token));
+const useGetUserInfo = () => {
+  const token = getLocalStorage("token", "");
+  return useQuery(auth.userInfo(token));
 };
 
 export default useGetUserInfo;
