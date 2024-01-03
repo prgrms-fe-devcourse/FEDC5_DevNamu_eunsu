@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { AxiosError } from "axios";
+import { useCallback, useEffect } from "react";
+import { isAxiosError } from "axios";
 
 import { Button } from "@/components/ui/button";
 
@@ -17,23 +18,32 @@ interface Props {
 }
 
 const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
-  const register = useRegister();
+  const {
+    mutate: registerMutate,
+    isSuccess: isRegisterSuccess,
+    isError: isRegisterError,
+    error: registerError,
+  } = useRegister();
 
-  const handleLoginClick = () => {
+  const handleLoginClick = useCallback(() => {
     toggleOpen(!open);
     openLoginModal(true);
-  };
+  }, [open, toggleOpen, openLoginModal]);
+
+  useEffect(() => {
+    if (isRegisterSuccess) handleLoginClick();
+    if (isRegisterError) {
+      // TODO: 에러 모달 처리 (2024-01-01)
+      if (isAxiosError(registerError)) {
+        alert(registerError.response?.data || "An unknown error occurred");
+      } else alert("An unknown error occurred");
+    }
+  }, [isRegisterSuccess, isRegisterError, registerError, handleLoginClick]);
 
   const handleSubmit = (registerInfo: z.infer<typeof REGISTER_FIELDS_SCHEMA>) => {
     const { email, name, nickname, password } = registerInfo;
     const fullName = JSON.stringify({ name, nickname: nickname || "프롱이" });
-    register.mutate({ email, fullName, password });
-    if (register.isSuccess) handleLoginClick();
-    if (register.isError) {
-      // TODO: 에러 처리 및 타입 단언 개선 (2024-01-01)
-      const error = register.error as AxiosError<string>;
-      alert(error.response?.data);
-    }
+    registerMutate({ email, fullName, password });
   };
 
   return (

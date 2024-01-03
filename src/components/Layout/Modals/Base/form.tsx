@@ -26,13 +26,13 @@ export interface FieldProps {
    * <input>의 autocomplete 속성 문서 참고:
    * @see https://www.chromium.org/developers/design-documents/form-styles-that-chromium-understands/
    */
-  autoComplete?: "username" | "current-password" | "new-password";
+  autoComplete?: "username" | "current-password" | "new-password" | "nickname" | "off";
 }
 
 export interface SimpleFormProps {
   fields: FieldProps[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  validationSchema: z.ZodObject<any>;
+  validationSchema: z.ZodEffects<z.ZodObject<any>> | z.ZodObject<any>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSubmit: (values: any) => void;
   submitText: string;
