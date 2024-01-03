@@ -7,7 +7,7 @@ interface Props {
 const ThreadToolbar = ({ className }: Props) => {
   return (
     <section
-      className={`flex items-center justify-between rounded-md border border-gray-300 bg-white px-1 ${className}`}
+      className={`flex items-center justify-between rounded-md border border-gray-300 bg-white ${className}`}
     >
       <button className="p-2 hover:bg-gray-100" aria-label="좋아요">
         <ThumbsUp strokeWidth={1} />
