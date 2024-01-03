@@ -21,7 +21,7 @@ const MyNotificationItem = ({ key, seen, author, comment, createdAt }: Props) =>
     <li key={key}>
       <div className="flex items-center justify-between gap-6 pt-6">
         <p className="pb-1 text-sm text-muted-foreground">
-          {parsedAuthor["nickname"]}님에게 알림이 왔어요
+          {parsedAuthor["nickname"]}님에게 알림이 왔어요!
         </p>
         <p className="text-xs font-extralight">{createdDate}</p>
       </div>
