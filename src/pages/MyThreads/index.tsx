@@ -1,10 +1,10 @@
-import ThreadHeader from "@/components/MyThreads/ThreadHeader";
-import MyThreadBody from "@/components/MyThreads/ThreadBody";
+import MyThreadDescription from "@/components/MyThreads/MyThreadDescription";
+import MyThreadBody from "@/components/MyThreads/MyThreadBody";
 
 const MyThreadsPage = () => {
   return (
-    <div className="p-30pxr">
-      <ThreadHeader />
+    <div className="h-screen overflow-auto p-30pxr">
+      <MyThreadDescription />
       <MyThreadBody />
     </div>
   );

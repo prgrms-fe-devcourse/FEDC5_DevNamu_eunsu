@@ -1,4 +1,4 @@
-const ThreadHeader = () => {
+const MyThreadDescription = () => {
   return (
     <div className="w-100 mb-2 h-auto rounded-md border p-4 shadow-md">
       <p className="text-lg font-bold">내가 작성한 모든 글</p>
@@ -9,4 +9,4 @@ const ThreadHeader = () => {
   );
 };
 
-export default ThreadHeader;
+export default MyThreadDescription;
