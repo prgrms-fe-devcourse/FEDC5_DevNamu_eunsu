@@ -3,10 +3,10 @@ import { createQueryKeys } from "@lukemorales/query-key-factory";
 import { getUserInfo } from "./queryFn";
 
 const auth = createQueryKeys("auth", {
-  userInfo: (isInvalidUserId, token) => ({
+  userInfo: (token: string) => ({
     queryKey: [token],
     queryFn: getUserInfo,
-    enabled: isInvalidUserId && token !== "",
+    enabled: !!token
   }),
 });
 
