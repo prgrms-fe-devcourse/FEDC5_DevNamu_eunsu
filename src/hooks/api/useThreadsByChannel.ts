@@ -11,6 +11,7 @@ const useThreadsByChannel = () => {
   const threadsQuery = useThreadsQuery(channelQuery.channelDetails?._id);
 
   return {
+    channelName,
     channelId: channelQuery.channelDetails?._id || "",
     isChannelLoading: channelQuery.isLoading,
     isChannelError: channelQuery.isError,
