@@ -61,7 +61,7 @@ const EditorTextArea = ({
   };
 
   return (
-    <div className="fixed bottom-0 flex flex-col gap-2" style={{ width: parentWidth }} ref={ref}>
+    <div className="bottom-15 fixed flex flex-col gap-2" style={{ width: parentWidth }} ref={ref}>
       {isMention && <MentionInput />}
       <form className="relative">
         <Textarea
