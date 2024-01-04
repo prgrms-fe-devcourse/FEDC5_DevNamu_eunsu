@@ -11,6 +11,7 @@ import useUploadComment from "@/hooks/api/useUploadComment.ts";
 import { cn } from "@/lib/utils";
 import MentionInput from "@/components/common/Mention/MentionInput.tsx";
 import RegisterModal from "@/components/Layout/Modals/Register";
+import { MyType } from "@/constants/dummyData.ts";
 
 export type ContentType = "post" | "comment";
 export type SubmitType = "create" | "patch";
@@ -32,6 +33,8 @@ const EditorTextArea = ({
   postId,
   channelId,
 }: Props) => {
+  const [choiceList, setChoiceList] = useState<Array<MyType>>([]);
+
   const { register, handleSubmit, watch, setValue } = useForm({
     defaultValues: { anonymous: true, content: "" },
   });
@@ -61,8 +64,9 @@ const EditorTextArea = ({
   };
 
   return (
-    <div className="bottom-15 fixed flex flex-col gap-2" style={{ width: parentWidth }} ref={ref}>
-      {isMention && <MentionInput />}
+    <div className="fixed bottom-0 flex flex-col gap-2" style={{ width: parentWidth }} ref={ref}>
+      {isMention && <MentionInput choiceList={choiceList} onClickChoice={setChoiceList} />}
+
       <form className="relative">
         <Textarea
           placeholder={`${contentType}을 작성해주세요.`}
