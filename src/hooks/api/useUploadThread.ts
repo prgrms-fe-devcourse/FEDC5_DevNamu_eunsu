@@ -1,23 +1,24 @@
+import { usePostThread } from "@/apis/thread/usePostThread";
+import { usePutThread } from "@/apis/thread/usePutThread";
 import { SubmitType } from "@/components/common/EditorTextArea.tsx";
-import { usePostThread, usePutThread } from "@/apis/thread/useThreadMutate.ts";
 import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickName.ts";
 
 interface Props {
   submitType: SubmitType;
-  nickName: string | undefined;
+  nickname: string | undefined;
   channelId: string;
   postId?: string;
 }
 
-const useUploadThread = ({ submitType, nickName, channelId, postId }: Props) => {
-  const { mutate: createThreadMutate } = usePostThread();
+const useUploadThread = ({ submitType, nickname, channelId, postId }: Props) => {
+  const { mutate: createThreadMutate } = usePostThread(channelId);
   const { mutate: patchThreadMutate } = usePutThread();
 
   const uploadThread = ({ anonymous, content }: { anonymous: boolean; content: string }) => {
     const threadRequest = {
       title: JSON.stringify({
         content,
-        nickName: anonymous ? ANONYMOUS_NICKNAME : nickName,
+        nickname: anonymous ? ANONYMOUS_NICKNAME : nickname,
       }),
       image: null,
       channelId,

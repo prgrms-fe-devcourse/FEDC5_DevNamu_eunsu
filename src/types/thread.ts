@@ -25,6 +25,7 @@ export interface Thread {
   image?: string;
   imagePublicId?: string;
   title: string;
+  content?: string;
   channel: Channel;
   author: User;
   createdAt: string;

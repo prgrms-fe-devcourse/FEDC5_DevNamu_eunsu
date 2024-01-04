@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 
 import useChannelDetailsQuery from "@/apis/channel/useChannelDetailsQuery";
-import useThreadsQuery from "@/apis/thread/useThreadsQuery";
+import useThreadsQuery from "@/apis/thread/useGetThreads";
 
 const useThreadsByChannel = () => {
   const location = useLocation();
@@ -12,6 +12,8 @@ const useThreadsByChannel = () => {
   const threadsQuery = useThreadsQuery(channelQuery.channelDetails?._id);
 
   return {
+    channelName,
+    channelId: channelQuery.channelDetails?._id || "",
     isChannelLoading: channelQuery.isLoading,
     isChannelError: channelQuery.isError,
     channelError: channelQuery.error,

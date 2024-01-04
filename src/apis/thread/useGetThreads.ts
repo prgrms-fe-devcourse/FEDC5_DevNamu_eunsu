@@ -4,7 +4,7 @@ import { Thread } from "@/types/thread";
 
 import threads from "./queryKey";
 
-const useThreadsQuery = (channelId: string | undefined) => {
+const useGetThreads = (channelId: string | undefined) => {
   const { data, isLoading, isError, error } = useQuery<Thread[]>(
     threads.threadsByChannel(channelId),
   );
@@ -17,4 +17,4 @@ const useThreadsQuery = (channelId: string | undefined) => {
   };
 };
 
-export default useThreadsQuery;
+export default useGetThreads;
