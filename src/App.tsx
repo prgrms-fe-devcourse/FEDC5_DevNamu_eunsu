@@ -5,7 +5,6 @@ import MyThreadsPage from "./pages/MyThreads";
 import MyNotificationsPage from "./pages/MyNotifications";
 import NotFoundPage from "./pages/NotFound";
 import Layout from "./components/Layout";
-import ExToolbar from "./components/Demo/ExToolbar";
 
 const App = () => (
   <BrowserRouter>
