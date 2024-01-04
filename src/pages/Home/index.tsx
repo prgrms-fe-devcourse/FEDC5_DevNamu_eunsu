@@ -6,7 +6,7 @@ import useThreadsByChannel from "@/hooks/api/useThreadsByChannel";
 
 const HomePage = () => {
   const { user } = useGetUserInfo();
-  const { threads, channelId } = useThreadsByChannel();
+  const { threads, channelId, channelName } = useThreadsByChannel();
 
   return (
     <div className="mt-12 flex flex-col items-center justify-center">
@@ -16,7 +16,7 @@ const HomePage = () => {
       <div className="w-full max-w-4xl px-4">
         <main>{threads && <ThreadList threads={threads} />}</main>
         <EditorTextArea
-          isMention={false}
+          isMention={channelName !== "incompetent"}
           contentType="post"
           submitType="create"
           postId=""
