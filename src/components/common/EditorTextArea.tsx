@@ -18,7 +18,7 @@ interface Props {
   isMention: boolean;
   contentType: ContentType;
   submitType: SubmitType;
-  nickName: string | undefined;
+  nickname: string | undefined;
   postId: string;
   channelId: string;
 }
@@ -28,7 +28,7 @@ const EditorTextArea = ({
   isMention,
   contentType,
   submitType,
-  nickName,
+  nickname,
   postId,
   channelId,
 }: Props) => {
@@ -38,8 +38,8 @@ const EditorTextArea = ({
 
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
 
-  const { uploadThread } = useUploadThread({ submitType, nickName, channelId, postId });
-  const { uploadComment } = useUploadComment({ nickName, postId });
+  const { uploadThread } = useUploadThread({ submitType, nickname, channelId, postId });
+  const { uploadComment } = useUploadComment({ nickname, postId });
 
   const { ref, parentWidth } = useParentWidth();
 
@@ -52,7 +52,7 @@ const EditorTextArea = ({
   };
 
   const handleClickCheckBox = (e: FormEvent<HTMLInputElement>) => {
-    if (!e.currentTarget.checked && !nickName) {
+    if (!e.currentTarget.checked && !nickname) {
       setValue("anonymous", true);
       // TODO: [24/1/2] 모달 창과 연결
       setRegisterModalOpen((prev) => !prev);

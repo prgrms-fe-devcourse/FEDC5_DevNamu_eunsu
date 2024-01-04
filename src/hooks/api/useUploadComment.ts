@@ -4,11 +4,11 @@ import { NotificationTypes } from "@/apis/notification/queryFn.ts";
 import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickName.ts";
 
 interface Props {
-  nickName: string | undefined;
+  nickname: string | undefined;
   postId: string;
 }
 
-const useUploadComment = ({ nickName, postId }: Props) => {
+const useUploadComment = ({ nickname, postId }: Props) => {
   const { mutateAsync: commentMutate } = usePostComment();
   const { mutate: notificationMutate } = usePostNotification();
 
@@ -16,7 +16,7 @@ const useUploadComment = ({ nickName, postId }: Props) => {
     const commentRequest = {
       comment: JSON.stringify({
         content,
-        nickName: anonymous ? ANONYMOUS_NICKNAME : nickName,
+        nickname: anonymous ? ANONYMOUS_NICKNAME : nickname,
       }),
       postId,
     };

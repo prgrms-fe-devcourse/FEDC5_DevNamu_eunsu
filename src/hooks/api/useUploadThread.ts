@@ -5,12 +5,12 @@ import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickName.ts";
 
 interface Props {
   submitType: SubmitType;
-  nickName: string | undefined;
+  nickname: string | undefined;
   channelId: string;
   postId?: string;
 }
 
-const useUploadThread = ({ submitType, nickName, channelId, postId }: Props) => {
+const useUploadThread = ({ submitType, nickname, channelId, postId }: Props) => {
   const { mutate: createThreadMutate } = usePostThread(channelId);
   const { mutate: patchThreadMutate } = usePutThread();
 
@@ -18,7 +18,7 @@ const useUploadThread = ({ submitType, nickName, channelId, postId }: Props) => 
     const threadRequest = {
       title: JSON.stringify({
         content,
-        nickName: anonymous ? ANONYMOUS_NICKNAME : nickName,
+        nickname: anonymous ? ANONYMOUS_NICKNAME : nickname,
       }),
       image: null,
       channelId,
