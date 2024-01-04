@@ -22,7 +22,7 @@ const HomePage = () => {
           // TODO: postId가 아직 생성되기 전이기 때문에 옵셔널하게 받는건 어떤지 질문 (2024.01.04)
           postId=""
           channelId={channelId}
-          nickName={user?.nickname}
+          nickname={user?.nickname}
         />
       </div>
     </div>
