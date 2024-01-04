@@ -2,8 +2,6 @@ import { useForm } from "react-hook-form";
 import { SendHorizontal } from "lucide-react";
 import { FormEvent, useState } from "react";
 
-import useParentWidth from "@/hooks/useParentWidth.ts";
-
 import { Textarea } from "@/components/ui/textarea.tsx";
 
 import useUploadThread from "@/hooks/api/useUploadThread.ts";
@@ -44,8 +42,6 @@ const EditorTextArea = ({
   const { uploadThread } = useUploadThread({ submitType, nickname, channelId, postId });
   const { uploadComment } = useUploadComment({ nickname, postId });
 
-  const { ref, parentWidth } = useParentWidth();
-
   const handleUpload = ({ anonymous, content }: { anonymous: boolean; content: string }) => {
     contentType === "post"
       ? uploadThread({ anonymous, content })
@@ -64,46 +60,48 @@ const EditorTextArea = ({
   };
 
   return (
-    <div className="fixed bottom-0 flex flex-col gap-2" style={{ width: parentWidth }} ref={ref}>
-      {isMention && <MentionInput choiceList={choiceList} onClickChoice={setChoiceList} />}
+    <div className="h-full w-full transform">
+      <div className="fixed bottom-0 flex w-full flex-col gap-2">
+        {isMention && <MentionInput choiceList={choiceList} onClickChoice={setChoiceList} />}
 
-      <form className="relative">
-        <Textarea
-          placeholder={`${contentType}을 작성해주세요.`}
-          className="resize-none"
-          {...register("content")}
+        <form className="relative">
+          <Textarea
+            placeholder={`${contentType}을 작성해주세요.`}
+            className="resize-none"
+            {...register("content")}
+          />
+          <div className="absolute bottom-2 right-2 flex items-center gap-2">
+            <label
+              className="flex cursor-pointer items-center gap-2 rounded-xl border p-3"
+              htmlFor="anonymous"
+            >
+              <input
+                type="checkbox"
+                id="anonymous"
+                {...register("anonymous")}
+                onClick={handleClickCheckBox}
+              />
+              <p className="text-gray-500">익명</p>
+            </label>
+            <button
+              onClick={handleSubmit(handleUpload)}
+              className={cn(
+                "flex h-12 w-12 cursor-pointer items-center justify-center rounded-xl text-black",
+                watch("content") ? "bg-green-600" : "",
+              )}
+            >
+              <SendHorizontal className="h-10 w-10 fill-amber-50 stroke-2" />
+            </button>
+          </div>
+        </form>
+
+        {/*TODO: [24/1/2] openLoginModal 선택값을 변경, 정보 수정 모달 필요 성빈님께 말하기*/}
+        <RegisterModal
+          open={registerModalOpen}
+          toggleOpen={setRegisterModalOpen}
+          openLoginModal={() => {}}
         />
-        <div className="absolute bottom-2 right-2 flex items-center gap-2">
-          <label
-            className="flex cursor-pointer items-center gap-2 rounded-xl border p-3"
-            htmlFor="anonymous"
-          >
-            <input
-              type="checkbox"
-              id="anonymous"
-              {...register("anonymous")}
-              onClick={handleClickCheckBox}
-            />
-            <p className="text-gray-500">익명</p>
-          </label>
-          <button
-            onClick={handleSubmit(handleUpload)}
-            className={cn(
-              "flex h-12 w-12 cursor-pointer items-center justify-center rounded-xl text-black",
-              watch("content") ? "bg-green-600" : "",
-            )}
-          >
-            <SendHorizontal className="h-10 w-10 fill-amber-50 stroke-2" />
-          </button>
-        </div>
-      </form>
-
-      {/*TODO: [24/1/2] openLoginModal 선택값을 변경, 정보 수정 모달 필요 성빈님께 말하기*/}
-      <RegisterModal
-        open={registerModalOpen}
-        toggleOpen={setRegisterModalOpen}
-        openLoginModal={() => {}}
-      />
+      </div>
     </div>
   );
 };

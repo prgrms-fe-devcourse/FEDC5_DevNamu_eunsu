@@ -7,7 +7,7 @@ const Demo = () => {
 
   return (
     <div>
-      <div className="w-600pxr">
+      <div className="h-[90vh] w-400pxr">
         <p>Demo</p>
         <EditorTextArea
           isMention={true}
