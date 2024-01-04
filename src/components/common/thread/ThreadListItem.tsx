@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 import { formatDate } from "@/utils/formatDate";
+import { parseTitle } from "@/utils/parsingJson";
 
 import { User } from "@/types/user";
 
@@ -16,6 +17,8 @@ interface Props {
 }
 
 const ThreadListItem = ({ id, title, author, createdAt }: Props) => {
+  const { content, nickname } = parseTitle(title);
+
   const [hoveredListId, setHoveredListId] = useState<string | null>(null);
 
   const handleMouseEnter = () => {
@@ -44,7 +47,7 @@ const ThreadListItem = ({ id, title, author, createdAt }: Props) => {
           <div className="flex justify-between">
             {/* TODO: 로그인/회원가입 추가시 기본값 "프롱이" 삭제 예정 (2023.01.02)*/}
             <span tabIndex={0} className="text-lg font-semibold">
-              {author.nickname || "프롱이"}
+              {nickname || "익명의 프롱이"}
             </span>
             <span tabIndex={0} className="text-gray-400">
               {formatDate(createdAt)}
@@ -54,7 +57,7 @@ const ThreadListItem = ({ id, title, author, createdAt }: Props) => {
             tabIndex={0}
             className="overflow-hidden truncate text-ellipsis pr-50pxr text-gray-500"
           >
-            {title}
+            {content}
           </div>
         </div>
         {hoveredListId === id && <ThreadToolbar className="absolute -top-5 right-3 z-10" />}
