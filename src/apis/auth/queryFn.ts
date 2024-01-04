@@ -21,3 +21,5 @@ export const postLogin = (loginInfo: LoginRequest) =>
 
 export const postRegister = (registerInfo: RegisterRequest) =>
   api.post<AuthResponse>({ url: "/signup", data: registerInfo });
+
+export const getUserInfo = () => api.get<User>({ url: "/auth-user" });

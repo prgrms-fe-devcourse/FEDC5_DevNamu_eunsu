@@ -12,8 +12,11 @@
     "commitlint": "commitlint --edit"
   },
   "lint-staged": {
-    "*.{ts, tsx}": "eslint",
-    "*.{ts, tsx, css, json, html}": "prettier"
+    "*.{ts,tsx}": [
+      "eslint",
+      "prettier"
+    ],
+    "*.{css,json,html}": "prettier"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.3",
