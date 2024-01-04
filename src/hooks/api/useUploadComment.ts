@@ -1,5 +1,5 @@
-import { usePostComment } from "@/apis/comment/useCommentMutate.ts";
-import { usePostNotification } from "@/apis/notification/useNotificationMutate.ts";
+import { usePostComment } from "@/apis/comment/usePostComment.ts";
+import { usePostNotification } from "@/apis/notification/usePostNotification.ts";
 import { NotificationTypes } from "@/apis/notification/queryFn.ts";
 import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickName.ts";
 
