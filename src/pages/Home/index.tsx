@@ -13,8 +13,8 @@ const HomePage = () => {
       <div className="w-full max-w-4xl px-4">
         <ChannelNavigationMenu />
       </div>
-      <main className="w-full max-w-4xl px-4">{threads && <ThreadList threads={threads} />}</main>
       <div className="w-full max-w-4xl px-4">
+        <main>{threads && <ThreadList threads={threads} />}</main>
         <EditorTextArea
           isMention={false}
           contentType="post"
