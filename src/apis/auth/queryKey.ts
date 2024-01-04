@@ -10,7 +10,7 @@ const auth = createQueryKeys("auth", {
     queryFn: async () => {
       const user = getUserInfo();
 
-      if (!user) return null;
+      if (!(await user)) return null;
 
       const { nickname, name } = parseFullName((await user).fullName);
 
