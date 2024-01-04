@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import MentionInput from "@/components/common/Mention/MentionInput.tsx";
 import RegisterModal from "@/components/Layout/Modals/Register";
 import { MyType } from "@/constants/dummyData.ts";
+import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickName.ts";
 
 export type ContentType = "post" | "comment";
 export type SubmitType = "create" | "patch";
@@ -51,7 +52,7 @@ const EditorTextArea = ({
   };
 
   const handleClickCheckBox = (e: FormEvent<HTMLInputElement>) => {
-    if (!e.currentTarget.checked && !nickname) {
+    if (!e.currentTarget.checked && !(nickname === ANONYMOUS_NICKNAME)) {
       setValue("anonymous", true);
       // TODO: [24/1/2] 모달 창과 연결
       setRegisterModalOpen((prev) => !prev);
