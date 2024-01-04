@@ -20,7 +20,7 @@ const ThreadList = ({ threads }: Props) => {
   return (
     <ul
       ref={threadListRef}
-      className="max-h-800pxr min-h-500pxr overflow-auto rounded-sm border border-t-0 py-10pxr"
+      className="max-h-700pxr min-h-500pxr overflow-auto rounded-sm border border-t-0 pt-22pxr"
     >
       {threads.map(({ _id, createdAt, title, author }) => (
         <ThreadListItem key={_id} id={_id} createdAt={createdAt} title={title} author={author} />
