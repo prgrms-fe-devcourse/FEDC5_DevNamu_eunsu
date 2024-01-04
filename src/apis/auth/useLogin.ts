@@ -6,7 +6,11 @@ import { setLocalStorage } from "@/utils/localStorage";
 
 import { postLogin, LoginRequest, AuthResponse } from "./queryFn";
 
-const useLogin = () => {
+interface Props {
+  toggleOpen: (open: boolean) => void;
+}
+
+const useLogin = ({ toggleOpen }: Props) => {
   const { updateUser } = useUserStore();
 
   const parseUser = (data: AuthResponse) => {
@@ -32,6 +36,7 @@ const useLogin = () => {
       updateUser(user);
       setLocalStorage("token", user.token);
     },
+    onSettled: () => toggleOpen(false),
   });
 };
 
