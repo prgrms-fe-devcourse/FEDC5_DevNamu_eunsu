@@ -7,7 +7,8 @@ const useThreadsByChannel = () => {
   const location = useLocation();
   const channelName = location.pathname.split("/").pop() || "compliment";
 
-  const channelQuery = useChannelDetailsQuery(channelName);
+  // TODO: main merge전 channelName으로 수정해서 올리기 (2024.01.03)
+  const channelQuery = useChannelDetailsQuery(channelName === "demo" ? "compliment" : channelName);
   const threadsQuery = useThreadsQuery(channelQuery.channelDetails?._id);
 
   return {
