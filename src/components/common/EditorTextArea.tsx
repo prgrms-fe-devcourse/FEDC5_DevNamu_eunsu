@@ -61,7 +61,7 @@ const EditorTextArea = ({
 
   return (
     <div className="h-full w-full transform">
-      <div className="fixed bottom-0 flex w-full flex-col gap-2">
+      <div className="fixed bottom-0 flex w-full flex-col bg-white">
         {isMention && <MentionInput choiceList={choiceList} onClickChoice={setChoiceList} />}
 
         <form className="relative">
