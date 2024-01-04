@@ -1,9 +1,11 @@
+import useGetUserInfo from "@/apis/auth/useGetUserInfo";
 import ChannelNavigationMenu from "@/components/Home/ChannelNavigationMenu";
 import ThreadList from "@/components/Home/ThreadList";
 import EditorTextArea from "@/components/common/EditorTextArea";
 import useThreadsByChannel from "@/hooks/api/useThreadsByChannel";
 
 const HomePage = () => {
+  const { user } = useGetUserInfo();
   const { threads, channelId } = useThreadsByChannel();
 
   return (
@@ -19,7 +21,7 @@ const HomePage = () => {
           submitType="create"
           postId=""
           channelId={channelId}
-          nickName=""
+          nickName={user?.nickname}
         />
       </div>
     </div>
