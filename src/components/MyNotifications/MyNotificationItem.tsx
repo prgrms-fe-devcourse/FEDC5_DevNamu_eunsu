@@ -13,7 +13,7 @@ interface Props {
   createdAt: string;
 }
 
-const MyNotificationItem = ({ key, seen, author, comment, createdAt }: Props) => {
+const MyNotificationItem = ({ key, author, comment, createdAt }: Props) => {
   const createdDate = formatDate(createdAt);
   const parsedAuthor = JSON.parse(author);
 
