@@ -40,6 +40,11 @@ const MentionInput = ({ choiceList, onClickChoice }: Props) => {
   };
 
   const handleAddChoiceList = (people: MyType) => {
+    if (choiceList.some(({ name, userId }) => name === people.name && userId === people.userId)) {
+      console.log("중복");
+      return;
+    }
+
     onClickChoice((prev) => [...prev, people]);
     emptyUserInput();
   };
@@ -65,11 +70,7 @@ const MentionInput = ({ choiceList, onClickChoice }: Props) => {
         setFocusIndex((prev) => (prev - 1 + mentionLength) % mentionLength);
         break;
       case "Enter":
-        onClickChoice((prev) => [
-          ...prev,
-          { name: mentionList[focusIndex].name, userId: mentionList[focusIndex].userId },
-        ]);
-        emptyUserInput();
+        handleAddChoiceList(mentionList[focusIndex]);
         break;
     }
   };
