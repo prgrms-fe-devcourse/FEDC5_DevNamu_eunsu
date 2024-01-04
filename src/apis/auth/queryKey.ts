@@ -6,7 +6,7 @@ import { getUserInfo } from "./queryFn";
 
 const auth = createQueryKeys("auth", {
   userInfo: (token: string) => ({
-    queryKey: ["auth", token],
+    queryKey: [token],
     queryFn: async () => {
       const user = getUserInfo();
 
