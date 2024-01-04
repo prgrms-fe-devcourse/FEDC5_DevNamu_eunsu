@@ -26,9 +26,9 @@ const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
   } = useRegister();
 
   const handleLoginClick = useCallback(() => {
-    toggleOpen(!open);
+    toggleOpen(false);
     openLoginModal(true);
-  }, [open, toggleOpen, openLoginModal]);
+  }, [toggleOpen, openLoginModal]);
 
   useEffect(() => {
     if (isRegisterSuccess) handleLoginClick();
