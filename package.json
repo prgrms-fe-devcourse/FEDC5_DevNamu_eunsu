@@ -12,7 +12,7 @@
     "commitlint": "commitlint --edit"
   },
   "lint-staged": {
-    "*.{ts, tsx}": [
+    "*.{ts,tsx}": [
       "eslint",
       "prettier"
     ],
