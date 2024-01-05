@@ -34,17 +34,18 @@ interface Props {
   editorProps: EditorProps;
   nickname: string | undefined;
 }
+
 interface UploadHooksProps {
   (params: { anonymous: boolean; content: string }): void;
 }
-const useEditorLogicByTypes = ({ editorProps, nickname }: Props) => {
+
+const useEditorLogicByProps = ({ editorProps, nickname }: Props) => {
   const [upload, setUpload] = useState<UploadHooksProps>(() => () => {});
 
   const { uploadThread } = useCreateThread({
     nickname,
     channelId: isCreateThreadProps(editorProps) ? editorProps.channelId : "",
   });
-
   const { changeThread } = useChangeThread({
     nickname,
     postId: isPatchThreadProps(editorProps) ? editorProps.postId : "",
@@ -69,4 +70,4 @@ const useEditorLogicByTypes = ({ editorProps, nickname }: Props) => {
   return { upload };
 };
 
-export default useEditorLogicByTypes;
+export default useEditorLogicByProps;

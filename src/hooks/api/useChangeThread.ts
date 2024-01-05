@@ -1,6 +1,6 @@
 import { usePutThread } from "@/apis/thread/usePutThread.ts";
-import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname.ts";
 import { FormValues } from "@/components/common/EditorTextArea.tsx";
+import formJsonStringify from "@/lib/editorContent.ts";
 
 interface Props {
   nickname: string | undefined;
@@ -12,12 +12,8 @@ const useChangeThread = ({ nickname, postId }: Props) => {
   const changeThread = (formValues: FormValues) => {
     if (!formValues) return;
 
-    const { anonymous, content } = formValues;
     const threadRequest = {
-      title: JSON.stringify({
-        content,
-        nickname: anonymous ? ANONYMOUS_NICKNAME : nickname,
-      }),
+      title: formJsonStringify({ formValues, nickname }),
       image: null,
       postId,
     };

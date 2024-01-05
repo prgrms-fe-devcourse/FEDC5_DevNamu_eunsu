@@ -9,7 +9,7 @@ import MentionInput from "@/components/common/Mention/MentionInput.tsx";
 import RegisterModal from "@/components/Layout/Modals/Register";
 import { MyType } from "@/constants/dummyData.ts";
 import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname.ts";
-import useEditorLogicByTypes, { EditorProps } from "@/hooks/api/useEditorLogicByTypes.ts";
+import useEditorLogicByProps, { EditorProps } from "@/hooks/api/useEditorLogicByProps.ts";
 
 export interface FormValues {
   anonymous: boolean;
@@ -31,7 +31,7 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
 
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
 
-  const { upload } = useEditorLogicByTypes({ editorProps, nickname });
+  const { upload } = useEditorLogicByProps({ editorProps, nickname });
 
   const handleUpload = (formValues: FormValues) => {
     upload(formValues);
