@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 import { formatDate } from "@/utils/formatDate";
-
 import { parseTitle } from "@/utils/parsingJson";
 
 import { User } from "@/types/user";
