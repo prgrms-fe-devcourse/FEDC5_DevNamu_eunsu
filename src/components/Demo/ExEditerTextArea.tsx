@@ -1,6 +1,6 @@
 import EditorTextArea from "@/components/common/EditorTextArea.tsx";
 
-const Demo = () => {
+const ExEditerTextArea = () => {
   const nickname = "";
   const channelId = "658d50d74f228a47fec343bd"; // 칭찬게시판id
   const postId = "659379f479fd2531a0091d62"; // {"content":"알겠죠~?"} 게시물
@@ -22,4 +22,4 @@ const Demo = () => {
   );
 };
 
-export default Demo;
+export default ExEditerTextArea;
