@@ -40,6 +40,7 @@ const EditorTextArea = ({
 
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
 
+  // TODO: [24/1/5] anonymous 값에 따라서 nickname 다르게 넘겨주기
   const { uploadThread } = useUploadThread({ submitType, nickname, channelId, postId });
   const { uploadComment } = useUploadComment({ nickname, postId });
 
