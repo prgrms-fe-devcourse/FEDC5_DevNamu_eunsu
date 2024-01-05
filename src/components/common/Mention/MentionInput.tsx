@@ -41,7 +41,6 @@ const MentionInput = ({ choiceList, onClickChoice }: Props) => {
 
   const handleAddChoiceList = (people: MyType) => {
     if (choiceList.some(({ name, userId }) => name === people.name && userId === people.userId)) {
-      console.log("중복");
       return;
     }
 
