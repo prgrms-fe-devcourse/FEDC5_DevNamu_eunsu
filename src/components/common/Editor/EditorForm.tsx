@@ -1,5 +1,5 @@
 import { SendHorizontal } from "lucide-react";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FocusEvent, useState } from "react";
 
 import { Textarea } from "@/components/ui/textarea.tsx";
 
@@ -38,8 +38,9 @@ const EditorForm = ({ onSubmit }: Props) => {
     setAuthorAnonymous(!isAuthorAnonymous);
   };
 
-  const checkUserLoggedIn = () => {
+  const checkUserLoggedIn = (e: FocusEvent<HTMLTextAreaElement>) => {
     if (!isLoggedIn) {
+      e.target.blur();
       openLoginModal();
     }
   };
