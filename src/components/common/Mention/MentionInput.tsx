@@ -17,10 +17,10 @@ import { MyType, USER_LIST } from "@/constants/dummyData.ts";
 
 interface Props {
   choiceList: MyType[];
-  onClickChoice: Dispatch<SetStateAction<MyType[]>>;
+  onChoose: Dispatch<SetStateAction<MyType[]>>;
 }
 
-const MentionInput = ({ choiceList, onClickChoice }: Props) => {
+const MentionInput = ({ choiceList, onChoose }: Props) => {
   const [mentionList, setMentionList] = useState<Array<MyType>>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const [focusIndex, setFocusIndex] = useState(-1);
@@ -44,7 +44,7 @@ const MentionInput = ({ choiceList, onClickChoice }: Props) => {
       return;
     }
 
-    onClickChoice((prev) => [...prev, people]);
+    onChoose((prev) => [...prev, people]);
     emptyUserInput();
   };
 
@@ -52,7 +52,7 @@ const MentionInput = ({ choiceList, onClickChoice }: Props) => {
     const newChoiceList = [...choiceList].filter(
       ({ name, userId }) => !(name === people.name && userId === people.userId),
     );
-    onClickChoice(newChoiceList);
+    onChoose(newChoiceList);
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {

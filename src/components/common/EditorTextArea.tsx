@@ -19,7 +19,7 @@ interface Props {
   contentType: ContentType;
   submitType: SubmitType;
   nickname: string | undefined;
-  postId: string;
+  postId?: string;
   channelId: string;
 }
 
@@ -29,7 +29,7 @@ const EditorTextArea = ({
   contentType,
   submitType,
   nickname,
-  postId,
+  postId = "",
   channelId,
 }: Props) => {
   const [choiceList, setChoiceList] = useState<Array<MyType>>([]);
@@ -52,7 +52,7 @@ const EditorTextArea = ({
   };
 
   const handleClickCheckBox = (e: FormEvent<HTMLInputElement>) => {
-    if (!e.currentTarget.checked && !(nickname === ANONYMOUS_NICKNAME)) {
+    if (!e.currentTarget.checked && nickname !== ANONYMOUS_NICKNAME) {
       setValue("anonymous", true);
       // TODO: [24/1/2] 모달 창과 연결
       setRegisterModalOpen((prev) => !prev);
@@ -63,7 +63,7 @@ const EditorTextArea = ({
   return (
     <div className="h-full w-full transform">
       <div className="fixed bottom-0 flex w-full flex-col bg-white">
-        {isMention && <MentionInput choiceList={choiceList} onClickChoice={setChoiceList} />}
+        {isMention && <MentionInput choiceList={choiceList} onChoose={setChoiceList} />}
 
         <form className="relative">
           <Textarea
