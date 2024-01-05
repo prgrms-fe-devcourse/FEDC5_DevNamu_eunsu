@@ -8,8 +8,8 @@ import { cn } from "@/lib/utils";
 import MentionInput from "@/components/common/Mention/MentionInput.tsx";
 import RegisterModal from "@/components/Layout/Modals/Register";
 import { MyType } from "@/constants/dummyData.ts";
-import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname.ts";
 import useEditorLogicByProps, { EditorProps } from "@/hooks/api/useEditorLogicByProps.ts";
+import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname.ts";
 
 export interface FormValues {
   anonymous: boolean;
@@ -39,7 +39,7 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
   };
 
   const handleClickCheckBox = (e: FormEvent<HTMLInputElement>) => {
-    if (!e.currentTarget.checked && nickname !== ANONYMOUS_NICKNAME) {
+    if (!e.currentTarget.checked && nickname === ANONYMOUS_NICKNAME) {
       setValue("anonymous", true);
       // TODO: [24/1/2] 모달 창과 연결
       setRegisterModalOpen((prev) => !prev);
