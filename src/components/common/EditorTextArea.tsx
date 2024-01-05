@@ -61,48 +61,46 @@ const EditorTextArea = ({
   };
 
   return (
-    <div className="h-full w-full transform">
-      <div className="fixed bottom-0 flex w-full flex-col bg-white">
-        {isMention && <MentionInput choiceList={choiceList} onChoose={setChoiceList} />}
+    <div className="flex w-full flex-col gap-1">
+      {isMention && <MentionInput choiceList={choiceList} onChoose={setChoiceList} />}
 
-        <form className="relative">
-          <Textarea
-            placeholder={`${contentType}을 작성해주세요.`}
-            className="resize-none"
-            {...register("content")}
-          />
-          <div className="absolute bottom-2 right-2 flex items-center gap-2">
-            <label
-              className="flex cursor-pointer items-center gap-2 rounded-xl border p-3"
-              htmlFor="anonymous"
-            >
-              <input
-                type="checkbox"
-                id="anonymous"
-                {...register("anonymous")}
-                onClick={handleClickCheckBox}
-              />
-              <p className="text-gray-500">익명</p>
-            </label>
-            <button
-              onClick={handleSubmit(handleUpload)}
-              className={cn(
-                "flex h-12 w-12 cursor-pointer items-center justify-center rounded-xl text-black",
-                watch("content") ? "bg-green-600" : "",
-              )}
-            >
-              <SendHorizontal className="h-10 w-10 fill-amber-50 stroke-2" />
-            </button>
-          </div>
-        </form>
-
-        {/*TODO: [24/1/2] openLoginModal 선택값을 변경, 정보 수정 모달 필요 성빈님께 말하기*/}
-        <RegisterModal
-          open={registerModalOpen}
-          toggleOpen={setRegisterModalOpen}
-          openLoginModal={() => {}}
+      <form className="relative">
+        <Textarea
+          placeholder={`${contentType}을 작성해주세요.`}
+          className="resize-none"
+          {...register("content")}
         />
-      </div>
+        <div className="absolute bottom-2 right-2 flex items-center gap-2">
+          <label
+            className="flex cursor-pointer items-center gap-2 rounded-xl border p-3"
+            htmlFor="anonymous"
+          >
+            <input
+              type="checkbox"
+              id="anonymous"
+              {...register("anonymous")}
+              onClick={handleClickCheckBox}
+            />
+            <p className="text-gray-500">익명</p>
+          </label>
+          <button
+            onClick={handleSubmit(handleUpload)}
+            className={cn(
+              "flex h-12 w-12 cursor-pointer items-center justify-center rounded-xl text-black",
+              watch("content") ? "bg-green-600" : "",
+            )}
+          >
+            <SendHorizontal className="h-10 w-10 fill-amber-50 stroke-2" />
+          </button>
+        </div>
+      </form>
+
+      {/*TODO: [24/1/2] openLoginModal 선택값을 변경, 정보 수정 모달 필요 성빈님께 말하기*/}
+      <RegisterModal
+        open={registerModalOpen}
+        toggleOpen={setRegisterModalOpen}
+        openLoginModal={() => {}}
+      />
     </div>
   );
 };
