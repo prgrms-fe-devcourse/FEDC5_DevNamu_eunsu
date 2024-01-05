@@ -15,7 +15,7 @@ interface MentionListProps extends ListProps {
 const AutoCompleteMentionList = ({ users, onClick, focusIndex }: MentionListProps) => {
   if (!users.length) return "";
   return (
-    <ul className="absolute bottom-12 left-0 right-0 mt-2 overflow-hidden scroll-auto border p-2">
+    <ul className="absolute bottom-12 left-0 right-0 z-10 mt-2 overflow-hidden scroll-auto border bg-white p-2">
       {users.map(({ name, userId }, index) => {
         return (
           <li key={userId}>

@@ -2,8 +2,6 @@ import { useForm } from "react-hook-form";
 import { SendHorizontal } from "lucide-react";
 import { FormEvent, useState } from "react";
 
-import useParentWidth from "@/hooks/useParentWidth.ts";
-
 import { Textarea } from "@/components/ui/textarea.tsx";
 
 import useUploadThread from "@/hooks/api/useUploadThread.ts";
@@ -11,6 +9,8 @@ import useUploadComment from "@/hooks/api/useUploadComment.ts";
 import { cn } from "@/lib/utils";
 import MentionInput from "@/components/common/Mention/MentionInput.tsx";
 import RegisterModal from "@/components/Layout/Modals/Register";
+import { MyType } from "@/constants/dummyData.ts";
+import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname.ts";
 
 export type ContentType = "post" | "comment";
 export type SubmitType = "create" | "patch";
@@ -19,7 +19,7 @@ interface Props {
   contentType: ContentType;
   submitType: SubmitType;
   nickname: string | undefined;
-  postId: string;
+  postId?: string;
   channelId: string;
 }
 
@@ -29,19 +29,20 @@ const EditorTextArea = ({
   contentType,
   submitType,
   nickname,
-  postId,
+  postId = "",
   channelId,
 }: Props) => {
+  const [choiceList, setChoiceList] = useState<Array<MyType>>([]);
+
   const { register, handleSubmit, watch, setValue } = useForm({
     defaultValues: { anonymous: true, content: "" },
   });
 
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
 
+  // TODO: [24/1/5] anonymous 값에 따라서 nickname 다르게 넘겨주기
   const { uploadThread } = useUploadThread({ submitType, nickname, channelId, postId });
   const { uploadComment } = useUploadComment({ nickname, postId });
-
-  const { ref, parentWidth } = useParentWidth();
 
   const handleUpload = ({ anonymous, content }: { anonymous: boolean; content: string }) => {
     contentType === "post"
@@ -52,7 +53,7 @@ const EditorTextArea = ({
   };
 
   const handleClickCheckBox = (e: FormEvent<HTMLInputElement>) => {
-    if (!e.currentTarget.checked && !nickname) {
+    if (!e.currentTarget.checked && nickname !== ANONYMOUS_NICKNAME) {
       setValue("anonymous", true);
       // TODO: [24/1/2] 모달 창과 연결
       setRegisterModalOpen((prev) => !prev);
@@ -61,8 +62,9 @@ const EditorTextArea = ({
   };
 
   return (
-    <div className="bottom-15 fixed flex flex-col gap-2" style={{ width: parentWidth }} ref={ref}>
-      {isMention && <MentionInput />}
+    <div className="flex w-full flex-col gap-1">
+      {isMention && <MentionInput choiceList={choiceList} onChoose={setChoiceList} />}
+
       <form className="relative">
         <Textarea
           placeholder={`${contentType}을 작성해주세요.`}
