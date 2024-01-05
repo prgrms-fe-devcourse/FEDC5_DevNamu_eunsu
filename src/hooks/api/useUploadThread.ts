@@ -1,7 +1,7 @@
 import { usePostThread } from "@/apis/thread/usePostThread";
 import { usePutThread } from "@/apis/thread/usePutThread";
 import { SubmitType } from "@/components/common/EditorTextArea.tsx";
-import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickName.ts";
+import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname.ts";
 
 interface Props {
   submitType: SubmitType;

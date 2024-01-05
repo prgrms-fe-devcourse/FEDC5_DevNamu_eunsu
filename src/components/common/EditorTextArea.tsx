@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import MentionInput from "@/components/common/Mention/MentionInput.tsx";
 import RegisterModal from "@/components/Layout/Modals/Register";
 import { MyType } from "@/constants/dummyData.ts";
-import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickName.ts";
+import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname.ts";
 
 export type ContentType = "post" | "comment";
 export type SubmitType = "create" | "patch";
