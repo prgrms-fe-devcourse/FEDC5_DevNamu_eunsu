@@ -2,6 +2,7 @@ import { usePostComment } from "@/apis/comment/usePostComment.ts";
 import { usePostNotification } from "@/apis/notification/usePostNotification.ts";
 import { NotificationTypes } from "@/apis/notification/queryFn.ts";
 import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname.ts";
+import { FormValues } from "@/components/common/EditorTextArea.tsx";
 
 interface Props {
   nickname: string | undefined;
@@ -12,7 +13,10 @@ const useUploadComment = ({ nickname, postId }: Props) => {
   const { mutateAsync: commentMutate } = usePostComment();
   const { mutate: notificationMutate } = usePostNotification();
 
-  const uploadComment = async ({ anonymous, content }: { anonymous: boolean; content: string }) => {
+  const uploadComment = async (formValues: FormValues) => {
+    if (!formValues) return;
+
+    const { anonymous, content } = formValues;
     const commentRequest = {
       comment: JSON.stringify({
         content,

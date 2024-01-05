@@ -1,14 +1,15 @@
 import api from "@/apis/core";
 
-import { Thread } from "@/types/thread";
-
-interface CreateThread {
+interface Thread {
   title: string; // JSON.stringify(CustomBody)
   image: null;
+}
+
+interface CreateThread extends Thread {
   channelId: string;
 }
 
-interface PatchThread extends CreateThread {
+interface PatchThread extends Thread {
   postId: string;
 }
 

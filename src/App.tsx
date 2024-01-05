@@ -6,6 +6,8 @@ import MyNotificationsPage from "./pages/MyNotifications";
 import NotFoundPage from "./pages/NotFound";
 import Layout from "./components/Layout";
 
+import ExEditorTextArea from "@/components/Demo/ExEditorTextArea.tsx";
+
 const App = () => (
   <BrowserRouter>
     <Routes>
@@ -14,6 +16,7 @@ const App = () => (
         <Route path="channels/*" element={<HomePage />} />
         <Route path="my-threads" element={<MyThreadsPage />} />
         <Route path="my-notifications" element={<MyNotificationsPage />} />
+        <Route path="demo" element={<ExEditorTextArea />} />
       </Route>
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
