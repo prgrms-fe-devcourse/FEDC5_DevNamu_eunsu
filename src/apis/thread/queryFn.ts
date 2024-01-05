@@ -17,6 +17,10 @@ export const createThread = async (postInfo: CreateThread) => {
   return await api.post<Thread>({ url: `/posts/create`, data: postInfo });
 };
 
+export const putThread = async (postInfo: PatchThread) => {
+  return await api.put<Thread>({ url: `/posts/update`, data: postInfo });
+};
+
 export const patchThread = async (postInfo: PatchThread) => {
   return await api.patch<Thread>({ url: `/posts/patch`, data: postInfo });
 };

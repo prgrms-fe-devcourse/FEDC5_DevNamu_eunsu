@@ -1,33 +1,36 @@
-import EditorTextArea from "@/components/common/EditorTextArea.tsx";
+import ThreadCreateEditor from "../Home/ThreadCreateEditor";
+import ThreadUpdateEditor from "../Home/ThreadUpdateEditor";
+import CommentCreateEditor from "../common/thread/CommentCreateEditor";
+
+import useGetUserInfo from "@/apis/auth/useGetUserInfo";
 
 const ExEditorTextArea = () => {
-  const nickname = "Zㅣ존Zㅐ훈";
-  const channelId = "6593e24a3c180849df6d07a3"; // 테스트용 데브나무 전체 채널 2
-  const postId = "659379f479fd2531a0091d62"; // {"content":"알겠죠~?"} 게시물
+  const channelId = "658d50d74f228a47fec343bd"; // 칭찬게시판
+  const postId = "65982e1bf226073f4c8a0da2"; // 이재준 "test"
 
-  const createThreadProps = { channelId };
-
-  // TODO : [24/1/5] 이전 content 넣는 거 아직 구현 안됐습니다.
-  const patchThreadProps = {
-    prevContent: "알겠죠~?",
-    postId,
-  };
-
-  const commentProps = { postId };
+  const { user, isLoggedIn, hasNickname } = useGetUserInfo();
 
   return (
-    <div className="flex h-screen w-full flex-grow items-center justify-center">
-      <div className="flex-grow">
-        <p>create Thread</p>
-        <EditorTextArea isMention={true} nickname={nickname} editorProps={createThreadProps} />
+    <div className="flex flex-col h-screen">
+      <div className="flex-grow-0">
+        <div>로그인은 seongbin9786@gmail.com / 12341234 로 하세요</div>
+        <div>로그인 여부: {String(isLoggedIn)}</div>
+        <div>닉네임 보유 여부: {String(hasNickname)}</div>
+        <div>닉네임: {user?.nickname}</div>
       </div>
-      <div className="flex-grow">
-        <p>patch Thread</p>
-        <EditorTextArea isMention={true} nickname={nickname} editorProps={patchThreadProps} />
-      </div>
-      <div className="flex-grow">
-        <p>comment Thread</p>
-        <EditorTextArea isMention={true} nickname={nickname} editorProps={commentProps} />
+      <div>
+        <div>
+          <p>create Thread</p>
+          <ThreadCreateEditor channelId={channelId} />
+        </div>
+        <div>
+          <p>patch Thread</p>
+          <ThreadUpdateEditor channelId={channelId} postId={postId} />
+        </div>
+        <div>
+          <p>comment Thread</p>
+          <CommentCreateEditor postId={postId} />
+        </div>
       </div>
     </div>
   );

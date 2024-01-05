@@ -1,23 +1,22 @@
 import { usePostComment } from "@/apis/comment/usePostComment.ts";
 import { usePostNotification } from "@/apis/notification/usePostNotification.ts";
 import { NotificationTypes } from "@/apis/notification/queryFn.ts";
-import { FormValues } from "@/components/common/EditorTextArea.tsx";
-import formJsonStringify from "@/lib/editorContent.ts";
+import { EditorFormValues } from "@/components/common/Editor/EditorForm";
+import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname";
 
-interface Props {
-  nickname: string | undefined;
-  postId: string;
-}
-
-const useUploadComment = ({ nickname, postId }: Props) => {
+const useUploadComment = (postId: string) => {
   const { mutateAsync: commentMutate } = usePostComment();
   const { mutate: notificationMutate } = usePostNotification();
 
-  const uploadComment = async (formValues: FormValues) => {
+  const uploadComment = async (formValues: EditorFormValues) => {
     if (!formValues) return;
+    const { anonymous, content, nickname } = formValues;
 
     const commentRequest = {
-      comment: formJsonStringify({ formValues, nickname }),
+      comment: JSON.stringify({
+        content,
+        nickname: anonymous ? ANONYMOUS_NICKNAME : nickname,
+      }),
       postId,
     };
 

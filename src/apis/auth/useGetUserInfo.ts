@@ -6,10 +6,12 @@ import auth from "./queryKey";
 
 const useGetUserInfo = () => {
   const token = getLocalStorage("token", "");
-  const { data, isPending } = useQuery(auth.userInfo(token));
+  const { data: user, isPending } = useQuery(auth.userInfo(token));
 
   return {
-    user: data,
+    user,
+    isLoggedIn: !!user,
+    hasNickname: !!user?.nickname,
     isPending,
   };
 };

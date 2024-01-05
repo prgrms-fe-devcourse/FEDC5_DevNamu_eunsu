@@ -1,32 +1,27 @@
-import { usePostThread } from "@/apis/thread/usePostThread";
+import { usePutThread } from "@/apis/thread/usePutThread.ts";
 import { EditorFormValues } from "@/components/common/Editor/EditorForm";
 import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname";
 
-interface Props {
-  channelId: string;
-}
+const useUpdateThread = (channelId: string, postId: string) => {
+  const { mutate: patchThreadMutate } = usePutThread();
 
-const useCreateThread = ({ channelId }: Props) => {
-  const { mutate: createThreadMutate } = usePostThread(channelId);
-
-  const uploadThread = (formValues: EditorFormValues) => {
+  const changeThread = (formValues: EditorFormValues) => {
     if (!formValues) return;
 
     const { anonymous, content, nickname } = formValues;
-
     const threadRequest = {
       title: JSON.stringify({
         content,
         nickname: anonymous ? ANONYMOUS_NICKNAME : nickname,
       }),
       image: null,
+      postId,
       channelId,
     };
 
-    createThreadMutate(threadRequest);
+    patchThreadMutate(threadRequest);
   };
-
-  return { uploadThread };
+  return { changeThread };
 };
 
-export default useCreateThread;
+export default useUpdateThread;

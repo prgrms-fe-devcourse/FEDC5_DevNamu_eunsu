@@ -1,8 +1,8 @@
+import { EditorFormValues } from "@/components/common/Editor/EditorForm";
 import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname.ts";
-import { FormValues } from "@/components/common/EditorTextArea.tsx";
 
 interface Props {
-  formValues: FormValues;
+  formValues: EditorFormValues;
   nickname: string | undefined;
 }
 
