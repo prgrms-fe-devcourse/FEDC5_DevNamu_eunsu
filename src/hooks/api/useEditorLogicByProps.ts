@@ -65,7 +65,7 @@ const useEditorLogicByProps = ({ editorProps, nickname }: Props) => {
     if (isCommentProps(editorProps)) {
       setUpload(() => uploadComment);
     }
-  }, [editorProps]);
+  }, [editorProps, uploadThread, changeThread, uploadComment]);
 
   return { upload };
 };
