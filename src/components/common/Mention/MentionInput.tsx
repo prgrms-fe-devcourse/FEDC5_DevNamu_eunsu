@@ -40,11 +40,14 @@ const MentionInput = ({ choiceList, onChoose }: Props) => {
   };
 
   const handleAddChoiceList = (people: MyType) => {
-    if (choiceList.some(({ name, userId }) => name === people.name && userId === people.userId)) {
-      return;
+    const isDuplication = choiceList.find(
+      ({ name, userId }) => name === people.name && userId === people.userId,
+    );
+
+    if (!isDuplication) {
+      onChoose((prev) => [...prev, people]);
     }
 
-    onChoose((prev) => [...prev, people]);
     emptyUserInput();
   };
 
