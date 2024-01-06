@@ -1,7 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
 
-import useUserStore from "@/stores/user";
-
 import { setLocalStorage } from "@/utils/localStorage";
 
 import { postLogin, LoginRequest, AuthResponse } from "./queryFn";
@@ -11,8 +9,6 @@ interface Props {
 }
 
 const useLogin = ({ toggleOpen }: Props) => {
-  const { updateUser } = useUserStore();
-
   const parseUser = (data: AuthResponse) => {
     const {
       token,
@@ -33,7 +29,6 @@ const useLogin = ({ toggleOpen }: Props) => {
     mutationFn: (body: LoginRequest) => postLogin(body),
     onSuccess: (data) => {
       const user = parseUser(data);
-      updateUser(user);
       setLocalStorage("token", user.token);
     },
     onSettled: () => toggleOpen(false),
