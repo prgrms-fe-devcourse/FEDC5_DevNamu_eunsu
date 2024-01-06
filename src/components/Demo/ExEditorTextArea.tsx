@@ -7,7 +7,6 @@ const ExEditorTextArea = () => {
 
   const createThreadProps = { channelId: "65981b71a125832f20ab1341" }; // DB채널
 
-  // TODO : [24/1/5] 이전 content 넣는 거 아직 구현 안됐습니다.
   const patchThreadProps = {
     prevContent: "알겠죠~?",
     postId,

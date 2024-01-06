@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { SendHorizontal } from "lucide-react";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 import { Textarea } from "@/components/ui/textarea.tsx";
 
@@ -46,6 +46,10 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
       return;
     }
   };
+
+  useEffect(() => {
+    if ("prevContent" in editorProps) setValue("content", editorProps.prevContent);
+  }, []);
 
   return (
     <div className="flex w-full flex-col gap-1">
