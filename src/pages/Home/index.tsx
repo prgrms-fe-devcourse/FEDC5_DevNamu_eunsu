@@ -6,7 +6,7 @@ import useThreadsByChannel from "@/hooks/api/useThreadsByChannel";
 
 const HomePage = () => {
   const { threads, channelId, channelName } = useThreadsByChannel();
-  const uploadThread = useCreateThread({ channelId });
+  const createThread = useCreateThread(channelId);
 
   return (
     <div className="flex flex-col items-center justify-center mt-12">
@@ -17,7 +17,7 @@ const HomePage = () => {
         <main>{threads && <ThreadList threads={threads} />}</main>
         <CommonThreadEditor
           disableMention={channelName === "incompetent"}
-          onSubmit={uploadThread}
+          onSubmit={createThread}
         />
       </div>
     </div>

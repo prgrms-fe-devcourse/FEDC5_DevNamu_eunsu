@@ -1,15 +1,15 @@
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { Comment } from "@/types/thread";
 import ThreadCommonPayload from "@/types/ThreadCommonPayload";
 
-import { usePostComment } from "@/apis/comment/usePostComment.ts";
 import { usePostNotification } from "@/apis/notification/usePostNotification.ts";
-import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname";
+import { postComment } from "@/apis/comment/queryFn";
 
 const useCreateCommentNotification = () => {
   const { mutateAsync: notificationMutate } = usePostNotification();
 
+  // ?? 내가 쓴 댓글에 내가 알람을 받나요?
   const createNotification = (postId: string, comment: Comment) => {
     const requestBody = {
       notificationType: "COMMENT",
@@ -24,21 +24,13 @@ const useCreateCommentNotification = () => {
   return createNotification;
 };
 
-const useUploadComment = (postId: string) => {
-  const { mutateAsync: commentMutate } = usePostComment();
+const useCreateComment = (postId: string) => {
+  const { mutateAsync: commentMutate } = useMutation({ mutationFn: postComment });
   const queryClient = useQueryClient();
   const notifyCommentCreated = useCreateCommentNotification();
 
-  const uploadComment = async ({ anonymous, content, nickname }: ThreadCommonPayload) => {
-    const requestBody = {
-      comment: JSON.stringify({
-        content,
-        nickname: anonymous ? ANONYMOUS_NICKNAME : nickname,
-      }),
-      postId,
-    };
-
-    const createdComment = await commentMutate(requestBody);
+  const uploadComment = async (payload: ThreadCommonPayload) => {
+    const createdComment = await commentMutate({ postId, payload });
 
     queryClient.invalidateQueries({
       queryKey: ["thread", postId],
@@ -50,4 +42,4 @@ const useUploadComment = (postId: string) => {
   return uploadComment;
 };
 
-export default useUploadComment;
+export default useCreateComment;

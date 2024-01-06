@@ -7,9 +7,9 @@ import { Thread } from "@/types/thread";
 import CommonThreadEditor from "../common/Editor";
 
 import useGetUserInfo from "@/apis/auth/useGetUserInfo";
-import useUploadComment from "@/hooks/api/useUploadComment";
 import useUpdateThread from "@/hooks/api/useUpdateThread";
 import useCreateThread from "@/hooks/api/useCreateThread";
+import useCreateComment from "@/hooks/api/useCreateComment";
 
 const useThreadDetail = (postId: string) => {
   console.log("postId:", postId);
@@ -59,9 +59,9 @@ const ExEditorTextArea = () => {
   const { user, isLoggedIn, hasNickname } = useGetUserInfo();
 
   // 각각의 onSubmit
-  const uploadComment = useUploadComment(postId);
+  const createComment = useCreateComment(postId);
   const updateThread = useUpdateThread(channelId, postId);
-  const uploadThread = useCreateThread({ channelId });
+  const createThread = useCreateThread(channelId);
 
   return (
     <div className="flex flex-col h-screen">
@@ -77,7 +77,7 @@ const ExEditorTextArea = () => {
         <div className="flex flex-col flex-grow gap-4">
           <div>
             <p>create Thread</p>
-            <CommonThreadEditor onSubmit={uploadThread} />
+            <CommonThreadEditor onSubmit={createThread} />
           </div>
           <div>
             <p>patch Thread</p>
@@ -89,7 +89,7 @@ const ExEditorTextArea = () => {
           </div>
           <div>
             <p>comment Thread</p>
-            <CommonThreadEditor onSubmit={uploadComment} />
+            <CommonThreadEditor onSubmit={createComment} />
           </div>
         </div>
       </div>

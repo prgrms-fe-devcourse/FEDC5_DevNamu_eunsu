@@ -1,33 +1,22 @@
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import ThreadCommonPayload from "@/types/ThreadCommonPayload";
 
-import { usePutThread } from "@/apis/thread/usePutThread.ts";
-import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname";
+import { putThread } from "@/apis/thread/queryFn";
 
 const useUpdateThread = (channelId: string, postId: string) => {
-  const { mutateAsync: patchThreadMutate } = usePutThread();
+  const { mutateAsync: patchThreadMutate } = useMutation({ mutationFn: putThread });
   const queryClient = useQueryClient();
 
-  const changeThread = async ({ anonymous, content, nickname }: ThreadCommonPayload) => {
-    const requestBody = {
-      title: JSON.stringify({
-        content,
-        nickname: anonymous ? ANONYMOUS_NICKNAME : nickname,
-      }),
-      image: null,
-      postId,
-      channelId,
-    };
-
-    await patchThreadMutate(requestBody);
+  const updateThread = async (payload: ThreadCommonPayload) => {
+    await patchThreadMutate({ channelId, postId, payload });
 
     queryClient.invalidateQueries({
       queryKey: ["thread", postId],
     });
   };
 
-  return changeThread;
+  return updateThread;
 };
 
 export default useUpdateThread;

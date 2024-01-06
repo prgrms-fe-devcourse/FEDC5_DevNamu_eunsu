@@ -25,8 +25,6 @@ const EditorForm = ({
   const { user, isLoggedIn, hasNickname } = useGetUserInfo();
   const { openLoginModal, openUserChangeModal } = useGlobalModal();
 
-  console.log("initialText:", initialText);
-
   // 폼 요소는 2개 뿐이어서 useForm은 제거
   const [isAuthorAnonymous, setAuthorAnonymous] = useState(false);
   const [content, setContent] = useState(initialText);

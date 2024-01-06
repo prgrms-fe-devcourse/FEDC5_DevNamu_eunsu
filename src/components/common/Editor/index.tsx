@@ -26,7 +26,8 @@ const CommonThreadEditor = ({ disableMention, initialText, placeholderText, onSu
     } catch (e) {
       // react-query mutate error
       // TODO: 예외 상황을 유저에게 알리기
-      alert(e);
+      alert("Editor Submit 도중 발생한 오류" + e);
+      console.error(e);
 
       // 정상 submit이 아니므로 mention 초기화 불가
       return;

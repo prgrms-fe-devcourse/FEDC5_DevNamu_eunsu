@@ -1,12 +1,21 @@
 import api from "@/apis/core";
 
+import ThreadCommonPayload from "@/types/ThreadCommonPayload";
 import { Comment } from "@/types/thread.ts";
 
-interface CreateComment {
-  comment: string; // JSON.stringify(CustomBody)
+import { serializeCustomThreadBody } from "../thread/queryFn";
+
+interface CreateCommentRequest {
+  payload: ThreadCommonPayload;
   postId: string;
 }
 
-export const createComment = async (commentInfo: CreateComment) => {
-  return await api.post<Comment>({ url: `/comments/create`, data: commentInfo });
+export const postComment = async ({ payload, postId }: CreateCommentRequest) => {
+  return await api.post<Comment>({
+    url: `/comments/create`,
+    data: {
+      comment: serializeCustomThreadBody(payload),
+      postId,
+    },
+  });
 };
