@@ -20,7 +20,7 @@ export const createThread = async (postInfo: CreateThread) => {
 };
 
 export const patchThread = async (postInfo: PatchThread) => {
-  return await api.patch<Thread>({ url: `/posts/patch`, data: postInfo });
+  return await api.put<Thread>({ url: `/posts/patch`, data: postInfo });
 };
 
 export const getThreadsByChannelId = (channelId: string) =>
@@ -28,3 +28,7 @@ export const getThreadsByChannelId = (channelId: string) =>
 
 export const getThreadByThreadId = (threadId: string) =>
   api.get<Thread>({ url: `/posts/${threadId}` });
+
+export const deleteThread = (threadId: string) => {
+  return api.delete<Thread>({ url: `/posts/delete`, data: { id: threadId } });
+};
