@@ -1,6 +1,6 @@
 import { usePutThread } from "@/apis/thread/usePutThread.ts";
 import { FormValues } from "@/components/common/EditorTextArea.tsx";
-import formJsonStringify from "@/lib/editorContent.ts";
+import { formJSONStringify } from "@/lib/editorContent.ts";
 
 interface Props {
   nickname: string | undefined;
@@ -13,7 +13,7 @@ const useChangeThread = ({ nickname, postId }: Props) => {
     if (!formValues) return;
 
     const threadRequest = {
-      title: formJsonStringify({ formValues, nickname }),
+      title: formJSONStringify({ formValues, nickname }),
       image: null,
       postId,
     };

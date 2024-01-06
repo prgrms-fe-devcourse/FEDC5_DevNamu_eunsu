@@ -1,6 +1,6 @@
 import { usePostThread } from "@/apis/thread/usePostThread";
 import { FormValues } from "@/components/common/EditorTextArea.tsx";
-import formJsonStringify from "@/lib/editorContent.ts";
+import { formJSONStringify } from "@/lib/editorContent.ts";
 
 interface Props {
   nickname: string | undefined;
@@ -13,7 +13,7 @@ const useCreateThread = ({ nickname, channelId }: Props) => {
     if (!formValues) return;
 
     const threadRequest = {
-      title: formJsonStringify({ formValues, nickname }),
+      title: formJSONStringify({ formValues, nickname }),
       image: null,
       channelId,
     };

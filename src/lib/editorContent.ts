@@ -1,12 +1,12 @@
 import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname.ts";
 import { FormValues } from "@/components/common/EditorTextArea.tsx";
 
-interface Props {
+interface FormProps {
   formValues: FormValues;
   nickname: string | undefined;
 }
 
-const formJsonStringify = ({ formValues, nickname }: Props) => {
+export const formJSONStringify = ({ formValues, nickname }: FormProps) => {
   const { anonymous, content } = formValues;
 
   return JSON.stringify({
@@ -15,4 +15,15 @@ const formJsonStringify = ({ formValues, nickname }: Props) => {
   });
 };
 
-export default formJsonStringify;
+interface MentionProps {
+  channelId: string;
+  postId: string;
+  content: string;
+}
+export const mentionJSONStringify = ({ channelId, postId, content }: MentionProps) => {
+  return JSON.stringify({
+    channelId,
+    postId,
+    content,
+  });
+};
