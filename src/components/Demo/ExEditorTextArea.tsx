@@ -12,7 +12,7 @@ const ExEditorTextArea = () => {
     postId,
   };
 
-  const commentProps = { postId };
+  const commentProps = { channelName: "칭찬", postId }; // channelName은 Post.channel.name 값 전달
 
   return (
     <div className="flex h-screen w-full flex-grow items-center justify-center">

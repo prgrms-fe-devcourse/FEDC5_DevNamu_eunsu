@@ -10,8 +10,8 @@ import {
 
 import { Input } from "@/components/ui/input.tsx";
 
-import AutoCompleteMentionList from "@/components/common/Mention/AutoCompleteMentionList";
-import UserBadgeList from "@/components/common/Mention/UserBadgeList";
+import AutoCompleteMentionList from "@/components/common/mention/AutoCompleteMentionList";
+import UserBadgeList from "@/components/common/mention/UserBadgeList";
 import autoComplete from "@/lib/autoComplete.ts";
 import useUserListByDB, { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 

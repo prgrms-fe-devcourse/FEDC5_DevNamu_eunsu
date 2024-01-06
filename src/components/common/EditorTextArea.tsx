@@ -5,7 +5,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/textarea.tsx";
 
 import { cn } from "@/lib/utils";
-import MentionInput from "@/components/common/Mention/MentionInput.tsx";
+import MentionInput from "@/components/common/mention/MentionInput.tsx";
 import useEditorLogicByProps, { EditorProps } from "@/hooks/api/useEditorLogicByProps.ts";
 import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname.ts";
 import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
