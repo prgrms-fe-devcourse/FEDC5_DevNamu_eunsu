@@ -1,15 +1,15 @@
+import { useQueryClient } from "@tanstack/react-query";
+
 import { usePutThread } from "@/apis/thread/usePutThread.ts";
-import { EditorFormValues } from "@/components/common/Editor/EditorForm";
+import { EditorFormValues } from "@/components/common/Editor/form";
 import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname";
 
 const useUpdateThread = (channelId: string, postId: string) => {
-  const { mutate: patchThreadMutate } = usePutThread();
+  const { mutateAsync: patchThreadMutate } = usePutThread();
+  const queryClient = useQueryClient();
 
-  const changeThread = (formValues: EditorFormValues) => {
-    if (!formValues) return;
-
-    const { anonymous, content, nickname } = formValues;
-    const threadRequest = {
+  const changeThread = async ({ anonymous, content, nickname }: EditorFormValues) => {
+    const requestBody = {
       title: JSON.stringify({
         content,
         nickname: anonymous ? ANONYMOUS_NICKNAME : nickname,
@@ -19,9 +19,14 @@ const useUpdateThread = (channelId: string, postId: string) => {
       channelId,
     };
 
-    patchThreadMutate(threadRequest);
+    await patchThreadMutate(requestBody);
+
+    queryClient.invalidateQueries({
+      queryKey: ["thread", postId],
+    });
   };
-  return { changeThread };
+
+  return changeThread;
 };
 
 export default useUpdateThread;

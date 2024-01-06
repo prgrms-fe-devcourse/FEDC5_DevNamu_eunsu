@@ -1,5 +1,8 @@
+import { useQueryClient } from "@tanstack/react-query";
+
+import threads from "@/apis/thread/queryKey";
 import { usePostThread } from "@/apis/thread/usePostThread";
-import { EditorFormValues } from "@/components/common/Editor/EditorForm";
+import { EditorFormValues } from "@/components/common/Editor/form";
 import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname";
 
 interface Props {
@@ -7,13 +10,10 @@ interface Props {
 }
 
 const useCreateThread = ({ channelId }: Props) => {
-  const { mutate: createThreadMutate } = usePostThread(channelId);
+  const { mutateAsync: createThreadMutate } = usePostThread(channelId);
+  const queryClient = useQueryClient();
 
-  const uploadThread = (formValues: EditorFormValues) => {
-    if (!formValues) return;
-
-    const { anonymous, content, nickname } = formValues;
-
+  const uploadThread = async ({ anonymous, content, nickname }: EditorFormValues) => {
     const threadRequest = {
       title: JSON.stringify({
         content,
@@ -23,10 +23,14 @@ const useCreateThread = ({ channelId }: Props) => {
       channelId,
     };
 
-    createThreadMutate(threadRequest);
+    await createThreadMutate(threadRequest);
+
+    queryClient.invalidateQueries({
+      queryKey: threads.threadsByChannel(channelId).queryKey,
+    });
   };
 
-  return { uploadThread };
+  return uploadThread;
 };
 
 export default useCreateThread;

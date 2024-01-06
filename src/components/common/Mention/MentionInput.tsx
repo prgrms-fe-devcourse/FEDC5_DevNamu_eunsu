@@ -13,34 +13,34 @@ import { Input } from "@/components/ui/input.tsx";
 import AutoCompleteMentionList from "@/components/common/Mention/AutoCompleteMentionList";
 import UserBadgeList from "@/components/common/Mention/UserBadgeList";
 import autoComplete from "@/lib/autoComplete.ts";
-import { MyType, USER_LIST } from "@/constants/dummyData.ts";
+import { RegisteredUser, USER_LIST } from "@/constants/dummyData.ts";
 
 interface Props {
-  choiceList: MyType[];
-  onChoose: Dispatch<SetStateAction<MyType[]>>;
+  chosenList: RegisteredUser[];
+  onChoose: Dispatch<SetStateAction<RegisteredUser[]>>;
 }
 
-const MentionInput = ({ choiceList, onChoose }: Props) => {
-  const [mentionList, setMentionList] = useState<Array<MyType>>([]);
+const MentionInput = ({ chosenList, onChoose }: Props) => {
+  const [autocompleteList, setAutocompleteList] = useState<Array<RegisteredUser>>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const [focusIndex, setFocusIndex] = useState(-1);
 
   const searchPeople = (event: FormEvent<HTMLInputElement>) => {
     event.preventDefault();
 
-    const { search } = autoComplete<MyType>({ list: USER_LIST, key: "name" });
+    const { search } = autoComplete<RegisteredUser>({ list: USER_LIST, key: "name" });
     const list = search(event.currentTarget.value.trim());
-    list && setMentionList(list);
+    list && setAutocompleteList(list);
   };
 
   const emptyUserInput = () => {
     if (!inputRef.current) return;
-    setMentionList([]);
+    setAutocompleteList([]);
     inputRef.current.value = "";
   };
 
-  const handleAddChoiceList = (people: MyType) => {
-    const isDuplication = choiceList.find(
+  const addToChosenPeople = (people: RegisteredUser) => {
+    const isDuplication = chosenList.find(
       ({ name, userId }) => name === people.name && userId === people.userId,
     );
 
@@ -51,15 +51,15 @@ const MentionInput = ({ choiceList, onChoose }: Props) => {
     emptyUserInput();
   };
 
-  const handleDeleteChoiceList = (people: MyType) => {
-    const newChoiceList = [...choiceList].filter(
+  const handleDeleteChoiceList = (people: RegisteredUser) => {
+    const newChoiceList = [...chosenList].filter(
       ({ name, userId }) => !(name === people.name && userId === people.userId),
     );
     onChoose(newChoiceList);
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    const mentionLength = mentionList.length;
+    const mentionLength = autocompleteList.length;
 
     if (mentionLength <= 0 || !inputRef.current) return;
     if (event.nativeEvent.isComposing) return;
@@ -72,18 +72,18 @@ const MentionInput = ({ choiceList, onChoose }: Props) => {
         setFocusIndex((prev) => (prev - 1 + mentionLength) % mentionLength);
         break;
       case "Enter":
-        handleAddChoiceList(mentionList[focusIndex]);
+        addToChosenPeople(autocompleteList[focusIndex]);
         break;
     }
   };
 
   useEffect(() => {
     setFocusIndex(0);
-  }, [mentionList]);
+  }, [autocompleteList]);
 
   return (
     <div className="relative">
-      <UserBadgeList users={choiceList} onClick={handleDeleteChoiceList} />
+      <UserBadgeList users={chosenList} onClick={handleDeleteChoiceList} />
 
       <Input
         type="text"
@@ -94,8 +94,8 @@ const MentionInput = ({ choiceList, onChoose }: Props) => {
       />
 
       <AutoCompleteMentionList
-        users={mentionList}
-        onClick={handleAddChoiceList}
+        users={autocompleteList}
+        onClick={addToChosenPeople}
         focusIndex={focusIndex}
       />
     </div>

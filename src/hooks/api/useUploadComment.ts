@@ -1,18 +1,36 @@
+import { useQueryClient } from "@tanstack/react-query";
+
+import { Comment } from "@/types/thread";
+
 import { usePostComment } from "@/apis/comment/usePostComment.ts";
 import { usePostNotification } from "@/apis/notification/usePostNotification.ts";
-import { NotificationTypes } from "@/apis/notification/queryFn.ts";
-import { EditorFormValues } from "@/components/common/Editor/EditorForm";
+import { EditorFormValues } from "@/components/common/Editor/form";
 import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname";
+
+const useCreateCommentNotification = () => {
+  const { mutateAsync: notificationMutate } = usePostNotification();
+
+  const createNotification = (postId: string, comment: Comment) => {
+    const requestBody = {
+      notificationType: "COMMENT",
+      notificationTypeId: comment._id,
+      userId: comment.author._id,
+      postId,
+    } as const;
+
+    return notificationMutate(requestBody);
+  };
+
+  return createNotification;
+};
 
 const useUploadComment = (postId: string) => {
   const { mutateAsync: commentMutate } = usePostComment();
-  const { mutate: notificationMutate } = usePostNotification();
+  const queryClient = useQueryClient();
+  const notifyCommentCreated = useCreateCommentNotification();
 
-  const uploadComment = async (formValues: EditorFormValues) => {
-    if (!formValues) return;
-    const { anonymous, content, nickname } = formValues;
-
-    const commentRequest = {
+  const uploadComment = async ({ anonymous, content, nickname }: EditorFormValues) => {
+    const requestBody = {
       comment: JSON.stringify({
         content,
         nickname: anonymous ? ANONYMOUS_NICKNAME : nickname,
@@ -20,18 +38,16 @@ const useUploadComment = (postId: string) => {
       postId,
     };
 
-    const commentRes = await commentMutate(commentRequest);
+    const createdComment = await commentMutate(requestBody);
 
-    const notificationReq = {
-      notificationType: "COMMENT" as NotificationTypes,
-      notificationTypeId: commentRes._id,
-      userId: commentRes.author._id,
-      postId,
-    };
-    notificationMutate(notificationReq);
+    queryClient.invalidateQueries({
+      queryKey: ["thread", postId],
+    });
+
+    return notifyCommentCreated(postId, createdComment);
   };
 
-  return { uploadComment };
+  return uploadComment;
 };
 
 export default useUploadComment;

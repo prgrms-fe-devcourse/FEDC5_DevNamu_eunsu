@@ -1,4 +1,4 @@
-import EditorTextArea from "../common/Editor/EditorTextArea";
+import EditorTextArea from "../common/Editor/textArea";
 
 import useUpdateThread from "@/hooks/api/useUpdateThread";
 
@@ -10,9 +10,9 @@ interface Props {
 
 const ThreadUpdateEditor = ({ disableMention, postId, channelId }: Props) => {
   // 변하는 prop은 여기서 직접 제공
-  const { changeThread } = useUpdateThread(channelId, postId);
+  const updateThread = useUpdateThread(channelId, postId);
 
-  return <EditorTextArea disableMention={disableMention} onSubmit={changeThread} />;
+  return <EditorTextArea disableMention={disableMention} onSubmit={updateThread} />;
 };
 
 export default ThreadUpdateEditor;

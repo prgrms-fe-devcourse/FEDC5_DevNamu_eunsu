@@ -1,4 +1,4 @@
-export interface MyType {
+export interface RegisteredUser {
   name: string;
   userId: string;
 }

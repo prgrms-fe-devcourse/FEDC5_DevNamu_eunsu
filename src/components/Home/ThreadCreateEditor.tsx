@@ -1,4 +1,4 @@
-import EditorTextArea from "../common/Editor/EditorTextArea";
+import EditorTextArea from "../common/Editor/textArea";
 
 import useCreateThread from "@/hooks/api/useCreateThread";
 
@@ -9,7 +9,7 @@ interface Props {
 
 const ThreadCreateEditor = ({ disableMention, channelId }: Props) => {
   // 변하는 prop은 여기서 직접 제공
-  const { uploadThread } = useCreateThread({ channelId });
+  const uploadThread = useCreateThread({ channelId });
 
   return <EditorTextArea disableMention={disableMention} onSubmit={uploadThread} />;
 };

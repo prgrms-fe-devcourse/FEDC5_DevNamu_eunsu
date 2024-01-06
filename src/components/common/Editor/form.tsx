@@ -15,10 +15,11 @@ export interface EditorFormValues {
 }
 
 interface Props {
-  onSubmit: (values: EditorFormValues) => void;
+  onSubmit: (formValues: EditorFormValues) => Promise<void>;
+  placeholderText?: string;
 }
 
-const EditorForm = ({ onSubmit }: Props) => {
+const EditorForm = ({ onSubmit, placeholderText = "내용을 입력해주세요" }: Props) => {
   // 사용자 상태와 Modal 트리거는 서버/전역 상태에서 받아옴
   const { user, isLoggedIn, hasNickname } = useGetUserInfo();
   const { openLoginModal, openUserChangeModal } = useGlobalModal();
@@ -49,12 +50,14 @@ const EditorForm = ({ onSubmit }: Props) => {
     setContent(e.target.value);
   };
 
-  const handleSubmit = () => {
-    onSubmit({
+  const handleSubmit = async () => {
+    await onSubmit({
       anonymous: isAuthorAnonymous,
       nickname: user?.nickname,
       content,
     });
+
+    setContent("");
   };
 
   return (
@@ -63,20 +66,12 @@ const EditorForm = ({ onSubmit }: Props) => {
         value={content}
         onFocus={checkUserLoggedIn}
         onChange={handleContentUpdate}
-        placeholder="내용을 작성해주세요"
+        placeholder={placeholderText}
         className="resize-none"
       />
       <div className="absolute flex items-center gap-2 bottom-2 right-2">
-        <label
-          className="flex items-center gap-2 p-3 border cursor-pointer rounded-xl"
-          htmlFor="anonymous"
-        >
-          <input
-            type="checkbox"
-            id="anonymous"
-            checked={isAuthorAnonymous}
-            onClick={toggleAnonymous}
-          />
+        <label className="flex items-center gap-2 p-3 border cursor-pointer rounded-xl">
+          <input type="checkbox" checked={isAuthorAnonymous} onChange={toggleAnonymous} />
           <p className="text-gray-500">익명</p>
         </label>
         <button

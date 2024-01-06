@@ -1,11 +1,11 @@
 import { Separator } from "@/components/ui/separator.tsx";
 
 import { cn } from "@/lib/utils.ts";
-import { MyType } from "@/constants/dummyData.ts";
+import { RegisteredUser } from "@/constants/dummyData.ts";
 
 export interface ListProps {
-  users: MyType[];
-  onClick: (people: MyType) => void;
+  users: RegisteredUser[];
+  onClick: (people: RegisteredUser) => void;
 }
 
 interface MentionListProps extends ListProps {
