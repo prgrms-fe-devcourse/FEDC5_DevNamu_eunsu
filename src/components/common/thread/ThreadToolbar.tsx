@@ -5,9 +5,10 @@ import ThreadTooltip from "./ThreadTooltip";
 
 interface Props {
   className?: string;
+  onDelete: () => void;
 }
 
-const ThreadToolbar = ({ className }: Props) => {
+const ThreadToolbar = ({ className, onDelete }: Props) => {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
 
   const handleMouseEnter = (buttonType: string) => () => {
@@ -69,6 +70,7 @@ const ThreadToolbar = ({ className }: Props) => {
         aria-label="삭제"
         onMouseEnter={handleMouseEnter("delete")}
         onMouseLeave={handleMouseLeave}
+        onClick={onDelete}
       >
         <Trash2 strokeWidth={1} />
         {hoveredButton === "delete" && (

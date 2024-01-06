@@ -6,9 +6,10 @@ import ThreadListItem from "@/components/common/thread/ThreadListItem";
 
 interface Props {
   threads: Thread[];
+  channelId: string;
 }
 
-const ThreadList = ({ threads }: Props) => {
+const ThreadList = ({ threads, channelId }: Props) => {
   const threadListRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
@@ -23,7 +24,14 @@ const ThreadList = ({ threads }: Props) => {
       className="max-h-700pxr min-h-700pxr overflow-auto rounded-sm border border-t-0 pt-22pxr"
     >
       {threads.map(({ _id, createdAt, title, author }) => (
-        <ThreadListItem key={_id} id={_id} createdAt={createdAt} title={title} author={author} />
+        <ThreadListItem
+          key={_id}
+          id={_id}
+          createdAt={createdAt}
+          title={title}
+          author={author}
+          channelId={channelId}
+        />
       ))}
     </ul>
   );
