@@ -28,7 +28,7 @@ const PostDetailArea = ({ thread }: { thread?: Thread }) => {
   }
 
   return (
-    <div className="flex flex-col h-screen p-4 overflow-auto bg-gray-300">
+    <div className="flex flex-col h-screen p-4 overflow-auto bg-gray-300 min-w-80">
       <div>[현재 테스트 대상 스레드]</div>
       <div>본문: {thread.title}</div>
       <hr />
@@ -54,8 +54,6 @@ const ExEditorTextArea = () => {
   const { data: thread } = useThreadDetail(postId);
   const parsedThreadBody = thread && JSON.parse(thread.title).content;
 
-  console.log("parsedThreadBody:", parsedThreadBody);
-
   const { user, isLoggedIn, hasNickname } = useGetUserInfo();
 
   // 각각의 onSubmit
@@ -66,7 +64,7 @@ const ExEditorTextArea = () => {
   return (
     <div className="flex flex-col h-screen">
       <div className="flex">
-        <div className="flex-grow-0 p-4 bg-blue-300">
+        <div className="p-4 bg-blue-300">
           <div>로그인은 seongbin9786@gmail.com / 12341234 로 하세요</div>
           <div>로그인 후에도 새로고침 안 하면 정보 갱신이 안 됨 (....???)</div>
           <div>로그인 여부: {String(isLoggedIn)}</div>
@@ -74,7 +72,7 @@ const ExEditorTextArea = () => {
           <div>닉네임: {user?.nickname}</div>
         </div>
         <PostDetailArea thread={thread} />
-        <div className="flex flex-col flex-grow gap-4">
+        <div className="flex flex-col flex-grow gap-4 min-w-80">
           <div>
             <p>create Thread</p>
             <CommonThreadEditor onSubmit={createThread} />
