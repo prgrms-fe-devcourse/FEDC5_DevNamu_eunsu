@@ -1,10 +1,11 @@
 import { useState } from "react";
 
 import { User } from "@/types/user";
+import ThreadCommonPayload from "@/types/ThreadCommonPayload.ts";
 
-import EditorForm, { ThreadCommonPayload } from "./form";
+import EditorForm from "./form";
+import MentionInput from "./Mention/MentionInput.tsx";
 
-import MentionInput from "@/components/common/Mention/MentionInput.tsx";
 import { RegisteredUser } from "@/constants/dummyData.ts";
 
 interface Props {

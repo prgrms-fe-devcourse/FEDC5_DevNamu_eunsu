@@ -1,7 +1,8 @@
 import { useQueryClient } from "@tanstack/react-query";
 
+import ThreadCommonPayload from "@/types/ThreadCommonPayload";
+
 import { usePutThread } from "@/apis/thread/usePutThread.ts";
-import { ThreadCommonPayload } from "@/components/common/Editor/form";
 import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname";
 
 const useUpdateThread = (channelId: string, postId: string) => {
