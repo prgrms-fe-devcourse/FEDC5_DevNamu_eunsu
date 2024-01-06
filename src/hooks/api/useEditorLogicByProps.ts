@@ -15,6 +15,7 @@ interface PatchThreadProps {
 }
 
 interface CommentProps {
+  channelName: string;
   postId: string;
 }
 
@@ -28,7 +29,7 @@ const isPatchThreadProps = (props: EditorProps): props is PatchThreadProps => {
 };
 
 const isCommentProps = (props: EditorProps): props is CommentProps => {
-  return "postId" in props && !("prevContent" in props);
+  return "channelName" in props;
 };
 
 interface Props {
@@ -52,10 +53,13 @@ const useEditorLogicByProps = ({ editorProps, nickname, mentionList = [] }: Prop
   const { changeThread } = useChangeThread({
     nickname,
     postId: isPatchThreadProps(editorProps) ? editorProps.postId : "",
+    mentionList,
   });
   const { uploadComment } = useUploadComment({
     nickname,
     postId: isCommentProps(editorProps) ? editorProps.postId : "",
+    channelName: isCommentProps(editorProps) ? editorProps.channelName : "",
+    mentionList,
   });
 
   useEffect(() => {

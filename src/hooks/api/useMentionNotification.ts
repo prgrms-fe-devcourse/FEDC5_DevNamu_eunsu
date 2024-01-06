@@ -31,7 +31,6 @@ const useMentionNotification = ({ mentionList }: Props) => {
         userId: mentionResponse.sender._id,
         postId,
       };
-      console.log("알림 가나?", notificationRequest);
 
       notificationMutate(notificationRequest);
     });
