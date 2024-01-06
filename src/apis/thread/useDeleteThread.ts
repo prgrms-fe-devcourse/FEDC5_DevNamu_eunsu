@@ -5,6 +5,7 @@ import threads from "@/apis/thread/queryKey.ts";
 
 const useDeleteThread = (channelId: string) => {
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: deleteThread,
     onSuccess: () => {
