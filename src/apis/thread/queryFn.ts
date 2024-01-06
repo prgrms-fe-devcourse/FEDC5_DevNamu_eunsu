@@ -1,15 +1,17 @@
 import api from "@/apis/core";
 
-interface Thread {
+import { Thread } from "@/types/thread.ts";
+
+interface DefaultThreadRequest {
   title: string; // JSON.stringify(CustomBody)
   image: null;
 }
 
-interface CreateThread extends Thread {
+interface CreateThread extends DefaultThreadRequest {
   channelId: string;
 }
 
-interface PatchThread extends Thread {
+interface PatchThread extends DefaultThreadRequest {
   postId: string;
 }
 

@@ -14,16 +14,3 @@ export const formJSONStringify = ({ formValues, nickname }: FormProps) => {
     nickname: anonymous ? ANONYMOUS_NICKNAME : nickname,
   });
 };
-
-interface MentionProps {
-  channelId: string;
-  postId: string;
-  content: string;
-}
-export const mentionJSONStringify = ({ channelId, postId, content }: MentionProps) => {
-  return JSON.stringify({
-    channelId,
-    postId,
-    content,
-  });
-};

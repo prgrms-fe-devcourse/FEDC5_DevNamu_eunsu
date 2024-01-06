@@ -6,7 +6,6 @@ import { Textarea } from "@/components/ui/textarea.tsx";
 
 import { cn } from "@/lib/utils";
 import MentionInput from "@/components/common/Mention/MentionInput.tsx";
-import RegisterModal from "@/components/Layout/Modals/Register";
 import useEditorLogicByProps, { EditorProps } from "@/hooks/api/useEditorLogicByProps.ts";
 import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname.ts";
 import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
@@ -23,37 +22,38 @@ interface Props {
 }
 
 const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
-  const [choiceList, setChoiceList] = useState<Array<UserDBProps>>([]);
+  const [mentionList, setMentionList] = useState<Array<UserDBProps>>([]);
+
+  const { upload } = useEditorLogicByProps({ editorProps, nickname, mentionList });
 
   const { register, handleSubmit, watch, setValue } = useForm({
     defaultValues: { anonymous: true, content: "" },
   });
 
-  const [registerModalOpen, setRegisterModalOpen] = useState(false);
-
-  const { upload } = useEditorLogicByProps({ editorProps, nickname });
-
   const handleUpload = (formValues: FormValues) => {
     upload(formValues);
+    setMentionList([]);
     setValue("content", "");
-  };
-
-  const handleClickCheckBox = (e: FormEvent<HTMLInputElement>) => {
-    if (!e.currentTarget.checked && nickname === ANONYMOUS_NICKNAME) {
-      setValue("anonymous", true);
-      // TODO: [24/1/2] 모달 창과 연결
-      setRegisterModalOpen((prev) => !prev);
-      return;
-    }
   };
 
   useEffect(() => {
     if ("prevContent" in editorProps) setValue("content", editorProps.prevContent);
   }, []);
 
+  // TODO: [24/1/6] 모달 창은 layout단에 위치 시키고 open 여부를 전역상태관리하며 여기서는 트리거 역할만 하기 제안하기, 승인 시 아래 제거(by 성빈님)
+  const [openModel, setOpenModel] = useState(false);
+  const handleClickCheckBox = (e: FormEvent<HTMLInputElement>) => {
+    console.log(openModel);
+    if (!e.currentTarget.checked && nickname === ANONYMOUS_NICKNAME) {
+      setValue("anonymous", true);
+      setOpenModel(true);
+      return;
+    }
+  };
+
   return (
     <div className="flex w-full flex-col gap-1">
-      {isMention && <MentionInput choiceList={choiceList} onChoose={setChoiceList} />}
+      {isMention && <MentionInput mentionList={mentionList} onChoose={setMentionList} />}
 
       <form className="relative">
         <Textarea
@@ -85,13 +85,6 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
           </button>
         </div>
       </form>
-
-      {/*TODO: [24/1/2] openLoginModal 선택값을 변경, 정보 수정 모달 필요 성빈님께 말하기*/}
-      <RegisterModal
-        open={registerModalOpen}
-        toggleOpen={setRegisterModalOpen}
-        openLoginModal={() => {}}
-      />
     </div>
   );
 };

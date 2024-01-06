@@ -1,25 +1,26 @@
 import { usePostNotification } from "@/apis/notification/usePostNotification.ts";
 import { usePostMention } from "@/apis/mention/usePostMention.ts";
-import { mentionJSONStringify } from "@/lib/editorContent.ts";
-import { FormValues } from "@/components/common/EditorTextArea.tsx";
 import { NotificationTypes } from "@/apis/notification/queryFn.ts";
+import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
+
+interface MentionNotificationProps {
+  content: string;
+  postId: string;
+  channelName: string;
+}
 
 interface Props {
-  channelId: string;
-  postId: string;
-  mentionUserList: string[];
+  mentionList?: UserDBProps[];
 }
-const useMentionNotification = ({ channelId, postId, mentionUserList }: Props) => {
+const useMentionNotification = ({ mentionList }: Props) => {
   const { mutateAsync: mentionMutate } = usePostMention();
   const { mutate: notificationMutate } = usePostNotification();
 
-  const mentionNotification = (formValues: FormValues) => {
-    if (!formValues) return;
-
-    mentionUserList.forEach(async (mentionUserId) => {
+  const mentionNotification = ({ content, postId, channelName }: MentionNotificationProps) => {
+    mentionList?.forEach(async (mentionUser) => {
       const mentionRequest = {
-        message: mentionJSONStringify({ channelId, postId, content: formValues.content }),
-        receiver: mentionUserId,
+        message: JSON.stringify({ channelName, postId, content }),
+        receiver: mentionUser.userId,
       };
 
       const mentionResponse = await mentionMutate(mentionRequest);
@@ -30,6 +31,8 @@ const useMentionNotification = ({ channelId, postId, mentionUserList }: Props) =
         userId: mentionResponse.sender._id,
         postId,
       };
+      console.log("알림 가나?", notificationRequest);
+
       notificationMutate(notificationRequest);
     });
   };

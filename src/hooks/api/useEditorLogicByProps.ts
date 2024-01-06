@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import useCreateThread from "@/hooks/api/useCreateThread.ts";
 import useChangeThread from "@/hooks/api/useChangeThread.ts";
 import useUploadComment from "@/hooks/api/useUploadComment.ts";
+import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 
 interface CreateThreadProps {
   channelId: string;
@@ -33,18 +34,20 @@ const isCommentProps = (props: EditorProps): props is CommentProps => {
 interface Props {
   editorProps: EditorProps;
   nickname: string | undefined;
+  mentionList?: UserDBProps[];
 }
 
 interface UploadHooksProps {
   (params: { anonymous: boolean; content: string }): void;
 }
 
-const useEditorLogicByProps = ({ editorProps, nickname }: Props) => {
+const useEditorLogicByProps = ({ editorProps, nickname, mentionList = [] }: Props) => {
   const [upload, setUpload] = useState<UploadHooksProps>(() => () => {});
 
   const { uploadThread } = useCreateThread({
     nickname,
     channelId: isCreateThreadProps(editorProps) ? editorProps.channelId : "",
+    mentionList,
   });
   const { changeThread } = useChangeThread({
     nickname,
@@ -65,7 +68,7 @@ const useEditorLogicByProps = ({ editorProps, nickname }: Props) => {
     if (isCommentProps(editorProps)) {
       setUpload(() => uploadComment);
     }
-  }, [editorProps]);
+  }, [editorProps, mentionList]);
 
   return { upload };
 };
