@@ -3,20 +3,16 @@ import { ChangeEvent, FocusEvent, useState } from "react";
 
 import { Textarea } from "@/components/ui/textarea.tsx";
 
+import ThreadCommonPayload from "@/types/ThreadCommonPayload";
+
 import useGlobalModal from "./useGlobalModal";
 
 import { cn } from "@/lib/utils";
 import useGetUserInfo from "@/apis/auth/useGetUserInfo";
 
-export interface EditorFormValues {
-  anonymous: boolean;
-  nickname: string;
-  content: string;
-}
-
 interface Props {
   initialText?: string;
-  onSubmit: (formValues: EditorFormValues) => Promise<void>;
+  onSubmit: (payload: ThreadCommonPayload) => Promise<void>;
   placeholderText?: string;
 }
 
@@ -59,6 +55,11 @@ const EditorForm = ({
   };
 
   const handleSubmit = async () => {
+    if (!isLoggedIn) {
+      openLoginModal();
+      return;
+    }
+
     await onSubmit({
       anonymous: isAuthorAnonymous,
       nickname: user?.nickname,
@@ -84,6 +85,9 @@ const EditorForm = ({
         </label>
         <button
           onClick={handleSubmit}
+          // valiation 규칙을 받거나 (trim, min-length, max-length, ...)
+          // validation callback을 받아서 실행하거나 (이 경우 공통으로 쓸 callback도 여기서 제공하면 좋을 듯)
+          disabled={!hasContent}
           className={cn(
             "flex h-12 w-12 cursor-pointer items-center justify-center rounded-xl text-black",
             hasContent && "bg-green-600",

@@ -1,10 +1,10 @@
 import { useQueryClient } from "@tanstack/react-query";
 
 import { Comment } from "@/types/thread";
+import ThreadCommonPayload from "@/types/ThreadCommonPayload";
 
 import { usePostComment } from "@/apis/comment/usePostComment.ts";
 import { usePostNotification } from "@/apis/notification/usePostNotification.ts";
-import { EditorFormValues } from "@/components/common/Editor/form";
 import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname";
 
 const useCreateCommentNotification = () => {
@@ -29,7 +29,7 @@ const useUploadComment = (postId: string) => {
   const queryClient = useQueryClient();
   const notifyCommentCreated = useCreateCommentNotification();
 
-  const uploadComment = async ({ anonymous, content, nickname }: EditorFormValues) => {
+  const uploadComment = async ({ anonymous, content, nickname }: ThreadCommonPayload) => {
     const requestBody = {
       comment: JSON.stringify({
         content,

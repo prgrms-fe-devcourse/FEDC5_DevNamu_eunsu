@@ -1,13 +1,14 @@
-import { EditorFormValues } from "@/components/common/Editor/EditorForm";
+import ThreadCommonPayload from "@/types/ThreadCommonPayload";
+
 import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname.ts";
 
 interface Props {
-  formValues: EditorFormValues;
+  payload: ThreadCommonPayload;
   nickname: string | undefined;
 }
 
-const formJsonStringify = ({ formValues, nickname }: Props) => {
-  const { anonymous, content } = formValues;
+const formJsonStringify = ({ payload, nickname }: Props) => {
+  const { anonymous, content } = payload;
 
   return JSON.stringify({
     content,
