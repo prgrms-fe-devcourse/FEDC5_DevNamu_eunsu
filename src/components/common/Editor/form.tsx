@@ -15,19 +15,27 @@ export interface EditorFormValues {
 }
 
 interface Props {
+  initialText?: string;
   onSubmit: (formValues: EditorFormValues) => Promise<void>;
   placeholderText?: string;
 }
 
-const EditorForm = ({ onSubmit, placeholderText = "내용을 입력해주세요" }: Props) => {
+const EditorForm = ({
+  initialText = "",
+  onSubmit,
+  placeholderText = "내용을 입력해주세요",
+}: Props) => {
   // 사용자 상태와 Modal 트리거는 서버/전역 상태에서 받아옴
   const { user, isLoggedIn, hasNickname } = useGetUserInfo();
   const { openLoginModal, openUserChangeModal } = useGlobalModal();
 
+  console.log("initialText:", initialText);
+
   // 폼 요소는 2개 뿐이어서 useForm은 제거
   const [isAuthorAnonymous, setAuthorAnonymous] = useState(false);
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState(initialText);
   const hasContent = content.length > 0;
+  const emptyUserInput = () => setContent("");
 
   const toggleAnonymous = () => {
     if (!isLoggedIn) {
@@ -57,7 +65,7 @@ const EditorForm = ({ onSubmit, placeholderText = "내용을 입력해주세요"
       content,
     });
 
-    setContent("");
+    emptyUserInput();
   };
 
   return (

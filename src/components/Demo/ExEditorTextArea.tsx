@@ -4,11 +4,12 @@ import api from "@/apis/core";
 
 import { Thread } from "@/types/thread";
 
-import ThreadCreateEditor from "../Home/ThreadCreateEditor";
-import ThreadUpdateEditor from "../Home/ThreadUpdateEditor";
-import CommentCreateEditor from "../comments/CommentCreateEditor";
+import CommonThreadEditor from "../common/Editor";
 
 import useGetUserInfo from "@/apis/auth/useGetUserInfo";
+import useUploadComment from "@/hooks/api/useUploadComment";
+import useUpdateThread from "@/hooks/api/useUpdateThread";
+import useCreateThread from "@/hooks/api/useCreateThread";
 
 const useThreadDetail = (postId: string) => {
   console.log("postId:", postId);
@@ -21,24 +22,20 @@ const useThreadDetail = (postId: string) => {
   });
 };
 
-const PostDetailArea = ({ postId }: { postId: string }) => {
-  const { data, isPending } = useThreadDetail(postId);
-
-  console.log("postId:", postId, "data:", data);
-
-  if (isPending) {
+const PostDetailArea = ({ thread }: { thread?: Thread }) => {
+  if (!thread) {
     return <div>"스레드 로딩 중..."</div>;
   }
 
   return (
     <div className="flex flex-col h-screen p-4 overflow-auto bg-gray-300">
       <div>[현재 테스트 대상 스레드]</div>
-      <div>본문: {data?.title}</div>
+      <div>본문: {thread.title}</div>
       <hr />
       <div>
         댓글:
         <ol className="flex flex-col gap-4 p-4">
-          {data?.comments.map((comment, idx) => (
+          {thread.comments.map((comment, idx) => (
             <li key={idx} className="flex flex-col gap-2 border-2 border-gray-500">
               <div>작성자: {comment.author.fullName}</div>
               <div>내용: {comment.comment}</div>
@@ -54,7 +51,17 @@ const ExEditorTextArea = () => {
   const channelId = "658d50d74f228a47fec343bd"; // 칭찬게시판
   const postId = "65982e1bf226073f4c8a0da2"; // 이재준 "test"
 
+  const { data: thread } = useThreadDetail(postId);
+  const parsedThreadBody = thread && JSON.parse(thread.title).content;
+
+  console.log("parsedThreadBody:", parsedThreadBody);
+
   const { user, isLoggedIn, hasNickname } = useGetUserInfo();
+
+  // 각각의 onSubmit
+  const uploadComment = useUploadComment(postId);
+  const updateThread = useUpdateThread(channelId, postId);
+  const uploadThread = useCreateThread({ channelId });
 
   return (
     <div className="flex flex-col h-screen">
@@ -66,19 +73,23 @@ const ExEditorTextArea = () => {
           <div>닉네임 보유 여부: {String(hasNickname)}</div>
           <div>닉네임: {user?.nickname}</div>
         </div>
-        <PostDetailArea postId={postId} />
-        <div className="flex-grow">
+        <PostDetailArea thread={thread} />
+        <div className="flex flex-col flex-grow gap-4">
           <div>
             <p>create Thread</p>
-            <ThreadCreateEditor channelId={channelId} />
+            <CommonThreadEditor onSubmit={uploadThread} />
           </div>
           <div>
             <p>patch Thread</p>
-            <ThreadUpdateEditor channelId={channelId} postId={postId} />
+            {/* 최초로 전달한 parsedThreadBody 값이 상태의 초기값으로 쓰여서, 로딩 중일 때는 전달하면 안 됨 (실제 페이지에서는 항상 값이 로딩된 상태겠지만) */}
+            {/* submit 후에 값이 다시 채워지지 않는데, 이것은 실제 페이지에서는 이미 전송하고 난 후에는 Thread 본문으로 변경하면서 언마운트하므로 문제 없음 */}
+            {parsedThreadBody && (
+              <CommonThreadEditor onSubmit={updateThread} initialText={parsedThreadBody} />
+            )}
           </div>
           <div>
             <p>comment Thread</p>
-            <CommentCreateEditor postId={postId} />
+            <CommonThreadEditor onSubmit={uploadComment} />
           </div>
         </div>
       </div>
