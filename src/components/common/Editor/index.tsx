@@ -4,7 +4,7 @@ import { User } from "@/types/user";
 import ThreadCommonPayload from "@/types/ThreadCommonPayload.ts";
 
 import EditorForm from "./form";
-import MentionInput from "./Mention/MentionInput.tsx";
+import MentionInput from "./MentionInput";
 
 import { RegisteredUser } from "@/constants/dummyData.ts";
 
