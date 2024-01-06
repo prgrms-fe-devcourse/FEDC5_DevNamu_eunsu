@@ -2,10 +2,10 @@ import EditorTextArea from "@/components/common/EditorTextArea.tsx";
 
 const ExEditorTextArea = () => {
   const nickname = "Zㅣ존Zㅐ훈";
-  const channelId = "6593e24a3c180849df6d07a3"; // 테스트용 데브나무 전체 채널 2
+  // const channelId = "6593e24a3c180849df6d07a3"; // 테스트용 데브나무 전체 채널 2
   const postId = "659379f479fd2531a0091d62"; // {"content":"알겠죠~?"} 게시물
 
-  const createThreadProps = { channelId };
+  const createThreadProps = { channelId: "65981b71a125832f20ab1341" }; // DB채널
 
   // TODO : [24/1/5] 이전 content 넣는 거 아직 구현 안됐습니다.
   const patchThreadProps = {

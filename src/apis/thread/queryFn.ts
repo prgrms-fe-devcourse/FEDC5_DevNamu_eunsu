@@ -23,3 +23,6 @@ export const patchThread = async (postInfo: PatchThread) => {
 
 export const getThreadsByChannelId = (channelId: string) =>
   api.get<Thread[]>({ url: `/posts/channel/${channelId}` });
+
+export const getThreadByThreadId = (threadId: string) =>
+  api.get<Thread>({ url: `/posts/${threadId}` });

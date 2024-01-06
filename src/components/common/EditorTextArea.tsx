@@ -7,9 +7,9 @@ import { Textarea } from "@/components/ui/textarea.tsx";
 import { cn } from "@/lib/utils";
 import MentionInput from "@/components/common/Mention/MentionInput.tsx";
 import RegisterModal from "@/components/Layout/Modals/Register";
-import { MyType } from "@/constants/dummyData.ts";
 import useEditorLogicByProps, { EditorProps } from "@/hooks/api/useEditorLogicByProps.ts";
 import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname.ts";
+import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 
 export interface FormValues {
   anonymous: boolean;
@@ -23,7 +23,7 @@ interface Props {
 }
 
 const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
-  const [choiceList, setChoiceList] = useState<Array<MyType>>([]);
+  const [choiceList, setChoiceList] = useState<Array<UserDBProps>>([]);
 
   const { register, handleSubmit, watch, setValue } = useForm({
     defaultValues: { anonymous: true, content: "" },

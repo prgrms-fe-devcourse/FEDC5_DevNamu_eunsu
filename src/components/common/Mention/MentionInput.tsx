@@ -13,22 +13,22 @@ import { Input } from "@/components/ui/input.tsx";
 import AutoCompleteMentionList from "@/components/common/Mention/AutoCompleteMentionList";
 import UserBadgeList from "@/components/common/Mention/UserBadgeList";
 import autoComplete from "@/lib/autoComplete.ts";
-import { MyType, USER_LIST } from "@/constants/dummyData.ts";
+import useUserListByDB, { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 
 interface Props {
-  choiceList: MyType[];
-  onChoose: Dispatch<SetStateAction<MyType[]>>;
+  choiceList: UserDBProps[];
+  onChoose: Dispatch<SetStateAction<UserDBProps[]>>;
 }
 
 const MentionInput = ({ choiceList, onChoose }: Props) => {
-  const [mentionList, setMentionList] = useState<Array<MyType>>([]);
+  const [mentionList, setMentionList] = useState<Array<UserDBProps>>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const [focusIndex, setFocusIndex] = useState(-1);
-
+  const { userListByDB } = useUserListByDB();
   const searchPeople = (event: FormEvent<HTMLInputElement>) => {
     event.preventDefault();
 
-    const { search } = autoComplete<MyType>({ list: USER_LIST, key: "name" });
+    const { search } = autoComplete<UserDBProps>({ list: userListByDB, key: "name" });
     const list = search(event.currentTarget.value.trim());
     list && setMentionList(list);
   };
@@ -39,7 +39,7 @@ const MentionInput = ({ choiceList, onChoose }: Props) => {
     inputRef.current.value = "";
   };
 
-  const handleAddChoiceList = (people: MyType) => {
+  const handleAddChoiceList = (people: UserDBProps) => {
     const isDuplication = choiceList.find(
       ({ name, userId }) => name === people.name && userId === people.userId,
     );
@@ -51,7 +51,7 @@ const MentionInput = ({ choiceList, onChoose }: Props) => {
     emptyUserInput();
   };
 
-  const handleDeleteChoiceList = (people: MyType) => {
+  const handleDeleteChoiceList = (people: UserDBProps) => {
     const newChoiceList = [...choiceList].filter(
       ({ name, userId }) => !(name === people.name && userId === people.userId),
     );

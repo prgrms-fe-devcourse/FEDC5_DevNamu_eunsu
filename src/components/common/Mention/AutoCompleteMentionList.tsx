@@ -1,11 +1,11 @@
 import { Separator } from "@/components/ui/separator.tsx";
 
 import { cn } from "@/lib/utils.ts";
-import { MyType } from "@/constants/dummyData.ts";
+import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 
 export interface ListProps {
-  users: MyType[];
-  onClick: (people: MyType) => void;
+  users: UserDBProps[];
+  onClick: (people: UserDBProps) => void;
 }
 
 interface MentionListProps extends ListProps {
@@ -18,7 +18,7 @@ const AutoCompleteMentionList = ({ users, onClick, focusIndex }: MentionListProp
     <ul className="absolute bottom-12 left-0 right-0 z-10 mt-2 overflow-hidden scroll-auto border bg-white p-2">
       {users.map(({ name, userId }, index) => {
         return (
-          <li key={userId}>
+          <li key={userId + name}>
             <p
               onClick={() => onClick({ name, userId })}
               className={cn(
