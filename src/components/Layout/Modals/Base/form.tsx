@@ -18,7 +18,6 @@ export interface FieldProps {
   name: string;
   type: string;
   label: string;
-  defaultValue?: string;
   autoFocus?: boolean;
   desc?: string;
   placeholder?: string;
@@ -27,6 +26,7 @@ export interface FieldProps {
    * @see https://www.chromium.org/developers/design-documents/form-styles-that-chromium-understands/
    */
   autoComplete?: "username" | "current-password" | "new-password" | "nickname" | "off";
+  value?: string;
 }
 
 export interface SimpleFormProps {
@@ -39,11 +39,11 @@ export interface SimpleFormProps {
 }
 
 const SimpleBaseForm = ({ fields, validationSchema, submitText, onSubmit }: SimpleFormProps) => {
-  const defaultValues = fields.reduce((sum, { name, defaultValue }) => {
+  const defaultValues = fields.reduce((sum, { name, value }) => {
     // defaultValue를 무조건 지정해줘야 하므로 생성
     return {
       ...sum,
-      [name]: defaultValue ?? "",
+      [name]: value ?? "",
     };
   }, {});
 
