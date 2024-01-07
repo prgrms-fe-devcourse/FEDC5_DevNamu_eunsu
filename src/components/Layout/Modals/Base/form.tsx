@@ -26,6 +26,7 @@ export interface FieldProps {
    * @see https://www.chromium.org/developers/design-documents/form-styles-that-chromium-understands/
    */
   autoComplete?: "username" | "current-password" | "new-password" | "nickname" | "off";
+  readOnly?: boolean;
   value?: string;
 }
 
