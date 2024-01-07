@@ -1,7 +1,7 @@
 import { NotificationTypes } from "@/apis/notification";
 
-import { usePostComment } from "@/hooks/api/useCommentMutate";
-import { usePostNotification } from "@/hooks/api/useNotificationMutate";
+import { usePostComment } from "@/hooks/api/usePostComment";
+import { usePostNotification } from "@/hooks/api/usePostNotification";
 import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickName.ts";
 
 interface Props {

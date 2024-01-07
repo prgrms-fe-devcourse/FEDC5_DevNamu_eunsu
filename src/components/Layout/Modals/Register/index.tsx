@@ -9,7 +9,7 @@ import SimpleBaseModal from "../Base/modal";
 
 import { REGISTER_FIELDS, REGISTER_FIELDS_SCHEMA } from "./config";
 
-import useRegister from "@/hooks/api/usePostRegister";
+import usePostRegister from "@/hooks/api/usePostRegister";
 
 interface Props {
   open: boolean;
@@ -23,7 +23,7 @@ const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
     isSuccess: isRegisterSuccess,
     isError: isRegisterError,
     error: registerError,
-  } = useRegister();
+  } = usePostRegister();
 
   const handleLoginClick = useCallback(() => {
     toggleOpen(false);

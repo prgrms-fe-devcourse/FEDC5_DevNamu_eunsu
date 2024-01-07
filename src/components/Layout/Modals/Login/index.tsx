@@ -7,7 +7,7 @@ import SimpleBaseModal from "../Base/modal";
 
 import { LOGIN_FIELDS, LOGIN_FIELDS_SCHEMA } from "./config";
 
-import useLogin from "@/hooks/api/usePostLogin";
+import usePostLogin from "@/hooks/api/usePostLogin";
 
 interface Props {
   open: boolean;
@@ -16,7 +16,7 @@ interface Props {
 }
 
 const LoginModal = ({ open, toggleOpen, openRegisterModal }: Props) => {
-  const { mutate: loginMutate } = useLogin({ toggleOpen });
+  const { mutate: loginMutate } = usePostLogin({ toggleOpen });
 
   const handleRegisterClick = () => {
     toggleOpen(!open);
