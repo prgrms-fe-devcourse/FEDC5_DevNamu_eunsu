@@ -1,8 +1,9 @@
-import useGetUserInfo from "@/apis/auth/useGetUserInfo";
+import useThreadsByChannel from "@/hooks/useThreadsByChannel";
+
+import useGetUserInfo from "@/hooks/api/useGetUserInfo";
 import ChannelNavigationMenu from "@/components/Home/ChannelNavigationMenu";
 import ThreadList from "@/components/Home/ThreadList";
 import EditorTextArea from "@/components/common/EditorTextArea";
-import useThreadsByChannel from "@/hooks/api/useThreadsByChannel";
 
 const HomePage = () => {
   const { user } = useGetUserInfo();
