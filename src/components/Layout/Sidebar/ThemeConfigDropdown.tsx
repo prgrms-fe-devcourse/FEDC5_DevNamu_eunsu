@@ -19,6 +19,11 @@ import { IconCSS, IconDescriptionCSS } from "./styles";
  */
 export const ThemeConfigDropdown = ({ children }: PropsWithChildren) => {
   const [settingModalOpen, setSettingModalOpen] = useState(false);
+
+  const settingModalOpenHandler = () => {
+    setSettingModalOpen(true);
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
@@ -35,7 +40,10 @@ export const ThemeConfigDropdown = ({ children }: PropsWithChildren) => {
             <span className={IconDescriptionCSS}>다크</span>
           </div>
         </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer text-lg hover:text-2xl">
+        <DropdownMenuItem
+          className="cursor-pointer text-lg hover:text-2xl"
+          onClick={settingModalOpenHandler}
+        >
           <div className="flex items-center gap-2 p-2">
             <SettingsIcon className={IconCSS} />
             <span className={IconDescriptionCSS}>시스템</span>
