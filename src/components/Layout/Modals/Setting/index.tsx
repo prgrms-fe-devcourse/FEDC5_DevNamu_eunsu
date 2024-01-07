@@ -4,6 +4,7 @@ import SimpleBaseForm from "../Base/form";
 import SimpleBaseModal from "../Base/modal";
 
 import { SETTING_FIELDS, SETTING_FIELDS_SCHEMA } from "./config";
+import ImageUploadForm from "./ImageUploadForm";
 
 interface Props {
   open: boolean;
@@ -30,6 +31,7 @@ const SettingModal = ({ open, toggleOpen }: Props) => {
         submitText="저장"
         cancelText="취소"
       >
+        <ImageUploadForm />
       </SimpleBaseForm>
     </SimpleBaseModal>
   );
