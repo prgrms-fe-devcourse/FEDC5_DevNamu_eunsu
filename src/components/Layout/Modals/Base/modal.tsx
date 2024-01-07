@@ -12,7 +12,7 @@ import {
 interface Props extends PropsWithChildren {
   dialogOptions?: DialogProps;
   title: string;
-  header: ReactNode;
+  header?: ReactNode;
 }
 
 const SimpleBaseModal = ({ dialogOptions = {}, title, header, children }: Props) => {
