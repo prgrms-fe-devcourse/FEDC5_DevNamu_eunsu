@@ -18,8 +18,20 @@ export interface AuthResponse {
   token: string;
 }
 
-export const postLogin = (loginInfo: LoginRequest) =>
-  api.post<AuthResponse>({ url: "/login", data: loginInfo });
+export const postLogin = async (loginInfo: LoginRequest) => {
+  const { user, token } = await api.post<AuthResponse>({ url: "/login", data: loginInfo });
+
+  if (!user) return null;
+
+  const { name, nickname } = parseFullName(user.fullName);
+
+  return {
+    ...user,
+    name,
+    nickname,
+    token,
+  };
+};
 
 export const postRegister = (registerInfo: RegisterRequest) =>
   api.post<AuthResponse>({ url: "/signup", data: registerInfo });
