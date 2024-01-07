@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { DialogClose } from "@/components/ui/dialog";
 
 export interface FieldProps {
   name: string;
@@ -37,9 +38,16 @@ export interface SimpleFormProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSubmit: (values: any) => void;
   submitText: string;
+  cancelText?: string;
 }
 
-const SimpleBaseForm = ({ fields, validationSchema, submitText, onSubmit }: SimpleFormProps) => {
+const SimpleBaseForm = ({
+  fields,
+  validationSchema,
+  submitText,
+  cancelText,
+  onSubmit,
+}: SimpleFormProps) => {
   const defaultValues = fields.reduce((sum, { name, value }) => {
     // defaultValue를 무조건 지정해줘야 하므로 생성
     return {
@@ -82,7 +90,14 @@ const SimpleBaseForm = ({ fields, validationSchema, submitText, onSubmit }: Simp
             )}
           />
         ))}
-        <Button type="submit">{submitText}</Button>
+        <div className="flex items-center justify-center">
+          <Button type="submit">{submitText}</Button>
+          {cancelText && (
+            <DialogClose className="ml-2 rounded-md border bg-background px-4 py-2.5 text-sm font-medium">
+              {cancelText}
+            </DialogClose>
+          )}
+        </div>
       </form>
     </Form>
   );
