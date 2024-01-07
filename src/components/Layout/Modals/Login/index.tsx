@@ -7,7 +7,7 @@ import SimpleBaseModal from "../Base/modal";
 
 import { LOGIN_FIELDS, LOGIN_FIELDS_SCHEMA } from "./config";
 
-import useLogin from "@/apis/auth/useLogin";
+import useLogin from "@/hooks/api/usePostLogin";
 
 interface Props {
   open: boolean;

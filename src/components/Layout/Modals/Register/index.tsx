@@ -9,7 +9,7 @@ import SimpleBaseModal from "../Base/modal";
 
 import { REGISTER_FIELDS, REGISTER_FIELDS_SCHEMA } from "./config";
 
-import useRegister from "@/apis/auth/useRegister";
+import useRegister from "@/hooks/api/usePostRegister";
 
 interface Props {
   open: boolean;

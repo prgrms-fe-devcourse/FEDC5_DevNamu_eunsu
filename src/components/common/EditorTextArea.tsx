@@ -3,11 +3,11 @@ import { SendHorizontal } from "lucide-react";
 import { FormEvent, useState } from "react";
 
 import useParentWidth from "@/hooks/useParentWidth.ts";
+import useUploadThread from "@/hooks/useUploadThread";
+import useUploadComment from "@/hooks/useUploadComment";
 
 import { Textarea } from "@/components/ui/textarea.tsx";
 
-import useUploadThread from "@/hooks/api/useUploadThread.ts";
-import useUploadComment from "@/hooks/api/useUploadComment.ts";
 import { cn } from "@/lib/utils";
 import MentionInput from "@/components/common/Mention/MentionInput.tsx";
 import RegisterModal from "@/components/Layout/Modals/Register";

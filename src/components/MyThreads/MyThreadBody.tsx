@@ -1,7 +1,7 @@
 import MyThreadItem from "./MyThreadItem";
 
-import useGetMyThread from "@/apis/mythreads/useMyThreadQuery";
-import useGetUserInfo from "@/apis/auth/useGetUserInfo";
+import useGetMyThread from "@/hooks/api/useMyThreadQuery";
+import useGetUserInfo from "@/hooks/api/useGetUserInfo";
 
 const Date = ({ date }: { date?: string }) => {
   return <p className="text-m mt-40pxr py-1pxr font-bold">{date}</p>;
