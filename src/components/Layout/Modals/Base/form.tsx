@@ -1,6 +1,7 @@
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { PropsWithChildren } from "react";
 
 import {
   Form,
@@ -31,7 +32,7 @@ export interface FieldProps {
   value?: string;
 }
 
-export interface SimpleFormProps {
+export interface SimpleFormProps extends PropsWithChildren {
   fields: FieldProps[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   validationSchema: z.ZodEffects<z.ZodObject<any>> | z.ZodObject<any>;
@@ -47,6 +48,7 @@ const SimpleBaseForm = ({
   submitText,
   cancelText,
   onSubmit,
+  children,
 }: SimpleFormProps) => {
   const defaultValues = fields.reduce((sum, { name, value }) => {
     // defaultValue를 무조건 지정해줘야 하므로 생성
@@ -65,6 +67,7 @@ const SimpleBaseForm = ({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        {children}
         {fields.map(({ name, label, desc, ...props }) => (
           <FormField
             key={name}
