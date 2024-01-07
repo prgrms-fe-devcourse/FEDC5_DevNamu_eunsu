@@ -37,12 +37,13 @@ const useUploadComment = ({ nickname, postId, channelName, mentionList }: Props)
 
     notificationMutate(notificationRequest);
 
-    mentionList &&
-      mentionNotification({
-        content: formValues.content,
-        postId,
-        channelName,
-      });
+    if (!mentionList) return;
+
+    mentionNotification({
+      content: formValues.content,
+      postId,
+      channelName,
+    });
   };
 
   return { uploadComment };

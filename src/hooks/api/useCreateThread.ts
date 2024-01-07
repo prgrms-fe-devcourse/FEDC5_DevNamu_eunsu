@@ -24,12 +24,13 @@ const useCreateThread = ({ nickname, channelId, mentionList }: Props) => {
 
     const threadResponse = await createThreadMutate(threadRequest);
 
-    mentionList &&
-      mentionNotification({
-        content: formValues.content,
-        postId: threadResponse._id,
-        channelName: threadResponse.channel.name,
-      });
+    if (!mentionList) return;
+
+    mentionNotification({
+      content: formValues.content,
+      postId: threadResponse._id,
+      channelName: threadResponse.channel.name,
+    });
   };
   return { uploadThread };
 };

@@ -42,7 +42,7 @@ interface UploadHooksProps {
   (params: { anonymous: boolean; content: string }): void;
 }
 
-const useEditorLogicByProps = ({ editorProps, nickname, mentionList = [] }: Props) => {
+const useEditorLogicByProps = ({ editorProps, nickname, mentionList }: Props) => {
   const [upload, setUpload] = useState<UploadHooksProps>(() => () => {});
 
   const { uploadThread } = useCreateThread({

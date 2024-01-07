@@ -24,7 +24,11 @@ interface Props {
 const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
   const [mentionList, setMentionList] = useState<Array<UserDBProps>>([]);
 
-  const { upload } = useEditorLogicByProps({ editorProps, nickname, mentionList });
+  const { upload } = useEditorLogicByProps({
+    editorProps,
+    nickname,
+    mentionList: mentionList.length ? mentionList : undefined,
+  });
 
   const { register, handleSubmit, watch, setValue } = useForm({
     defaultValues: { anonymous: true, content: "" },

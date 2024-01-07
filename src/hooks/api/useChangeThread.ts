@@ -23,12 +23,13 @@ const useChangeThread = ({ nickname, postId, mentionList }: Props) => {
 
     const ThreadResponse = await patchThreadMutate(threadRequest);
 
-    mentionList &&
-      mentionNotification({
-        content: formValues.content,
-        postId: ThreadResponse._id,
-        channelName: ThreadResponse.channel.name,
-      });
+    if (!mentionList) return;
+
+    mentionNotification({
+      content: formValues.content,
+      postId: ThreadResponse._id,
+      channelName: ThreadResponse.channel.name,
+    });
   };
   return { changeThread };
 };
