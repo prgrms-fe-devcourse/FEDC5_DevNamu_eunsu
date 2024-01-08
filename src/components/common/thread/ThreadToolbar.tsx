@@ -32,7 +32,7 @@ const ThreadToolbar = ({ className }: Props) => {
         {hoveredButton === "like" && (
           <ThreadTooltip
             content="좋아요"
-            className="-right-2 bottom-full mb-2 w-auto whitespace-nowrap"
+            className="absolute -right-2 bottom-full mb-2 w-auto whitespace-nowrap"
           />
         )}
       </button>
@@ -46,7 +46,7 @@ const ThreadToolbar = ({ className }: Props) => {
         {hoveredButton === "comment" && (
           <ThreadTooltip
             content="스레드에 댓글 달기"
-            className="-right-10 bottom-full mb-2 w-auto whitespace-nowrap"
+            className="absolute -right-10 bottom-full mb-2 w-auto whitespace-nowrap"
           />
         )}
       </button>
@@ -60,7 +60,7 @@ const ThreadToolbar = ({ className }: Props) => {
         {hoveredButton === "edit" && (
           <ThreadTooltip
             content="스레드 편집"
-            className="-right-5 bottom-full mb-2 w-auto whitespace-nowrap"
+            className="absolute -right-5 bottom-full  mb-2 w-auto whitespace-nowrap"
           />
         )}
       </button>
@@ -74,12 +74,12 @@ const ThreadToolbar = ({ className }: Props) => {
         {hoveredButton === "delete" && (
           <ThreadTooltip
             content="스레드 삭제"
-            className="-right-5 bottom-full mb-2 w-auto whitespace-nowrap"
+            className="absolute -right-5 bottom-full mb-2 w-auto whitespace-nowrap"
           />
         )}
       </button>
       <button
-        className="relative p-2 text-red-500 hover:bg-gray-100"
+        className="relative overflow-x-visible p-2 text-red-500 hover:bg-gray-100"
         aria-label="신고"
         onMouseEnter={handleMouseEnter("report")}
         onMouseLeave={handleMouseLeave}
@@ -88,7 +88,7 @@ const ThreadToolbar = ({ className }: Props) => {
         {hoveredButton === "report" && (
           <ThreadTooltip
             content="스레드 신고"
-            className="-right-5 bottom-full mb-2 w-auto whitespace-nowrap"
+            className="absolute -right-5 bottom-full mb-2 w-auto whitespace-nowrap"
           />
         )}
       </button>
