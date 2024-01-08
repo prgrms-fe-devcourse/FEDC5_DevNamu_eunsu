@@ -12,18 +12,25 @@ const ThreadList = ({ threads }: Props) => {
   const threadListRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
-    if (!threadListRef.current) return;
-
-    threadListRef.current.scrollTop = threadListRef.current.scrollHeight;
-  }, [threads]);
+    if (threadListRef.current) {
+      threadListRef.current.scrollTop = threadListRef.current.scrollHeight;
+    }
+  }, []);
 
   return (
     <ul
       ref={threadListRef}
       className="max-h-700pxr min-h-700pxr overflow-y-auto rounded-sm border border-t-0 pt-80pxr"
     >
-      {threads.map(({ _id, createdAt, title, author }) => (
-        <ThreadListItem key={_id} id={_id} createdAt={createdAt} title={title} author={author} />
+      {threads.map(({ _id, createdAt, title, author, likes }) => (
+        <ThreadListItem
+          key={_id}
+          id={_id}
+          createdAt={createdAt}
+          title={title}
+          author={author}
+          likes={likes}
+        />
       ))}
     </ul>
   );
