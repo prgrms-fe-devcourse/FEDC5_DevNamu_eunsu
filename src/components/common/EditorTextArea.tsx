@@ -9,6 +9,7 @@ import MentionInput from "@/components/common/mention/MentionInput.tsx";
 import useEditorLogicByProps, { EditorProps } from "@/hooks/api/useEditorLogicByProps.ts";
 import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname.ts";
 import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
+import RegisterModal from "@/components/Layout/Modals/Register";
 
 export interface FormValues {
   anonymous: boolean;
@@ -40,17 +41,17 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
     setValue("content", "");
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if ("prevContent" in editorProps) setValue("content", editorProps.prevContent);
   }, []);
 
   // TODO: [24/1/6] 모달 창은 layout단에 위치 시키고 open 여부를 전역상태관리하며 여기서는 트리거 역할만 하기 제안하기, 승인 시 아래 제거(by 성빈님)
-  const [openModel, setOpenModel] = useState(false);
+  const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const handleClickCheckBox = (e: FormEvent<HTMLInputElement>) => {
-    console.log(openModel);
     if (!e.currentTarget.checked && nickname === ANONYMOUS_NICKNAME) {
       setValue("anonymous", true);
-      setOpenModel(true);
+      setRegisterModalOpen((prev) => !prev);
       return;
     }
   };
@@ -89,6 +90,13 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
           </button>
         </div>
       </form>
+
+      {/*TODO: [24/1/6] 모달 창은 layout단에 위치 시키고 open 여부를 전역상태관리하며 여기서는 트리거 역할만 하기 제안하기, 승인 시 아래 제거(by 성빈님)*/}
+      <RegisterModal
+        open={registerModalOpen}
+        toggleOpen={setRegisterModalOpen}
+        openLoginModal={() => {}}
+      />
     </div>
   );
 };
