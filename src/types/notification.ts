@@ -1,5 +1,6 @@
 import { Comment } from "./thread";
 import { User } from "./user";
+import { Like } from "./thread";
 
 export interface Notification {
   seen: boolean;
@@ -8,6 +9,7 @@ export interface Notification {
   user: User | string;
   post: string | null;
   follow?: string;
+  like?: Like;
   comment?: Comment;
   message?: string;
   createdAt: string;
