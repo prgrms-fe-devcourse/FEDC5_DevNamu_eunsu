@@ -1,7 +1,7 @@
 import api from "@/apis/core";
 
-import { Notification } from "@/types/notification";
+import { Notification, Conversation } from "@/types/notification";
 
 export const getMyNotification = () => api.get<Notification[]>({ url: `/notifications` });
 
-export default getMyNotification;
+export const getMyMentioned = () => api.get<Conversation[]>({ url: `/messages/conversations` });
