@@ -1,24 +1,23 @@
 import MyNotificationItem from "./MyNotificationItem";
-import { DUMMYNOTIFICAITION } from "./DUMMYNOTIFICATION";
 
-const DUMMYDATA = [
-  DUMMYNOTIFICAITION,
-  DUMMYNOTIFICAITION,
-  DUMMYNOTIFICAITION,
-  DUMMYNOTIFICAITION,
-  DUMMYNOTIFICAITION,
-];
+import useGetmyNotification from "@/apis/mynotification/useGetMyNotification";
+
 const MyNotificationBody = () => {
+  const { myNotifications, isPending } = useGetmyNotification();
+
+  if (isPending || !myNotifications) {
+    return <span>Loading...</span>;
+  }
+
   return (
     <main className="p-10pxr">
       <ul className="list-none">
-        {DUMMYDATA.map(({ _id, seen, author, comment, createdAt }) => {
+        {myNotifications.map(({ _id, seen, comment, createdAt }) => {
           return (
             <MyNotificationItem
               key={_id}
               seen={seen}
-              author={author.fullName}
-              comment={comment.comment}
+              comment={comment?.comment}
               createdAt={createdAt}
             />
           );
