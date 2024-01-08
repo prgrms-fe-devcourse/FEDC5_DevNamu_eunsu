@@ -16,6 +16,7 @@ const App = () => (
         <Route path="channels/*" element={<HomePage />} />
         <Route path="my-threads" element={<MyThreadsPage />} />
         <Route path="my-notifications" element={<MyNotificationsPage />} />
+        {/*TODO : [24/1/8] 에디터 데모 다음 머지 시 삭제 (이번에는 PR 없이 머지하기로 해서 남겨두겠습니다) */}
         <Route path="demo" element={<ExEditorTextArea />} />
       </Route>
       <Route path="*" element={<NotFoundPage />} />
