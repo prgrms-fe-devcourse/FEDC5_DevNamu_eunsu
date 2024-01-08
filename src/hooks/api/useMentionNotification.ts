@@ -26,7 +26,7 @@ const useMentionNotification = ({ mentionList }: Props) => {
       const mentionResponse = await mentionMutate(mentionRequest);
 
       const notificationRequest = {
-        notificationType: "MENTION" as NotificationTypes,
+        notificationType: "MESSAGE" as NotificationTypes,
         notificationTypeId: mentionResponse._id,
         userId: mentionResponse.sender._id,
         postId,
