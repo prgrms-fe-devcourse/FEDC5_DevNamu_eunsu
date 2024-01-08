@@ -10,37 +10,37 @@ import {
 
 import { Input } from "@/components/ui/input.tsx";
 
-import AutoCompleteMentionList from "@/components/common/Mention/AutoCompleteMentionList";
-import UserBadgeList from "@/components/common/Mention/UserBadgeList";
+import AutoCompleteMentionList from "@/components/common/mention/AutoCompleteMentionList";
+import UserBadgeList from "@/components/common/mention/UserBadgeList";
 import autoComplete from "@/lib/autoComplete.ts";
-import { MyType, USER_LIST } from "@/constants/dummyData.ts";
+import useUserListByDB, { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 
 interface Props {
-  choiceList: MyType[];
-  onChoose: Dispatch<SetStateAction<MyType[]>>;
+  mentionList: UserDBProps[];
+  onChoose: Dispatch<SetStateAction<UserDBProps[]>>;
 }
 
-const MentionInput = ({ choiceList, onChoose }: Props) => {
-  const [mentionList, setMentionList] = useState<Array<MyType>>([]);
+const MentionInput = ({ mentionList, onChoose }: Props) => {
+  const [autoCompleteList, setAutoCompleteList] = useState<Array<UserDBProps>>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const [focusIndex, setFocusIndex] = useState(-1);
-
+  const { userListByDB } = useUserListByDB();
   const searchPeople = (event: FormEvent<HTMLInputElement>) => {
     event.preventDefault();
 
-    const { search } = autoComplete<MyType>({ list: USER_LIST, key: "name" });
+    const { search } = autoComplete<UserDBProps>({ list: userListByDB, key: "name" });
     const list = search(event.currentTarget.value.trim());
-    list && setMentionList(list);
+    list && setAutoCompleteList(list);
   };
 
   const emptyUserInput = () => {
     if (!inputRef.current) return;
-    setMentionList([]);
+    setAutoCompleteList([]);
     inputRef.current.value = "";
   };
 
-  const handleAddChoiceList = (people: MyType) => {
-    const isDuplication = choiceList.find(
+  const handleAddChoiceList = (people: UserDBProps) => {
+    const isDuplication = mentionList.find(
       ({ name, userId }) => name === people.name && userId === people.userId,
     );
 
@@ -51,15 +51,15 @@ const MentionInput = ({ choiceList, onChoose }: Props) => {
     emptyUserInput();
   };
 
-  const handleDeleteChoiceList = (people: MyType) => {
-    const newChoiceList = [...choiceList].filter(
+  const handleDeleteChoiceList = (people: UserDBProps) => {
+    const newChoiceList = [...mentionList].filter(
       ({ name, userId }) => !(name === people.name && userId === people.userId),
     );
     onChoose(newChoiceList);
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    const mentionLength = mentionList.length;
+    const mentionLength = autoCompleteList.length;
 
     if (mentionLength <= 0 || !inputRef.current) return;
     if (event.nativeEvent.isComposing) return;
@@ -72,18 +72,18 @@ const MentionInput = ({ choiceList, onChoose }: Props) => {
         setFocusIndex((prev) => (prev - 1 + mentionLength) % mentionLength);
         break;
       case "Enter":
-        handleAddChoiceList(mentionList[focusIndex]);
+        handleAddChoiceList(autoCompleteList[focusIndex]);
         break;
     }
   };
 
   useEffect(() => {
     setFocusIndex(0);
-  }, [mentionList]);
+  }, [autoCompleteList]);
 
   return (
     <div className="relative">
-      <UserBadgeList users={choiceList} onClick={handleDeleteChoiceList} />
+      <UserBadgeList users={mentionList} onClick={handleDeleteChoiceList} />
 
       <Input
         type="text"
@@ -94,7 +94,7 @@ const MentionInput = ({ choiceList, onChoose }: Props) => {
       />
 
       <AutoCompleteMentionList
-        users={mentionList}
+        users={autoCompleteList}
         onClick={handleAddChoiceList}
         focusIndex={focusIndex}
       />

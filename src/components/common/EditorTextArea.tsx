@@ -1,61 +1,56 @@
 import { useForm } from "react-hook-form";
 import { SendHorizontal } from "lucide-react";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 import { Textarea } from "@/components/ui/textarea.tsx";
 
-import useUploadThread from "@/hooks/api/useUploadThread.ts";
-import useUploadComment from "@/hooks/api/useUploadComment.ts";
 import { cn } from "@/lib/utils";
-import MentionInput from "@/components/common/Mention/MentionInput.tsx";
-import RegisterModal from "@/components/Layout/Modals/Register";
-import { MyType } from "@/constants/dummyData.ts";
+import MentionInput from "@/components/common/mention/MentionInput.tsx";
+import useEditorLogicByProps, { EditorProps } from "@/hooks/api/useEditorLogicByProps.ts";
 import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname.ts";
+import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
+import RegisterModal from "@/components/Layout/Modals/Register";
 
-export type ContentType = "post" | "comment";
-export type SubmitType = "create" | "patch";
-interface Props {
-  isMention: boolean;
-  contentType: ContentType;
-  submitType: SubmitType;
-  nickname: string | undefined;
-  postId?: string;
-  channelId: string;
+export interface FormValues {
+  anonymous: boolean;
+  content: string;
 }
 
-// TODO: [24/1/2] contentType, submitType에 따라 props값 다르게 넘겨주기
-const EditorTextArea = ({
-  isMention,
-  contentType,
-  submitType,
-  nickname,
-  postId = "",
-  channelId,
-}: Props) => {
-  const [choiceList, setChoiceList] = useState<Array<MyType>>([]);
+interface Props {
+  isMention: boolean;
+  nickname: string;
+  editorProps: EditorProps;
+}
+
+const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
+  const [mentionList, setMentionList] = useState<Array<UserDBProps>>([]);
+
+  const { upload } = useEditorLogicByProps({
+    editorProps,
+    nickname,
+    mentionList: mentionList.length ? mentionList : undefined,
+  });
 
   const { register, handleSubmit, watch, setValue } = useForm({
     defaultValues: { anonymous: true, content: "" },
   });
 
-  const [registerModalOpen, setRegisterModalOpen] = useState(false);
-
-  // TODO: [24/1/5] anonymous 값에 따라서 nickname 다르게 넘겨주기
-  const { uploadThread } = useUploadThread({ submitType, nickname, channelId, postId });
-  const { uploadComment } = useUploadComment({ nickname, postId });
-
-  const handleUpload = ({ anonymous, content }: { anonymous: boolean; content: string }) => {
-    contentType === "post"
-      ? uploadThread({ anonymous, content })
-      : uploadComment({ anonymous, content });
-
+  const handleUpload = (formValues: FormValues) => {
+    upload(formValues);
+    setMentionList([]);
     setValue("content", "");
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if ("prevContent" in editorProps) setValue("content", editorProps.prevContent);
+  }, []);
+
+  // TODO: [24/1/6] 모달 창은 layout단에 위치 시키고 open 여부를 전역상태관리하며 여기서는 트리거 역할만 하기 제안하기, 승인 시 아래 제거(by 성빈님)
+  const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const handleClickCheckBox = (e: FormEvent<HTMLInputElement>) => {
-    if (!e.currentTarget.checked && nickname !== ANONYMOUS_NICKNAME) {
+    if (!e.currentTarget.checked && nickname === ANONYMOUS_NICKNAME) {
       setValue("anonymous", true);
-      // TODO: [24/1/2] 모달 창과 연결
       setRegisterModalOpen((prev) => !prev);
       return;
     }
@@ -63,11 +58,11 @@ const EditorTextArea = ({
 
   return (
     <div className="flex w-full flex-col gap-1">
-      {isMention && <MentionInput choiceList={choiceList} onChoose={setChoiceList} />}
+      {isMention && <MentionInput mentionList={mentionList} onChoose={setMentionList} />}
 
       <form className="relative">
         <Textarea
-          placeholder={`${contentType}을 작성해주세요.`}
+          placeholder={`내용을 작성해주세요.`}
           className="resize-none"
           {...register("content")}
         />
@@ -96,7 +91,7 @@ const EditorTextArea = ({
         </div>
       </form>
 
-      {/*TODO: [24/1/2] openLoginModal 선택값을 변경, 정보 수정 모달 필요 성빈님께 말하기*/}
+      {/*TODO: [24/1/6] 모달 창은 layout단에 위치 시키고 open 여부를 전역상태관리하며 여기서는 트리거 역할만 하기 제안하기, 승인 시 아래 제거(by 성빈님)*/}
       <RegisterModal
         open={registerModalOpen}
         toggleOpen={setRegisterModalOpen}
