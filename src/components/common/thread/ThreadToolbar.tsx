@@ -3,12 +3,16 @@ import { useState } from "react";
 
 import ThreadTooltip from "./ThreadTooltip";
 
+import useGetUserInfo from "@/apis/auth/useGetUserInfo";
+
 interface Props {
+  authorId: string;
   className?: string;
 }
 
-const ThreadToolbar = ({ className }: Props) => {
+const ThreadToolbar = ({ authorId, className }: Props) => {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
+  const { user } = useGetUserInfo();
 
   const handleMouseEnter = (buttonType: string) => () => {
     setHoveredButton(buttonType);
@@ -50,34 +54,39 @@ const ThreadToolbar = ({ className }: Props) => {
           />
         )}
       </button>
-      <button
-        className="relative p-2 hover:bg-gray-100"
-        aria-label="편집"
-        onMouseEnter={handleMouseEnter("edit")}
-        onMouseLeave={handleMouseLeave}
-      >
-        <PencilLine strokeWidth={1} />
-        {hoveredButton === "edit" && (
-          <ThreadTooltip
-            content="스레드 편집"
-            className="absolute -right-5 bottom-full  mb-2 w-auto whitespace-nowrap"
-          />
-        )}
-      </button>
-      <button
-        className="relative p-2 hover:bg-gray-100"
-        aria-label="삭제"
-        onMouseEnter={handleMouseEnter("delete")}
-        onMouseLeave={handleMouseLeave}
-      >
-        <Trash2 strokeWidth={1} />
-        {hoveredButton === "delete" && (
-          <ThreadTooltip
-            content="스레드 삭제"
-            className="absolute -right-5 bottom-full mb-2 w-auto whitespace-nowrap"
-          />
-        )}
-      </button>
+      {user?._id === authorId && (
+        <>
+          <button
+            className="relative p-2 hover:bg-gray-100"
+            aria-label="편집"
+            onMouseEnter={handleMouseEnter("edit")}
+            onMouseLeave={handleMouseLeave}
+          >
+            <PencilLine strokeWidth={1} />
+            {hoveredButton === "edit" && (
+              <ThreadTooltip
+                content="스레드 편집"
+                className="absolute -right-5 bottom-full  mb-2 w-auto whitespace-nowrap"
+              />
+            )}
+          </button>
+          <button
+            className="relative p-2 hover:bg-gray-100"
+            aria-label="삭제"
+            onMouseEnter={handleMouseEnter("delete")}
+            onMouseLeave={handleMouseLeave}
+          >
+            <Trash2 strokeWidth={1} />
+            {hoveredButton === "delete" && (
+              <ThreadTooltip
+                content="스레드 삭제"
+                className="absolute -right-5 bottom-full mb-2 w-auto whitespace-nowrap"
+              />
+            )}
+          </button>
+        </>
+      )}
+
       <button
         className="relative overflow-x-visible p-2 text-red-500 hover:bg-gray-100"
         aria-label="신고"
