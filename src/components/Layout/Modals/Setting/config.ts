@@ -28,12 +28,6 @@ export const SETTING_FIELDS: FieldProps[] = [
     value: "프롱이",
   },
   {
-    name: "passwordCurrent",
-    type: "password",
-    label: "기존 비밀번호",
-    autoComplete: "current-password",
-  },
-  {
     name: "password",
     type: "password",
     label: "새 비밀번호",
