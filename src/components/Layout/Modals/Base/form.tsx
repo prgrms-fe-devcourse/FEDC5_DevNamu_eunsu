@@ -1,6 +1,7 @@
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { PropsWithChildren } from "react";
 
 import {
   Form,
@@ -13,12 +14,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { DialogClose } from "@/components/ui/dialog";
 
 export interface FieldProps {
   name: string;
   type: string;
   label: string;
-  defaultValue?: string;
   autoFocus?: boolean;
   desc?: string;
   placeholder?: string;
@@ -27,23 +28,33 @@ export interface FieldProps {
    * @see https://www.chromium.org/developers/design-documents/form-styles-that-chromium-understands/
    */
   autoComplete?: "username" | "current-password" | "new-password" | "nickname" | "off";
+  readOnly?: boolean;
+  value?: string;
 }
 
-export interface SimpleFormProps {
+export interface SimpleFormProps extends PropsWithChildren {
   fields: FieldProps[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   validationSchema: z.ZodEffects<z.ZodObject<any>> | z.ZodObject<any>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSubmit: (values: any) => void;
   submitText: string;
+  cancelText?: string;
 }
 
-const SimpleBaseForm = ({ fields, validationSchema, submitText, onSubmit }: SimpleFormProps) => {
-  const defaultValues = fields.reduce((sum, { name, defaultValue }) => {
+const SimpleBaseForm = ({
+  fields,
+  validationSchema,
+  submitText,
+  cancelText,
+  onSubmit,
+  children,
+}: SimpleFormProps) => {
+  const defaultValues = fields.reduce((sum, { name, value }) => {
     // defaultValue를 무조건 지정해줘야 하므로 생성
     return {
       ...sum,
-      [name]: defaultValue ?? "",
+      [name]: value ?? "",
     };
   }, {});
 
@@ -56,6 +67,7 @@ const SimpleBaseForm = ({ fields, validationSchema, submitText, onSubmit }: Simp
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        {children}
         {fields.map(({ name, label, desc, ...props }) => (
           <FormField
             key={name}
@@ -81,7 +93,14 @@ const SimpleBaseForm = ({ fields, validationSchema, submitText, onSubmit }: Simp
             )}
           />
         ))}
-        <Button type="submit">{submitText}</Button>
+        <div className="flex items-center justify-center">
+          <Button type="submit">{submitText}</Button>
+          {cancelText && (
+            <DialogClose className="ml-2 rounded-md border bg-background px-4 py-2.5 text-sm font-medium">
+              {cancelText}
+            </DialogClose>
+          )}
+        </div>
       </form>
     </Form>
   );
