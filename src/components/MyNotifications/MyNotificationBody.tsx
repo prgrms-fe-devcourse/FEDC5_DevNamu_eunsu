@@ -1,35 +1,43 @@
-import MyNotificationItem from "./MyNotificationItem";
+import { Conversation, Notification } from "@/types/notification";
 
-import useGetNotification from "@/apis/mynotification/useGetNotification";
-import useGetMentioned from "@/apis/mynotification/useGetMentioned";
+import useListedNotificationAndMention from "@/hooks/api/useListedNotificationAndMention.ts";
+import CommentNotification from "@/components/MyNotifications/CommentNotification.tsx";
+import MentionNotification from "@/components/MyNotifications/MentionNotification.tsx";
+
+const isComment = (props: Notification | Conversation): props is Notification => {
+  return "comment" in props;
+};
 
 const MyNotificationBody = () => {
-  const { myNotifications, isPending: notificationPending } = useGetNotification();
-  const { myMentions, isPending: mentionPending } = useGetMentioned();
+  const { listedNotificationAndMention, isPending } = useListedNotificationAndMention();
 
-  if (notificationPending || mentionPending) {
+  if (isPending) {
     return <span>Loading...</span>;
   }
-
-  console.log(notificationPending);
-  console.log(myMentions);
-
-  const 합쳐진데이터 = [...myNotifications, ...myMentions].sort(
-    (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
-  );
-
-  console.log("합쳐진 데이터", 합쳐진데이터);
 
   return (
     <main className="p-10pxr">
       <ul className="list-none">
-        {합쳐진데이터?.map(({ _id, comment, message, post, createdAt }) => {
+        {/*TODO : [24/1/8] 더 깔끔하게 작성할 것*/}
+        {listedNotificationAndMention?.map((notification) => {
+          const { _id, message, createdAt } = notification;
+
+          if (isComment(notification)) {
+            const { comment, post, createdAt } = notification;
+            return (
+              <CommentNotification
+                key={typeof _id === "string" ? _id : _id[0]}
+                postId={post || ""}
+                comment={comment?.comment || ""}
+                createdAt={createdAt}
+              />
+            );
+          }
+
           return (
-            <MyNotificationItem
+            <MentionNotification
               key={typeof _id === "string" ? _id : _id[0]}
-              postId={post}
-              comment={comment?.comment}
-              message={message}
+              message={message || ""}
               createdAt={createdAt}
             />
           );

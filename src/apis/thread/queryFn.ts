@@ -20,7 +20,7 @@ export const createThread = async (postInfo: CreateThread) => {
 };
 
 export const patchThread = async (postInfo: PatchThread) => {
-  return await api.put<Thread>({ url: `/posts/patch`, data: postInfo });
+  return await api.put<Thread>({ url: `/posts/update`, data: postInfo });
 };
 
 export const getThreadsByChannelId = (channelId: string) =>

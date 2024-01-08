@@ -1,50 +1,12 @@
 import { Separator } from "@/components/ui/separator";
 
-import { formatDate } from "@/utils/formatDate";
-
 interface Props {
-  postId: string;
-  comment?: string;
-  follow?: string;
-  message?: string;
-  createdAt: string;
-}
-
-const MyNotificationItem = ({ comment, message, postId, createdAt }: Props) => {
-  const createdDate = formatDate(createdAt);
-
-  if (comment) {
-    const commentBody = JSON.parse(comment);
-    const { content } = commentBody;
-    return <MyNotificationContent content={content} createdDate={createdDate} postId={postId} />;
-  } else if (message) {
-    const messageBody = JSON.parse(message);
-    const { channelName, postId: mentionPostId, content } = messageBody;
-    return (
-      <MyNotificationContent
-        createdDate={createdDate}
-        content={content}
-        channelName={channelName}
-        postId={mentionPostId}
-      />
-    );
-  }
-};
-
-export default MyNotificationItem;
-
-interface MyNotificationContentProps {
   createdDate: string;
   content: string;
   channelName?: string;
   postId: string;
 }
-const MyNotificationContent = ({
-  createdDate,
-  content,
-  channelName,
-  postId,
-}: MyNotificationContentProps) => {
+export const MyNotificationContent = ({ createdDate, content, channelName, postId }: Props) => {
   const title = channelName ? `#${channelName}에서 멘션이 왔어요!` : "댓글이 달렸어요!";
   return (
     <li>

@@ -8,10 +8,7 @@ const useListedNotificationAndMention = () => {
   const listedNotificationAndMention = [];
 
   if (myNotifications) listedNotificationAndMention.push(...myNotifications);
-  if (myMentions)
-    listedNotificationAndMention.push(
-      myMentions.map((mention) => ({ ...mention, _id: mention._id[0] })),
-    );
+  if (myMentions) listedNotificationAndMention.push(...myMentions);
 
   listedNotificationAndMention.sort(
     (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
