@@ -23,5 +23,5 @@ export const patchThread = async (postInfo: PatchThread) => {
 export const getThreadsByChannelId = (channelId: string) =>
   api.get<Thread[]>({ url: `/posts/channel/${channelId}` });
 
-export const postThreadLike = async (postId: string) =>
-  await api.post({ url: "/likes/create", data: { postId } });
+export const postThreadLike = (postId: string) =>
+  api.post({ url: "/likes/create", data: { postId } });
