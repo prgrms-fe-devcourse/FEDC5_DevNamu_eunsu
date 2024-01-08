@@ -17,6 +17,7 @@ interface PatchThreadProps {
 interface CommentProps {
   channelName: string;
   postId: string;
+  postAuthorId: string;
 }
 
 export type EditorProps = CreateThreadProps | PatchThreadProps | CommentProps;
@@ -59,6 +60,7 @@ const useEditorLogicByProps = ({ editorProps, nickname, mentionList }: Props) =>
     nickname,
     postId: isCommentProps(editorProps) ? editorProps.postId : "",
     channelName: isCommentProps(editorProps) ? editorProps.channelName : "",
+    postAuthorId: isCommentProps(editorProps) ? editorProps.postAuthorId : "",
     mentionList,
   });
 
