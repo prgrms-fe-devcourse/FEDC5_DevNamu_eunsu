@@ -12,7 +12,11 @@ const ExEditorTextArea = () => {
     postId,
   };
 
-  const commentProps = { channelName: "칭찬", postId }; // channelName은 Post.channel.name 값 전달
+  const commentProps = {
+    channelName: "무능 게시판",
+    postId: "659b4ae942677b4eb8c08e0f",
+    postAuthorId: "65955240a178ac62e4022f0d",
+  }; // channelName은 Post.channel.name 값 전달, postId는 Post.author._id 값 전달, postAuthorId는 Post.author._id 값 전달
 
   return (
     <div className="flex h-screen w-full flex-grow items-center justify-center">

@@ -11,9 +11,10 @@ interface Props {
   postId: string;
   channelName: string;
   mentionList?: UserDBProps[];
+  postAuthorId: string;
 }
 
-const useUploadComment = ({ nickname, postId, channelName, mentionList }: Props) => {
+const useUploadComment = ({ nickname, postId, channelName, mentionList, postAuthorId }: Props) => {
   const { mutateAsync: commentMutate } = usePostComment();
   const { mutate: notificationMutate } = usePostNotification();
   const { mentionNotification } = useMentionNotification({ mentionList });
@@ -31,7 +32,7 @@ const useUploadComment = ({ nickname, postId, channelName, mentionList }: Props)
     const notificationRequest = {
       notificationType: "COMMENT" as NotificationTypes,
       notificationTypeId: commentResponse._id,
-      userId: commentResponse.author._id,
+      userId: postAuthorId,
       postId,
     };
 
