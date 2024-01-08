@@ -17,6 +17,7 @@ const MentionNotification = ({ message, createdAt }: Props) => {
       content={content}
       channelName={channelName}
       postId={postId}
+      isMention={true}
     />
   );
 };
