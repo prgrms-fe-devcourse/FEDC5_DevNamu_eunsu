@@ -59,7 +59,7 @@ const ThreadListItem = ({ id, title, author, createdAt }: Props) => {
             {content}
           </div>
         </div>
-        {hoveredListId === id && <ThreadToolbar className="absolute right-0 top-0 z-10" />}
+        {hoveredListId === id && <ThreadToolbar className="absolute -top-6 right-3 z-10" />}
       </div>
     </li>
   );
