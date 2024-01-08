@@ -9,17 +9,21 @@ import { User } from "@/types/user";
 
 import ThreadToolbar from "./ThreadToolbar";
 
+import useDeleteThread from "@/apis/thread/useDeleteThread.ts";
+
 interface Props {
   id: string;
   title: string;
   author: User;
   createdAt: string;
+  channelId: string;
 }
 
-const ThreadListItem = ({ id, title, author, createdAt }: Props) => {
+const ThreadListItem = ({ id, title, author, createdAt, channelId }: Props) => {
   const { content, nickname } = parseTitle(title);
   const [hoveredListId, setHoveredListId] = useState<string | null>(null);
 
+  const { mutate: deleteThread } = useDeleteThread(channelId);
   const handleMouseEnter = () => {
     setHoveredListId(id);
   };
@@ -28,6 +32,9 @@ const ThreadListItem = ({ id, title, author, createdAt }: Props) => {
     setHoveredListId(null);
   };
 
+  const handleDelete = () => {
+    deleteThread(id);
+  };
   return (
     <li
       key={id}
@@ -59,7 +66,9 @@ const ThreadListItem = ({ id, title, author, createdAt }: Props) => {
             {content}
           </div>
         </div>
-        {hoveredListId === id && <ThreadToolbar className="absolute right-0 top-0 z-10" />}
+        {hoveredListId === id && (
+          <ThreadToolbar className="absolute right-0 top-0 z-10" onDelete={handleDelete} />
+        )}
       </div>
     </li>
   );

@@ -1,35 +1,49 @@
 import { usePostComment } from "@/apis/comment/usePostComment.ts";
 import { usePostNotification } from "@/apis/notification/usePostNotification.ts";
 import { NotificationTypes } from "@/apis/notification/queryFn.ts";
-import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname.ts";
+import { FormValues } from "@/components/common/EditorTextArea.tsx";
+import { formJSONStringify } from "@/lib/editorContent.ts";
+import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
+import useMentionNotification from "@/hooks/api/useMentionNotification.ts";
 
 interface Props {
   nickname: string | undefined;
   postId: string;
+  channelName: string;
+  mentionList?: UserDBProps[];
 }
 
-const useUploadComment = ({ nickname, postId }: Props) => {
+const useUploadComment = ({ nickname, postId, channelName, mentionList }: Props) => {
   const { mutateAsync: commentMutate } = usePostComment();
   const { mutate: notificationMutate } = usePostNotification();
+  const { mentionNotification } = useMentionNotification({ mentionList });
 
-  const uploadComment = async ({ anonymous, content }: { anonymous: boolean; content: string }) => {
+  const uploadComment = async (formValues: FormValues) => {
+    if (!formValues) return;
+
     const commentRequest = {
-      comment: JSON.stringify({
-        content,
-        nickname: anonymous ? ANONYMOUS_NICKNAME : nickname,
-      }),
+      comment: formJSONStringify({ formValues, nickname }),
       postId,
     };
 
-    const commentRes = await commentMutate(commentRequest);
+    const commentResponse = await commentMutate(commentRequest);
 
-    const notificationReq = {
+    const notificationRequest = {
       notificationType: "COMMENT" as NotificationTypes,
-      notificationTypeId: commentRes._id,
-      userId: commentRes.author._id,
+      notificationTypeId: commentResponse._id,
+      userId: commentResponse.author._id,
       postId,
     };
-    notificationMutate(notificationReq);
+
+    notificationMutate(notificationRequest);
+
+    if (!mentionList) return;
+
+    mentionNotification({
+      content: formValues.content,
+      postId,
+      channelName,
+    });
   };
 
   return { uploadComment };
