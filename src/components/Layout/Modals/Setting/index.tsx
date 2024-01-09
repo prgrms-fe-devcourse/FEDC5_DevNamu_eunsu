@@ -19,11 +19,14 @@ const SettingModal = ({ open, toggleOpen }: Props) => {
   const { profileChangeMutate, passwordChangeMutate } = usePutProfile();
 
   if (open && !isPending && user) makeFormFields(user);
+
   const handleSubmit = (settingInfo: z.infer<typeof SETTING_FIELDS_SCHEMA>) => {
-    console.log(settingInfo);
+    const oldNickname = user?.nickname;
+    if (oldNickname !== settingInfo.nickname) {
       const fullName = { name: settingInfo.name, nickname: settingInfo.nickname };
       const userInfo = JSON.stringify(fullName);
       profileChangeMutate(userInfo);
+    }
       passwordChangeMutate(settingInfo.password);
   };
 
