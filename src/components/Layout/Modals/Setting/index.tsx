@@ -16,7 +16,7 @@ interface Props {
 
 const SettingModal = ({ open, toggleOpen }: Props) => {
   const { user, isPending } = useGetUserInfo();
-  const { profileChangeMutate, passwordChangeMutate } = usePutProfile();
+  const { updateUserName, updatePassword } = usePutProfile();
 
   if (open && !isPending && user) makeFormFields(user);
 
@@ -25,10 +25,10 @@ const SettingModal = ({ open, toggleOpen }: Props) => {
     if (oldNickname !== settingInfo.nickname) {
       const fullName = { name: settingInfo.name, nickname: settingInfo.nickname };
       const userInfo = JSON.stringify(fullName);
-      profileChangeMutate(userInfo);
+      updateUserName(userInfo);
     }
     if (settingInfo.password) {
-      passwordChangeMutate(settingInfo.password);
+      updatePassword(settingInfo.password);
     }
     // TODO: 에러 모달 처리 (2024-01-09)
     toggleOpen(false);

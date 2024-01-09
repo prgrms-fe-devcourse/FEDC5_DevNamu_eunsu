@@ -9,7 +9,7 @@ const usePutProfile = () => {
   const queryClient = useQueryClient();
   const token = getLocalStorage("token", "");
 
-  const { data: userResponse, mutate: profileChangeMutate } = useMutation({
+  const { data: userResponse, mutate: updateUserName } = useMutation({
     mutationFn: (userInfo: string) => putUserInfo(userInfo),
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -18,10 +18,10 @@ const usePutProfile = () => {
     },
   });
 
-  const { data: passwordResponse, mutate: passwordChangeMutate } = useMutation({
+  const { data: passwordResponse, mutate: updatePassword } = useMutation({
     mutationFn: (password: string) => putUserPassword(password),
   });
-  return { profileChangeMutate, passwordChangeMutate, userResponse, passwordResponse };
+  return { updateUserName, updatePassword, userResponse, passwordResponse };
 };
 
 export default usePutProfile;
