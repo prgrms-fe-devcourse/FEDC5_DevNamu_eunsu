@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 import { formatDate } from "@/utils/formatDate";
-import { parseTitle } from "@/utils/parsingJson";
 
 import { User } from "@/types/user";
 import { Like } from "@/types/thread";
@@ -18,19 +17,17 @@ import usePostThreadLike from "@/apis/thread/usePostThreadLike";
 
 interface Props {
   id: string;
-  title: string;
+  content: string;
   author: User;
   createdAt: string;
   likes: Like[];
   channelId: string;
-  onClick: () => void;
 }
 
-const ThreadListItem = ({ id, title, author, createdAt, likes, channelId, onClick }: Props) => {
+const ThreadListItem = ({ id, content, author, createdAt, likes, channelId }: Props) => {
   const { user } = useGetUserInfo();
   const { likeThread } = usePostThreadLike(channelId);
   const { removeLike } = useDeleteThreadLike(channelId);
-  const { content, nickname } = parseTitle(title);
   const [hoveredListId, setHoveredListId] = useState<string | null>(null);
   const likedByUser = likes.find((like) => like.user === user?._id);
   const isAlreadyLikedByUser = !!likedByUser;
@@ -55,7 +52,6 @@ const ThreadListItem = ({ id, title, author, createdAt, likes, channelId, onClic
       onMouseLeave={handleMouseLeave}
       className="relative cursor-pointer px-2.5 py-5 hover:bg-gray-100"
       tabIndex={0}
-      onClick={onClick}
     >
       <div className="flex items-center">
         <Avatar className="mr-3">
@@ -65,7 +61,7 @@ const ThreadListItem = ({ id, title, author, createdAt, likes, channelId, onClic
         <div className="min-w-0 flex-grow">
           <div className="flex justify-between">
             <span tabIndex={0} className="text-lg font-semibold">
-              {nickname}
+              {author.nickname}
             </span>
             <span tabIndex={0} className="text-gray-400">
               {formatDate(createdAt)}
@@ -73,7 +69,7 @@ const ThreadListItem = ({ id, title, author, createdAt, likes, channelId, onClic
           </div>
           <div
             tabIndex={0}
-            className="overflow-hidden truncate text-ellipsis pr-50pxr text-gray-500"
+            className="mb-10pxr overflow-hidden truncate text-ellipsis pr-50pxr text-gray-500"
           >
             {content}
           </div>
