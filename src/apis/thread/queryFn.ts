@@ -1,6 +1,6 @@
 import api from "@/apis/core";
 
-import { Thread } from "@/types/thread";
+import { Like, Thread } from "@/types/thread";
 
 interface CreateThread {
   title: string; // JSON.stringify(CustomBody)
@@ -27,4 +27,4 @@ export const postThreadLike = (postId: string) =>
   api.post({ url: "/likes/create", data: { postId } });
 
 export const deleteThreadLike = (postId: string) =>
-  api.delete({ url: " /likes/delete", data: { id: postId } });
+  api.delete<Like>({ url: "/likes/delete", data: { id: postId } });
