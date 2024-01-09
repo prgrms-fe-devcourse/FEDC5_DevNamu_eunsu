@@ -5,10 +5,13 @@ import { LogOut } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
+import { getLocalStorage } from "@/utils/localStorage";
+
 import LoginModal from "../Modals/Login";
 import RegisterModal from "../Modals/Register";
+import SettingModal from "../Modals/Setting";
 
-import { LINKS } from "./config";
+import { SIDEBAR_ICONS } from "./config";
 import { ThemeConfigDropdown } from "./ThemeConfigDropdown";
 import { ButtonWrappingCSS, IconCSS, IconDescriptionCSS, IconWrappingCSS } from "./styles";
 
@@ -43,11 +46,22 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
 
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
+  const [settingModalOpen, setSettingModalOpen] = useState(false);
 
   const { mutate: logout } = usePostLogout();
 
+  const isLoggedIn = !!getLocalStorage("token", "");
+
   const handleLogout = () => {
     logout();
+  };
+
+  const handlerOpenSettingModal = () => {
+    setSettingModalOpen(true);
+  };
+
+  const handlerOpenLoginModal = () => {
+    if (!isLoggedIn) setLoginModalOpen(true);
   };
   /*
     Link Button과 DarkMode Dropdown 버튼이 공유하는 CSS가 많아서 styles로 상수화함.
@@ -59,27 +73,36 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
   */
   return (
     <>
-      <LoginModal
-        open={loginModalOpen}
-        toggleOpen={setLoginModalOpen}
-        openRegisterModal={setRegisterModalOpen}
-      />
-      <RegisterModal
-        open={registerModalOpen}
-        toggleOpen={setRegisterModalOpen}
-        openLoginModal={setLoginModalOpen}
-      />
+      {!isLoggedIn && (
+        <LoginModal
+          open={loginModalOpen}
+          toggleOpen={setLoginModalOpen}
+          openRegisterModal={setRegisterModalOpen}
+        />
+      )}
+      {!isLoggedIn && (
+        <RegisterModal
+          open={registerModalOpen}
+          toggleOpen={setRegisterModalOpen}
+          openLoginModal={setLoginModalOpen}
+        />
+      )}
+      {isLoggedIn && <SettingModal open={settingModalOpen} toggleOpen={setSettingModalOpen} />}
       <div className="flex w-20 flex-col items-center justify-between gap-8">
         <div className="mt-4 flex cursor-pointer select-none flex-col items-center gap-2">
-          <Avatar onClick={() => setLoginModalOpen(true)} className="flex items-center">
+          <Avatar onClick={handlerOpenLoginModal} className="flex items-center">
             <AvatarImage src={profileImgUrl} alt={nickname} />
             <AvatarFallback>{shortenedNickname}</AvatarFallback>
           </Avatar>
-          {LINKS.map(({ url, name, icon: Icon }) => {
+          {SIDEBAR_ICONS.filter(
+            ({ requireAuth }) => !requireAuth || (requireAuth && isLoggedIn),
+          ).map(({ url, name, icon: Icon }) => {
             const isSelectedPage = pathname === url;
+            const IconWrap = url ? Link : "button";
+            const props = url ? { to: url } : { onClick: handlerOpenSettingModal, to: url };
 
             return (
-              <Link key={url} to={url} className={ButtonWrappingCSS}>
+              <IconWrap key={url} {...props} className={ButtonWrappingCSS}>
                 <div
                   className={cn(
                     "relative",
@@ -96,7 +119,7 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
                   )}
                 </div>
                 <span className={IconDescriptionCSS}>{name}</span>
-              </Link>
+              </IconWrap>
             );
           })}
           <ThemeConfigDropdown>
@@ -109,12 +132,14 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
           </ThemeConfigDropdown>
         </div>
 
-        <button className={`${ButtonWrappingCSS} mb-6`} onClick={handleLogout}>
-          <div className={cn("relative", IconWrappingCSS)}>
-            <LogOut className={IconCSS} />
-          </div>
-          <span className={IconDescriptionCSS}>로그아웃</span>
-        </button>
+        {isLoggedIn && (
+          <button className={`${ButtonWrappingCSS} mb-6`} onClick={handleLogout}>
+            <div className={cn("relative", IconWrappingCSS)}>
+              <LogOut className={IconCSS} />
+            </div>
+            <span className={IconDescriptionCSS}>로그아웃</span>
+          </button>
+        )}
       </div>
     </>
   );

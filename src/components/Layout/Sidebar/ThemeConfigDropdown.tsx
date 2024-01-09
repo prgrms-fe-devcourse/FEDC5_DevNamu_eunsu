@@ -1,5 +1,5 @@
-import { MoonIcon, SettingsIcon, SunIcon } from "lucide-react";
-import { PropsWithChildren, useState } from "react";
+import { MoonIcon, SunIcon } from "lucide-react";
+import { PropsWithChildren } from "react";
 
 import {
   DropdownMenu,
@@ -7,8 +7,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-import SettingModal from "../Modals/Setting";
 
 import { IconCSS, IconDescriptionCSS } from "./styles";
 // TODO: [2023-12-29] 전역 상태 혹은 반영구 저장소와 연동해야 하므로 해당 Custom Hook과 연동하기
@@ -18,12 +16,6 @@ import { IconCSS, IconDescriptionCSS } from "./styles";
  * children은 클릭 시 드롭다운을 여는 트리거 영역이 됨.
  */
 export const ThemeConfigDropdown = ({ children }: PropsWithChildren) => {
-  const [settingModalOpen, setSettingModalOpen] = useState(false);
-
-  const settingModalOpenHandler = () => {
-    setSettingModalOpen(true);
-  };
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
@@ -40,17 +32,7 @@ export const ThemeConfigDropdown = ({ children }: PropsWithChildren) => {
             <span className={IconDescriptionCSS}>다크</span>
           </div>
         </DropdownMenuItem>
-        <DropdownMenuItem
-          className="cursor-pointer text-lg hover:text-2xl"
-          onClick={settingModalOpenHandler}
-        >
-          <div className="flex items-center gap-2 p-2">
-            <SettingsIcon className={IconCSS} />
-            <span className={IconDescriptionCSS}>시스템</span>
-          </div>
-        </DropdownMenuItem>
       </DropdownMenuContent>
-      <SettingModal open={settingModalOpen} toggleOpen={setSettingModalOpen} />
     </DropdownMenu>
   );
 };
