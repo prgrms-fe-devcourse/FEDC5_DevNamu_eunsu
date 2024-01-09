@@ -25,3 +25,10 @@ export const postRegister = (registerInfo: RegisterRequest) =>
 export const postLogout = () => api.post<string>({ url: "/logout" });
 
 export const getUserInfo = () => api.get<User>({ url: "/auth-user" });
+
+export const putUserInfo = (userInfo: string) =>
+  api.put<User>({ url: "/settings/update-user", data: { fullName: userInfo, username: "" } });
+
+export const putUserPassword = (password: string) =>
+  api.put<string>({ url: "/settings/update-password", data: { password } });
+
