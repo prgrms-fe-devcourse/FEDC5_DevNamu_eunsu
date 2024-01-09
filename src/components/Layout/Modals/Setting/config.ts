@@ -43,15 +43,23 @@ export const SETTING_FIELDS: FieldProps[] = [
 
 export const SETTING_FIELDS_SCHEMA = z
   .object({
+    name: z.string(),
     nickname: z.string().trim().min(1, {
       message: "닉네임을 입력해주세요",
     }),
-    password: z.string().min(8, {
-      message: "비밀번호는 8글자 이상이어야 합니다",
-    }),
+    password: z.string(),
     passwordConfirm: z.string(),
   })
-  .refine(({ password, passwordConfirm }) => password === passwordConfirm, {
-    message: "비밀번호가 일치하지 않습니다",
-    path: ["passwordConfirm"],
+  .refine(
+    ({ password, passwordConfirm }) =>
+      (password.length && password === passwordConfirm) ||
+      (!password.length && !passwordConfirm.length),
+    {
+      message: "비밀번호가 일치하지 않습니다",
+      path: ["passwordConfirm"],
+    },
+  )
+  .refine(({ password }) => password.length >= 8 || !password.length, {
+    message: "비밀번호는 8글자 이상이어야 합니다",
+    path: ["password"],
   });
