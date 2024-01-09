@@ -9,8 +9,8 @@ const usePostThreadLike = (channelId: string) => {
   const queryClient = useQueryClient();
 
   const { mutate, isPending, isError } = useMutation({
-    mutationFn: (postId: string) => postThreadLike(postId),
-    onMutate: async (postId) => {
+    mutationFn: (threadId: string) => postThreadLike(threadId),
+    onMutate: async (threadId) => {
       await queryClient.cancelQueries({
         queryKey: threads.threadsByChannel(channelId).queryKey,
       });
@@ -23,7 +23,7 @@ const usePostThreadLike = (channelId: string) => {
         threads.threadsByChannel(channelId).queryKey,
         (oldThreads: Thread[]) =>
           oldThreads.map((thread) =>
-            thread._id === postId ? { ...thread, likes: [...thread.likes, postId] } : thread,
+            thread._id === threadId ? { ...thread, likes: [...thread.likes, threadId] } : thread,
           ),
       );
 
