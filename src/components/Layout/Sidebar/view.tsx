@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { MoonIcon, SunIcon } from "lucide-react";
 import { useState } from "react";
+import { LogOut } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -42,6 +43,8 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
 
+  const handleLogout = () => {
+  };
   /*
     Link Button과 DarkMode Dropdown 버튼이 공유하는 CSS가 많아서 styles로 상수화함.
     (Link를 쓰지 말고 navigate를 써도 될 듯)
@@ -62,8 +65,8 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
         toggleOpen={setRegisterModalOpen}
         openLoginModal={setLoginModalOpen}
       />
-      <div className="flex flex-col items-center w-20 gap-8">
-        <div className="flex flex-col items-center gap-2 mt-4 cursor-pointer select-none">
+      <div className="flex w-20 flex-col items-center justify-between gap-8">
+        <div className="mt-4 flex cursor-pointer select-none flex-col items-center gap-2">
           <Avatar onClick={() => setLoginModalOpen(true)} className="flex items-center">
             <AvatarImage src={profileImgUrl} alt={nickname} />
             <AvatarFallback>{shortenedNickname}</AvatarFallback>
@@ -101,6 +104,13 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
             </div>
           </ThemeConfigDropdown>
         </div>
+
+        <button className={`${ButtonWrappingCSS} mb-6`} onClick={handleLogout}>
+          <div className={cn("relative", IconWrappingCSS)}>
+            <LogOut className={IconCSS} />
+          </div>
+          <span className={IconDescriptionCSS}>로그아웃</span>
+        </button>
       </div>
     </>
   );
