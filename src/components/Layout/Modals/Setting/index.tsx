@@ -7,6 +7,7 @@ import { makeFormFields, SETTING_FIELDS, SETTING_FIELDS_SCHEMA } from "./config"
 import ImageUploadForm from "./ImageUploadForm";
 
 import useGetUserInfo from "@/apis/auth/useGetUserInfo";
+import usePutProfile from "@/apis/auth/usePutProfile";
 
 interface Props {
   open: boolean;
@@ -15,10 +16,15 @@ interface Props {
 
 const SettingModal = ({ open, toggleOpen }: Props) => {
   const { user, isPending } = useGetUserInfo();
+  const { profileChangeMutate, passwordChangeMutate } = usePutProfile();
 
   if (open && !isPending && user) makeFormFields(user);
   const handleSubmit = (settingInfo: z.infer<typeof SETTING_FIELDS_SCHEMA>) => {
     console.log(settingInfo);
+      const fullName = { name: settingInfo.name, nickname: settingInfo.nickname };
+      const userInfo = JSON.stringify(fullName);
+      profileChangeMutate(userInfo);
+      passwordChangeMutate(settingInfo.password);
   };
 
   return (
