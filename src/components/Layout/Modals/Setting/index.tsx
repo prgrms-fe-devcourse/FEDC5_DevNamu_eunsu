@@ -30,6 +30,7 @@ const SettingModal = ({ open, toggleOpen }: Props) => {
     if (settingInfo.password) {
       passwordChangeMutate(settingInfo.password);
     }
+    toggleOpen(false);
   };
 
   return (
