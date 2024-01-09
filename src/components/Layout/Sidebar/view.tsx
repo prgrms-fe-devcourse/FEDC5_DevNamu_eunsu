@@ -59,6 +59,10 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
   const handlerOpenSettingModal = () => {
     setSettingModalOpen(true);
   };
+
+  const handlerOpenLoginModal = () => {
+    setLoginModalOpen(true);
+  };
   /*
     Link Button과 DarkMode Dropdown 버튼이 공유하는 CSS가 많아서 styles로 상수화함.
     (Link를 쓰지 말고 navigate를 써도 될 듯)
@@ -86,7 +90,7 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
       {isLoggedIn && <SettingModal open={settingModalOpen} toggleOpen={setSettingModalOpen} />}
       <div className="flex w-20 flex-col items-center justify-between gap-8">
         <div className="mt-4 flex cursor-pointer select-none flex-col items-center gap-2">
-          <Avatar onClick={() => setLoginModalOpen(true)} className="flex items-center">
+          <Avatar onClick={handlerOpenLoginModal} className="flex items-center">
             <AvatarImage src={profileImgUrl} alt={nickname} />
             <AvatarFallback>{shortenedNickname}</AvatarFallback>
           </Avatar>
