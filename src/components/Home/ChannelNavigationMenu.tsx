@@ -15,7 +15,7 @@ const ChannelNavigationMenu = () => {
       <ul className="flex">
         <li>
           <NavLink
-            to="/channels/compliment"
+            to={location.pathname === "/" ? "/" : "/channels/compliment"}
             className={({ isActive }) => `${getNavLinkClass(isActive)}`}
           >
             칭찬 게시판
