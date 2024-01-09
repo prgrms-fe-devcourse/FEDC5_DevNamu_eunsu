@@ -45,7 +45,7 @@ export const getThreadsByChannelId = async (channelId: string) => {
 };
 
 export const postThreadLike = (threadId: string) =>
-  api.post({ url: "/likes/create", data: { threadId } });
+  api.post<Like>({ url: "/likes/create", data: { postId: threadId } });
 
 export const deleteThreadLike = (postId: string) =>
   api.delete<Like>({ url: "/likes/delete", data: { id: postId } });
