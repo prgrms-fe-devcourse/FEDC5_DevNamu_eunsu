@@ -30,6 +30,7 @@ const SettingModal = ({ open, toggleOpen }: Props) => {
     if (settingInfo.password) {
       passwordChangeMutate(settingInfo.password);
     }
+    // TODO: 에러 모달 처리 (2024-01-09)
     toggleOpen(false);
   };
 
