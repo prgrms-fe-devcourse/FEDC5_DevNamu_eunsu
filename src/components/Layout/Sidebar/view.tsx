@@ -61,7 +61,7 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
   };
 
   const handlerOpenLoginModal = () => {
-    setLoginModalOpen(true);
+    if (!isLoggedIn) setLoginModalOpen(true);
   };
   /*
     Link Button과 DarkMode Dropdown 버튼이 공유하는 CSS가 많아서 styles로 상수화함.
