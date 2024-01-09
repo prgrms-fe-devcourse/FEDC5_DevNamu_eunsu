@@ -22,14 +22,18 @@ const ThreadList = ({ threads }: Props) => {
       ref={threadListRef}
       className="max-h-700pxr min-h-700pxr overflow-y-auto rounded-sm border border-t-0 pt-80pxr"
     >
-      {threads.map(({ _id, createdAt, title, author, likes }) => (
+      {threads.map(({ _id, createdAt, title, author, likes, channel }) => (
         <ThreadListItem
+          onClick={() => {
+            console.log(_id);
+          }}
           key={_id}
           id={_id}
           createdAt={createdAt}
           title={title}
           author={author}
           likes={likes}
+          channelId={channel._id}
         />
       ))}
     </ul>

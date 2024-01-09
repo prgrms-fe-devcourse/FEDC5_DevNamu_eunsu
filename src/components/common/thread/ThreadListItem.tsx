@@ -6,19 +6,33 @@ import { formatDate } from "@/utils/formatDate";
 import { parseTitle } from "@/utils/parsingJson";
 
 import { User } from "@/types/user";
+import { Like } from "@/types/thread";
+
+import LikeToggleButton from "../LikeToggleButton";
 
 import ThreadToolbar from "./ThreadToolbar";
+
+import useGetUserInfo from "@/apis/auth/useGetUserInfo";
+import useDeleteThreadLike from "@/apis/thread/useDeleteThreadLike";
+import usePostThreadLike from "@/apis/thread/usePostThreadLike";
 
 interface Props {
   id: string;
   title: string;
   author: User;
   createdAt: string;
+  likes: Like[];
+  channelId: string;
+  onClick: () => void;
 }
 
-const ThreadListItem = ({ id, title, author, createdAt }: Props) => {
+const ThreadListItem = ({ id, title, author, createdAt, likes, channelId, onClick }: Props) => {
   const { content, nickname } = parseTitle(title);
   const [hoveredListId, setHoveredListId] = useState<string | null>(null);
+  const { user } = useGetUserInfo();
+  const isAlreadyLikedByUser = likes.some((like) => like.user === user?._id);
+  const { likeThread } = usePostThreadLike(channelId);
+  const { removeLike } = useDeleteThreadLike(channelId);
 
   const handleMouseEnter = () => {
     setHoveredListId(id);
@@ -28,6 +42,13 @@ const ThreadListItem = ({ id, title, author, createdAt }: Props) => {
     setHoveredListId(null);
   };
 
+  const handleClickLikeToggle = async () => {
+    console.log(likes, id);
+    if (isAlreadyLikedByUser) {
+      removeLike(id);
+    } else likeThread(id);
+  };
+
   return (
     <li
       key={id}
@@ -35,6 +56,7 @@ const ThreadListItem = ({ id, title, author, createdAt }: Props) => {
       onMouseLeave={handleMouseLeave}
       className="relative cursor-pointer px-2.5 py-5 hover:bg-gray-100"
       tabIndex={0}
+      onClick={onClick}
     >
       <div className="flex items-center">
         <Avatar className="mr-3">
@@ -58,9 +80,22 @@ const ThreadListItem = ({ id, title, author, createdAt }: Props) => {
           >
             {content}
           </div>
+          {likes.length > 0 && (
+            <LikeToggleButton
+              clicked
+              onClick={handleClickLikeToggle}
+              numberOfLikes={likes.length}
+            />
+          )}
         </div>
         {hoveredListId === id && (
-          <ThreadToolbar authorId={author._id} className="absolute -top-6 right-6 z-10" />
+          <ThreadToolbar
+            channelId={channelId}
+            postId={id}
+            authorId={author._id}
+            isAlreadyLikedByUser={isAlreadyLikedByUser}
+            className="absolute -top-6 right-6 z-10"
+          />
         )}
       </div>
     </li>
