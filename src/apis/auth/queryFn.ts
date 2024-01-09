@@ -32,3 +32,5 @@ export const putUserInfo = (userInfo: string) =>
 export const putUserPassword = (password: string) =>
   api.put<string>({ url: "/settings/update-password", data: { password } });
 
+export const postUserProfileImage = (image: string) =>
+  api.post<User>({ url: "/users/upload-photo", data: { isCover: false, image } });
