@@ -6,10 +6,9 @@ import ThreadListItem from "@/components/common/thread/ThreadListItem";
 
 interface Props {
   threads: Thread[];
-  channelId: string;
 }
 
-const ThreadList = ({ threads, channelId }: Props) => {
+const ThreadList = ({ threads }: Props) => {
   const threadListRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
