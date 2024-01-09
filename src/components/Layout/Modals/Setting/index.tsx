@@ -4,7 +4,6 @@ import SimpleBaseForm from "../Base/form";
 import SimpleBaseModal from "../Base/modal";
 
 import { makeFormFields, SETTING_FIELDS, SETTING_FIELDS_SCHEMA } from "./config";
-import ImageUploadForm from "./ImageUploadForm";
 
 import useGetUserInfo from "@/apis/auth/useGetUserInfo";
 import usePutProfile from "@/apis/auth/usePutProfile";
@@ -48,9 +47,7 @@ const SettingModal = ({ open, toggleOpen }: Props) => {
         onSubmit={handleSubmit}
         submitText="저장"
         cancelText="취소"
-      >
-        <ImageUploadForm />
-      </SimpleBaseForm>
+      ></SimpleBaseForm>
     </SimpleBaseModal>
   );
 };
