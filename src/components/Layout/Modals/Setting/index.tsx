@@ -27,7 +27,9 @@ const SettingModal = ({ open, toggleOpen }: Props) => {
       const userInfo = JSON.stringify(fullName);
       profileChangeMutate(userInfo);
     }
+    if (settingInfo.password) {
       passwordChangeMutate(settingInfo.password);
+    }
   };
 
   return (
