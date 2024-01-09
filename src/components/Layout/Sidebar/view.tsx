@@ -5,6 +5,8 @@ import { LogOut } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
+import { getLocalStorage } from "@/utils/localStorage";
+
 import LoginModal from "../Modals/Login";
 import RegisterModal from "../Modals/Register";
 
@@ -46,6 +48,8 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
 
   const { mutate: logout } = usePostLogout();
 
+  const isLoggedIn = !!getLocalStorage("token", "");
+
   const handleLogout = () => {
     logout();
   };
@@ -59,16 +63,20 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
   */
   return (
     <>
-      <LoginModal
-        open={loginModalOpen}
-        toggleOpen={setLoginModalOpen}
-        openRegisterModal={setRegisterModalOpen}
-      />
-      <RegisterModal
-        open={registerModalOpen}
-        toggleOpen={setRegisterModalOpen}
-        openLoginModal={setLoginModalOpen}
-      />
+      {!isLoggedIn && (
+        <LoginModal
+          open={loginModalOpen}
+          toggleOpen={setLoginModalOpen}
+          openRegisterModal={setRegisterModalOpen}
+        />
+      )}
+      {!isLoggedIn && (
+        <RegisterModal
+          open={registerModalOpen}
+          toggleOpen={setRegisterModalOpen}
+          openLoginModal={setLoginModalOpen}
+        />
+      )}
       <div className="flex w-20 flex-col items-center justify-between gap-8">
         <div className="mt-4 flex cursor-pointer select-none flex-col items-center gap-2">
           <Avatar onClick={() => setLoginModalOpen(true)} className="flex items-center">
@@ -109,12 +117,14 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
           </ThemeConfigDropdown>
         </div>
 
-        <button className={`${ButtonWrappingCSS} mb-6`} onClick={handleLogout}>
-          <div className={cn("relative", IconWrappingCSS)}>
-            <LogOut className={IconCSS} />
-          </div>
-          <span className={IconDescriptionCSS}>로그아웃</span>
-        </button>
+        {isLoggedIn && (
+          <button className={`${ButtonWrappingCSS} mb-6`} onClick={handleLogout}>
+            <div className={cn("relative", IconWrappingCSS)}>
+              <LogOut className={IconCSS} />
+            </div>
+            <span className={IconDescriptionCSS}>로그아웃</span>
+          </button>
+        )}
       </div>
     </>
   );
