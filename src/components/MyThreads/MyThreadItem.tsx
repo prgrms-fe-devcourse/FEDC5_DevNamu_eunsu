@@ -12,7 +12,6 @@ interface Props {
   comment?: string;
   createdAt: string;
   content?: string;
-  id: string;
 }
 
 const channelMap = {
@@ -21,11 +20,11 @@ const channelMap = {
   incompetent: "무능",
 };
 
-const MyThreadItem = ({ title, type, channel, createdAt, id, comment }: Props) => {
+const MyThreadItem = ({ title, type, channel, createdAt, comment }: Props) => {
   const createdDate = formatDate(createdAt);
 
   return (
-    <div className="list-none">
+    <ul className="list-none">
       <div className="flex items-center justify-between gap-6 pt-3">
         {type === "post" ? (
           <p className="text-sm text-muted-foreground">#{channelMap[channel]}게시판</p>
@@ -35,9 +34,9 @@ const MyThreadItem = ({ title, type, channel, createdAt, id, comment }: Props) =
 
         <p className="text-xs font-extralight">{createdDate}</p>
       </div>
-      {type === "post" ? <MyPost key={id} title={title} /> : <MyComment comment={comment} />}
+      {type === "post" ? <MyPost title={title} /> : <MyComment comment={comment} />}
       <Separator />
-    </div>
+    </ul>
   );
 };
 

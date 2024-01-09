@@ -4,9 +4,9 @@ interface Props {
 
 const MyComment = ({ comment }: Props) => {
   return (
-    <div>
+    <li>
       <div className="mb-2 text-lg font-normal">{comment}</div>
-    </div>
+    </li>
   );
 };
 

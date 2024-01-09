@@ -26,7 +26,7 @@ const MyThreadBody = () => {
         const type = comment ? "comment" : "post";
         return (
           <MyThreadItem
-            id={_id}
+            key={_id}
             type={type}
             channel={channel?.name}
             title={content}
