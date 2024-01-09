@@ -18,3 +18,11 @@ export const setLocalStorage = (key: string, value: unknown) => {
     console.error("Error writing to localStorage:", error);
   }
 };
+
+export const removeLocalStorage = (key: string) => {
+  try {
+    localStorage.removeItem(key);
+  } catch (error) {
+    console.error("Error removing from localStorage:", error);
+  }
+};
