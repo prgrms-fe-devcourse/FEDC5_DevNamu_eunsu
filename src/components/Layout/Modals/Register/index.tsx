@@ -9,7 +9,9 @@ import SimpleBaseModal from "../Base/modal";
 
 import { REGISTER_FIELDS, REGISTER_FIELDS_SCHEMA } from "./config";
 
-import useRegister from "@/apis/auth/useRegister";
+import useUpdateUserList from "@/hooks/api/useUpdateUserList.ts";
+import useUserListByDB from "@/hooks/api/useUserListByDB.ts";
+import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname.ts";
 
 interface Props {
   open: boolean;
@@ -18,12 +20,8 @@ interface Props {
 }
 
 const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
-  const {
-    mutate: registerMutate,
-    isSuccess: isRegisterSuccess,
-    isError: isRegisterError,
-    error: registerError,
-  } = useRegister();
+  const { updateUserList, isRegisterSuccess, isRegisterError, registerError } = useUpdateUserList();
+  const { userListByDB } = useUserListByDB();
 
   const handleLoginClick = useCallback(() => {
     toggleOpen(false);
@@ -42,8 +40,13 @@ const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
 
   const handleSubmit = (registerInfo: z.infer<typeof REGISTER_FIELDS_SCHEMA>) => {
     const { email, name, nickname, password } = registerInfo;
-    const fullName = JSON.stringify({ name, nickname: nickname || "프롱이" });
-    registerMutate({ email, fullName, password });
+
+    if (userListByDB.find((user) => user.name === name)) {
+      alert("이미 존재하는 이름입니다.");
+      return;
+    }
+    const fullName = { name, nickname: nickname || ANONYMOUS_NICKNAME };
+    updateUserList({ email, fullName, password });
   };
 
   return (
