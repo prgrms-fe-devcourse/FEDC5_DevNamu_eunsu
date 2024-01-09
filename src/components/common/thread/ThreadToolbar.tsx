@@ -9,6 +9,7 @@ interface Props {
   authorId: string;
   handleClickLikeButton: () => void;
   className?: string;
+  onDelete: () => void;
 }
 
 const ThreadToolbar = ({ authorId, handleClickLikeButton, className }: Props) => {

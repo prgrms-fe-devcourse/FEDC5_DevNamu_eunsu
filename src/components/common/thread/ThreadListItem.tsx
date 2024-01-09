@@ -32,6 +32,7 @@ const ThreadListItem = ({ id, content, author, createdAt, likes, channelId }: Pr
   const likedByUser = likes.find((like) => like.user === user?._id);
   const isAlreadyLikedByUser = !!likedByUser;
 
+  const { mutate: deleteThread } = useDeleteThread(channelId);
   const handleMouseEnter = () => {
     setHoveredListId(id);
   };
@@ -43,6 +44,10 @@ const ThreadListItem = ({ id, content, author, createdAt, likes, channelId }: Pr
   const handleClickLikeButton = () => {
     if (isAlreadyLikedByUser) removeLike(likedByUser._id);
     else likeThread(id);
+  };
+  
+  const handleDelete = () => {
+    deleteThread(id);
   };
 
   return (
@@ -84,6 +89,7 @@ const ThreadListItem = ({ id, content, author, createdAt, likes, channelId }: Pr
         {hoveredListId === id && (
           <ThreadToolbar
             authorId={author._id}
+            onDelete={handleDelete}
             handleClickLikeButton={handleClickLikeButton}
             className="absolute -top-6 right-6 z-10"
           />

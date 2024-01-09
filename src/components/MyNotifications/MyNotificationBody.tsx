@@ -1,24 +1,44 @@
-import MyNotificationItem from "./MyNotificationItem";
-import { DUMMYNOTIFICAITION } from "./DUMMYNOTIFICATION";
+import { Conversation, Notification } from "@/types/notification";
 
-const DUMMYDATA = [
-  DUMMYNOTIFICAITION,
-  DUMMYNOTIFICAITION,
-  DUMMYNOTIFICAITION,
-  DUMMYNOTIFICAITION,
-  DUMMYNOTIFICAITION,
-];
+import useListedNotificationAndMention from "@/hooks/api/useListedNotificationAndMention.ts";
+import CommentNotification from "@/components/MyNotifications/CommentNotification.tsx";
+import MentionNotification from "@/components/MyNotifications/MentionNotification.tsx";
+
+const isComment = (props: Notification | Conversation): props is Notification => {
+  return "comment" in props;
+};
+
 const MyNotificationBody = () => {
+  const { listedNotificationAndMention, isPending } = useListedNotificationAndMention();
+
+  if (isPending) {
+    return <span>Loading...</span>;
+  }
+
   return (
     <main className="p-10pxr">
       <ul className="list-none">
-        {DUMMYDATA.map(({ _id, seen, author, comment, createdAt }) => {
+        {/*TODO : [24/1/8] 더 깔끔하게 작성할 것*/}
+        {listedNotificationAndMention?.map((notification) => {
+          const { _id, message, createdAt } = notification;
+
+          if (isComment(notification)) {
+            const { comment, post, createdAt } = notification;
+            return (
+              /*TODO : [24/1/9] id처리 커스텀훅으로 로직 분리하기*/
+              <CommentNotification
+                key={typeof _id === "string" ? _id : _id[0]}
+                postId={post || ""}
+                comment={comment?.comment || ""}
+                createdAt={createdAt}
+              />
+            );
+          }
+
           return (
-            <MyNotificationItem
-              key={_id}
-              seen={seen}
-              author={author.fullName}
-              comment={comment.comment}
+            <MentionNotification
+              key={typeof _id === "string" ? _id : _id[0]}
+              message={message || ""}
               createdAt={createdAt}
             />
           );

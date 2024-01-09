@@ -4,7 +4,7 @@ import { parseFullName } from "@/utils/parsingJson";
 
 import { Thread } from "@/types/thread";
 
-import { getThreadsByChannelId } from "./queryFn";
+import { getThreadByThreadId, getThreadsByChannelId } from "./queryFn";
 
 const threads = createQueryKeys("thread", {
   threadsByChannel: (channelId: string | undefined) => ({
@@ -24,6 +24,22 @@ const threads = createQueryKeys("thread", {
           },
         };
       }),
+  }),
+  threadDetail: (threadId: string | undefined) => ({
+    queryKey: ["thread", threadId],
+    queryFn: threadId ? () => getThreadByThreadId(threadId) : undefined,
+    enabled: !!threadId,
+    select: (thread: Thread) => {
+      const { nickname, name } = parseFullName(thread.author.fullName);
+      return {
+        ...thread,
+        author: {
+          ...thread.author,
+          name,
+          nickname,
+        },
+      };
+    },
   }),
 });
 
