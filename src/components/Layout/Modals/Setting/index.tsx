@@ -3,8 +3,10 @@ import { z } from "zod";
 import SimpleBaseForm from "../Base/form";
 import SimpleBaseModal from "../Base/modal";
 
-import { SETTING_FIELDS, SETTING_FIELDS_SCHEMA } from "./config";
+import { makeFormFields, SETTING_FIELDS, SETTING_FIELDS_SCHEMA } from "./config";
 import ImageUploadForm from "./ImageUploadForm";
+
+import useGetUserInfo from "@/apis/auth/useGetUserInfo";
 
 interface Props {
   open: boolean;
@@ -12,6 +14,9 @@ interface Props {
 }
 
 const SettingModal = ({ open, toggleOpen }: Props) => {
+  const { user, isPending } = useGetUserInfo();
+
+  if (open && !isPending && user) makeFormFields(user);
   const handleSubmit = (settingInfo: z.infer<typeof SETTING_FIELDS_SCHEMA>) => {
     console.log(settingInfo);
   };
