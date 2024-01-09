@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { Thread } from "@/types/thread";
+import { Like, Thread } from "@/types/thread";
 
 import { postThreadLike } from "./queryFn";
 import threads from "./queryKey";
@@ -8,14 +8,19 @@ import threads from "./queryKey";
 const usePostThreadLike = (channelId: string) => {
   const queryClient = useQueryClient();
 
-  const { mutate, isPending, isError } = useMutation({
+  const { mutate, isPending, isError } = useMutation<
+    Like,
+    Error,
+    string,
+    { previousThreads: Thread[] | undefined }
+  >({
     mutationFn: (threadId: string) => postThreadLike(threadId),
     onMutate: async (threadId) => {
       await queryClient.cancelQueries({
         queryKey: threads.threadsByChannel(channelId).queryKey,
       });
 
-      const previousThreads = queryClient.getQueryData(
+      const previousThreads = queryClient.getQueryData<Thread[]>(
         threads.threadsByChannel(channelId).queryKey,
       );
 
