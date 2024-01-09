@@ -60,14 +60,12 @@ const ThreadListItem = ({ id, title, author, createdAt, likes, channelId, onClic
       <div className="flex items-center">
         <Avatar className="mr-3">
           <AvatarImage src="/svg/userProfile.svg" alt="프로필" />
-          {/*TODO: 로그인/회원가입 추가시 옵셔널 삭제 예정 (2023.01.02)*/}
           <AvatarFallback>{author.nickname?.charAt(0)}</AvatarFallback>
         </Avatar>
         <div className="min-w-0 flex-grow">
           <div className="flex justify-between">
-            {/* TODO: 로그인/회원가입 추가시 기본값 "프롱이" 삭제 예정 (2023.01.02)*/}
             <span tabIndex={0} className="text-lg font-semibold">
-              {nickname || "익명의 프롱이"}
+              {nickname}
             </span>
             <span tabIndex={0} className="text-gray-400">
               {formatDate(createdAt)}
