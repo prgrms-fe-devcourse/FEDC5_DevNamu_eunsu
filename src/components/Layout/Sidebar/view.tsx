@@ -53,6 +53,10 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
   const handleLogout = () => {
     logout();
   };
+
+  const handlerOpenSettingModal = () => {
+    setSettingModalOpen(true);
+  };
   /*
     Link Button과 DarkMode Dropdown 버튼이 공유하는 CSS가 많아서 styles로 상수화함.
     (Link를 쓰지 말고 navigate를 써도 될 듯)
@@ -85,30 +89,31 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
           </Avatar>
           {LINKS.filter(({ requireAuth }) => !requireAuth || (requireAuth && isLoggedIn)).map(
             ({ url, name, icon: Icon }) => {
-              const isSelectedPage = pathname === url;
+            const isSelectedPage = pathname === url;
+            const IconWrap = url ? Link : "button";
+            const props = url ? { to: url } : { onClick: handlerOpenSettingModal, to: url };
 
-              return (
-                <Link key={url} to={url} className={ButtonWrappingCSS}>
-                  <div
-                    className={cn(
-                      "relative",
-                      IconWrappingCSS,
-                      isSelectedPage && "bg-[rgba(124,40,82,0.25)] text-2xl",
-                    )}
-                  >
-                    <Icon className={IconCSS} />
-                    {/* TODO: [2023-12-29] 지금처럼 url로 분기하지 않고 showBubble로 추상화하기 */}
-                    {url === "/my-notifications" && numberOfNotifications > 0 && (
-                      <div className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-2xl bg-[rgba(124,40,82,0.75)] text-xs text-white">
-                        {numberOfNotifications}
-                      </div>
-                    )}
-                  </div>
-                  <span className={IconDescriptionCSS}>{name}</span>
-                </Link>
-              );
-            },
-          )}
+            return (
+              <IconWrap key={url} {...props} className={ButtonWrappingCSS}>
+                <div
+                  className={cn(
+                    "relative",
+                    IconWrappingCSS,
+                    isSelectedPage && "bg-[rgba(124,40,82,0.25)] text-2xl",
+                  )}
+                >
+                  <Icon className={IconCSS} />
+                  {/* TODO: [2023-12-29] 지금처럼 url로 분기하지 않고 showBubble로 추상화하기 */}
+                  {url === "/my-notifications" && numberOfNotifications > 0 && (
+                    <div className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-2xl bg-[rgba(124,40,82,0.75)] text-xs text-white">
+                      {numberOfNotifications}
+                    </div>
+                  )}
+                </div>
+                <span className={IconDescriptionCSS}>{name}</span>
+              </IconWrap>
+            );
+          })}
           <ThemeConfigDropdown>
             <div className={ButtonWrappingCSS}>
               <div className={IconWrappingCSS}>
