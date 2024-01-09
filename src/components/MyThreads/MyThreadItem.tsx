@@ -26,10 +26,10 @@ const MyThreadItem = ({ title, type, channel, createdAt, comment }: Props) => {
   return (
     <ul className="list-none">
       <div className="flex items-center justify-between gap-6 pt-3">
-        {type === "post" ? (
+        {channel ? (
           <p className="text-sm text-muted-foreground">#{channelMap[channel]}게시판</p>
         ) : (
-          <p className="text-sm text-muted-foreground">내 댓글 </p>
+          <p className="text-sm text-muted-foreground">#작성한 댓글 </p>
         )}
 
         <p className="text-xs font-extralight">{createdDate}</p>
