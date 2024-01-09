@@ -1,6 +1,6 @@
 import { BellRingIcon, HomeIcon, PenSquareIcon, SettingsIcon } from "lucide-react";
 
-export const LINKS = [
+export const SIDEBAR_ICONS = [
   {
     url: "/",
     icon: HomeIcon,

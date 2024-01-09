@@ -10,7 +10,7 @@ import { getLocalStorage } from "@/utils/localStorage";
 import LoginModal from "../Modals/Login";
 import RegisterModal from "../Modals/Register";
 
-import { LINKS } from "./config";
+import { SIDEBAR_ICONS } from "./config";
 import { ThemeConfigDropdown } from "./ThemeConfigDropdown";
 import { ButtonWrappingCSS, IconCSS, IconDescriptionCSS, IconWrappingCSS } from "./styles";
 
@@ -87,8 +87,9 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
             <AvatarImage src={profileImgUrl} alt={nickname} />
             <AvatarFallback>{shortenedNickname}</AvatarFallback>
           </Avatar>
-          {LINKS.filter(({ requireAuth }) => !requireAuth || (requireAuth && isLoggedIn)).map(
-            ({ url, name, icon: Icon }) => {
+          {SIDEBAR_ICONS.filter(
+            ({ requireAuth }) => !requireAuth || (requireAuth && isLoggedIn),
+          ).map(({ url, name, icon: Icon }) => {
             const isSelectedPage = pathname === url;
             const IconWrap = url ? Link : "button";
             const props = url ? { to: url } : { onClick: handlerOpenSettingModal, to: url };
