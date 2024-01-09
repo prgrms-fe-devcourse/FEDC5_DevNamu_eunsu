@@ -27,12 +27,13 @@ interface Props {
 }
 
 const ThreadListItem = ({ id, title, author, createdAt, likes, channelId, onClick }: Props) => {
-  const { content, nickname } = parseTitle(title);
-  const [hoveredListId, setHoveredListId] = useState<string | null>(null);
   const { user } = useGetUserInfo();
-  const isAlreadyLikedByUser = likes.some((like) => like.user === user?._id);
   const { likeThread } = usePostThreadLike(channelId);
   const { removeLike } = useDeleteThreadLike(channelId);
+  const { content, nickname } = parseTitle(title);
+  const [hoveredListId, setHoveredListId] = useState<string | null>(null);
+  const likedByUser = likes.find((like) => like.user === user?._id);
+  const isAlreadyLikedByUser = !!likedByUser;
 
   const handleMouseEnter = () => {
     setHoveredListId(id);
@@ -42,11 +43,9 @@ const ThreadListItem = ({ id, title, author, createdAt, likes, channelId, onClic
     setHoveredListId(null);
   };
 
-  const handleClickLikeToggle = async () => {
-    console.log(likes, id);
-    if (isAlreadyLikedByUser) {
-      removeLike(id);
-    } else likeThread(id);
+  const handleClickLikeButton = () => {
+    if (isAlreadyLikedByUser) removeLike(likedByUser._id);
+    else likeThread(id);
   };
 
   return (
@@ -82,18 +81,16 @@ const ThreadListItem = ({ id, title, author, createdAt, likes, channelId, onClic
           </div>
           {likes.length > 0 && (
             <LikeToggleButton
-              clicked
-              onClick={handleClickLikeToggle}
+              clicked={isAlreadyLikedByUser}
+              onClick={handleClickLikeButton}
               numberOfLikes={likes.length}
             />
           )}
         </div>
         {hoveredListId === id && (
           <ThreadToolbar
-            channelId={channelId}
-            postId={id}
             authorId={author._id}
-            isAlreadyLikedByUser={isAlreadyLikedByUser}
+            handleClickLikeButton={handleClickLikeButton}
             className="absolute -top-6 right-6 z-10"
           />
         )}
