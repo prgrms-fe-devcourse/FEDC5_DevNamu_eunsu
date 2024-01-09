@@ -29,11 +29,13 @@ const usePostThreadLike = (channelId: string) => {
 
       return { previousThreads };
     },
-    onError: (error, postId, context) => {
+    onError: (error, _, context) => {
       queryClient.setQueryData(
         threads.threadsByChannel(channelId).queryKey,
         context?.previousThreads,
       );
+
+      console.error(error);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
