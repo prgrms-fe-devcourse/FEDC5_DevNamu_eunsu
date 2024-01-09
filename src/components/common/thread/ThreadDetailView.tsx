@@ -19,7 +19,7 @@ const channelMap = {
 
 const ThreadDetailView = ({ thread, onClose }: Props) => {
   return (
-    <div className="flex flex-col h-screen px-6 py-4 overflow-auto list-none min-w-500pxr">
+    <div className="flex flex-col h-screen py-4 overflow-auto list-none min-w-500pxr">
       <div className="flex items-center justify-between p-2">
         <div className="flex items-center gap-2">
           <h2 className="text-2xl font-bold text-gray-700">스레드</h2>
