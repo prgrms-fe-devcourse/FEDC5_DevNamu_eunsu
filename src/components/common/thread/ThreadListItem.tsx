@@ -56,7 +56,7 @@ const ThreadListItem = ({ id, content, author, createdAt, likes, channelId }: Pr
       <div className="flex items-center">
         <Avatar className="mr-3">
           <AvatarImage src="/svg/userProfile.svg" alt="프로필" />
-          <AvatarFallback>{author.nickname?.charAt(0)}</AvatarFallback>
+          <AvatarFallback>{author.nickname.charAt(0)}</AvatarFallback>
         </Avatar>
         <div className="min-w-0 flex-grow">
           <div className="flex justify-between">
