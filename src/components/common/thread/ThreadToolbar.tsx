@@ -4,20 +4,16 @@ import { useState } from "react";
 import ThreadTooltip from "./ThreadTooltip";
 
 import useGetUserInfo from "@/apis/auth/useGetUserInfo";
-import usePostThreadLike from "@/apis/thread/usePostThreadLike";
 
 interface Props {
-  postId: string;
   authorId: string;
-  channelId: string;
-  isAlreadyLikedByUser: boolean;
+  handleClickLikeButton: () => void;
   className?: string;
 }
 
-const ThreadToolbar = ({ postId, authorId, className, channelId, isAlreadyLikedByUser }: Props) => {
+const ThreadToolbar = ({ authorId, handleClickLikeButton, className }: Props) => {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
   const { user } = useGetUserInfo();
-  const { likeThread, isError } = usePostThreadLike(channelId);
 
   const handleMouseEnter = (buttonType: string) => () => {
     setHoveredButton(buttonType);
@@ -25,14 +21,6 @@ const ThreadToolbar = ({ postId, authorId, className, channelId, isAlreadyLikedB
 
   const handleMouseLeave = () => {
     setHoveredButton(null);
-  };
-
-  const handleClickLikeButton = () => {
-    console.log("좋아요오");
-
-    if (isAlreadyLikedByUser) return;
-    likeThread(postId);
-    console.log(isError);
   };
 
   return (
