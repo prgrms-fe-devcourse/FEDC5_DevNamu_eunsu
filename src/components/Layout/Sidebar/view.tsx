@@ -9,6 +9,7 @@ import { getLocalStorage } from "@/utils/localStorage";
 
 import LoginModal from "../Modals/Login";
 import RegisterModal from "../Modals/Register";
+import SettingModal from "../Modals/Setting";
 
 import { SIDEBAR_ICONS } from "./config";
 import { ThemeConfigDropdown } from "./ThemeConfigDropdown";
@@ -45,6 +46,7 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
 
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
+  const [settingModalOpen, setSettingModalOpen] = useState(false);
 
   const { mutate: logout } = usePostLogout();
 
@@ -81,6 +83,7 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
           openLoginModal={setLoginModalOpen}
         />
       )}
+      {isLoggedIn && <SettingModal open={settingModalOpen} toggleOpen={setSettingModalOpen} />}
       <div className="flex w-20 flex-col items-center justify-between gap-8">
         <div className="mt-4 flex cursor-pointer select-none flex-col items-center gap-2">
           <Avatar onClick={() => setLoginModalOpen(true)} className="flex items-center">
