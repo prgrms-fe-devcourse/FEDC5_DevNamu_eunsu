@@ -1,5 +1,7 @@
 import api from "@/apis/core";
 
+import { parseFullName, parseTitle } from "@/utils/parsingJson";
+
 import { Like, Thread } from "@/types/thread";
 
 interface CreateThread {
@@ -20,8 +22,24 @@ export const patchThread = async (postInfo: PatchThread) => {
   return await api.patch<Thread>({ url: `/posts/patch`, data: postInfo });
 };
 
-export const getThreadsByChannelId = (channelId: string) =>
-  api.get<Thread[]>({ url: `/posts/channel/${channelId}` });
+export const getThreadsByChannelId = async (channelId: string) => {
+  const threads = await api.get<Thread[]>({ url: `/posts/channel/${channelId}` });
+
+  return threads.map((thread) => {
+    const { name } = parseFullName(thread.author.fullName);
+    const { content, nickname } = parseTitle(thread.title);
+
+    return {
+      ...thread,
+      content,
+      author: {
+        ...thread.author,
+        name,
+        nickname,
+      },
+    };
+  });
+};
 
 export const postThreadLike = (postId: string) =>
   api.post({ url: "/likes/create", data: { postId } });
