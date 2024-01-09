@@ -4,16 +4,10 @@ interface Props {
   createdDate: string;
   content: string;
   channelName?: string;
-  postId: string;
+  postId?: string;
   isMention?: boolean;
 }
-export const MyNotificationContent = ({
-  createdDate,
-  content,
-  channelName,
-  postId,
-  isMention,
-}: Props) => {
+export const MyNotificationContent = ({ createdDate, content, channelName, isMention }: Props) => {
   const title = channelName ? `#${channelName}에서 멘션이 왔어요!` : "댓글이 달렸어요!";
   return (
     <li>
@@ -22,7 +16,7 @@ export const MyNotificationContent = ({
         <p className="text-xs font-extralight">{createdDate}</p>
       </div>
       <div className={isMention ? "font-bold" : "mb-1"}>{content}</div>
-      <div className="text-sm text-muted-foreground">postId : {postId}</div>
+
       <Separator />
     </li>
   );
