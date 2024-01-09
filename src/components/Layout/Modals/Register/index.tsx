@@ -38,15 +38,16 @@ const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
     }
   }, [isRegisterSuccess, isRegisterError, registerError, handleLoginClick]);
 
-  const handleSubmit = (registerInfo: z.infer<typeof REGISTER_FIELDS_SCHEMA>) => {
+  const handleSubmit = async (registerInfo: z.infer<typeof REGISTER_FIELDS_SCHEMA>) => {
     const { email, name, nickname, password } = registerInfo;
 
+    // TODO : [24/1/9] alert 변경할 것
     if (userListByDB.find((user) => user.name === name)) {
       alert("이미 존재하는 이름입니다.");
       return;
     }
     const fullName = { name, nickname: nickname || ANONYMOUS_NICKNAME };
-    updateUserList({ email, fullName, password });
+    await updateUserList({ email, fullName, password });
   };
 
   return (

@@ -4,6 +4,7 @@ import { postRegister, RegisterRequest } from "@/apis/auth/queryFn.ts";
 import useChangeThread from "@/hooks/api/useChangeThread.ts";
 import useUserListByDB from "@/hooks/api/useUserListByDB.ts";
 import useLogin from "@/apis/auth/useLogin.ts";
+import usePostLogout from "@/apis/auth/usePostLogout.ts";
 
 const useUpdateUserList = () => {
   const { mutateAsync, isError, isSuccess, error } = useMutation({
@@ -15,6 +16,7 @@ const useUpdateUserList = () => {
   });
   const { mutateAsync: loginMutate } = useLogin({ toggleOpen: () => {} });
   const { userListByDB } = useUserListByDB();
+  const { mutate: logoutMutate } = usePostLogout();
 
   const updateUserList = async (body: RegisterRequest) => {
     const {
@@ -38,7 +40,7 @@ const useUpdateUserList = () => {
       content: JSON.stringify(newUserListByDB),
     });
 
-    // TODO : [24/1/9] admin 로그아웃 추가
+    logoutMutate();
   };
 
   return {
