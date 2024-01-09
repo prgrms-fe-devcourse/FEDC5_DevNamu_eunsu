@@ -10,7 +10,7 @@ const useLogout = () => {
   const token = getLocalStorage("token", "");
 
   return useMutation({
-    mutationFn: () => postLogout(),
+    mutationFn: postLogout,
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: auth.userInfo(token).queryKey })
       removeLocalStorage("token");
