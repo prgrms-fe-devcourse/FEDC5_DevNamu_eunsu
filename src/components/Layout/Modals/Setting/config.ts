@@ -2,44 +2,52 @@ import { z } from "zod";
 
 import { FieldProps } from "../Base/form";
 
-export const SETTING_FIELDS: FieldProps[] = [
-  {
-    name: "name",
-    type: "text",
-    label: "이름",
-    autoFocus: true,
-    autoComplete: "off",
-    readOnly: true,
-    value: "프롱이",
-  },
-  {
-    name: "email",
-    type: "email",
-    label: "이메일",
-    autoComplete: "username",
-    readOnly: true,
-    value: "email@naver.com",
-  },
-  {
-    name: "nickname",
-    type: "text",
-    label: "닉네임",
-    autoComplete: "nickname",
-    value: "프롱이",
-  },
-  {
-    name: "password",
-    type: "password",
-    label: "새 비밀번호",
-    autoComplete: "new-password",
-  },
-  {
-    name: "passwordConfirm",
-    type: "password",
-    label: "새 비밀번호 확인",
-    autoComplete: "new-password",
-  },
-];
+export interface UserInfo {
+  name: string;
+  email: string;
+  nickname: string;
+}
+
+export const SETTING_FIELDS: FieldProps[] = [];
+
+export const makeFormFields = ({ name, email, nickname }: UserInfo) => {
+  const result: FieldProps[] = [
+    {
+      name: "name",
+      type: "text",
+      label: "이름",
+      readOnly: true,
+      value: name,
+    },
+    {
+      name: "email",
+      type: "email",
+      label: "이메일",
+      readOnly: true,
+      value: email,
+    },
+    {
+      name: "nickname",
+      type: "text",
+      label: "닉네임",
+      autoComplete: "nickname",
+      value: nickname,
+    },
+    {
+      name: "password",
+      type: "password",
+      label: "새 비밀번호",
+      autoComplete: "new-password",
+    },
+    {
+      name: "passwordConfirm",
+      type: "password",
+      label: "새 비밀번호 확인",
+      autoComplete: "new-password",
+    },
+  ];
+  SETTING_FIELDS.splice(0, SETTING_FIELDS.length, ...result);
+};
 
 export const SETTING_FIELDS_SCHEMA = z
   .object({
