@@ -7,7 +7,7 @@ const useDeleteThreadLike = (channelId: string) => {
   const queryClient = useQueryClient();
 
   const { mutate, isPending, isError } = useMutation({
-    mutationFn: (postId: string) => deleteThreadLike(postId),
+    mutationFn: (likeId: string) => deleteThreadLike(likeId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: threads.threadsByChannel(channelId).queryKey });
     },
