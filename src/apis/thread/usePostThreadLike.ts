@@ -1,12 +1,16 @@
+import { nanoid } from "nanoid";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { Like, Thread } from "@/types/thread";
+
+import useGetUserInfo from "../auth/useGetUserInfo";
 
 import { postThreadLike } from "./queryFn";
 import threads from "./queryKey";
 
 const usePostThreadLike = (channelId: string) => {
   const queryClient = useQueryClient();
+  const { user } = useGetUserInfo();
 
   const { mutate, isPending, isError } = useMutation<
     Like,
@@ -24,11 +28,21 @@ const usePostThreadLike = (channelId: string) => {
         threads.threadsByChannel(channelId).queryKey,
       );
 
+      const optimisticLike = {
+        _id: nanoid(),
+        post: threadId,
+        user: user?._id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
       queryClient.setQueryData(
         threads.threadsByChannel(channelId).queryKey,
         (oldThreads: Thread[]) =>
           oldThreads.map((thread) =>
-            thread._id === threadId ? { ...thread, likes: [...thread.likes, threadId] } : thread,
+            thread._id === threadId
+              ? { ...thread, likes: [...thread.likes, optimisticLike] }
+              : thread,
           ),
       );
 
