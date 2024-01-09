@@ -1,5 +1,7 @@
 import { parseTitle } from "@/utils/parsingJson";
 
+import { Thread, Comment } from "@/types/thread.ts";
+
 import MyThreadItem from "./MyThreadItem";
 
 import useGetUserInfo from "@/apis/auth/useGetUserInfo";
@@ -7,6 +9,10 @@ import useListedThreadsAndComments from "@/hooks/api/useListedThreadsAndComments
 
 const DEFAULT_VALUE = "658f0f92c31af67084101253";
 //TODO: Comments는 API에서 GET으로 받아올 수 없는 문제 처리 논의 (2023.12.30)
+
+const isComment = (props: Thread | Comment): props is Comment => {
+  return "comment" in props;
+};
 
 const MyThreadBody = () => {
   const { user } = useGetUserInfo();
@@ -20,18 +26,28 @@ const MyThreadBody = () => {
 
   return (
     <main className="p-10pxr">
-      {listedThreadsAndComments?.map(({ _id, channel, title, comment, createdAt }) => {
+      {/*TODO : [24/1/9] 더 깔끔하게 작성할 것*/}
+      {listedThreadsAndComments?.map((commentsProps) => {
+        const { _id, createdAt } = commentsProps;
+
+        if (isComment(commentsProps)) {
+          const { comment } = commentsProps;
+          return (
+            <MyThreadItem key={_id} type={"comment"} createdAt={createdAt} comment={comment} />
+          );
+        }
+
         // TODO: 파싱하는 로직은 뷰에서 분리하기 (2024.01.04)
+        const { title, channel } = commentsProps;
         const { content } = title ? parseTitle(title) : "";
-        const type = comment ? "comment" : "post";
+
         return (
           <MyThreadItem
             key={_id}
-            type={type}
+            type={"post"}
             channel={channel?.name}
             title={content}
             createdAt={createdAt}
-            comment={comment}
           ></MyThreadItem>
         );
       })}

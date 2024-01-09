@@ -34,7 +34,11 @@ const MyThreadItem = ({ title, type, channel, createdAt, comment }: Props) => {
 
         <p className="text-xs font-extralight">{createdDate}</p>
       </div>
-      {type === "post" ? <MyPost title={title} /> : <MyComment comment={comment} />}
+      {type === "post" ? (
+        <MyPost title={title || "잘못된 데이터 입니다."} />
+      ) : (
+        <MyComment comment={comment || "잘못된 데이터 입니다."} />
+      )}
       <Separator />
     </ul>
   );
