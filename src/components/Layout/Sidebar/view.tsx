@@ -83,30 +83,32 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
             <AvatarImage src={profileImgUrl} alt={nickname} />
             <AvatarFallback>{shortenedNickname}</AvatarFallback>
           </Avatar>
-          {LINKS.map(({ url, name, icon: Icon }) => {
-            const isSelectedPage = pathname === url;
+          {LINKS.filter(({ requireAuth }) => !requireAuth || (requireAuth && isLoggedIn)).map(
+            ({ url, name, icon: Icon }) => {
+              const isSelectedPage = pathname === url;
 
-            return (
-              <Link key={url} to={url} className={ButtonWrappingCSS}>
-                <div
-                  className={cn(
-                    "relative",
-                    IconWrappingCSS,
-                    isSelectedPage && "bg-[rgba(124,40,82,0.25)] text-2xl",
-                  )}
-                >
-                  <Icon className={IconCSS} />
-                  {/* TODO: [2023-12-29] 지금처럼 url로 분기하지 않고 showBubble로 추상화하기 */}
-                  {url === "/my-notifications" && numberOfNotifications > 0 && (
-                    <div className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-2xl bg-[rgba(124,40,82,0.75)] text-xs text-white">
-                      {numberOfNotifications}
-                    </div>
-                  )}
-                </div>
-                <span className={IconDescriptionCSS}>{name}</span>
-              </Link>
-            );
-          })}
+              return (
+                <Link key={url} to={url} className={ButtonWrappingCSS}>
+                  <div
+                    className={cn(
+                      "relative",
+                      IconWrappingCSS,
+                      isSelectedPage && "bg-[rgba(124,40,82,0.25)] text-2xl",
+                    )}
+                  >
+                    <Icon className={IconCSS} />
+                    {/* TODO: [2023-12-29] 지금처럼 url로 분기하지 않고 showBubble로 추상화하기 */}
+                    {url === "/my-notifications" && numberOfNotifications > 0 && (
+                      <div className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-2xl bg-[rgba(124,40,82,0.75)] text-xs text-white">
+                        {numberOfNotifications}
+                      </div>
+                    )}
+                  </div>
+                  <span className={IconDescriptionCSS}>{name}</span>
+                </Link>
+              );
+            },
+          )}
           <ThemeConfigDropdown>
             <div className={ButtonWrappingCSS}>
               <div className={IconWrappingCSS}>
