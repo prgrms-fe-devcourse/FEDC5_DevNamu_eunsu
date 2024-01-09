@@ -13,7 +13,7 @@ import { ThemeConfigDropdown } from "./ThemeConfigDropdown";
 import { ButtonWrappingCSS, IconCSS, IconDescriptionCSS, IconWrappingCSS } from "./styles";
 
 import { cn } from "@/lib/utils";
-import useLogout from "@/apis/auth/useLogout";
+import usePostLogout from "@/apis/auth/usePostLogout";
 
 interface Props {
   pathname: string;
@@ -44,7 +44,7 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
 
-  const { mutate: logout } = useLogout();
+  const { mutate: logout } = usePostLogout();
 
   const handleLogout = () => {
     logout();
