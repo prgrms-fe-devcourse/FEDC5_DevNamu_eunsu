@@ -18,7 +18,10 @@ interface Props extends PropsWithChildren {
 const SimpleBaseModal = ({ dialogOptions = {}, title, header, children }: Props) => {
   return (
     <Dialog {...dialogOptions}>
-      <DialogContent className="max-h-[800px] overflow-scroll sm:max-w-[425px]">
+      <DialogContent
+        onInteractOutside={(e) => e.preventDefault()}
+        className="max-h-[800px] overflow-scroll sm:max-w-[425px]"
+      >
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{header}</DialogDescription>
