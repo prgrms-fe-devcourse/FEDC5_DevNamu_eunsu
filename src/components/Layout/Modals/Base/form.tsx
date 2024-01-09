@@ -32,10 +32,15 @@ export interface FieldProps {
   value?: string;
 }
 
+// TODO: zod의 any 타입 제거 및 재귀 타입 어떻게 생성할지 고민해보기 (2024-01-08)
 export interface SimpleFormProps extends PropsWithChildren {
   fields: FieldProps[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  validationSchema: z.ZodEffects<z.ZodObject<any>> | z.ZodObject<any>;
+  validationSchema: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  | z.ZodEffects<z.ZodEffects<z.ZodObject<any>>>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    | z.ZodEffects<z.ZodObject<any>>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    | z.ZodObject<any>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSubmit: (values: any) => void;
   submitText: string;
