@@ -12,8 +12,8 @@ interface Props {
 }
 
 const ThreadToolbar = ({ authorId, handleClickLikeButton, className }: Props) => {
-  const [hoveredButton, setHoveredButton] = useState<string | null>(null);
   const { user } = useGetUserInfo();
+  const [hoveredButton, setHoveredButton] = useState<string | null>(null);
 
   const handleMouseEnter = (buttonType: string) => () => {
     setHoveredButton(buttonType);
