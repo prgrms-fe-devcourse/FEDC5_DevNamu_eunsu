@@ -6,31 +6,31 @@ import ThreadListItem from "@/components/common/thread/ThreadListItem";
 
 interface Props {
   threads: Thread[];
-  channelId: string;
 }
 
-const ThreadList = ({ threads, channelId }: Props) => {
+const ThreadList = ({ threads }: Props) => {
   const threadListRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
-    if (!threadListRef.current) return;
-
-    threadListRef.current.scrollTop = threadListRef.current.scrollHeight;
-  }, [threads]);
+    if (threadListRef.current) {
+      threadListRef.current.scrollTop = threadListRef.current.scrollHeight;
+    }
+  }, []);
 
   return (
     <ul
       ref={threadListRef}
-      className="max-h-700pxr min-h-700pxr overflow-auto rounded-sm border border-t-0 pt-22pxr"
+      className="max-h-700pxr min-h-700pxr overflow-y-auto rounded-sm border border-t-0 pt-80pxr"
     >
-      {threads.map(({ _id, createdAt, title, author }) => (
+      {threads.map(({ _id, createdAt, content, author, likes, channel }) => (
         <ThreadListItem
           key={_id}
           id={_id}
           createdAt={createdAt}
-          title={title}
+          content={content}
           author={author}
-          channelId={channelId}
+          likes={likes}
+          channelId={channel._id}
         />
       ))}
     </ul>

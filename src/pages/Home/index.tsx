@@ -14,12 +14,14 @@ const HomePage = () => {
         <ChannelNavigationMenu />
       </div>
       <div className="w-full max-w-4xl px-4">
-        <main>{threads && <ThreadList threads={threads} channelId={channelId} />}</main>
-        <EditorTextArea
-          isMention={channelName !== "incompetent"}
-          nickname={user?.nickname}
-          editorProps={{ channelId }}
-        />
+        <main>{threads && <ThreadList threads={threads} />}</main>
+        {user && (
+          <EditorTextArea
+            isMention={channelName !== "incompetent"}
+            nickname={user.nickname}
+            editorProps={{ channelId }}
+          />
+        )}
       </div>
     </div>
   );

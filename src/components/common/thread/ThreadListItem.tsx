@@ -3,25 +3,35 @@ import { useState } from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 import { formatDate } from "@/utils/formatDate";
-import { parseTitle } from "@/utils/parsingJson";
 
 import { User } from "@/types/user";
+import { Like } from "@/types/thread";
+
+import LikeToggleButton from "../LikeToggleButton";
 
 import ThreadToolbar from "./ThreadToolbar";
 
-import useDeleteThread from "@/apis/thread/useDeleteThread.ts";
+import useGetUserInfo from "@/apis/auth/useGetUserInfo";
+import useDeleteThreadLike from "@/apis/thread/useDeleteThreadLike";
+import usePostThreadLike from "@/apis/thread/usePostThreadLike";
+import useDeleteThread from "@/apis/thread/useDeleteThread";
 
 interface Props {
   id: string;
-  title: string;
+  content: string;
   author: User;
   createdAt: string;
+  likes: Like[];
   channelId: string;
 }
 
-const ThreadListItem = ({ id, title, author, createdAt, channelId }: Props) => {
-  const { content, nickname } = parseTitle(title);
+const ThreadListItem = ({ id, content, author, createdAt, likes, channelId }: Props) => {
+  const { user } = useGetUserInfo();
+  const { likeThread } = usePostThreadLike(channelId);
+  const { removeLike } = useDeleteThreadLike(channelId);
   const [hoveredListId, setHoveredListId] = useState<string | null>(null);
+  const likedByUser = likes.find((like) => like.user === user?._id);
+  const isAlreadyLikedByUser = !!likedByUser;
 
   const { mutate: deleteThread } = useDeleteThread(channelId);
   const handleMouseEnter = () => {
@@ -32,9 +42,15 @@ const ThreadListItem = ({ id, title, author, createdAt, channelId }: Props) => {
     setHoveredListId(null);
   };
 
+  const handleClickLikeButton = () => {
+    if (isAlreadyLikedByUser) removeLike(likedByUser._id);
+    else likeThread(id);
+  };
+
   const handleDelete = () => {
     deleteThread(id);
   };
+
   return (
     <li
       key={id}
@@ -46,14 +62,12 @@ const ThreadListItem = ({ id, title, author, createdAt, channelId }: Props) => {
       <div className="flex items-center">
         <Avatar className="mr-3">
           <AvatarImage src="/svg/userProfile.svg" alt="프로필" />
-          {/*TODO: 로그인/회원가입 추가시 옵셔널 삭제 예정 (2023.01.02)*/}
-          <AvatarFallback>{author.nickname?.charAt(0)}</AvatarFallback>
+          <AvatarFallback>{author.nickname.charAt(0)}</AvatarFallback>
         </Avatar>
         <div className="min-w-0 flex-grow">
           <div className="flex justify-between">
-            {/* TODO: 로그인/회원가입 추가시 기본값 "프롱이" 삭제 예정 (2023.01.02)*/}
             <span tabIndex={0} className="text-lg font-semibold">
-              {nickname || "익명의 프롱이"}
+              {author.nickname}
             </span>
             <span tabIndex={0} className="text-gray-400">
               {formatDate(createdAt)}
@@ -61,13 +75,25 @@ const ThreadListItem = ({ id, title, author, createdAt, channelId }: Props) => {
           </div>
           <div
             tabIndex={0}
-            className="overflow-hidden truncate text-ellipsis pr-50pxr text-gray-500"
+            className="mb-10pxr overflow-hidden truncate text-ellipsis pr-50pxr text-gray-500"
           >
             {content}
           </div>
+          {likes.length > 0 && (
+            <LikeToggleButton
+              clicked={isAlreadyLikedByUser}
+              onClick={handleClickLikeButton}
+              numberOfLikes={likes.length}
+            />
+          )}
         </div>
         {hoveredListId === id && (
-          <ThreadToolbar className="absolute right-0 top-0 z-10" onDelete={handleDelete} />
+          <ThreadToolbar
+            authorId={author._id}
+            onDelete={handleDelete}
+            handleClickLikeButton={handleClickLikeButton}
+            className="absolute -top-6 right-6 z-10"
+          />
         )}
       </div>
     </li>
