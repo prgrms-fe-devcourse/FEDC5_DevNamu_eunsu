@@ -25,6 +25,7 @@ const MyNotificationBody = () => {
           if (isComment(notification)) {
             const { comment, post, createdAt } = notification;
             return (
+              /*TODO : [24/1/9] id처리 커스텀훅으로 로직 분리하기*/
               <CommentNotification
                 key={typeof _id === "string" ? _id : _id[0]}
                 postId={post || ""}
