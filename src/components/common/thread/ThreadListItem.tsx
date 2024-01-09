@@ -14,6 +14,7 @@ import ThreadToolbar from "./ThreadToolbar";
 import useGetUserInfo from "@/apis/auth/useGetUserInfo";
 import useDeleteThreadLike from "@/apis/thread/useDeleteThreadLike";
 import usePostThreadLike from "@/apis/thread/usePostThreadLike";
+import useDeleteThread from "@/apis/thread/useDeleteThread";
 
 interface Props {
   id: string;
@@ -45,7 +46,7 @@ const ThreadListItem = ({ id, content, author, createdAt, likes, channelId }: Pr
     if (isAlreadyLikedByUser) removeLike(likedByUser._id);
     else likeThread(id);
   };
-  
+
   const handleDelete = () => {
     deleteThread(id);
   };
