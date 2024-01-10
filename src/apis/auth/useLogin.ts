@@ -30,8 +30,8 @@ const useLogin = ({ toggleOpen }: Props) => {
     onSuccess: (data) => {
       const user = parseUser(data);
       setLocalStorage("token", user.token);
+      toggleOpen(false);
     },
-    onSettled: () => toggleOpen(false),
   });
 };
 
