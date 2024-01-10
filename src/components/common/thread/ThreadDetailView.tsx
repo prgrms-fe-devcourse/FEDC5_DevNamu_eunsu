@@ -3,8 +3,8 @@ import { MouseEvent } from "react";
 
 import { Thread } from "@/types/thread";
 
-import ThreadListItem from "./ThreadListItem";
 import CommentListItem from "./CommentListItem";
+import ThreadListItem from "./ThreadListItem";
 
 interface Props {
   thread: Thread;
@@ -46,7 +46,7 @@ const ThreadDetailView = ({ thread, onClose, className }: Props) => {
       <div>
         <ol className="flex flex-col gap-4">
           {thread.comments.map((comment) => (
-            <CommentListItem key={comment._id} comment={comment} />
+            <CommentListItem key={comment._id} commentInfo={comment} />
           ))}
         </ol>
       </div>
