@@ -3,10 +3,10 @@ import { MouseEvent } from "react";
 
 import { Thread } from "@/types/thread";
 
-import EditorTextArea from "../EditorTextArea";
-
-import ThreadListItem from "./ThreadListItem";
 import CommentListItem from "./CommentListItem";
+import ThreadListItem from "./ThreadListItem";
+
+import { cn } from "@/lib/utils";
 
 interface Props {
   thread: Thread;
@@ -29,9 +29,12 @@ const ThreadDetailView = ({ thread, onClose, className }: Props) => {
   return (
     <div
       onClick={handleClickDetailInner}
-      className={`flex h-screen min-w-500pxr list-none flex-col overflow-auto border-l border-gray-200 px-4 py-5 shadow-xl ${className}`}
+      className={cn(
+        "flex h-screen min-w-500pxr list-none flex-col overflow-auto border-l border-gray-200 px-4 py-5 shadow-xl",
+        className,
+      )}
     >
-      <div className=" flex items-center justify-between p-2">
+      <div className="flex items-center justify-between p-2">
         <div className="flex items-center gap-2">
           <h2 className="text-2xl font-bold text-gray-700">스레드</h2>
           <p className="text-sm text-muted-foreground">#{channelMap[thread.channel.name]}게시판</p>
@@ -51,17 +54,6 @@ const ThreadDetailView = ({ thread, onClose, className }: Props) => {
             <CommentListItem key={comment._id} comment={comment} />
           ))}
         </ol>
-      </div>
-      <div className="absolute bottom-10 left-0 w-full px-4">
-        <EditorTextArea
-          isMention={true}
-          nickname={thread.nickname}
-          editorProps={{
-            channelName: thread.channel.name,
-            postId: thread._id,
-            postAuthorId: thread.author._id,
-          }}
-        />
       </div>
     </div>
   );
