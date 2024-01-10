@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import useThreadStore from "@/stores/thread";
 
@@ -15,8 +15,7 @@ const ThreadList = ({ threads }: Props) => {
 
   const { selectThreadId } = useThreadStore((state) => state);
 
-  const handleClickThread = (threadId: string) => (event: MouseEvent) => {
-    event.stopPropagation();
+  const handleClickThread = (threadId: string) => () => {
     selectThreadId(threadId);
   };
 
