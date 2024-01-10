@@ -38,7 +38,7 @@ const usePostThreadLike = (channelId: string) => {
 
       queryClient.setQueryData(threads.threadDetail(threadId).queryKey, (oldThread: Thread) => ({
         ...oldThread,
-        likes: [...oldThread.likes, optimisticLike],
+        likes: oldThread?.likes ? [...oldThread.likes, optimisticLike] : [optimisticLike],
       }));
 
       return { previousThread };
