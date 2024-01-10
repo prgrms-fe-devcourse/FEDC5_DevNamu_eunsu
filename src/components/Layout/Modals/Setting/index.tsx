@@ -25,10 +25,10 @@ const SettingModal = ({ open, toggleOpen }: Props) => {
 
   if (open && !isPending && user) makeFormFields(user);
 
-  const handleSubmit = (settingInfo: z.infer<typeof SETTING_FIELDS_SCHEMA>) => {
+  const handleSubmit = ({ name, nickname, password }: z.infer<typeof SETTING_FIELDS_SCHEMA>) => {
     const oldNickname = user?.nickname;
-    if (oldNickname !== settingInfo.nickname) {
-      const fullName = { name: settingInfo.name, nickname: settingInfo.nickname };
+    if (oldNickname !== nickname) {
+      const fullName = { name, nickname };
       const userInfo = JSON.stringify(fullName);
       toast.promise(updateUserName(userInfo), {
         loading: LOADING_MESSAGE,
@@ -37,8 +37,8 @@ const SettingModal = ({ open, toggleOpen }: Props) => {
       });
     }
 
-    if (settingInfo.password) {
-      toast.promise(updatePassword(settingInfo.password), {
+    if (password) {
+      toast.promise(updatePassword(password), {
         loading: LOADING_MESSAGE,
         success: AUTH_SUCCESS_MESSAGE.UPDATE_PASSWORD,
         error: AUTH_ERROR_MESSAGE.SERVER_ERROR,
