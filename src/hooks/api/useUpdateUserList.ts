@@ -11,7 +11,7 @@ const useUpdateUserList = () => {
     nickname: "데브코스 관리자",
     postId: import.meta.env.VITE_ADMIN_DB,
   });
-  const { mutateAsync: loginMutate } = useLogin({ toggleOpen: () => {} });
+  const { login } = useLogin({ toggleOpen: () => {} });
   const { userListByDB } = useUserListByDB();
   const { mutate: logoutMutate } = usePostLogout();
 
@@ -26,7 +26,7 @@ const useUpdateUserList = () => {
       user.name === name ? { ...user, userId: _id } : user,
     );
 
-    await loginMutate({
+    await login({
       email: import.meta.env.VITE_ADMIN_ID,
       password: import.meta.env.VITE_ADMIN_PW,
     });
