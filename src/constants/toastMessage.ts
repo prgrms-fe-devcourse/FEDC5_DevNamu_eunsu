@@ -12,6 +12,7 @@ export const AUTH_ERROR_MESSAGE = {
 
 export const AUTH_SUCCESS_MESSAGE = {
   UPDATE_PROFILE: "프로필 닉네임이 수정되었습니다.",
+  UPDATE_PASSWORD: "비밀번호가 수정되었습니다.",
 };
 
 export const LOADING_MESSAGE = "잠시만 기다려주세요...";
