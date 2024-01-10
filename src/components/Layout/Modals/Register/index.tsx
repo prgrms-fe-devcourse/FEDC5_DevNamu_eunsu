@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { useCallback, useEffect } from "react";
-import { isAxiosError } from "axios";
 import { toast } from "sonner";
+import { AxiosError } from "axios";
 
 import { Button } from "@/components/ui/button";
 
@@ -13,6 +13,7 @@ import { REGISTER_FIELDS, REGISTER_FIELDS_SCHEMA } from "./config";
 import useUpdateUserList from "@/hooks/api/useUpdateUserList.ts";
 import useUserListByDB from "@/hooks/api/useUserListByDB.ts";
 import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname.ts";
+import { AUTH_ERROR_MESSAGE, AUTH_ERROR_RESPONSE } from "@/constants/authError";
 
 interface Props {
   open: boolean;
@@ -21,7 +22,7 @@ interface Props {
 }
 
 const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
-  const { updateUserList, isRegisterSuccess, isRegisterError, registerError } = useUpdateUserList();
+  const { updateUserList, isRegisterSuccess } = useUpdateUserList();
   const { userListByDB } = useUserListByDB();
 
   const handleLoginClick = useCallback(() => {
@@ -31,13 +32,8 @@ const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
 
   useEffect(() => {
     if (isRegisterSuccess) handleLoginClick();
-    if (isRegisterError) {
-      // TODO: 에러 모달 처리 (2024-01-01)
-      if (isAxiosError(registerError)) {
-        alert(registerError.response?.data || "An unknown error occurred");
-      } else alert("An unknown error occurred");
-    }
-  }, [isRegisterSuccess, isRegisterError, registerError, handleLoginClick]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isRegisterSuccess]);
 
   const handleSubmit = async (registerInfo: z.infer<typeof REGISTER_FIELDS_SCHEMA>) => {
     const { email, name, nickname, password } = registerInfo;
@@ -53,7 +49,10 @@ const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
         // TODO: handleLoginClick()이 여기서 안 먹는 이유 찾기 (2024-01-10)
         return `환영합니다, ${name}님!`;
       },
-      error: () => {
+      error: (error: AxiosError) => {
+        if (error?.response?.data === AUTH_ERROR_RESPONSE.ALREADY_USED_EMAIL) {
+          return AUTH_ERROR_MESSAGE.ALREADY_USED_EMAIL;
+        }
         return "회원가입에 실패했습니다. 다시 시도해주세요.";
       },
     });
