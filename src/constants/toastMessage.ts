@@ -9,3 +9,9 @@ export const AUTH_ERROR_MESSAGE = {
   LOGIN_FAILED: "이메일과 비밀번호가 일치하지 않습니다.",
   SERVER_ERROR: "서버에 문제가 생겼습니다. 잠시 후 다시 시도해주세요.",
 };
+
+export const AUTH_SUCCESS_MESSAGE = {
+  UPDATE_PROFILE: "프로필 닉네임이 수정되었습니다.",
+};
+
+export const LOADING_MESSAGE = "잠시만 기다려주세요...";

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { toast } from "sonner";
 
 import SimpleBaseForm from "../Base/form";
 import SimpleBaseModal from "../Base/modal";
@@ -7,6 +8,11 @@ import { makeFormFields, SETTING_FIELDS, SETTING_FIELDS_SCHEMA } from "./config"
 
 import useGetUserInfo from "@/apis/auth/useGetUserInfo";
 import usePutProfile from "@/apis/auth/usePutProfile";
+import {
+  AUTH_ERROR_MESSAGE,
+  AUTH_SUCCESS_MESSAGE,
+  LOADING_MESSAGE,
+} from "@/constants/toastMessage";
 
 interface Props {
   open: boolean;
@@ -24,9 +30,13 @@ const SettingModal = ({ open, toggleOpen }: Props) => {
     if (oldNickname !== settingInfo.nickname) {
       const fullName = { name: settingInfo.name, nickname: settingInfo.nickname };
       const userInfo = JSON.stringify(fullName);
-      updateUserName(userInfo);
-      // TODO: 닉네임이 같은 경우 안내 처리 (2024-01-10)
-    } else alert("닉네임이 이전 닉네임과 동일합니다.");
+      toast.promise(updateUserName(userInfo), {
+        loading: LOADING_MESSAGE,
+        success: AUTH_SUCCESS_MESSAGE.UPDATE_PROFILE,
+        error: AUTH_ERROR_MESSAGE.SERVER_ERROR,
+      });
+    }
+
     if (settingInfo.password) {
       updatePassword(settingInfo.password);
     }
