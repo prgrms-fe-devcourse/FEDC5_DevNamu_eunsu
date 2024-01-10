@@ -37,6 +37,8 @@ const useUpdateUserList = () => {
     });
 
     logoutMutate();
+
+    return name;
   };
 
   return {
