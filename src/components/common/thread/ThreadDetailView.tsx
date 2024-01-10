@@ -1,17 +1,16 @@
 import { XIcon } from "lucide-react";
 import { MouseEvent } from "react";
 
-import { Thread } from "@/types/thread";
-
 import EditorTextArea from "../EditorTextArea";
 
 import CommentListItem from "./CommentListItem";
 import ThreadListItem from "./ThreadListItem";
 
 import { cn } from "@/lib/utils";
+import useGetThread from "@/apis/thread/useGetThread";
 
 interface Props {
-  thread: Thread;
+  threadId: string | undefined;
   onClose: (event: MouseEvent) => void;
   className?: string;
 }
@@ -23,7 +22,11 @@ const channelMap = {
   incompetent: "무능",
 };
 
-const ThreadDetailView = ({ thread, onClose, className }: Props) => {
+const ThreadDetailView = ({ threadId, onClose, className }: Props) => {
+  const { thread } = useGetThread(threadId);
+
+  if (!thread) return;
+
   const handleClickDetailInner = (event: MouseEvent) => {
     event.stopPropagation();
   };
@@ -32,7 +35,7 @@ const ThreadDetailView = ({ thread, onClose, className }: Props) => {
     <div
       onClick={handleClickDetailInner}
       className={cn(
-        "flex h-screen min-w-500pxr list-none flex-col overflow-auto border-l border-gray-200 px-4 py-5 shadow-xl",
+        "flex h-screen min-w-500pxr list-none flex-col  overflow-auto border-l border-gray-200 px-4 py-5 shadow-xl",
         className,
       )}
     >
@@ -50,7 +53,7 @@ const ThreadDetailView = ({ thread, onClose, className }: Props) => {
         <span className="text-gray-500">{thread.comments.length}개의 댓글</span>
         <hr className="flex-1" />
       </div>
-      <div>
+      <div className="max-h-[calc(100vh-400px)] overflow-auto">
         <ol className="flex flex-col gap-4">
           {thread.comments.map((comment) => (
             <CommentListItem key={comment._id} commentInfo={comment} />
