@@ -13,7 +13,14 @@ const isLike = (props: Notification | Conversation): props is Notification => {
 };
 
 const isMention = (props: Notification | Conversation): props is Notification => {
-  return "message" in props;
+  if (!("message" in props)) return false;
+
+  try {
+    JSON.parse((props as Conversation).message);
+    return true;
+  } catch (e) {
+    return false;
+  }
 };
 
 const MyNotificationBody = () => {
@@ -43,7 +50,7 @@ const MyNotificationBody = () => {
             );
           }
           if (isLike(notification)) {
-            return <div>아직 안 만들었어요~!</div>;
+            return <div key={typeof _id === "string" ? _id : _id[0]}>아직 안 만들었어요~!</div>;
           }
 
           if (isMention(notification)) {
