@@ -8,6 +8,14 @@ const isComment = (props: Notification | Conversation): props is Notification =>
   return "comment" in props;
 };
 
+const isLike = (props: Notification | Conversation): props is Notification => {
+  return "like" in props;
+};
+
+const isMention = (props: Notification | Conversation): props is Notification => {
+  return "message" in props;
+};
+
 const MyNotificationBody = () => {
   const { listedNotificationAndMention, isPending } = useListedNotificationAndMention();
 
@@ -34,14 +42,21 @@ const MyNotificationBody = () => {
               />
             );
           }
+          if (isLike(notification)) {
+            return <div>아직 안 만들었어요~!</div>;
+          }
 
-          return (
-            <MentionNotification
-              key={typeof _id === "string" ? _id : _id[0]}
-              message={message || ""}
-              createdAt={createdAt}
-            />
-          );
+          if (isMention(notification)) {
+            return (
+              <MentionNotification
+                key={typeof _id === "string" ? _id : _id[0]}
+                message={message || ""}
+                createdAt={createdAt}
+              />
+            );
+          }
+
+          return <div>알림이 없습니다.</div>;
         })}
       </ul>
     </main>
