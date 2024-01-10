@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { useCallback, useEffect } from "react";
 import { isAxiosError } from "axios";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 
@@ -46,7 +47,15 @@ const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
       return;
     }
     const fullName = { name, nickname: nickname || ANONYMOUS_NICKNAME };
-    await updateUserList({ email, fullName, password });
+    toast.promise(updateUserList({ email, fullName, password }), {
+      loading: "잠시만 기다려주세요...",
+      success: () => {
+        return "회원가입에 성공했습니다.";
+      },
+      error: () => {
+        return "회원가입에 실패했습니다. 다시 시도해주세요.";
+      },
+    });
   };
 
   return (
