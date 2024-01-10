@@ -1,5 +1,5 @@
 import { Follow, Message } from "./notification";
-import { Like, Thread } from "./thread";
+import { Like, Thread, Comment } from "./thread";
 
 export interface User {
   coverImage: string;
@@ -22,4 +22,8 @@ export interface User {
   email: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface UserForComments extends Omit<User, "comments"> {
+  comments: Comment[];
 }
