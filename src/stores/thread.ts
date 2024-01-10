@@ -1,12 +1,12 @@
 import { create } from "zustand";
 
 interface ThreadStore {
-  selectedThreadId: string | null;
-  selectThreadId: (threadId: string | null) => void;
+  selectedThreadId: string | undefined;
+  selectThreadId: (threadId: string | undefined) => void;
 }
 
 const useThreadStore = create<ThreadStore>((set) => ({
-  selectedThreadId: null,
+  selectedThreadId: undefined,
   selectThreadId: (threadId) => set({ selectedThreadId: threadId }),
 }));
 
