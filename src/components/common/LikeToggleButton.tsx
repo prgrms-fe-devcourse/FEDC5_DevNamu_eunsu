@@ -4,9 +4,11 @@ import { Button } from "../ui/button";
 
 import { cn } from "@/lib/utils";
 
+import { MouseEvent } from "react";
+
 interface LikeToggleButtonProps {
   clicked: boolean;
-  onClick: () => void;
+  onClick: (event: MouseEvent) => void;
   numberOfLikes: number;
 }
 
@@ -21,7 +23,7 @@ const LikeToggleButton = ({ clicked, onClick, numberOfLikes }: LikeToggleButtonP
           : "hover:border-gray-600 hover:bg-white",
       )}
     >
-      <img src={thumbsUpIcon} className="w-4 h-4" />
+      <img src={thumbsUpIcon} className="h-4 w-4" />
       <span>{numberOfLikes}</span>
     </Button>
   );
