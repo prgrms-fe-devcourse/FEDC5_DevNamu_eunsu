@@ -37,8 +37,7 @@ export const MyNotificationContent = ({
         <p className="text-xs font-extralight">{createdDate}</p>
       </div>
       <div className={isMention ? "font-bold" : "mb-1"}>{content}</div>
-      <div className="mb-3"></div>
-      <Separator />
+      <Separator className="mt-3" />
     </li>
   );
 };
