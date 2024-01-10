@@ -14,7 +14,14 @@ const LikeNotification = ({ createdAt, like }: Props) => {
 
   const { content } = JSON.parse(like.post.title);
 
-  return <MyNotificationContent createdDate={createdDate} content={content} isLike={true} />;
+  return (
+    <MyNotificationContent
+      createdDate={createdDate}
+      content={content}
+      postId={like.post._id}
+      isLike={true}
+    />
+  );
 };
 
 export default LikeNotification;

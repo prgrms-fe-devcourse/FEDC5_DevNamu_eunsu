@@ -4,7 +4,7 @@ interface Props {
   createdDate: string;
   content: string;
   channelName?: string;
-  postId?: string;
+  postId: string;
   isLike?: boolean;
   isMention?: boolean;
 }
@@ -13,6 +13,7 @@ export const MyNotificationContent = ({
   content,
   channelName,
   isMention,
+  postId,
   isLike,
 }: Props) => {
   const title = channelName
@@ -20,6 +21,8 @@ export const MyNotificationContent = ({
     : isLike
       ? "like"
       : "댓글이 달렸어요!";
+
+  console.log("postId", postId);
   return (
     <li>
       <div className="flex items-center justify-between gap-6 pt-6">
