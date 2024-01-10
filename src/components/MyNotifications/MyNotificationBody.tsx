@@ -56,7 +56,7 @@ const MyNotificationBody = () => {
             );
           }
 
-          return <div>알림이 없습니다.</div>;
+          return <div key={typeof _id === "string" ? _id : _id[0]}>알림이 없습니다.</div>;
         })}
       </ul>
     </main>
