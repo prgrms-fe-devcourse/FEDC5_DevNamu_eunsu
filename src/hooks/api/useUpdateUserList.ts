@@ -1,7 +1,7 @@
 import { RegisterRequest } from "@/apis/auth/queryFn.ts";
 import useChangeThread from "@/hooks/api/useChangeThread.ts";
 import useUserListByDB from "@/hooks/api/useUserListByDB.ts";
-import useLogin from "@/apis/auth/useLogin.ts";
+import usePostLogin from "@/apis/auth/usePostLogin";
 import usePostLogout from "@/apis/auth/usePostLogout.ts";
 import useRegister from "@/apis/auth/useRegister.ts";
 
@@ -11,7 +11,7 @@ const useUpdateUserList = () => {
     nickname: "데브코스 관리자",
     postId: import.meta.env.VITE_ADMIN_DB,
   });
-  const { mutateAsync: loginMutate } = useLogin({ toggleOpen: () => {} });
+  const { login } = usePostLogin({ toggleOpen: () => { } });
   const { userListByDB } = useUserListByDB();
   const { mutate: logoutMutate } = usePostLogout();
 
@@ -26,7 +26,7 @@ const useUpdateUserList = () => {
       user.name === name ? { ...user, userId: _id } : user,
     );
 
-    await loginMutate({
+    await login({
       email: import.meta.env.VITE_ADMIN_ID,
       password: import.meta.env.VITE_ADMIN_PW,
     });
@@ -37,6 +37,8 @@ const useUpdateUserList = () => {
     });
 
     logoutMutate();
+
+    return name;
   };
 
   return {

@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { toast } from "sonner";
+import { AxiosError } from "axios";
 
 import { Button } from "@/components/ui/button";
 
@@ -7,7 +9,8 @@ import SimpleBaseModal from "../Base/modal";
 
 import { LOGIN_FIELDS, LOGIN_FIELDS_SCHEMA } from "./config";
 
-import useLogin from "@/apis/auth/useLogin";
+import usePostLogin from "@/apis/auth/usePostLogin";
+import { AUTH_ERROR_MESSAGE, AUTH_ERROR_RESPONSE } from "@/constants/authError";
 
 interface Props {
   open: boolean;
@@ -16,7 +19,7 @@ interface Props {
 }
 
 const LoginModal = ({ open, toggleOpen, openRegisterModal }: Props) => {
-  const { mutate: loginMutate } = useLogin({ toggleOpen });
+  const { login } = usePostLogin({ toggleOpen });
 
   const handleRegisterClick = () => {
     toggleOpen(!open);
@@ -24,8 +27,19 @@ const LoginModal = ({ open, toggleOpen, openRegisterModal }: Props) => {
   };
 
   const handleSubmit = (loginInfo: z.infer<typeof LOGIN_FIELDS_SCHEMA>) => {
-    // TODO: 에러 모달 처리 (2024-01-01)
-    loginMutate(loginInfo);
+    toast.promise(login(loginInfo), {
+      loading: "잠시만 기다려주세요...",
+      success: ({ user: { fullName } }) => {
+        const { nickname } = JSON.parse(fullName);
+        return `어서오세요, ${nickname}님!`;
+      },
+      error: (error: AxiosError) => {
+        if (error?.response?.data === AUTH_ERROR_RESPONSE.LOGIN_FAILED) {
+          return AUTH_ERROR_MESSAGE.LOGIN_FAILED;
+        }
+        return AUTH_ERROR_MESSAGE.SERVER_ERROR;
+      },
+    });
   };
 
   return (
