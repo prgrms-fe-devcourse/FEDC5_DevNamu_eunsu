@@ -26,10 +26,11 @@ const SettingModal = ({ open, toggleOpen }: Props) => {
   if (open && !isPending && user) makeFormFields(user);
 
   const handleSubmit = ({ name, nickname, password }: z.infer<typeof SETTING_FIELDS_SCHEMA>) => {
-    const oldNickname = user?.nickname;
-    if (oldNickname !== nickname) {
       const fullName = { name, nickname };
       const userInfo = JSON.stringify(fullName);
+    const previousNickname = user?.nickname;
+    const isNicknameChanged = previousNickname !== nickname;
+    if (isNicknameChanged && !password) {
       toast.promise(updateUserName(userInfo), {
         loading: LOADING_MESSAGE,
         success: () => {
@@ -38,9 +39,7 @@ const SettingModal = ({ open, toggleOpen }: Props) => {
         },
         error: AUTH_ERROR_MESSAGE.SERVER_ERROR,
       });
-    }
-
-    if (password) {
+    } else if (!isNicknameChanged && password) {
       toast.promise(updatePassword(password), {
         loading: LOADING_MESSAGE,
         success: () => {
@@ -49,7 +48,9 @@ const SettingModal = ({ open, toggleOpen }: Props) => {
         },
         error: AUTH_ERROR_MESSAGE.SERVER_ERROR,
       });
-    }
+    } else if (isNicknameChanged && password) {
+          toggleOpen(false);
+    } else toast.warning(AUTH_ERROR_MESSAGE.SAME_NICKNAME);
   };
 
   return (
