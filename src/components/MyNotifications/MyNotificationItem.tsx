@@ -1,3 +1,5 @@
+import useThreadStore from "@/stores/thread";
+
 import { Separator } from "@/components/ui/separator";
 
 interface Props {
@@ -22,15 +24,20 @@ export const MyNotificationContent = ({
       ? "like"
       : "댓글이 달렸어요!";
 
-  console.log("postId", postId);
+  const selectThreadId = useThreadStore((state) => state.selectThreadId);
+
+  const handleClick = (postId: string) => {
+    selectThreadId(postId);
+  };
+
   return (
-    <li>
-      <div className="flex items-center justify-between gap-6 pt-6">
+    <li className=" cursor-pointer hover:bg-gray-100" onClick={() => handleClick(postId)}>
+      <div className="flex items-center justify-between gap-6 pt-3">
         <p className="pb-1 text-sm text-muted-foreground">{title}</p>
         <p className="text-xs font-extralight">{createdDate}</p>
       </div>
       <div className={isMention ? "font-bold" : "mb-1"}>{content}</div>
-
+      <div className="mb-3"></div>
       <Separator />
     </li>
   );
