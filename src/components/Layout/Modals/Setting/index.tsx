@@ -21,15 +21,15 @@ interface Props {
 
 const SettingModal = ({ open, toggleOpen }: Props) => {
   const { user, isPending } = useGetUserInfo();
-  const { updateUserName, updatePassword } = usePutProfile();
+  const { updateUserName, updatePassword, updateAllProfile } = usePutProfile();
 
   if (open && !isPending && user) makeFormFields(user);
 
   const handleSubmit = ({ name, nickname, password }: z.infer<typeof SETTING_FIELDS_SCHEMA>) => {
-      const fullName = { name, nickname };
-      const userInfo = JSON.stringify(fullName);
     const previousNickname = user?.nickname;
     const isNicknameChanged = previousNickname !== nickname;
+    const fullName = { name, nickname };
+    const userInfo = JSON.stringify(fullName);
     if (isNicknameChanged && !password) {
       toast.promise(updateUserName(userInfo), {
         loading: LOADING_MESSAGE,
@@ -49,7 +49,14 @@ const SettingModal = ({ open, toggleOpen }: Props) => {
         error: AUTH_ERROR_MESSAGE.SERVER_ERROR,
       });
     } else if (isNicknameChanged && password) {
+      toast.promise(updateAllProfile(userInfo, password), {
+        loading: LOADING_MESSAGE,
+        success: () => {
           toggleOpen(false);
+          return AUTH_SUCCESS_MESSAGE.UPDATE_ALL_PROFILE;
+        },
+        error: AUTH_ERROR_MESSAGE.UPDATE_ALL_PROFILE,
+      });
     } else toast.warning(AUTH_ERROR_MESSAGE.SAME_NICKNAME);
   };
 
