@@ -5,11 +5,18 @@ import { Separator } from "@/components/ui/separator";
 interface Props {
   createdDate: string;
   content: string;
-  channelName?: string;
+  channelName?: "compliment" | "cheering" | "incompetent";
   postId: string;
   isLike?: boolean;
   isMention?: boolean;
 }
+
+const channelMap = {
+  cheering: "응원",
+  compliment: "칭찬",
+  incompetent: "무능",
+};
+
 export const MyNotificationContent = ({
   createdDate,
   content,
@@ -19,9 +26,9 @@ export const MyNotificationContent = ({
   isLike,
 }: Props) => {
   const title = channelName
-    ? `#${channelName}에서 멘션이 왔어요!`
+    ? `#${channelMap[channelName]}게시판에서 멘션이 왔어요!`
     : isLike
-      ? "like"
+      ? "좋아요가 달렸어요!"
       : "댓글이 달렸어요!";
 
   const selectThreadId = useThreadStore((state) => state.selectThreadId);

@@ -4,6 +4,8 @@ import { parseTitle } from "@/utils/parsingJson";
 
 import { Thread, Comment } from "@/types/thread.ts";
 
+import EmptyThread from "../common/myactivate/emptyThread";
+
 import MyThreadItem from "./MyThreadItem";
 
 import useGetUserInfo from "@/apis/auth/useGetUserInfo";
@@ -30,6 +32,9 @@ const MyThreadBody = () => {
   const { listedThreadsAndComments, isPending } = useListedThreadsAndComments(id);
   if (isPending) {
     return <div>loading...</div>;
+  }
+  if (listedThreadsAndComments.length === 0) {
+    return <EmptyThread type="thread" />;
   }
 
   return (
