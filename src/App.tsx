@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Toaster } from "sonner";
 
 import HomePage from "./pages/Home";
 import MyThreadsPage from "./pages/MyThreads";
@@ -8,6 +9,7 @@ import Layout from "./components/Layout";
 
 const App = () => (
   <BrowserRouter>
+    <Toaster position="bottom-center" />
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
