@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { formatDate } from "@/utils/formatDate";
+import { parseTitle } from "@/utils/parsingJson";
 
 import { Comment } from "@/types/thread";
 
@@ -13,18 +14,20 @@ interface Props {
  * 컴포넌트 통합 혹은 중복 코드 제거 등의 책임은 ThreadListItem 작성자에게 있다.
  */
 const CommentListItem = ({ commentInfo }: Props) => {
-  const { author, createdAt, comment } = commentInfo;
+  const { createdAt, comment } = commentInfo;
+  const { content, nickname } = parseTitle(comment);
+
   return (
     <li className="relative cursor-pointer px-2.5 py-5 hover:bg-gray-100">
       <div className="flex items-center">
         <Avatar className="mr-3">
           <AvatarImage src="/svg/userProfile.svg" alt="프로필" />
-          <AvatarFallback>{author.nickname?.charAt(0)}</AvatarFallback>
+          <AvatarFallback>{nickname?.charAt(0)}</AvatarFallback>
         </Avatar>
         <div className="min-w-0 flex-grow">
           <div className="flex justify-between">
             <span tabIndex={0} className="text-lg font-semibold">
-              {author.nickname || "익명의 프롱이"}
+              {nickname}
             </span>
             <span tabIndex={0} className="text-gray-400">
               {formatDate(createdAt)}
@@ -34,7 +37,7 @@ const CommentListItem = ({ commentInfo }: Props) => {
             tabIndex={0}
             className="overflow-hidden truncate text-ellipsis pr-50pxr text-gray-500"
           >
-            {comment}
+            {content}
           </div>
         </div>
       </div>
