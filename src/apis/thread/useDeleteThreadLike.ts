@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteThreadLike } from "./queryFn";
 import threads from "./queryKey";
 
-const useDeleteThreadLike = () => {
+const useDeleteThreadLike = (channelId: string) => {
   const queryClient = useQueryClient();
 
   const { mutate, isPending, isError } = useMutation({
@@ -11,6 +11,7 @@ const useDeleteThreadLike = () => {
     mutationFn: (likeId: string) => deleteThreadLike(likeId),
     onSuccess: (like) => {
       queryClient.invalidateQueries({ queryKey: threads.threadDetail(like.post).queryKey });
+      queryClient.invalidateQueries({ queryKey: threads.threadsByChannel(channelId).queryKey });
     },
   });
 

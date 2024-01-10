@@ -16,7 +16,7 @@ const usePostThreadLike = (channelId: string) => {
     Like,
     Error,
     string,
-    { previousThread: Thread[] | undefined }
+    { previousThread: Thread | undefined }
   >({
     mutationFn: (threadId: string) => postThreadLike(threadId),
     onMutate: async (threadId) => {
@@ -24,7 +24,7 @@ const usePostThreadLike = (channelId: string) => {
         queryKey: threads.threadDetail(threadId).queryKey,
       });
 
-      const previousThread = queryClient.getQueryData<Thread[]>(
+      const previousThread = queryClient.getQueryData<Thread>(
         threads.threadDetail(threadId).queryKey,
       );
 
@@ -43,17 +43,20 @@ const usePostThreadLike = (channelId: string) => {
 
       return { previousThread };
     },
-    onError: (error, _, context) => {
-      queryClient.setQueryData(
-        threads.threadsByChannel(channelId).queryKey,
-        context?.previousThread,
-      );
+    onError: (error, threadId, context) => {
+      console.log(threadId, context);
+
+      queryClient.setQueryData(threads.threadDetail(threadId).queryKey, context?.previousThread);
 
       console.error(error);
     },
     onSuccess: (_, threadId) => {
       queryClient.invalidateQueries({
         queryKey: threads.threadDetail(threadId).queryKey,
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: threads.threadsByChannel(channelId).queryKey,
       });
     },
   });
