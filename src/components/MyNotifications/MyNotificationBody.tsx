@@ -15,7 +15,14 @@ const isLike = (props: Notification | Conversation): props is Notification => {
 };
 
 const isMention = (props: Notification | Conversation): props is Notification => {
-  return "message" in props;
+  if (!("message" in props)) return false;
+
+  try {
+    JSON.parse((props as Conversation).message);
+    return true;
+  } catch (e) {
+    return false;
+  }
 };
 
 const MyNotificationBody = () => {
