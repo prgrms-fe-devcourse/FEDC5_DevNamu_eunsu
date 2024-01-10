@@ -12,7 +12,6 @@ const HomePage = () => {
   const { user } = useGetUserInfo();
   const { threads, channelId, channelName } = useThreadsByChannel();
   const { selectedThreadId, selectThreadId } = useSelectedThreadStore((state) => state);
-  const selectedThread = threads?.find((thread) => thread._id === selectedThreadId);
 
   const handleCloseThreadDetail = () => {
     selectThreadId(undefined);
@@ -42,10 +41,10 @@ const HomePage = () => {
         </div>
       </div>
       <div>
-        {selectedThread && (
+        {selectedThreadId && (
           <ThreadDetailView
-            className="fixed right-0 top-0 z-10 bg-white"
-            thread={selectedThread}
+            className="fixed right-0 top-0 bg-white"
+            threadId={selectedThreadId}
             onClose={handleCloseThreadDetail}
           />
         )}
