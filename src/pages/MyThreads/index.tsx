@@ -14,10 +14,16 @@ const MyThreadsPage = () => {
   };
 
   return (
-    <div className="h-screen overflow-auto p-30pxr">
+    <div className="relative h-screen overflow-auto p-30pxr">
       <MyThreadDescription />
       <MyThreadBody />
-      {thread && <ThreadDetailView thread={thread} onClose={handleCloseThreadDetail} />}
+      {thread && (
+        <ThreadDetailView
+          thread={thread}
+          onClose={handleCloseThreadDetail}
+          className="fixed right-0 top-0 bg-white"
+        />
+      )}
     </div>
   );
 };
