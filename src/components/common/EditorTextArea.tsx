@@ -81,7 +81,7 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
 
       <form className="relative">
         <Textarea
-          placeholder={`내용을 작성해주세요.`}
+          placeholder={user ? `내용을 작성해주세요.` : "로그인이 필요합니다."}
           className="resize-none text-base"
           {...register("content")}
         />
