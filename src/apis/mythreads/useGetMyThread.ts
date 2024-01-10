@@ -9,7 +9,7 @@ const useGetMyThread = (userId: string) => {
   });
   return {
     myThreads: data,
-    isPending,
+    isThreadPending: isPending,
   };
 };
 
