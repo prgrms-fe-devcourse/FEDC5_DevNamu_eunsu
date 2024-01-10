@@ -1,15 +1,12 @@
-import { useMutation } from "@tanstack/react-query";
-
-import { postRegister, RegisterRequest } from "@/apis/auth/queryFn.ts";
+import { RegisterRequest } from "@/apis/auth/queryFn.ts";
 import useChangeThread from "@/hooks/api/useChangeThread.ts";
 import useUserListByDB from "@/hooks/api/useUserListByDB.ts";
 import useLogin from "@/apis/auth/useLogin.ts";
 import usePostLogout from "@/apis/auth/usePostLogout.ts";
+import useRegister from "@/apis/auth/useRegister.ts";
 
 const useUpdateUserList = () => {
-  const { mutateAsync, isError, isSuccess, error } = useMutation({
-    mutationFn: (body: RegisterRequest) => postRegister(body),
-  });
+  const { mutateAsync, isError, isSuccess, error } = useRegister();
   const { changeThread } = useChangeThread({
     nickname: "데브코스 관리자",
     postId: import.meta.env.VITE_ADMIN_DB,

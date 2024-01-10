@@ -41,7 +41,7 @@ const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
   const handleSubmit = async (registerInfo: z.infer<typeof REGISTER_FIELDS_SCHEMA>) => {
     const { email, name, nickname, password } = registerInfo;
 
-    // TODO : [24/1/9] alert 변경할 것
+    // TODO: [24/1/9] alert 변경할 것
     if (!userListByDB.find((user) => user.name === name)) {
       alert("없는 회원 입니다.");
       return;
