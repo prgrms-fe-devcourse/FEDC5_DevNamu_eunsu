@@ -1,22 +1,20 @@
 import { formatDate } from "@/utils/formatDate.ts";
 
-import { Like } from "@/types/thread";
+import { LikeByNotification } from "@/types/thread";
+
+import { MyNotificationContent } from "@/components/MyNotifications/MyNotificationItem.tsx";
 
 interface Props {
   createdAt: string;
-  like: Like;
+  like: LikeByNotification;
 }
 
 const LikeNotification = ({ createdAt, like }: Props) => {
   const createdDate = formatDate(createdAt);
 
-  return (
-    <>
-      <div> 좋아요 알림</div>
-      <div> createdAt: {createdDate}</div>
-      <div> like: {like}</div>
-    </>
-  );
+  const { content } = JSON.parse(like.post.title);
+
+  return <MyNotificationContent createdDate={createdDate} content={content} isLike={true} />;
 };
 
 export default LikeNotification;
