@@ -26,7 +26,7 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
 
   const { user } = useGetUserInfo();
   const { likeAndNotify } = useLikeThread(channelId);
-  const { removeLike } = useDeleteThreadLike(channelId);
+  const { removeLike } = useDeleteThreadLike();
   const [hoveredListId, setHoveredListId] = useState<string | null>(null);
   const likedByUser = likes.find((like) => like.user === user?._id);
   const isAlreadyLikedByUser = !!likedByUser;
