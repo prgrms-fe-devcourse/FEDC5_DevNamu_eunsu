@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { formatDate } from "@/utils/formatDate";
-import { parseTitle } from "@/utils/parsingJson";
+import { parseTitleOrComment } from "@/utils/parsingJson";
 
 import { Comment } from "@/types/thread";
 
@@ -15,7 +15,7 @@ interface Props {
  */
 const CommentListItem = ({ commentInfo }: Props) => {
   const { createdAt, comment } = commentInfo;
-  const { content, nickname } = parseTitle(comment);
+  const { content, nickname } = parseTitleOrComment(comment);
 
   return (
     <li className="relative cursor-pointer px-2.5 py-5 hover:bg-gray-100">

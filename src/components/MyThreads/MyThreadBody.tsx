@@ -1,6 +1,6 @@
 import useThreadStore from "@/stores/thread";
 
-import { parseTitle } from "@/utils/parsingJson";
+import { parseTitleOrComment } from "@/utils/parsingJson";
 
 import { Thread, Comment } from "@/types/thread.ts";
 
@@ -53,7 +53,7 @@ const MyThreadBody = () => {
 
         // TODO: 파싱하는 로직은 뷰에서 분리하기 (2024.01.04)
         const { title, channel } = commentsProps;
-        const { content } = parseTitle(title);
+        const { content } = parseTitleOrComment(title);
 
         return (
           <MyThreadItem
