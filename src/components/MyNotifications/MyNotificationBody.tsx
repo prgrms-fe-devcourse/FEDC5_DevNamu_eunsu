@@ -11,7 +11,7 @@ const isComment = (props: Notification | Conversation): props is Notification =>
 };
 
 const isLike = (props: Notification | Conversation): props is Notification => {
-  return "like" in props;
+  return "like" in props && props.like !== null;
 };
 
 const isMention = (props: Notification | Conversation): props is Notification => {
@@ -27,7 +27,7 @@ const isMention = (props: Notification | Conversation): props is Notification =>
 
 const MyNotificationBody = () => {
   const { listedNotificationAndMention, isPending } = useListedNotificationAndMention();
-
+  console.log("listedNotificationAndMention", listedNotificationAndMention);
   if (isPending) {
     return <span>Loading...</span>;
   }
@@ -72,8 +72,6 @@ const MyNotificationBody = () => {
               />
             );
           }
-
-          return <div key={typeof _id === "string" ? _id : _id[0]}>알림이 없습니다.</div>;
         })}
       </ul>
     </main>
