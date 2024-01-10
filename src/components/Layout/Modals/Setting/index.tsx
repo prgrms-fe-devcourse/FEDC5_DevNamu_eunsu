@@ -25,7 +25,8 @@ const SettingModal = ({ open, toggleOpen }: Props) => {
       const fullName = { name: settingInfo.name, nickname: settingInfo.nickname };
       const userInfo = JSON.stringify(fullName);
       updateUserName(userInfo);
-    }
+      // TODO: 닉네임이 같은 경우 안내 처리 (2024-01-10)
+    } else alert("닉네임이 이전 닉네임과 동일합니다.");
     if (settingInfo.password) {
       updatePassword(settingInfo.password);
     }
