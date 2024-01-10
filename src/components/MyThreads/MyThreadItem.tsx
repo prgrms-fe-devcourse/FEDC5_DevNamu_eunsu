@@ -12,6 +12,7 @@ interface Props {
   comment?: string;
   createdAt: string;
   content?: string;
+  onClick: () => void;
 }
 
 const channelMap = {
@@ -20,11 +21,11 @@ const channelMap = {
   incompetent: "무능",
 };
 
-const MyThreadItem = ({ title, type, channel, createdAt, comment }: Props) => {
+const MyThreadItem = ({ title, type, channel, createdAt, comment, onClick }: Props) => {
   const createdDate = formatDate(createdAt);
 
   return (
-    <ul className="list-none">
+    <ul className="cursor-pointer list-none hover:bg-gray-100" onClick={onClick}>
       <div className="flex items-center justify-between gap-6 pt-3">
         {channel ? (
           <p className="text-sm text-muted-foreground">#{channelMap[channel]}게시판</p>

@@ -50,8 +50,20 @@ export const postThreadLike = (threadId: string) =>
 export const deleteThreadLike = (postId: string) =>
   api.delete<Like>({ url: "/likes/delete", data: { id: postId } });
 
-export const getThreadByThreadId = (threadId: string) =>
-  api.get<Thread>({ url: `/posts/${threadId}` });
+export const getThreadByThreadId = async (threadId: string) => {
+  const thread = await api.get<Thread>({ url: `/posts/${threadId}` });
+  const { content, nickname } = parseTitle(thread.title);
+
+  return {
+    ...thread,
+    content,
+    nickname,
+    author: {
+      ...thread.author,
+      nickname,
+    },
+  };
+};
 
 export const deleteThread = (threadId: string) => {
   return api.delete<Thread>({ url: `/posts/delete`, data: { id: threadId } });

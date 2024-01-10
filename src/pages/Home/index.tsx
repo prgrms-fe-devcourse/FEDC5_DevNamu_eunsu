@@ -11,11 +11,12 @@ import { cn } from "@/lib/utils";
 const HomePage = () => {
   const { user } = useGetUserInfo();
   const { threads, channelId, channelName } = useThreadsByChannel();
+
   const { selectedThreadId, selectThreadId } = useSelectedThreadStore((state) => state);
   const selectedThread = threads?.find((thread) => thread._id === selectedThreadId);
 
   const handleCloseThreadDetail = () => {
-    selectThreadId(null);
+    selectThreadId(undefined);
   };
 
   return (
