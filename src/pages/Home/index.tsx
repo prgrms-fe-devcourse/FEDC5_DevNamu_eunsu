@@ -14,7 +14,7 @@ const HomePage = () => {
   const selectedThread = threads?.find((thread) => thread._id === selectedThreadId);
 
   const handleCloseThreadDetail = () => {
-    selectThreadId(null);
+    selectThreadId(undefined);
   };
 
   return (
