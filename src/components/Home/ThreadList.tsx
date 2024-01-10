@@ -1,4 +1,6 @@
-import { useEffect, useRef } from "react";
+import { MouseEvent, useEffect, useRef } from "react";
+
+import useThreadStore from "@/stores/thread";
 
 import { Thread } from "@/types/thread";
 
@@ -11,6 +13,13 @@ interface Props {
 const ThreadList = ({ threads }: Props) => {
   const threadListRef = useRef<HTMLUListElement>(null);
 
+  const { selectThreadId } = useThreadStore((state) => state);
+
+  const handleClickThread = (threadId: string) => (event: MouseEvent) => {
+    event.stopPropagation();
+    selectThreadId(threadId);
+  };
+
   useEffect(() => {
     if (threadListRef.current) {
       threadListRef.current.scrollTop = threadListRef.current.scrollHeight;
@@ -18,22 +27,21 @@ const ThreadList = ({ threads }: Props) => {
   }, []);
 
   return (
-    <ul
-      ref={threadListRef}
-      className="max-h-700pxr min-h-700pxr overflow-y-auto rounded-sm border border-t-0 pt-80pxr"
-    >
-      {threads.map(({ _id, createdAt, content, author, likes, channel }) => (
-        <ThreadListItem
-          key={_id}
-          id={_id}
-          createdAt={createdAt}
-          content={content}
-          author={author}
-          likes={likes}
-          channelId={channel._id}
-        />
-      ))}
-    </ul>
+    <div>
+      <ul
+        ref={threadListRef}
+        className="h-[calc(100vh-250px)] overflow-y-auto rounded-sm border border-t-0 pt-80pxr"
+      >
+        {threads.map((thread) => (
+          <ThreadListItem
+            key={thread._id}
+            thread={thread}
+            channelId={thread.channel._id}
+            onClick={handleClickThread(thread._id)}
+          />
+        ))}
+      </ul>
+    </div>
   );
 };
 

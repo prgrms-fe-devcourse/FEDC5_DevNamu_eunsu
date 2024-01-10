@@ -4,8 +4,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 import { formatDate } from "@/utils/formatDate";
 
-import { User } from "@/types/user";
-import { Like } from "@/types/thread";
+import { Thread } from "@/types/thread";
 
 import LikeToggleButton from "../LikeToggleButton";
 
@@ -17,15 +16,14 @@ import useDeleteThread from "@/apis/thread/useDeleteThread";
 import useLikeThread from "@/hooks/api/useLikeThread";
 
 interface Props {
-  id: string;
-  content: string;
-  author: User;
-  createdAt: string;
-  likes: Like[];
+  thread: Thread;
   channelId: string;
+  onClick?: (event: React.MouseEvent<HTMLLIElement, MouseEvent>) => void;
 }
 
-const ThreadListItem = ({ id, content, author, createdAt, likes, channelId }: Props) => {
+const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
+  const { _id: id, content, author, createdAt, likes } = thread;
+
   const { user } = useGetUserInfo();
   const { likeAndNotify } = useLikeThread(channelId);
   const { removeLike } = useDeleteThreadLike(channelId);
@@ -34,6 +32,7 @@ const ThreadListItem = ({ id, content, author, createdAt, likes, channelId }: Pr
   const isAlreadyLikedByUser = !!likedByUser;
 
   const { mutate: deleteThread } = useDeleteThread(channelId);
+
   const handleMouseEnter = () => {
     setHoveredListId(id);
   };
@@ -58,6 +57,7 @@ const ThreadListItem = ({ id, content, author, createdAt, likes, channelId }: Pr
       onMouseLeave={handleMouseLeave}
       className="relative cursor-pointer px-2.5 py-5 hover:bg-gray-100"
       tabIndex={0}
+      onClick={onClick}
     >
       <div className="flex items-center">
         <Avatar className="mr-3">
