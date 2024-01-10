@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { SendHorizontal } from "lucide-react";
 import { FormEvent, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 import { Textarea } from "@/components/ui/textarea.tsx";
 
@@ -45,9 +46,15 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
 
   const handleUpload = (formValues: FormValues) => {
     if (!user) {
-      // TODO: alert 컴포넌트로 변경하기
-      alert("로그인이 필요합니다.");
-      setRegisterModalOpen((prev) => !prev);
+      // TODO: [24/1/11] 이거 나중에 함수로 빼는게 좋을듯해요!
+      toast("로그인 한 유저만 글 쓰기가 가능합니다.", {
+        action: {
+          label: "로그인",
+          onClick: () => setRegisterModalOpen((prev) => !prev),
+        },
+        duration: 2000,
+      });
+
       return;
     }
     upload(formValues);
