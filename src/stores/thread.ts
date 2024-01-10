@@ -5,9 +5,9 @@ interface ThreadStore {
   selectThreadId: (threadId: string | null) => void;
 }
 
-const useThreadStore = create<ThreadStore>((set) => ({
+const useSelectedThreadStore = create<ThreadStore>((set) => ({
   selectedThreadId: null,
   selectThreadId: (threadId) => set({ selectedThreadId: threadId }),
 }));
 
-export default useThreadStore;
+export default useSelectedThreadStore;

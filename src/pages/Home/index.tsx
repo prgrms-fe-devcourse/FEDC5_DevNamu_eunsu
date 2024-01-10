@@ -1,4 +1,4 @@
-import useThreadStore from "@/stores/thread";
+import useSelectedThreadStore from "@/stores/thread";
 
 import useGetUserInfo from "@/apis/auth/useGetUserInfo";
 import useThreadsByChannel from "@/hooks/api/useThreadsByChannel";
@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 const HomePage = () => {
   const { user } = useGetUserInfo();
   const { threads, channelId, channelName } = useThreadsByChannel();
-  const { selectedThreadId, selectThreadId } = useThreadStore((state) => state);
+  const { selectedThreadId, selectThreadId } = useSelectedThreadStore((state) => state);
   const selectedThread = threads?.find((thread) => thread._id === selectedThreadId);
 
   const handleCloseThreadDetail = () => {
