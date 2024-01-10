@@ -27,7 +27,7 @@ const CommentListItem = ({ commentInfo }: Props) => {
         <div className="min-w-0 flex-grow">
           <div className="flex justify-between">
             <span tabIndex={0} className="text-lg font-semibold">
-              {nickname || "익명의 프둥이"}
+              {nickname || "익명의 프롱이"}
             </span>
             <span tabIndex={0} className="text-gray-400">
               {formatDate(createdAt)}
