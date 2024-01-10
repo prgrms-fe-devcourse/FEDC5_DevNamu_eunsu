@@ -39,7 +39,7 @@ const MyThreadBody = () => {
 
         // TODO: 파싱하는 로직은 뷰에서 분리하기 (2024.01.04)
         const { title, channel } = commentsProps;
-        const { content } = title ? parseTitle(title) : "";
+        const { content } = parseTitle(title);
 
         return (
           <MyThreadItem
