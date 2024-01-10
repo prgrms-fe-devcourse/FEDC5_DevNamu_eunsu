@@ -1,4 +1,5 @@
 import { XIcon } from "lucide-react";
+import { MouseEvent } from "react";
 
 import { Thread } from "@/types/thread";
 
@@ -7,7 +8,8 @@ import CommentListItem from "./CommentListItem";
 
 interface Props {
   thread: Thread;
-  onClose: () => void;
+  onClose: (event: MouseEvent) => void;
+  className?: string;
 }
 
 // 중복 코드. 출처: src/components/MyThreads/MyThreadsItem.tsx
@@ -17,9 +19,16 @@ const channelMap = {
   incompetent: "무능",
 };
 
-const ThreadDetailView = ({ thread, onClose }: Props) => {
+const ThreadDetailView = ({ thread, onClose, className }: Props) => {
+  const handleClickDetailInner = (event: MouseEvent) => {
+    event.stopPropagation();
+  };
+
   return (
-    <div className="flex flex-col h-screen py-4 overflow-auto list-none min-w-500pxr">
+    <div
+      onClick={handleClickDetailInner}
+      className={`flex h-screen min-w-500pxr list-none flex-col overflow-auto border-l border-gray-200 px-4 py-5 shadow-xl ${className}`}
+    >
       <div className="flex items-center justify-between p-2">
         <div className="flex items-center gap-2">
           <h2 className="text-2xl font-bold text-gray-700">스레드</h2>
@@ -29,8 +38,8 @@ const ThreadDetailView = ({ thread, onClose }: Props) => {
           <XIcon className="text-gray-500" />
         </button>
       </div>
-      <ThreadListItem {...thread} id={thread._id} channelId={thread.channel._id} />
-      <div className="flex items-center gap-2 mx-2">
+      <ThreadListItem thread={thread} channelId={thread.channel._id} />
+      <div className="mx-2 flex items-center gap-2">
         <span className="text-gray-500">{thread.comments.length}개의 댓글</span>
         <hr className="flex-1" />
       </div>
