@@ -51,6 +51,7 @@ const MyNotificationBody = () => {
               />
             );
           }
+
           if (isLike(notification)) {
             const { like } = notification;
             return (
