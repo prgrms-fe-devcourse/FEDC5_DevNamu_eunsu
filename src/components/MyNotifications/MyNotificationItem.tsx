@@ -26,12 +26,12 @@ export const MyNotificationContent = ({
 
   const selectThreadId = useThreadStore((state) => state.selectThreadId);
 
-  const handleClick = (postId: string) => {
+  const handleClick = (postId: string) => () => {
     selectThreadId(postId);
   };
 
   return (
-    <li className=" cursor-pointer hover:bg-gray-100" onClick={() => handleClick(postId)}>
+    <li className=" cursor-pointer hover:bg-gray-100" onClick={handleClick(postId)}>
       <div className="flex items-center justify-between gap-6 pt-3">
         <p className="pb-1 text-sm text-muted-foreground">{title}</p>
         <p className="text-xs font-extralight">{createdDate}</p>
