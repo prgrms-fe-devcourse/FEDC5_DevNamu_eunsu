@@ -83,7 +83,7 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
   if (isPending) return <div>로딩 중... </div>;
 
   return (
-    <div className="text- flex w-full flex-col gap-1 ">
+    <div className="flex w-full flex-col gap-1 ">
       {isMention && <MentionInput mentionList={mentionList} onChoose={setMentionList} />}
 
       <form className="relative">
