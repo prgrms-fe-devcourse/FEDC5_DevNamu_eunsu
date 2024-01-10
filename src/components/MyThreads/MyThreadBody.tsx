@@ -1,3 +1,5 @@
+import useThreadStore from "@/stores/thread";
+
 import { parseTitle } from "@/utils/parsingJson";
 
 import { Thread, Comment } from "@/types/thread.ts";
@@ -18,6 +20,12 @@ const MyThreadBody = () => {
   const { user } = useGetUserInfo();
   //TODO: 현재는 비로그인 시에도 list목록이 보이게 id 직접 넣어줬지만, 비로그인시 동작 논의(2024.01.02)
 
+  const selectThreadId = useThreadStore((state) => state.selectThreadId);
+
+  const handleClickMyThreadItem = (threadId: string) => () => {
+    selectThreadId(threadId);
+  };
+
   const id = user ? user._id : DEFAULT_VALUE;
   const { listedThreadsAndComments, isPending } = useListedThreadsAndComments(id);
   if (isPending) {
@@ -31,9 +39,15 @@ const MyThreadBody = () => {
         const { _id, createdAt } = commentsProps;
 
         if (isComment(commentsProps)) {
-          const { comment } = commentsProps;
+          const { comment, post } = commentsProps;
           return (
-            <MyThreadItem key={_id} type={"comment"} createdAt={createdAt} comment={comment} />
+            <MyThreadItem
+              key={_id}
+              type={"comment"}
+              createdAt={createdAt}
+              comment={comment}
+              onClick={handleClickMyThreadItem(post)}
+            />
           );
         }
 
@@ -48,6 +62,7 @@ const MyThreadBody = () => {
             channel={channel?.name}
             title={content}
             createdAt={createdAt}
+            onClick={handleClickMyThreadItem(_id)}
           ></MyThreadItem>
         );
       })}
