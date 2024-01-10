@@ -47,7 +47,7 @@ const SettingModal = ({ open, toggleOpen }: Props) => {
         onSubmit={handleSubmit}
         submitText="저장"
         cancelText="취소"
-      ></SimpleBaseForm>
+      />
     </SimpleBaseModal>
   );
 };
