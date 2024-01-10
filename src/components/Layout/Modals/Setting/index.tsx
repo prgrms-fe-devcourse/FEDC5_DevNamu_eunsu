@@ -32,7 +32,10 @@ const SettingModal = ({ open, toggleOpen }: Props) => {
       const userInfo = JSON.stringify(fullName);
       toast.promise(updateUserName(userInfo), {
         loading: LOADING_MESSAGE,
-        success: AUTH_SUCCESS_MESSAGE.UPDATE_PROFILE,
+        success: () => {
+          toggleOpen(false);
+          return AUTH_SUCCESS_MESSAGE.UPDATE_PROFILE;
+        },
         error: AUTH_ERROR_MESSAGE.SERVER_ERROR,
       });
     }
@@ -40,12 +43,13 @@ const SettingModal = ({ open, toggleOpen }: Props) => {
     if (password) {
       toast.promise(updatePassword(password), {
         loading: LOADING_MESSAGE,
-        success: AUTH_SUCCESS_MESSAGE.UPDATE_PASSWORD,
+        success: () => {
+          toggleOpen(false);
+          return AUTH_SUCCESS_MESSAGE.UPDATE_PASSWORD;
+        },
         error: AUTH_ERROR_MESSAGE.SERVER_ERROR,
       });
     }
-    // TODO: 에러 모달 처리 (2024-01-09)
-    toggleOpen(false);
   };
 
   return (
