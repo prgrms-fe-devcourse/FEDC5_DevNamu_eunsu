@@ -1,4 +1,7 @@
 import { Conversation, Notification } from "@/types/notification";
+import { LikeByNotification } from "@/types/thread.ts";
+
+import LikeNotification from "./LikeNotification";
 
 import useListedNotificationAndMention from "@/hooks/api/useListedNotificationAndMention.ts";
 import CommentNotification from "@/components/MyNotifications/CommentNotification.tsx";
@@ -8,9 +11,23 @@ const isComment = (props: Notification | Conversation): props is Notification =>
   return "comment" in props;
 };
 
+const isLike = (props: Notification | Conversation): props is Notification => {
+  return "like" in props && !!props.like;
+};
+
+const isMention = (props: Notification | Conversation): props is Notification => {
+  if (!("message" in props)) return false;
+
+  try {
+    JSON.parse((props as Conversation).message);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
 const MyNotificationBody = () => {
   const { listedNotificationAndMention, isPending } = useListedNotificationAndMention();
-
   if (isPending) {
     return <span>Loading...</span>;
   }
@@ -35,13 +52,26 @@ const MyNotificationBody = () => {
             );
           }
 
-          return (
-            <MentionNotification
-              key={typeof _id === "string" ? _id : _id[0]}
-              message={message || ""}
-              createdAt={createdAt}
-            />
-          );
+          if (isLike(notification)) {
+            const { like } = notification;
+            return (
+              <LikeNotification
+                key={typeof _id === "string" ? _id : _id[0]}
+                like={like as LikeByNotification}
+                createdAt={createdAt}
+              />
+            );
+          }
+
+          if (isMention(notification)) {
+            return (
+              <MentionNotification
+                key={typeof _id === "string" ? _id : _id[0]}
+                message={message || ""}
+                createdAt={createdAt}
+              />
+            );
+          }
         })}
       </ul>
     </main>

@@ -9,6 +9,10 @@ export interface Like {
   updatedAt: string;
 }
 
+export interface LikeByNotification extends Omit<Like, "post"> {
+  post: Thread;
+}
+
 export interface Comment {
   _id: string;
   comment: string;
