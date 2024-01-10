@@ -1,5 +1,7 @@
 import { Conversation, Notification } from "@/types/notification";
 
+import LikeNotification from "./LikeNotification";
+
 import useListedNotificationAndMention from "@/hooks/api/useListedNotificationAndMention.ts";
 import CommentNotification from "@/components/MyNotifications/CommentNotification.tsx";
 import MentionNotification from "@/components/MyNotifications/MentionNotification.tsx";
@@ -43,7 +45,15 @@ const MyNotificationBody = () => {
             );
           }
           if (isLike(notification)) {
-            return <div>아직 안 만들었어요~!</div>;
+            console.log("likenoti", notification);
+            const { like } = notification;
+            return (
+              <LikeNotification
+                key={typeof _id === "string" ? _id : _id[0]}
+                createdAt={createdAt}
+                like={like}
+              />
+            );
           }
 
           if (isMention(notification)) {
