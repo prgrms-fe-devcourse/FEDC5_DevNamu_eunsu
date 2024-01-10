@@ -22,10 +22,9 @@ const useUpdateUserList = () => {
 
     const { name } = body.fullName;
 
-    const newUserListByDB = [...userListByDB];
-    const targetUser = newUserListByDB.find((defaultUser) => defaultUser.name === name);
-
-    targetUser && (targetUser.userId = _id);
+    const newUserList = userListByDB.map((user) =>
+      user.name === name ? { ...user, userId: _id } : user,
+    );
 
     await loginMutate({
       email: import.meta.env.VITE_ADMIN_ID,
@@ -34,7 +33,7 @@ const useUpdateUserList = () => {
 
     await changeThread({
       anonymous: false,
-      content: JSON.stringify(newUserListByDB),
+      content: JSON.stringify(newUserList),
     });
 
     logoutMutate();
