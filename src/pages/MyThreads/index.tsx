@@ -1,4 +1,4 @@
-import useThreadStore from "@/stores/thread";
+import useSelectedThreadStore from "@/stores/thread";
 
 import MyThreadDescription from "@/components/MyThreads/MyThreadDescription";
 import MyThreadBody from "@/components/MyThreads/MyThreadBody";
@@ -6,7 +6,7 @@ import useGetThread from "@/apis/thread/useGetThread";
 import ThreadDetailView from "@/components/common/thread/ThreadDetailView";
 
 const MyThreadsPage = () => {
-  const { selectedThreadId, selectThreadId } = useThreadStore((state) => state);
+  const { selectedThreadId, selectThreadId } = useSelectedThreadStore((state) => state);
   const { thread } = useGetThread(selectedThreadId);
 
   const handleCloseThreadDetail = () => {

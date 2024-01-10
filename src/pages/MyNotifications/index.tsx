@@ -1,4 +1,4 @@
-import useThreadStore from "@/stores/thread";
+import useSelectedThreadStore from "@/stores/thread";
 
 import MyNotificationTitle from "@/components/MyNotifications/MyNotificationTitle";
 import MyNotificationBody from "@/components/MyNotifications/MyNotificationBody";
@@ -6,7 +6,7 @@ import useGetThread from "@/apis/thread/useGetThread";
 import ThreadDetailView from "@/components/common/thread/ThreadDetailView";
 
 const MyNotificationsPage = () => {
-  const { selectedThreadId, selectThreadId } = useThreadStore((state) => state);
+  const { selectedThreadId, selectThreadId } = useSelectedThreadStore((state) => state);
   const { thread } = useGetThread(selectedThreadId);
 
   const handleCloseThreadDetail = () => {
