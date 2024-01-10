@@ -49,8 +49,9 @@ const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
     const fullName = { name, nickname: nickname || ANONYMOUS_NICKNAME };
     toast.promise(updateUserList({ email, fullName, password }), {
       loading: "잠시만 기다려주세요...",
-      success: () => {
-        return "회원가입에 성공했습니다.";
+      success: (name) => {
+        // TODO: handleLoginClick()이 여기서 안 먹는 이유 찾기 (2024-01-10)
+        return `환영합니다, ${name}님!`;
       },
       error: () => {
         return "회원가입에 실패했습니다. 다시 시도해주세요.";
