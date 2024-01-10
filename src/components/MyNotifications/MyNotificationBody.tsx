@@ -1,6 +1,8 @@
 import { Conversation, Notification } from "@/types/notification";
 import { LikeByNotification } from "@/types/thread.ts";
 
+import EmptyThread from "../common/myactivate/emptyThread";
+
 import LikeNotification from "./LikeNotification";
 
 import useListedNotificationAndMention from "@/hooks/api/useListedNotificationAndMention.ts";
@@ -30,6 +32,9 @@ const MyNotificationBody = () => {
   const { listedNotificationAndMention, isPending } = useListedNotificationAndMention();
   if (isPending) {
     return <span>Loading...</span>;
+  }
+  if (listedNotificationAndMention.length === 0) {
+    return <EmptyThread type="notification" />;
   }
 
   return (
