@@ -6,6 +6,7 @@ import ChannelNavigationMenu from "@/components/Home/ChannelNavigationMenu";
 import ThreadList from "@/components/Home/ThreadList";
 import EditorTextArea from "@/components/common/EditorTextArea";
 import ThreadDetailView from "@/components/common/thread/ThreadDetailView";
+import { cn } from "@/lib/utils";
 
 const HomePage = () => {
   const { user } = useGetUserInfo();
@@ -20,9 +21,11 @@ const HomePage = () => {
   return (
     <div className="relative">
       <div
-        className={`duration-600 mt-12 flex flex-col items-center justify-center transition-all ${
-          selectedThreadId && "xl:translate-x-[-180px]"
-        }`}
+        className={cn(
+          `duration-600 mt-12 flex flex-col items-center justify-center transition-all ${
+            selectedThreadId && "xl:translate-x-[-180px]"
+          }`,
+        )}
       >
         <div className="w-full max-w-4xl px-4">
           <ChannelNavigationMenu />

@@ -6,6 +6,8 @@ import { Thread } from "@/types/thread";
 import CommentListItem from "./CommentListItem";
 import ThreadListItem from "./ThreadListItem";
 
+import { cn } from "@/lib/utils";
+
 interface Props {
   thread: Thread;
   onClose: (event: MouseEvent) => void;
@@ -27,7 +29,10 @@ const ThreadDetailView = ({ thread, onClose, className }: Props) => {
   return (
     <div
       onClick={handleClickDetailInner}
-      className={`flex h-screen min-w-500pxr list-none flex-col overflow-auto border-l border-gray-200 px-4 py-5 shadow-xl ${className}`}
+      className={cn(
+        "flex h-screen min-w-500pxr list-none flex-col overflow-auto border-l border-gray-200 px-4 py-5 shadow-xl",
+        className,
+      )}
     >
       <div className="flex items-center justify-between p-2">
         <div className="flex items-center gap-2">
