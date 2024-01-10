@@ -19,7 +19,11 @@ const HomePage = () => {
 
   return (
     <div className="relative">
-      <div className="mt-12 flex flex-col items-center justify-center">
+      <div
+        className={`duration-600 mt-12 flex flex-col items-center justify-center transition-all ${
+          selectedThreadId && "xl:translate-x-[-180px]"
+        }`}
+      >
         <div className="w-full max-w-4xl px-4">
           <ChannelNavigationMenu />
         </div>
