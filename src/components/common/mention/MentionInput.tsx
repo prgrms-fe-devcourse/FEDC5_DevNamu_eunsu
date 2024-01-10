@@ -91,6 +91,7 @@ const MentionInput = ({ mentionList, onChoose }: Props) => {
         onKeyDown={handleKeyDown}
         ref={inputRef}
         placeholder="멘션할 대상을 선택해주세요."
+        className="text-base"
       />
 
       <AutoCompleteMentionList

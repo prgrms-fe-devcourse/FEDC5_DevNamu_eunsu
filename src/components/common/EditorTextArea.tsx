@@ -57,13 +57,13 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
   };
 
   return (
-    <div className="flex w-full flex-col gap-1">
+    <div className="text- flex w-full flex-col gap-1 ">
       {isMention && <MentionInput mentionList={mentionList} onChoose={setMentionList} />}
 
       <form className="relative">
         <Textarea
           placeholder={`내용을 작성해주세요.`}
-          className="resize-none"
+          className="resize-none text-base"
           {...register("content")}
         />
         <div className="absolute bottom-2 right-2 flex items-center gap-2">
