@@ -3,6 +3,8 @@ import { MouseEvent } from "react";
 
 import { Thread } from "@/types/thread";
 
+import EditorTextArea from "../EditorTextArea";
+
 import CommentListItem from "./CommentListItem";
 import ThreadListItem from "./ThreadListItem";
 
@@ -54,6 +56,17 @@ const ThreadDetailView = ({ thread, onClose, className }: Props) => {
             <CommentListItem key={comment._id} commentInfo={comment} />
           ))}
         </ol>
+      </div>
+      <div className="absolute bottom-10 right-0 w-full px-4">
+        <EditorTextArea
+          isMention={true}
+          nickname={thread.nickname}
+          editorProps={{
+            channelName: thread.channel.name,
+            postId: thread._id,
+            postAuthorId: thread.author._id,
+          }}
+        />
       </div>
     </div>
   );
