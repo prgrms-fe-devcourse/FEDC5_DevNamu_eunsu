@@ -53,7 +53,7 @@ const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
         if (error?.response?.data === AUTH_ERROR_RESPONSE.ALREADY_USED_EMAIL) {
           return AUTH_ERROR_MESSAGE.ALREADY_USED_EMAIL;
         }
-        return "회원가입에 실패했습니다. 다시 시도해주세요.";
+        return AUTH_ERROR_MESSAGE.SERVER_ERROR;
       },
     });
   };
