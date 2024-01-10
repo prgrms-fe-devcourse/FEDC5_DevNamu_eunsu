@@ -1,5 +1,5 @@
-import { nanoid } from "nanoid";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { nanoid } from "nanoid";
 
 import { Like, Thread } from "@/types/thread";
 
@@ -16,16 +16,16 @@ const usePostThreadLike = (channelId: string) => {
     Like,
     Error,
     string,
-    { previousThreads: Thread[] | undefined }
+    { previousThread: Thread[] | undefined }
   >({
     mutationFn: (threadId: string) => postThreadLike(threadId),
     onMutate: async (threadId) => {
       await queryClient.cancelQueries({
-        queryKey: threads.threadsByChannel(channelId).queryKey,
+        queryKey: threads.threadDetail(threadId).queryKey,
       });
 
-      const previousThreads = queryClient.getQueryData<Thread[]>(
-        threads.threadsByChannel(channelId).queryKey,
+      const previousThread = queryClient.getQueryData<Thread[]>(
+        threads.threadDetail(threadId).queryKey,
       );
 
       const optimisticLike = {
@@ -36,29 +36,24 @@ const usePostThreadLike = (channelId: string) => {
         updatedAt: new Date(),
       };
 
-      queryClient.setQueryData(
-        threads.threadsByChannel(channelId).queryKey,
-        (oldThreads: Thread[]) =>
-          oldThreads.map((thread) =>
-            thread._id === threadId
-              ? { ...thread, likes: [...thread.likes, optimisticLike] }
-              : thread,
-          ),
-      );
+      queryClient.setQueryData(threads.threadDetail(threadId).queryKey, (oldThread: Thread) => ({
+        ...oldThread,
+        likes: [...oldThread.likes, optimisticLike],
+      }));
 
-      return { previousThreads };
+      return { previousThread };
     },
     onError: (error, _, context) => {
       queryClient.setQueryData(
         threads.threadsByChannel(channelId).queryKey,
-        context?.previousThreads,
+        context?.previousThread,
       );
 
       console.error(error);
     },
-    onSuccess: () => {
+    onSuccess: (_, threadId) => {
       queryClient.invalidateQueries({
-        queryKey: threads.threadsByChannel(channelId).queryKey,
+        queryKey: threads.threadDetail(threadId).queryKey,
       });
     },
   });
