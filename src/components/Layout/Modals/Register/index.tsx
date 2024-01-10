@@ -13,7 +13,7 @@ import { REGISTER_FIELDS, REGISTER_FIELDS_SCHEMA } from "./config";
 import useUpdateUserList from "@/hooks/api/useUpdateUserList.ts";
 import useUserListByDB from "@/hooks/api/useUserListByDB.ts";
 import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname.ts";
-import { AUTH_ERROR_MESSAGE, AUTH_ERROR_RESPONSE } from "@/constants/authError";
+import { AUTH_ERROR_MESSAGE, AUTH_ERROR_RESPONSE } from "@/constants/toastMessage";
 
 interface Props {
   open: boolean;
