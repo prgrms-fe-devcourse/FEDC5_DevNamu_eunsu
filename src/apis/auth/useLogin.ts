@@ -9,13 +9,15 @@ interface Props {
 }
 
 const useLogin = ({ toggleOpen }: Props) => {
-  return useMutation({
+  const { mutateAsync } = useMutation({
     mutationFn: (body: LoginRequest) => postLogin(body),
     onSuccess: ({ token }) => {
       setLocalStorage("token", token);
       toggleOpen(false);
     },
   });
+
+  return { login: mutateAsync };
 };
 
 export default useLogin;
