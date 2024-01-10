@@ -26,9 +26,15 @@ const usePutProfile = () => {
     mutationFn: (image: string) => postUserProfileImage(image),
   });
 
+  const updateAllProfile = async (userInfo: string, password: string) => {
+    await updateUserName(userInfo);
+    await updatePassword(password);
+  };
+
   return {
     updateUserName,
     updatePassword,
+    updateAllProfile,
     updateProfileImage,
     imageResponse,
     userResponse,
