@@ -8,7 +8,7 @@ interface Props {
   toggleOpen: (open: boolean) => void;
 }
 
-const useLogin = ({ toggleOpen }: Props) => {
+const usePostLogin = ({ toggleOpen }: Props) => {
   const { mutateAsync } = useMutation({
     mutationFn: (body: LoginRequest) => postLogin(body),
     onSuccess: ({ token }) => {
@@ -20,4 +20,4 @@ const useLogin = ({ toggleOpen }: Props) => {
   return { login: mutateAsync };
 };
 
-export default useLogin;
+export default usePostLogin;

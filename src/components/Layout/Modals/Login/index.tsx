@@ -9,7 +9,7 @@ import SimpleBaseModal from "../Base/modal";
 
 import { LOGIN_FIELDS, LOGIN_FIELDS_SCHEMA } from "./config";
 
-import useLogin from "@/apis/auth/useLogin";
+import usePostLogin from "@/apis/auth/usePostLogin";
 import { AUTH_ERROR_MESSAGE, AUTH_ERROR_RESPONSE } from "@/constants/authError";
 
 interface Props {
@@ -19,7 +19,7 @@ interface Props {
 }
 
 const LoginModal = ({ open, toggleOpen, openRegisterModal }: Props) => {
-  const { login } = useLogin({ toggleOpen });
+  const { login } = usePostLogin({ toggleOpen });
 
   const handleRegisterClick = () => {
     toggleOpen(!open);
