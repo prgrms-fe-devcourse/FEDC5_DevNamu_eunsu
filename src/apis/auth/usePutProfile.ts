@@ -36,9 +36,6 @@ const usePutProfile = () => {
     updatePassword,
     updateAllProfile,
     updateProfileImage,
-    imageResponse,
-    userResponse,
-    passwordResponse,
   };
 };
 
