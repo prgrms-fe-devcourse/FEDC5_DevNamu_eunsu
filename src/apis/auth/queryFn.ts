@@ -8,7 +8,7 @@ export interface LoginRequest {
 }
 
 export interface RegisterRequest extends LoginRequest {
-  fullName: string;
+  fullName: { name: string; nickname: string };
 }
 
 export interface AuthResponse {
@@ -19,9 +19,20 @@ export interface AuthResponse {
 export const postLogin = (loginInfo: LoginRequest) =>
   api.post<AuthResponse>({ url: "/login", data: loginInfo });
 
-export const postRegister = (registerInfo: RegisterRequest) =>
-  api.post<AuthResponse>({ url: "/signup", data: registerInfo });
+export const postRegister = (registerInfo: RegisterRequest) => {
+  const fullName = JSON.stringify(registerInfo.fullName);
+  return api.post<AuthResponse>({ url: "/signup", data: { ...registerInfo, fullName } });
+};
 
 export const postLogout = () => api.post<string>({ url: "/logout" });
 
 export const getUserInfo = () => api.get<User>({ url: "/auth-user" });
+
+export const putUserInfo = (userInfo: string) =>
+  api.put<User>({ url: "/settings/update-user", data: { fullName: userInfo, username: "" } });
+
+export const putUserPassword = (password: string) =>
+  api.put<string>({ url: "/settings/update-password", data: { password } });
+
+export const postUserProfileImage = (image: string) =>
+  api.post<User>({ url: "/users/upload-photo", data: { isCover: false, image } });

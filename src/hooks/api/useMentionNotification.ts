@@ -1,7 +1,7 @@
 import { usePostNotification } from "@/apis/notification/usePostNotification.ts";
 import { usePostMention } from "@/apis/mention/usePostMention.ts";
-import { NotificationTypes } from "@/apis/notification/queryFn.ts";
 import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
+import { NOTIFICATION_TYPES } from "@/constants/notification";
 
 interface MentionNotificationProps {
   content: string;
@@ -26,7 +26,7 @@ const useMentionNotification = ({ mentionList }: Props) => {
       const mentionResponse = await mentionMutate(mentionRequest);
 
       const notificationRequest = {
-        notificationType: "MESSAGE" as NotificationTypes,
+        notificationType: NOTIFICATION_TYPES.MESSAGE,
         notificationTypeId: mentionResponse._id,
         userId: mentionResponse.sender._id,
         postId,
