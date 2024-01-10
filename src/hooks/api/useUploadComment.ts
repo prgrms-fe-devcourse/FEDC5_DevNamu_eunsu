@@ -1,10 +1,10 @@
 import { usePostComment } from "@/apis/comment/usePostComment.ts";
 import { usePostNotification } from "@/apis/notification/usePostNotification.ts";
-import { NotificationTypes } from "@/apis/notification/queryFn.ts";
 import { FormValues } from "@/components/common/EditorTextArea.tsx";
 import { formJSONStringify } from "@/lib/editorContent.ts";
 import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 import useMentionNotification from "@/hooks/api/useMentionNotification.ts";
+import { NOTIFICATION_TYPES } from "@/constants/notification";
 
 interface Props {
   nickname: string | undefined;
@@ -30,7 +30,7 @@ const useUploadComment = ({ nickname, postId, channelName, mentionList, postAuth
     const commentResponse = await commentMutate(commentRequest);
 
     const notificationRequest = {
-      notificationType: "COMMENT" as NotificationTypes,
+      notificationType: NOTIFICATION_TYPES.COMMENT,
       notificationTypeId: commentResponse._id,
       userId: postAuthorId,
       postId,

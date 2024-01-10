@@ -25,7 +25,6 @@ export const patchThread = async (postInfo: PatchThread) => {
   return await api.put<Thread>({ url: `/posts/update`, data: postInfo });
 };
 
-
 export const getThreadsByChannelId = async (channelId: string) => {
   const threads = await api.get<Thread[]>({ url: `/posts/channel/${channelId}` });
 
@@ -45,8 +44,8 @@ export const getThreadsByChannelId = async (channelId: string) => {
   });
 };
 
-export const postThreadLike = (postId: string) =>
-  api.post({ url: "/likes/create", data: { postId } });
+export const postThreadLike = (threadId: string) =>
+  api.post<Like>({ url: "/likes/create", data: { postId: threadId } });
 
 export const deleteThreadLike = (postId: string) =>
   api.delete<Like>({ url: "/likes/delete", data: { id: postId } });

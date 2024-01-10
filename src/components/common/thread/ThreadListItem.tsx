@@ -13,8 +13,8 @@ import ThreadToolbar from "./ThreadToolbar";
 
 import useGetUserInfo from "@/apis/auth/useGetUserInfo";
 import useDeleteThreadLike from "@/apis/thread/useDeleteThreadLike";
-import usePostThreadLike from "@/apis/thread/usePostThreadLike";
 import useDeleteThread from "@/apis/thread/useDeleteThread";
+import useLikeThread from "@/hooks/api/useLikeThread";
 
 interface Props {
   id: string;
@@ -27,7 +27,7 @@ interface Props {
 
 const ThreadListItem = ({ id, content, author, createdAt, likes, channelId }: Props) => {
   const { user } = useGetUserInfo();
-  const { likeThread } = usePostThreadLike(channelId);
+  const { likeAndNotify } = useLikeThread(channelId);
   const { removeLike } = useDeleteThreadLike(channelId);
   const [hoveredListId, setHoveredListId] = useState<string | null>(null);
   const likedByUser = likes.find((like) => like.user === user?._id);
@@ -44,7 +44,7 @@ const ThreadListItem = ({ id, content, author, createdAt, likes, channelId }: Pr
 
   const handleClickLikeButton = () => {
     if (isAlreadyLikedByUser) removeLike(likedByUser._id);
-    else likeThread(id);
+    else likeAndNotify({ threadId: id, authorId: author._id });
   };
 
   const handleDelete = () => {
