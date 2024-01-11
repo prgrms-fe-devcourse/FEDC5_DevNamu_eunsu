@@ -29,7 +29,7 @@ const ThreadList = ({ threads }: Props) => {
     <div>
       <ul
         ref={threadListRef}
-        className="flex h-[calc(100vh-250px)] flex-col-reverse overflow-y-auto pt-80pxr"
+        className="flex h-[calc(100vh-250px)] flex-col overflow-y-auto pt-80pxr"
       >
         {threads.map((thread) => (
           <ThreadListItem
