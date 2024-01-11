@@ -30,8 +30,7 @@ const SettingModal = ({ open, toggleOpen }: Props) => {
     if (open) toast.info("닉네임과 비밀번호 설정이 각각 가능합니다.");
   }, [open]);
 
-  const handleSubmit = ({ nickname, password }: z.infer<typeof SETTING_FIELDS_SCHEMA>) => {
-    const name = user?.name;
+  const handleSubmit = ({ name, nickname, password }: z.infer<typeof SETTING_FIELDS_SCHEMA>) => {
     const previousNickname = user?.nickname;
     const isNicknameChanged = previousNickname !== nickname;
     const fullName = { name, nickname };

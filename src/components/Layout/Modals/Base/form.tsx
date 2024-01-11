@@ -30,6 +30,7 @@ export interface FieldProps {
   autoComplete?: "username" | "current-password" | "new-password" | "nickname" | "off";
   readOnly?: boolean;
   value?: string;
+  disabled?: boolean;
 }
 
 // TODO: zod의 any 타입 제거 및 재귀 타입 어떻게 생성할지 고민해보기 (2024-01-08)
@@ -73,7 +74,7 @@ const SimpleBaseForm = ({
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         {children}
-        {fields.map(({ name, label, desc, ...props }) => (
+        {fields.map(({ name, label, desc, disabled, ...props }) => (
           <FormField
             key={name}
             name={name}
@@ -85,6 +86,7 @@ const SimpleBaseForm = ({
                   <Input
                     {...props} // type, autoFocus, placeholder, autoComplete
                     {...field}
+                    disabled={disabled}
                     {...form.register(name, {
                       required: false,
                       // react-hook-form의 기본값이 required: true,
