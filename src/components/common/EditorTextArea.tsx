@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { SendHorizontal } from "lucide-react";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, KeyboardEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { Textarea } from "@/components/ui/textarea.tsx";
@@ -40,9 +40,10 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
     mentionedList: mentionedList.length ? mentionedList : undefined,
   });
 
-  const { register, handleSubmit, watch, setValue } = useForm({
+  const { register, handleSubmit, watch, setValue, getValues } = useForm({
     defaultValues: { anonymous: true, content: "" },
   });
+  console.log(register);
 
   const handleUpload = (formValues: FormValues) => {
     if (!user) {
@@ -60,6 +61,16 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
     upload(formValues);
     setmentionedList([]);
     setValue("content", "");
+  };
+
+  const hanleKeydown = (event: KeyboardEvent) => {
+    if (event.nativeEvent.isComposing) return;
+    if (event.shiftKey && event.key === "Enter") return;
+
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleSubmit(handleUpload)();
+    }
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -83,7 +94,7 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
   if (isPending) return <div>로딩 중... </div>;
 
   return (
-    <div className="flex w-full flex-col gap-1 ">
+    <div className="flex w-full flex-col gap-1">
       {isMention && <MentionInput mentionedList={mentionedList} onChoose={setmentionedList} />}
 
       <form className="relative">
@@ -91,6 +102,7 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
           placeholder={user ? `내용을 작성해주세요.` : "로그인이 필요합니다."}
           className="resize-none text-base"
           {...register("content")}
+          onKeyDown={hanleKeydown}
         />
         <div className="absolute bottom-2 right-2 flex items-center gap-2">
           <label
@@ -116,6 +128,9 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
           </button>
         </div>
       </form>
+      <span className={cn("text-right text-sm", getValues("content") ? "visible" : "invisible")}>
+        <b>Shift + Enter</b>키를 눌러 새 행을 추가합니다
+      </span>
 
       {/*TODO: [24/1/6] 모달 창은 layout단에 위치 시키고 open 여부를 전역상태관리하며 여기서는 트리거 역할만 하기 제안하기, 승인 시 아래 제거(by 성빈님)*/}
       {!isLoggedIn && (
