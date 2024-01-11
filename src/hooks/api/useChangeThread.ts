@@ -23,11 +23,8 @@ const useChangeThread = ({ nickname, postId, channelId, mentionedList }: Props) 
       channelId,
     };
 
-    console.log("threadRequest", threadRequest);
-
     const ThreadResponse = await patchThreadMutate(threadRequest);
 
-    console.log("ThreadResponse", ThreadResponse);
     if (!mentionedList) return;
 
     mentionNotification({
