@@ -87,7 +87,7 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
       tabIndex={0}
     >
       {editingThreadId !== id && (
-        <div className="flex items-center" onClick={onClick}>
+        <div className="flex" onClick={onClick}>
           <Avatar className="mr-3">
             <AvatarImage src="/svg/userProfile.svg" alt="프로필" />
             <AvatarFallback>{author.nickname.charAt(0)}</AvatarFallback>
@@ -101,10 +101,8 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
                 {formatDate(createdAt)}
               </span>
             </div>
-            <div
-              tabIndex={0}
-              className="mb-10pxr overflow-hidden truncate text-ellipsis pr-50pxr text-gray-500"
-            >
+            <div tabIndex={0} className="mb-10pxr whitespace-pre-wrap pr-50pxr text-gray-500">
+              <b>{mentionedList}</b>
               {content}
             </div>
             {likes.length > 0 && (
@@ -124,19 +122,6 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
               />
             )}
           </div>
-          <div
-            tabIndex={0}
-            className="mb-10pxr overflow-hidden truncate text-ellipsis whitespace-pre-wrap pr-50pxr text-gray-500"
-          >
-            <b>{mentionedList}</b> {content}
-          </div>
-          {likes.length > 0 && (
-            <LikeToggleButton
-              clicked={isAlreadyLikedByUser}
-              onClick={handleClickLikeButton}
-              numberOfLikes={likes.length}
-            />
-          )}
         </div>
       )}
 
