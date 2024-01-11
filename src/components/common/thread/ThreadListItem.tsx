@@ -94,7 +94,7 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
           </div>
           <div
             tabIndex={0}
-            className="mb-10pxr overflow-hidden truncate text-ellipsis pr-50pxr text-gray-500"
+            className="mb-10pxr overflow-hidden truncate text-ellipsis whitespace-pre-wrap pr-50pxr text-gray-500"
           >
             <b>{mentionedList}</b> {content}
           </div>
