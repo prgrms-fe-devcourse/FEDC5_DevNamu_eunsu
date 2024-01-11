@@ -34,7 +34,7 @@ const MyThreadBody = () => {
     return <div>loading...</div>;
   }
   if (listedThreadsAndComments.length === 0) {
-    return <EmptyThread type="thread" />;
+    return <EmptyThread type="thread" className="h-[calc(100vh-10.5rem)] min-h-[20rem]" />;
   }
 
   return (
