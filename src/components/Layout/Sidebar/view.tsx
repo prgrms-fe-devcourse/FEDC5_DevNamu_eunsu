@@ -16,6 +16,7 @@ import { ButtonWrappingCSS, IconCSS, IconDescriptionCSS, IconWrappingCSS } from 
 
 import { cn } from "@/lib/utils";
 import usePostLogout from "@/apis/auth/usePostLogout";
+import { LOADING_MESSAGE } from "@/constants/toastMessage";
 
 interface Props {
   pathname: string;
@@ -52,7 +53,11 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
   const isLoggedIn = !!getLocalStorage("token", "");
 
   const handleLogout = () => {
-    logout();
+    toast.promise(logout(), {
+      loading: LOADING_MESSAGE,
+      success: "로그아웃 되었습니다 :D",
+      error: "로그아웃에 실패했습니다 :(",
+    });
   };
 
   const handlerOpenProfileModal = () => {
