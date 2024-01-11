@@ -2,9 +2,6 @@ import { Link } from "react-router-dom";
 import { LogIn, MoonIcon, SunIcon, UserRoundCog, LogOut } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { MoonIcon, SunIcon } from "lucide-react";
-import { useState } from "react";
-import { LogOut } from "lucide-react";
 import * as Sentry from "@sentry/react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
