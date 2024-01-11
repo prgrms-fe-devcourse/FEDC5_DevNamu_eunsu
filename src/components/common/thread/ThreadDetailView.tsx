@@ -43,7 +43,7 @@ const ThreadDetailView = ({ threadId, onClose, className }: Props) => {
     <div
       onClick={handleClickDetailInner}
       className={cn(
-        "flex h-screen min-w-500pxr list-none flex-col  overflow-auto border-l border-gray-200 px-4 py-5 shadow-xl",
+        "flex h-screen min-w-500pxr max-w-500pxr list-none flex-col overflow-auto border-l border-gray-200 px-4 py-5 shadow-xl",
         className,
       )}
     >
@@ -61,7 +61,8 @@ const ThreadDetailView = ({ threadId, onClose, className }: Props) => {
         <span className="text-gray-500">{thread.comments.length}개의 댓글</span>
         <hr className="flex-1" />
       </div>
-      <div className="max-h-[calc(100vh-400px)] overflow-auto">
+
+      <div className="mb-4">
         <ol className="flex flex-col gap-4">
           {thread.comments.map((comment) => (
             <CommentListItem
@@ -73,7 +74,8 @@ const ThreadDetailView = ({ threadId, onClose, className }: Props) => {
           ))}
         </ol>
       </div>
-      <div className="absolute bottom-10 right-0 w-full px-4">
+
+      <div className="w-full pl-2 pr-2">
         <EditorTextArea
           isMention={true}
           nickname={thread.nickname}
