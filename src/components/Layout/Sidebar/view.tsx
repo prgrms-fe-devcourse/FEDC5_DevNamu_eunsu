@@ -23,7 +23,7 @@ interface Props {
     nickname: string;
     profileImgUrl: string;
   };
-  numberOfNotifications: number;
+  hasNewNotification?: boolean;
   theme: "light" | "dark" | "system-light" | "system-dark";
 }
 
@@ -34,7 +34,7 @@ const themeIconConfig = {
   "system-dark": MoonIcon,
 };
 
-export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Props) => {
+export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props) => {
   const { nickname, profileImgUrl } = user;
   const shortenedNickname = nickname
     .split(" ")
@@ -117,10 +117,8 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
                 >
                   <Icon className={IconCSS} />
                   {/* TODO: [2023-12-29] 지금처럼 url로 분기하지 않고 showBubble로 추상화하기 */}
-                  {url === "/my-notifications" && numberOfNotifications > 0 && (
-                    <div className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-2xl bg-[rgba(124,40,82,0.75)] text-xs text-white">
-                      {numberOfNotifications}
-                    </div>
+                  {url === "/my-notifications" && hasNewNotification && (
+                    <div className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-2xl bg-[rgba(124,40,82,0.75)] text-xs text-white"></div>
                   )}
                 </div>
                 <span className={IconDescriptionCSS}>{name}</span>
