@@ -30,13 +30,11 @@ const HomePage = () => {
         </div>
         <div className="w-full max-w-4xl px-4">
           <main>{threads && <ThreadList threads={threads} />}</main>
-          {user && (
-            <EditorTextArea
-              isMention={channelName !== "incompetent"}
-              nickname={user.nickname}
-              editorProps={{ channelId }}
-            />
-          )}
+          <EditorTextArea
+            isMention={channelName !== "incompetent"}
+            nickname={user?.nickname || "익명의 프롱이"}
+            editorProps={{ channelId }}
+          />
         </div>
       </div>
       <div>
