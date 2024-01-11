@@ -19,7 +19,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative h-screen overflow-hidden">
       <div
         className={cn(
           "duration-600 mt-12 flex flex-col items-center justify-center transition",
