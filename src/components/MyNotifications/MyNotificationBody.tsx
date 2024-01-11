@@ -1,7 +1,7 @@
 import { Conversation, Notification } from "@/types/notification";
 import { LikeByNotification } from "@/types/thread.ts";
 
-import EmptyThread from "../common/myactivate/emptyThread";
+import EmptyThread from "../common/myactivate/EmptyThread.tsx";
 
 import LikeNotification from "./LikeNotification";
 
