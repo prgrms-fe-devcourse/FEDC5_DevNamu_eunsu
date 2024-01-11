@@ -20,10 +20,10 @@ const ThreadList = ({ threads }: Props) => {
   };
 
   useEffect(() => {
-    if (threadListRef.current) {
+    if (threadListRef.current && threads.length > 0) {
       threadListRef.current.scrollTop = threadListRef.current.scrollHeight;
     }
-  }, []);
+  }, [threads.length]);
 
   return (
     <div>
