@@ -52,6 +52,9 @@ export const deleteThreadLike = (postId: string) =>
 
 export const getThreadByThreadId = async (threadId: string) => {
   const thread = await api.get<Thread>({ url: `/posts/${threadId}` });
+
+  if (!thread) return null;
+
   const { content, nickname } = parseTitleOrComment(thread.title);
 
   return {
