@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { LogIn, MoonIcon, SunIcon, UserRoundCog, LogOut } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -51,6 +52,10 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
   const { logout } = usePostLogout();
 
   const isLoggedIn = !!getLocalStorage("token", "");
+
+  useEffect(() => {
+    if (isLoggedIn) toast.success("로그인 되었습니다 :D");
+  }, [isLoggedIn]);
 
   const handleLogout = () => {
     toast.promise(logout(), {
