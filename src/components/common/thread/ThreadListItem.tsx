@@ -48,7 +48,7 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
     else likeAndNotify({ threadId: id, authorId: author._id });
   };
 
-  const handleDelete = (event: MouseEvent) => {
+  const handleClickDeleteButton = (event: MouseEvent) => {
     event.stopPropagation();
     deleteThread(id);
   };
@@ -93,7 +93,7 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
         {hoveredListId === id && (
           <ThreadToolbar
             authorId={author._id}
-            onDelete={handleDelete}
+            onDelete={handleClickDeleteButton}
             handleClickLikeButton={handleClickLikeButton}
             className="absolute -top-6 right-6 z-10"
           />
