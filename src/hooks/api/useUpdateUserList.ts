@@ -7,11 +7,14 @@ import useRegister from "@/apis/auth/useRegister.ts";
 
 const useUpdateUserList = () => {
   const { mutateAsync, isError, isSuccess, error } = useRegister();
+
   const { changeThread } = useChangeThread({
     nickname: "데브코스 관리자",
     postId: import.meta.env.VITE_ADMIN_DB,
+    channelId: import.meta.env.VITE_ADMIN_CHANNEL,
   });
-  const { login } = usePostLogin({ toggleOpen: () => { } });
+
+  const { login } = usePostLogin({ toggleOpen: () => {} });
   const { userListByDB } = useUserListByDB();
   const { mutate: logoutMutate } = usePostLogout();
 
