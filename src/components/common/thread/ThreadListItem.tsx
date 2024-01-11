@@ -138,7 +138,7 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
           <EditorTextArea
             isMention={channel.name !== "incompetent"}
             nickname={nickname}
-            editorProps={{ prevContent: content, postId: id }}
+            editorProps={{ prevContent: content, postId: id, channelId }}
             onEditCancel={handleClickCancelEditButton}
             onEditComplete={handleClickSaveEditButton}
           />
