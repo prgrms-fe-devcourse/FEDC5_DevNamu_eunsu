@@ -43,9 +43,10 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
   const { register, handleSubmit, watch, setValue, getValues } = useForm({
     defaultValues: { anonymous: true, content: "" },
   });
-  console.log(register);
 
   const handleUpload = (formValues: FormValues) => {
+    if (!formValues.content.trim()) return;
+
     if (!user) {
       // TODO: [24/1/11] 이거 나중에 함수로 빼는게 좋을듯해요!
       toast("로그인 한 유저만 글 쓰기가 가능합니다.", {
