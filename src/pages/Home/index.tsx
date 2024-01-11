@@ -6,6 +6,7 @@ import ChannelNavigationMenu from "@/components/Home/ChannelNavigationMenu";
 import ThreadList from "@/components/Home/ThreadList";
 import EditorTextArea from "@/components/common/EditorTextArea";
 import ThreadDetailView from "@/components/common/thread/ThreadDetailView";
+import EmptyThread from "@/components/common/myactivate/EmptyThread";
 import { cn } from "@/lib/utils";
 
 const HomePage = () => {
@@ -29,7 +30,12 @@ const HomePage = () => {
           <ChannelNavigationMenu />
         </div>
         <div className="w-full max-w-4xl px-4">
-          <main>{threads && <ThreadList threads={threads} />}</main>
+          <main className="min-h-[calc(100vh-250px)] rounded-sm border border-t-0 border-solid">
+            <div className="flex min-h-[calc(100vh-250px)] items-center justify-center">
+              {!threads && <EmptyThread type="threads" className="h-full w-full" />}
+            </div>
+            {threads && <ThreadList threads={threads} />}
+          </main>
           <EditorTextArea
             isMention={channelName !== "incompetent"}
             nickname={user?.nickname || "익명의 프롱이"}
