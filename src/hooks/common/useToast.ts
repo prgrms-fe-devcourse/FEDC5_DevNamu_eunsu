@@ -2,13 +2,13 @@ import { toast } from "sonner";
 
 interface ToastParameters {
   message: string;
-  duration: number;
+  duration?: number;
   actionLabel: string;
   onActionClick: () => void;
 }
 
 const useToast = () => {
-  const showToast = ({ message, duration, actionLabel, onActionClick }: ToastParameters) => {
+  const showToast = ({ message, duration = 2000, actionLabel, onActionClick }: ToastParameters) => {
     toast(message, {
       action: actionLabel
         ? {
