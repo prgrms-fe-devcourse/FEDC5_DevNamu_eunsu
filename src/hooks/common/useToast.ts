@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { toast } from "sonner";
 
 interface ToastParameters {
@@ -5,6 +6,15 @@ interface ToastParameters {
   duration?: number;
   actionLabel: string;
   onActionClick: () => void;
+}
+
+interface PromiseToastParameters<T> {
+  promise: Promise<T>;
+  messages: {
+    loading: string;
+    success: string | ((data: T) => string);
+    error: string | ((error: AxiosError) => string);
+  };
 }
 
 const useToast = () => {
@@ -20,7 +30,17 @@ const useToast = () => {
     });
   };
 
-  return { showToast };
+  const showPromiseToast = <T>({ promise, messages }: PromiseToastParameters<T>) => {
+    toast.promise(promise, {
+      loading: messages.loading,
+      success: (data) =>
+        typeof messages.success === "function" ? messages.success(data) : messages.success,
+      error: (error) =>
+        typeof messages.error === "function" ? messages.error(error) : messages.error,
+    });
+  };
+
+  return { showToast, showPromiseToast };
 };
 
 export default useToast;
