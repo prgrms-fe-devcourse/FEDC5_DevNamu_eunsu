@@ -94,16 +94,8 @@ const EditorTextArea = ({ isMention, nickname, editorProps, onClose }: Props) =>
           {...register("content")}
         />
         <div className="absolute bottom-2 right-2 flex items-center gap-2">
-          <label
-            className="flex cursor-pointer items-center gap-2 rounded-xl border p-3"
-            htmlFor="anonymous"
-          >
-            <input
-              type="checkbox"
-              id="anonymous"
-              {...register("anonymous")}
-              onClick={handleClickCheckBox}
-            />
+          <label className="flex cursor-pointer items-center gap-2 rounded-xl border p-3">
+            <input type="checkbox" {...register("anonymous")} onClick={handleClickCheckBox} />
             <p className="text-gray-500">익명</p>
           </label>
           {onClose ? (
