@@ -12,7 +12,7 @@ interface mentionedListProps extends ListProps {
   focusIndex: number;
 }
 
-const AutoCompletementionedList = ({ users, onClick, focusIndex }: mentionedListProps) => {
+const AutoCompleteMentionList = ({ users, onClick, focusIndex }: mentionedListProps) => {
   if (!users.length) return "";
   return (
     <ul className="absolute bottom-12 left-0 right-0 z-10 mt-2 overflow-hidden scroll-auto border bg-white p-2">
@@ -36,4 +36,4 @@ const AutoCompletementionedList = ({ users, onClick, focusIndex }: mentionedList
   );
 };
 
-export default AutoCompletementionedList;
+export default AutoCompleteMentionList;

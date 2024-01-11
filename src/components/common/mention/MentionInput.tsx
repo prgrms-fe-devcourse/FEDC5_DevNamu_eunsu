@@ -10,7 +10,7 @@ import {
 
 import { Input } from "@/components/ui/input.tsx";
 
-import AutoCompletementionedList from "@/components/common/mention/AutoCompletementionedList";
+import AutoCompleteMentionList from "@/components/common/mention/AutoCompleteMentionList";
 import UserBadgeList from "@/components/common/mention/UserBadgeList";
 import autoComplete from "@/lib/autoComplete.ts";
 import useUserListByDB, { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
@@ -94,7 +94,7 @@ const MentionInput = ({ mentionedList, onChoose }: Props) => {
         className="text-base"
       />
 
-      <AutoCompletementionedList
+      <AutoCompleteMentionList
         users={autoCompleteList}
         onClick={handleAddChoiceList}
         focusIndex={focusIndex}
