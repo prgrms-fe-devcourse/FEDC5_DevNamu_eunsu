@@ -9,7 +9,7 @@ const usePutProfile = () => {
   const queryClient = useQueryClient();
   const token = getLocalStorage("token", "");
 
-  const { data: userResponse, mutate: updateUserName } = useMutation({
+  const { mutateAsync: updateUserName } = useMutation({
     mutationFn: (userInfo: string) => putUserInfo(userInfo),
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -18,21 +18,24 @@ const usePutProfile = () => {
     },
   });
 
-  const { data: passwordResponse, mutate: updatePassword } = useMutation({
+  const { mutateAsync: updatePassword } = useMutation({
     mutationFn: (password: string) => putUserPassword(password),
   });
 
-  const { data: imageResponse, mutate: updateProfileImage } = useMutation({
+  const { mutateAsync: updateProfileImage } = useMutation({
     mutationFn: (image: string) => postUserProfileImage(image),
   });
+
+  const updateAllProfile = async (userInfo: string, password: string) => {
+    await updateUserName(userInfo);
+    await updatePassword(password);
+  };
 
   return {
     updateUserName,
     updatePassword,
+    updateAllProfile,
     updateProfileImage,
-    imageResponse,
-    userResponse,
-    passwordResponse,
   };
 };
 

@@ -10,7 +10,7 @@ import SimpleBaseModal from "../Base/modal";
 import { LOGIN_FIELDS, LOGIN_FIELDS_SCHEMA } from "./config";
 
 import usePostLogin from "@/apis/auth/usePostLogin";
-import { AUTH_ERROR_MESSAGE, AUTH_ERROR_RESPONSE } from "@/constants/authError";
+import { AUTH_ERROR_MESSAGE, AUTH_ERROR_RESPONSE } from "@/constants/toastMessage";
 
 interface Props {
   open: boolean;

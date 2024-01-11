@@ -10,22 +10,8 @@ export interface UserInfo {
 
 export const SETTING_FIELDS: FieldProps[] = [];
 
-export const makeFormFields = ({ name, email, nickname }: UserInfo) => {
+export const makeFormFields = ({ nickname }: UserInfo) => {
   const result: FieldProps[] = [
-    {
-      name: "name",
-      type: "text",
-      label: "이름",
-      readOnly: true,
-      value: name,
-    },
-    {
-      name: "email",
-      type: "email",
-      label: "이메일",
-      readOnly: true,
-      value: email,
-    },
     {
       name: "nickname",
       type: "text",
@@ -51,7 +37,6 @@ export const makeFormFields = ({ name, email, nickname }: UserInfo) => {
 
 export const SETTING_FIELDS_SCHEMA = z
   .object({
-    name: z.string(),
     nickname: z.string().trim().min(1, {
       message: "닉네임을 입력해주세요",
     }),

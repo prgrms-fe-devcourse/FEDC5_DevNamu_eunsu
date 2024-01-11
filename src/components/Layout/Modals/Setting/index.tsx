@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { toast } from "sonner";
+import { useEffect } from "react";
 
 import SimpleBaseForm from "../Base/form";
 import SimpleBaseModal from "../Base/modal";
@@ -7,6 +9,11 @@ import { makeFormFields, SETTING_FIELDS, SETTING_FIELDS_SCHEMA } from "./config"
 
 import useGetUserInfo from "@/apis/auth/useGetUserInfo";
 import usePutProfile from "@/apis/auth/usePutProfile";
+import {
+  AUTH_ERROR_MESSAGE,
+  AUTH_SUCCESS_MESSAGE,
+  LOADING_MESSAGE,
+} from "@/constants/toastMessage";
 
 interface Props {
   open: boolean;
@@ -15,23 +22,48 @@ interface Props {
 
 const SettingModal = ({ open, toggleOpen }: Props) => {
   const { user, isPending } = useGetUserInfo();
-  const { updateUserName, updatePassword } = usePutProfile();
+  const { updateUserName, updatePassword, updateAllProfile } = usePutProfile();
 
   if (open && !isPending && user) makeFormFields(user);
 
-  const handleSubmit = (settingInfo: z.infer<typeof SETTING_FIELDS_SCHEMA>) => {
-    const oldNickname = user?.nickname;
-    if (oldNickname !== settingInfo.nickname) {
-      const fullName = { name: settingInfo.name, nickname: settingInfo.nickname };
-      const userInfo = JSON.stringify(fullName);
-      updateUserName(userInfo);
-      // TODO: 닉네임이 같은 경우 안내 처리 (2024-01-10)
-    } else alert("닉네임이 이전 닉네임과 동일합니다.");
-    if (settingInfo.password) {
-      updatePassword(settingInfo.password);
-    }
-    // TODO: 에러 모달 처리 (2024-01-09)
-    toggleOpen(false);
+  useEffect(() => {
+    if (open) toast.info("닉네임과 비밀번호 설정이 각각 가능합니다.");
+  }, [open]);
+
+  const handleSubmit = ({ nickname, password }: z.infer<typeof SETTING_FIELDS_SCHEMA>) => {
+    const name = user?.name;
+    const previousNickname = user?.nickname;
+    const isNicknameChanged = previousNickname !== nickname;
+    const fullName = { name, nickname };
+    const userInfo = JSON.stringify(fullName);
+    if (isNicknameChanged && !password) {
+      toast.promise(updateUserName(userInfo), {
+        loading: LOADING_MESSAGE,
+        success: () => {
+          toggleOpen(false);
+          return AUTH_SUCCESS_MESSAGE.UPDATE_PROFILE;
+        },
+        error: AUTH_ERROR_MESSAGE.SERVER_ERROR,
+      });
+    } else if (!isNicknameChanged && password) {
+      toast.promise(updatePassword(password), {
+        loading: LOADING_MESSAGE,
+        success: () => {
+          toggleOpen(false);
+          return AUTH_SUCCESS_MESSAGE.UPDATE_PASSWORD;
+        },
+        error: AUTH_ERROR_MESSAGE.SERVER_ERROR,
+      });
+    } else if (isNicknameChanged && password) {
+      toast.promise(updateAllProfile(userInfo, password), {
+        loading: LOADING_MESSAGE,
+        success: () => {
+          toggleOpen(false);
+          return AUTH_SUCCESS_MESSAGE.UPDATE_ALL_PROFILE;
+        },
+        error: AUTH_ERROR_MESSAGE.UPDATE_ALL_PROFILE,
+      });
+    } else toast.warning(AUTH_ERROR_MESSAGE.NO_CHANGE);
   };
 
   return (
