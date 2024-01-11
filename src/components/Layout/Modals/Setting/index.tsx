@@ -57,7 +57,7 @@ const SettingModal = ({ open, toggleOpen }: Props) => {
         },
         error: AUTH_ERROR_MESSAGE.UPDATE_ALL_PROFILE,
       });
-    } else toast.warning(AUTH_ERROR_MESSAGE.SAME_NICKNAME);
+    } else toast.warning(AUTH_ERROR_MESSAGE.NO_CHANGE);
   };
 
   return (
