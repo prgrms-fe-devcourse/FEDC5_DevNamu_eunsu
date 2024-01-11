@@ -74,7 +74,8 @@ const EditorTextArea = ({ isMention, nickname, editorProps, onClose }: Props) =>
   const [profileModalOpen, setProfileModalOpen] = useState(false);
   const isLoggedIn = !!getLocalStorage("token", "");
   const handleClickCheckBox = (e: FormEvent<HTMLInputElement>) => {
-    if (!e.currentTarget.checked && nickname === ANONYMOUS_NICKNAME) {
+    // TODO: [24/1/11] nickname은 props로 받아오는게 맞다고 생각합니다. 하지만 여러곳에서 수정이 필요해지니 현재 에디터에 user를 가지고 있어서 임시방편으로 수정하겠습니다.
+    if (!e.currentTarget.checked && user?.nickname === ANONYMOUS_NICKNAME) {
       setValue("anonymous", true);
       setProfileModalOpen((prev) => !prev);
       return;
