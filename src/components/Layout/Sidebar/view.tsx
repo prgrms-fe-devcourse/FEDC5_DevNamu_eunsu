@@ -95,7 +95,7 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
               <AvatarFallback>{shortenedNickname}</AvatarFallback>
             </Avatar>
           ) : (
-            <button className={`${ButtonWrappingCSS} mb-6`} onClick={handlerOpenLoginModal}>
+            <button className={`${ButtonWrappingCSS}`} onClick={handlerOpenLoginModal}>
               <div className={cn("relative", IconWrappingCSS)}>
                 <LogIn className={IconCSS} />
               </div>
