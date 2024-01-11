@@ -14,6 +14,7 @@ import ProfileModal from "../Modals/Profile";
 import { SIDEBAR_ICONS } from "./config";
 import { ThemeConfigDropdown } from "./ThemeConfigDropdown";
 import { ButtonWrappingCSS, IconCSS, IconDescriptionCSS, IconWrappingCSS } from "./styles";
+import SidebarButton from "./SidebarButton";
 
 import { cn } from "@/lib/utils";
 import usePostLogout from "@/apis/auth/usePostLogout";
@@ -105,12 +106,7 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
               <AvatarFallback>{shortenedNickname}</AvatarFallback>
             </Avatar>
           ) : (
-            <button className={ButtonWrappingCSS} onClick={handlerOpenLoginModal}>
-              <div className={cn("relative", IconWrappingCSS)}>
-                <LogIn className={IconCSS} />
-              </div>
-              <span className={IconDescriptionCSS}>로그인</span>
-            </button>
+            <SidebarButton label="로그인" Icon={LogIn} onClick={handlerOpenLoginModal} />
           )}
           {SIDEBAR_ICONS.filter(
             ({ requireAuth }) => !requireAuth || (requireAuth && isLoggedIn),
@@ -149,18 +145,17 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
 
         {isLoggedIn && (
           <div className="flex flex-col items-center">
-            <button className={ButtonWrappingCSS} onClick={handlerOpenProfileModal}>
-              <div className={cn("relative", IconWrappingCSS)}>
-                <UserRoundCog className={IconCSS} />
-              </div>
-              <span className={IconDescriptionCSS}>내 정보 변경</span>
-            </button>
-            <button className={`${ButtonWrappingCSS} mb-6`} onClick={handleLogout}>
-              <div className={cn("relative", IconWrappingCSS)}>
-                <LogOut className={IconCSS} />
-              </div>
-              <span className={IconDescriptionCSS}>로그아웃</span>
-            </button>
+            <SidebarButton
+              label="내 정보 수정"
+              Icon={UserRoundCog}
+              onClick={handlerOpenProfileModal}
+            />
+            <SidebarButton
+              label="로그아웃"
+              AdditionalCSS="mb-6"
+              Icon={LogOut}
+              onClick={handleLogout}
+            />
           </div>
         )}
       </div>
