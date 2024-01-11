@@ -19,7 +19,6 @@ const SimpleBaseModal = ({ dialogOptions = {}, title, header, children }: Props)
   return (
     <Dialog {...dialogOptions}>
       <DialogContent
-        onInteractOutside={(e) => e.preventDefault()}
         onOpenAutoFocus={(e) => e.preventDefault()}
         className="max-h-[800px] overflow-y-auto sm:max-w-[425px]"
       >
