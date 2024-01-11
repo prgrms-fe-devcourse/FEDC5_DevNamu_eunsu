@@ -8,6 +8,8 @@ import LikeNotification from "./LikeNotification";
 import useListedNotificationAndMention from "@/hooks/api/useListedNotificationAndMention.ts";
 import CommentNotification from "@/components/MyNotifications/CommentNotification.tsx";
 import MentionNotification from "@/components/MyNotifications/MentionNotification.tsx";
+import useGetUserInfo from "@/apis/auth/useGetUserInfo";
+import { putMyMentionedSeen, putMyNotificationSeen } from "@/apis/mynotification/queryFn.ts";
 
 const isComment = (props: Notification | Conversation): props is Notification => {
   return "comment" in props;
@@ -30,6 +32,12 @@ const isMention = (props: Notification | Conversation): props is Conversation =>
 
 const MyNotificationBody = () => {
   const { listedNotificationAndMention, isPending } = useListedNotificationAndMention();
+
+  const userInfo = useGetUserInfo();
+  if (userInfo.user !== undefined && userInfo.user !== null) {
+    putMyMentionedSeen(userInfo.user._id);
+    putMyNotificationSeen();
+  }
 
   if (isPending) {
     return <span>Loading...</span>;
