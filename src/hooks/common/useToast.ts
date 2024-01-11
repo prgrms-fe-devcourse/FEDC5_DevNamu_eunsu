@@ -1,6 +1,8 @@
 import { AxiosError } from "axios";
 import { toast } from "sonner";
 
+import { LOADING_MESSAGE } from "@/constants/toastMessage";
+
 interface ToastParameters {
   message: string;
   duration?: number;
@@ -11,7 +13,6 @@ interface ToastParameters {
 interface PromiseToastParameters<T> {
   promise: Promise<T>;
   messages: {
-    loading: string;
     success: string | ((data: T) => string);
     error: string | ((error: AxiosError) => string);
   };
@@ -32,7 +33,7 @@ const useToast = () => {
 
   const showPromiseToast = <T>({ promise, messages }: PromiseToastParameters<T>) => {
     toast.promise(promise, {
-      loading: messages.loading,
+      loading: LOADING_MESSAGE,
       success: (data) =>
         typeof messages.success === "function" ? messages.success(data) : messages.success,
       error: (error) =>

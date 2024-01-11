@@ -9,11 +9,8 @@ import { makeFormFields, PROFILE_FIELDS, PROFILE_FIELDS_SCHEMA } from "./config"
 
 import useGetUserInfo from "@/apis/auth/useGetUserInfo";
 import usePutProfile from "@/apis/auth/usePutProfile";
-import {
-  AUTH_ERROR_MESSAGE,
-  AUTH_SUCCESS_MESSAGE,
-  LOADING_MESSAGE,
-} from "@/constants/toastMessage";
+import { AUTH_ERROR_MESSAGE, AUTH_SUCCESS_MESSAGE } from "@/constants/toastMessage";
+import useToast from "@/hooks/common/useToast";
 
 interface Props {
   open: boolean;
@@ -23,6 +20,7 @@ interface Props {
 const ProfileModal = ({ open, toggleOpen }: Props) => {
   const { user, isPending } = useGetUserInfo();
   const { updateUserName, updatePassword, updateAllProfile } = usePutProfile();
+  const { showPromiseToast } = useToast();
 
   if (open && !isPending && user) makeFormFields(user);
 
@@ -36,31 +34,37 @@ const ProfileModal = ({ open, toggleOpen }: Props) => {
     const fullName = { name, nickname };
     const userInfo = JSON.stringify(fullName);
     if (isNicknameChanged && !password) {
-      toast.promise(updateUserName(userInfo), {
-        loading: LOADING_MESSAGE,
-        success: () => {
-          toggleOpen(false);
-          return AUTH_SUCCESS_MESSAGE.UPDATE_PROFILE;
+      showPromiseToast({
+        promise: updateUserName(userInfo),
+        messages: {
+          success: () => {
+            toggleOpen(false);
+            return AUTH_SUCCESS_MESSAGE.UPDATE_PROFILE;
+          },
+          error: AUTH_ERROR_MESSAGE.SERVER_ERROR,
         },
-        error: AUTH_ERROR_MESSAGE.SERVER_ERROR,
       });
     } else if (!isNicknameChanged && password) {
-      toast.promise(updatePassword(password), {
-        loading: LOADING_MESSAGE,
-        success: () => {
-          toggleOpen(false);
-          return AUTH_SUCCESS_MESSAGE.UPDATE_PASSWORD;
+      showPromiseToast({
+        promise: updatePassword(password),
+        messages: {
+          success: () => {
+            toggleOpen(false);
+            return AUTH_SUCCESS_MESSAGE.UPDATE_PASSWORD;
+          },
+          error: AUTH_ERROR_MESSAGE.SERVER_ERROR,
         },
-        error: AUTH_ERROR_MESSAGE.SERVER_ERROR,
       });
     } else if (isNicknameChanged && password) {
-      toast.promise(updateAllProfile(userInfo, password), {
-        loading: LOADING_MESSAGE,
-        success: () => {
-          toggleOpen(false);
-          return AUTH_SUCCESS_MESSAGE.UPDATE_ALL_PROFILE;
+      showPromiseToast({
+        promise: updateAllProfile(userInfo, password),
+        messages: {
+          success: () => {
+            toggleOpen(false);
+            return AUTH_SUCCESS_MESSAGE.UPDATE_ALL_PROFILE;
+          },
+          error: AUTH_ERROR_MESSAGE.UPDATE_ALL_PROFILE,
         },
-        error: AUTH_ERROR_MESSAGE.UPDATE_ALL_PROFILE,
       });
     } else toast.warning(AUTH_ERROR_MESSAGE.NO_CHANGE);
   };

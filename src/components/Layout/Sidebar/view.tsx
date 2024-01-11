@@ -18,7 +18,8 @@ import SidebarButton from "./SidebarButton";
 
 import { cn } from "@/lib/utils";
 import usePostLogout from "@/apis/auth/usePostLogout";
-import { LOADING_MESSAGE } from "@/constants/toastMessage";
+import useToast from "@/hooks/common/useToast";
+import { AUTH_ERROR_MESSAGE, AUTH_SUCCESS_MESSAGE } from "@/constants/toastMessage";
 
 interface Props {
   pathname: string;
@@ -51,6 +52,7 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
   const [profileModalOpen, setProfileModalOpen] = useState(false);
 
   const { mutateAsync: logout } = usePostLogout();
+  const { showPromiseToast } = useToast();
 
   const isLoggedIn = !!getLocalStorage("token", "");
 
@@ -59,10 +61,12 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
   }, [isLoggedIn]);
 
   const handleLogout = () => {
-    toast.promise(logout(), {
-      loading: LOADING_MESSAGE,
-      success: "로그아웃 되었습니다 :D",
-      error: "로그아웃에 실패했습니다 :(",
+    showPromiseToast({
+      promise: logout(),
+      messages: {
+        success: AUTH_SUCCESS_MESSAGE.LOGOUT,
+        error: AUTH_ERROR_MESSAGE.LOGOUT,
+      },
     });
   };
 

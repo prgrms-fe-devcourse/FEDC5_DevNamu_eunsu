@@ -26,9 +26,10 @@ interface Props {
   isMention: boolean;
   nickname: string;
   editorProps: EditorProps;
+  onClose?: () => void;
 }
 
-const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
+const EditorTextArea = ({ isMention, nickname, editorProps, onClose }: Props) => {
   // TODO: [24/1/10] user는 EditerTextArea를 사용하는 쪽에서 보내주는게 맞다고 생각하지만 빠른 배포를 위해 여기서 불러쓸게요
   const { user, isPending } = useGetUserInfo();
 
@@ -95,13 +96,13 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
   if (isPending) return <div>로딩 중... </div>;
 
   return (
-    <div className="flex w-full flex-col gap-1">
+    <div className="relative flex w-full flex-col gap-1">
       {isMention && <MentionInput mentionedList={mentionedList} onChoose={setmentionedList} />}
 
       <form className="relative">
         <Textarea
           placeholder={user ? `내용을 작성해주세요.` : "로그인이 필요합니다."}
-          className="resize-none text-base"
+          className="resize-none overflow-hidden pr-200pxr text-base"
           {...register("content")}
           onKeyDown={handleKeydown}
         />
@@ -118,15 +119,34 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
             />
             <p className="text-gray-500">익명</p>
           </label>
-          <button
-            onClick={handleSubmit(handleUpload)}
-            className={cn(
-              "flex h-12 w-12 cursor-pointer items-center justify-center rounded-xl text-black",
-              watch("content") ? "bg-green-600" : "",
-            )}
-          >
-            <SendHorizontal className="h-10 w-10 fill-amber-50 stroke-2" />
-          </button>
+          {onClose ? (
+            <div className="flex items-center gap-2 text-white ">
+              <button className="rounded-sm bg-gray-400 p-3" onClick={onClose}>
+                취소
+              </button>
+              <button
+                onClick={handleSubmit(handleUpload)}
+                className={cn(
+                  "rounded-sm p-3",
+                  watch("content")
+                    ? "border border-[#19d23d] bg-[#19d23d]"
+                    : "border border-gray-300 text-black",
+                )}
+              >
+                확인
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={handleSubmit(handleUpload)}
+              className={cn(
+                "flex h-12 w-12 cursor-pointer items-center justify-center rounded-xl text-black",
+                watch("content") ? "bg-[#19d23d]" : "",
+              )}
+            >
+              <SendHorizontal className="h-10 w-10 fill-amber-50 stroke-2" />
+            </button>
+          )}
         </div>
       </form>
       <span className={cn("text-right text-sm", getValues("content") ? "visible" : "invisible")}>

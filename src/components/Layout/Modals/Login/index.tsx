@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { toast } from "sonner";
 import { AxiosError } from "axios";
 
 import { Button } from "@/components/ui/button";
@@ -10,7 +9,12 @@ import SimpleBaseModal from "../Base/modal";
 import { LOGIN_FIELDS, LOGIN_FIELDS_SCHEMA } from "./config";
 
 import usePostLogin from "@/apis/auth/usePostLogin";
-import { AUTH_ERROR_MESSAGE, AUTH_ERROR_RESPONSE } from "@/constants/toastMessage";
+import {
+  AUTH_ERROR_MESSAGE,
+  AUTH_ERROR_RESPONSE,
+  AUTH_SUCCESS_MESSAGE,
+} from "@/constants/toastMessage";
+import useToast from "@/hooks/common/useToast";
 
 interface Props {
   open: boolean;
@@ -20,6 +24,7 @@ interface Props {
 
 const LoginModal = ({ open, toggleOpen, openRegisterModal }: Props) => {
   const { login } = usePostLogin({ toggleOpen });
+  const { showPromiseToast } = useToast();
 
   const handleRegisterClick = () => {
     toggleOpen(!open);
@@ -27,17 +32,19 @@ const LoginModal = ({ open, toggleOpen, openRegisterModal }: Props) => {
   };
 
   const handleSubmit = (loginInfo: z.infer<typeof LOGIN_FIELDS_SCHEMA>) => {
-    toast.promise(login(loginInfo), {
-      loading: "잠시만 기다려주세요...",
-      success: ({ user: { fullName } }) => {
-        const { nickname } = JSON.parse(fullName);
-        return `어서오세요, ${nickname}님!`;
-      },
-      error: (error: AxiosError) => {
-        if (error?.response?.data === AUTH_ERROR_RESPONSE.LOGIN_FAILED) {
-          return AUTH_ERROR_MESSAGE.LOGIN_FAILED;
-        }
-        return AUTH_ERROR_MESSAGE.SERVER_ERROR;
+    showPromiseToast({
+      promise: login(loginInfo),
+      messages: {
+        success: ({ user: { fullName } }) => {
+          const { nickname } = JSON.parse(fullName);
+          return AUTH_SUCCESS_MESSAGE.LOGIN(nickname);
+        },
+        error: (error: AxiosError) => {
+          if (error?.response?.data === AUTH_ERROR_RESPONSE.LOGIN_FAILED) {
+            return AUTH_ERROR_MESSAGE.LOGIN_FAILED;
+          }
+          return AUTH_ERROR_MESSAGE.SERVER_ERROR;
+        },
       },
     });
   };
