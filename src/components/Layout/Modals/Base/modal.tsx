@@ -21,7 +21,7 @@ const SimpleBaseModal = ({ dialogOptions = {}, title, header, children }: Props)
       <DialogContent
         onInteractOutside={(e) => e.preventDefault()}
         onOpenAutoFocus={(e) => e.preventDefault()}
-        className="max-h-[800px] overflow-scroll sm:max-w-[425px]"
+        className="max-h-[800px] overflow-y-auto sm:max-w-[425px]"
       >
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>

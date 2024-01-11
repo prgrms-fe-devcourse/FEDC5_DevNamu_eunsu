@@ -2,6 +2,8 @@ import { z } from "zod";
 
 import { FieldProps } from "../Base/form";
 
+import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname";
+
 export const REGISTER_FIELDS: FieldProps[] = [
   {
     name: "name",
@@ -20,7 +22,7 @@ export const REGISTER_FIELDS: FieldProps[] = [
     name: "nickname",
     type: "text",
     label: "닉네임(선택)",
-    placeholder: "미기입 시 프롱이로 설정됩니다.",
+    placeholder: `미기입 시 ${ANONYMOUS_NICKNAME}로 설정됩니다.`,
     autoComplete: "nickname",
   },
   {
@@ -53,6 +55,10 @@ export const REGISTER_FIELDS_SCHEMA = z
       message: "비밀번호는 8글자 이상이어야 합니다",
     }),
     passwordConfirm: z.string(),
+  })
+  .refine(({ nickname }) => nickname !== ANONYMOUS_NICKNAME, {
+    message: "기본 닉네임은 사용할 수 없습니다",
+    path: ["nickname"],
   })
   .refine(({ password, passwordConfirm }) => password === passwordConfirm, {
     message: "비밀번호가 일치하지 않습니다",

@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
-import { MoonIcon, SunIcon } from "lucide-react";
+import { LogIn, MoonIcon, SunIcon, UserRoundCog, LogOut } from "lucide-react";
 import { useState } from "react";
-import { LogOut } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -9,7 +8,7 @@ import { getLocalStorage } from "@/utils/localStorage";
 
 import LoginModal from "../Modals/Login";
 import RegisterModal from "../Modals/Register";
-import SettingModal from "../Modals/Setting";
+import ProfileModal from "../Modals/Profile";
 
 import { SIDEBAR_ICONS } from "./config";
 import { ThemeConfigDropdown } from "./ThemeConfigDropdown";
@@ -46,7 +45,7 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
 
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
-  const [settingModalOpen, setSettingModalOpen] = useState(false);
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
 
   const { mutate: logout } = usePostLogout();
 
@@ -56,8 +55,8 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
     logout();
   };
 
-  const handlerOpenSettingModal = () => {
-    setSettingModalOpen(true);
+  const handlerOpenProfileModal = () => {
+    setProfileModalOpen(true);
   };
 
   const handlerOpenLoginModal = () => {
@@ -87,22 +86,28 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
           openLoginModal={setLoginModalOpen}
         />
       )}
-      {isLoggedIn && <SettingModal open={settingModalOpen} toggleOpen={setSettingModalOpen} />}
+      {isLoggedIn && <ProfileModal open={profileModalOpen} toggleOpen={setProfileModalOpen} />}
       <div className="flex w-20 flex-col items-center justify-between gap-8">
         <div className="mt-4 flex cursor-pointer select-none flex-col items-center gap-2">
-          <Avatar onClick={handlerOpenLoginModal} className="flex items-center">
-            <AvatarImage src={profileImgUrl} alt={nickname} />
-            <AvatarFallback>{shortenedNickname}</AvatarFallback>
-          </Avatar>
+          {isLoggedIn ? (
+            <Avatar className="flex items-center">
+              <AvatarImage src={profileImgUrl} alt={nickname} />
+              <AvatarFallback>{shortenedNickname}</AvatarFallback>
+            </Avatar>
+          ) : (
+            <button className={ButtonWrappingCSS} onClick={handlerOpenLoginModal}>
+              <div className={cn("relative", IconWrappingCSS)}>
+                <LogIn className={IconCSS} />
+              </div>
+              <span className={IconDescriptionCSS}>로그인</span>
+            </button>
+          )}
           {SIDEBAR_ICONS.filter(
             ({ requireAuth }) => !requireAuth || (requireAuth && isLoggedIn),
           ).map(({ url, name, icon: Icon }) => {
             const isSelectedPage = pathname === url;
-            const IconWrap = url ? Link : "button";
-            const props = url ? { to: url } : { onClick: handlerOpenSettingModal, to: url };
-
             return (
-              <IconWrap key={url} {...props} className={ButtonWrappingCSS}>
+              <Link key={url} to={url} className={ButtonWrappingCSS}>
                 <div
                   className={cn(
                     "relative",
@@ -119,7 +124,7 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
                   )}
                 </div>
                 <span className={IconDescriptionCSS}>{name}</span>
-              </IconWrap>
+              </Link>
             );
           })}
           <ThemeConfigDropdown>
@@ -133,12 +138,20 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
         </div>
 
         {isLoggedIn && (
-          <button className={`${ButtonWrappingCSS} mb-6`} onClick={handleLogout}>
-            <div className={cn("relative", IconWrappingCSS)}>
-              <LogOut className={IconCSS} />
-            </div>
-            <span className={IconDescriptionCSS}>로그아웃</span>
-          </button>
+          <div>
+            <button className={ButtonWrappingCSS} onClick={handlerOpenProfileModal}>
+              <div className={cn("relative", IconWrappingCSS)}>
+                <UserRoundCog className={IconCSS} />
+              </div>
+              <span className={IconDescriptionCSS}>내 정보 변경</span>
+            </button>
+            <button className={`${ButtonWrappingCSS} mb-6`} onClick={handleLogout}>
+              <div className={cn("relative", IconWrappingCSS)}>
+                <LogOut className={IconCSS} />
+              </div>
+              <span className={IconDescriptionCSS}>로그아웃</span>
+            </button>
+          </div>
         )}
       </div>
     </>
