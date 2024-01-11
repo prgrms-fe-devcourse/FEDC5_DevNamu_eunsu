@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import SimpleBaseForm from "../Base/form";
 import SimpleBaseModal from "../Base/modal";
 
-import { makeFormFields, SETTING_FIELDS, SETTING_FIELDS_SCHEMA } from "./config";
+import { makeFormFields, PROFILE_FIELDS, PROFILE_FIELDS_SCHEMA } from "./config";
 
 import useGetUserInfo from "@/apis/auth/useGetUserInfo";
 import usePutProfile from "@/apis/auth/usePutProfile";
@@ -20,7 +20,7 @@ interface Props {
   toggleOpen: (open: boolean) => void;
 }
 
-const SettingModal = ({ open, toggleOpen }: Props) => {
+const ProfileModal = ({ open, toggleOpen }: Props) => {
   const { user, isPending } = useGetUserInfo();
   const { updateUserName, updatePassword, updateAllProfile } = usePutProfile();
 
@@ -30,8 +30,7 @@ const SettingModal = ({ open, toggleOpen }: Props) => {
     if (open) toast.info("닉네임과 비밀번호 설정이 각각 가능합니다.");
   }, [open]);
 
-  const handleSubmit = ({ nickname, password }: z.infer<typeof SETTING_FIELDS_SCHEMA>) => {
-    const name = user?.name;
+  const handleSubmit = ({ name, nickname, password }: z.infer<typeof PROFILE_FIELDS_SCHEMA>) => {
     const previousNickname = user?.nickname;
     const isNicknameChanged = previousNickname !== nickname;
     const fullName = { name, nickname };
@@ -75,8 +74,8 @@ const SettingModal = ({ open, toggleOpen }: Props) => {
       title="내 프로필 편집"
     >
       <SimpleBaseForm
-        fields={SETTING_FIELDS}
-        validationSchema={SETTING_FIELDS_SCHEMA}
+        fields={PROFILE_FIELDS}
+        validationSchema={PROFILE_FIELDS_SCHEMA}
         onSubmit={handleSubmit}
         submitText="저장"
         cancelText="취소"
@@ -85,4 +84,4 @@ const SettingModal = ({ open, toggleOpen }: Props) => {
   );
 };
 
-export default SettingModal;
+export default ProfileModal;

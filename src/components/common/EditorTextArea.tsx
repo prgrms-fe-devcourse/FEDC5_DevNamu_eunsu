@@ -15,7 +15,7 @@ import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 import RegisterModal from "@/components/Layout/Modals/Register";
 import useGetUserInfo from "@/apis/auth/useGetUserInfo.ts";
 import LoginModal from "@/components/Layout/Modals/Login";
-import SettingModal from "@/components/Layout/Modals/Setting";
+import ProfileModal from "@/components/Layout/Modals/Profile";
 
 export interface FormValues {
   anonymous: boolean;
@@ -70,12 +70,12 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
   // TODO: [24/1/6] 모달 창은 layout단에 위치 시키고 open 여부를 전역상태관리하며 여기서는 트리거 역할만 하기 제안하기, 승인 시 아래 제거(by 성빈님)
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
-  const [settingModalOpen, setSettingModalOpen] = useState(false);
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
   const isLoggedIn = !!getLocalStorage("token", "");
   const handleClickCheckBox = (e: FormEvent<HTMLInputElement>) => {
     if (!e.currentTarget.checked && nickname === ANONYMOUS_NICKNAME) {
       setValue("anonymous", true);
-      setSettingModalOpen((prev) => !prev);
+      setProfileModalOpen((prev) => !prev);
       return;
     }
   };
@@ -132,7 +132,7 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
           openLoginModal={setLoginModalOpen}
         />
       )}
-      {isLoggedIn && <SettingModal open={settingModalOpen} toggleOpen={setSettingModalOpen} />}
+      {isLoggedIn && <ProfileModal open={profileModalOpen} toggleOpen={setProfileModalOpen} />}
     </div>
   );
 };

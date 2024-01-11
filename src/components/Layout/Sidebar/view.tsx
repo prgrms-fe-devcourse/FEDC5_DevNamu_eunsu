@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { MoonIcon, SunIcon } from "lucide-react";
-import { useState } from "react";
-import { LogOut } from "lucide-react";
+import { LogIn, MoonIcon, SunIcon, UserRoundCog, LogOut } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -9,14 +9,16 @@ import { getLocalStorage } from "@/utils/localStorage";
 
 import LoginModal from "../Modals/Login";
 import RegisterModal from "../Modals/Register";
-import SettingModal from "../Modals/Setting";
+import ProfileModal from "../Modals/Profile";
 
 import { SIDEBAR_ICONS } from "./config";
 import { ThemeConfigDropdown } from "./ThemeConfigDropdown";
 import { ButtonWrappingCSS, IconCSS, IconDescriptionCSS, IconWrappingCSS } from "./styles";
+import SidebarButton from "./SidebarButton";
 
 import { cn } from "@/lib/utils";
 import usePostLogout from "@/apis/auth/usePostLogout";
+import { LOADING_MESSAGE } from "@/constants/toastMessage";
 
 interface Props {
   pathname: string;
@@ -46,18 +48,26 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
 
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
-  const [settingModalOpen, setSettingModalOpen] = useState(false);
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
 
-  const { mutate: logout } = usePostLogout();
+  const { mutateAsync: logout } = usePostLogout();
 
   const isLoggedIn = !!getLocalStorage("token", "");
 
+  useEffect(() => {
+    if (isLoggedIn) toast.success("로그인 되었습니다 :D");
+  }, [isLoggedIn]);
+
   const handleLogout = () => {
-    logout();
+    toast.promise(logout(), {
+      loading: LOADING_MESSAGE,
+      success: "로그아웃 되었습니다 :D",
+      error: "로그아웃에 실패했습니다 :(",
+    });
   };
 
-  const handlerOpenSettingModal = () => {
-    setSettingModalOpen(true);
+  const handlerOpenProfileModal = () => {
+    setProfileModalOpen(true);
   };
 
   const handlerOpenLoginModal = () => {
@@ -87,22 +97,23 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
           openLoginModal={setLoginModalOpen}
         />
       )}
-      {isLoggedIn && <SettingModal open={settingModalOpen} toggleOpen={setSettingModalOpen} />}
+      {isLoggedIn && <ProfileModal open={profileModalOpen} toggleOpen={setProfileModalOpen} />}
       <div className="flex w-20 flex-col items-center justify-between gap-8">
         <div className="mt-4 flex cursor-pointer select-none flex-col items-center gap-2">
-          <Avatar onClick={handlerOpenLoginModal} className="flex items-center">
-            <AvatarImage src={profileImgUrl} alt={nickname} />
-            <AvatarFallback>{shortenedNickname}</AvatarFallback>
-          </Avatar>
+          {isLoggedIn ? (
+            <Avatar className="flex items-center">
+              <AvatarImage src={profileImgUrl} alt={nickname} />
+              <AvatarFallback>{shortenedNickname}</AvatarFallback>
+            </Avatar>
+          ) : (
+            <SidebarButton label="로그인" Icon={LogIn} onClick={handlerOpenLoginModal} />
+          )}
           {SIDEBAR_ICONS.filter(
             ({ requireAuth }) => !requireAuth || (requireAuth && isLoggedIn),
           ).map(({ url, name, icon: Icon }) => {
             const isSelectedPage = pathname === url;
-            const IconWrap = url ? Link : "button";
-            const props = url ? { to: url } : { onClick: handlerOpenSettingModal, to: url };
-
             return (
-              <IconWrap key={url} {...props} className={ButtonWrappingCSS}>
+              <Link key={url} to={url} className={ButtonWrappingCSS}>
                 <div
                   className={cn(
                     "relative",
@@ -119,7 +130,7 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
                   )}
                 </div>
                 <span className={IconDescriptionCSS}>{name}</span>
-              </IconWrap>
+              </Link>
             );
           })}
           <ThemeConfigDropdown>
@@ -133,12 +144,19 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
         </div>
 
         {isLoggedIn && (
-          <button className={`${ButtonWrappingCSS} mb-6`} onClick={handleLogout}>
-            <div className={cn("relative", IconWrappingCSS)}>
-              <LogOut className={IconCSS} />
-            </div>
-            <span className={IconDescriptionCSS}>로그아웃</span>
-          </button>
+          <div className="flex flex-col items-center">
+            <SidebarButton
+              label="내 정보 수정"
+              Icon={UserRoundCog}
+              onClick={handlerOpenProfileModal}
+            />
+            <SidebarButton
+              label="로그아웃"
+              AdditionalCSS="mb-6"
+              Icon={LogOut}
+              onClick={handleLogout}
+            />
+          </div>
         )}
       </div>
     </>

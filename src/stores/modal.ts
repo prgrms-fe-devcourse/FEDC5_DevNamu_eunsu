@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
-type ModalType = "Login" | "Register" | "Setting";
+type ModalType = "Login" | "Register" | "Profile";
 
 interface State {
   isOpenLoginModal: boolean;
   isOpenRegisterModal: boolean;
-  isOpenSettingModal: boolean;
+  isOpenProfileModal: boolean;
 }
 
 interface Action {
@@ -16,17 +16,21 @@ interface Action {
 const useModalStore = create<State & Action>((set) => ({
   isOpenLoginModal: false,
   isOpenRegisterModal: false,
-  isOpenSettingModal: false,
-  openModal: (type: ModalType) => set((state) => {
-    if (Object.keys(state).includes(`isOpen${type}Modal`)) {
-      return { ...state, [`isOpen${type}Modal`]: true }
-    } return state;
-  }),
-  closeModal: (type: ModalType) => set((state) => {
-    if (Object.keys(state).includes(`isOpen${type}Modal`)) {
-      return { ...state, [`isOpen${type}Modal`]: false }
-    } return state;
-  })
+  isOpenProfileModal: false,
+  openModal: (type: ModalType) =>
+    set((state) => {
+      if (Object.keys(state).includes(`isOpen${type}Modal`)) {
+        return { ...state, [`isOpen${type}Modal`]: true };
+      }
+      return state;
+    }),
+  closeModal: (type: ModalType) =>
+    set((state) => {
+      if (Object.keys(state).includes(`isOpen${type}Modal`)) {
+        return { ...state, [`isOpen${type}Modal`]: false };
+      }
+      return state;
+    }),
 }));
 
 export default useModalStore;

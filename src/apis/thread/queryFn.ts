@@ -55,6 +55,8 @@ export const getThreadByThreadId = async (threadId: string) => {
   const thread = await api.get<Thread>({ url: `/posts/${threadId}` });
   const { content, nickname, mentionedList } = parseTitleOrComment(thread.title);
 
+  if (!thread) return null;
+
   return {
     ...thread,
     content,
