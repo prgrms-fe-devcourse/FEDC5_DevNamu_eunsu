@@ -8,7 +8,7 @@ import { getLocalStorage } from "@/utils/localStorage";
 
 import LoginModal from "../Modals/Login";
 import RegisterModal from "../Modals/Register";
-import SettingModal from "../Modals/Setting";
+import ProfileModal from "../Modals/Profile";
 
 import { SIDEBAR_ICONS } from "./config";
 import { ThemeConfigDropdown } from "./ThemeConfigDropdown";
@@ -45,7 +45,7 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
 
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
-  const [settingModalOpen, setSettingModalOpen] = useState(false);
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
 
   const { mutate: logout } = usePostLogout();
 
@@ -55,8 +55,8 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
     logout();
   };
 
-  const handlerOpenSettingModal = () => {
-    setSettingModalOpen(true);
+  const handlerOpenProfileModal = () => {
+    setProfileModalOpen(true);
   };
 
   const handlerOpenLoginModal = () => {
@@ -86,7 +86,7 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
           openLoginModal={setLoginModalOpen}
         />
       )}
-      {isLoggedIn && <SettingModal open={settingModalOpen} toggleOpen={setSettingModalOpen} />}
+      {isLoggedIn && <ProfileModal open={profileModalOpen} toggleOpen={setProfileModalOpen} />}
       <div className="flex w-20 flex-col items-center justify-between gap-8">
         <div className="mt-4 flex cursor-pointer select-none flex-col items-center gap-2">
           {isLoggedIn ? (
@@ -139,7 +139,7 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
 
         {isLoggedIn && (
           <div>
-            <button className={ButtonWrappingCSS} onClick={handlerOpenSettingModal}>
+            <button className={ButtonWrappingCSS} onClick={handlerOpenProfileModal}>
               <div className={cn("relative", IconWrappingCSS)}>
                 <UserRoundCog className={IconCSS} />
               </div>

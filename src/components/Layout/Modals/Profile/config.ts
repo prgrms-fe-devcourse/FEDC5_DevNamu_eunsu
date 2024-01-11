@@ -10,7 +10,7 @@ export interface UserInfo {
   nickname: string;
 }
 
-export const SETTING_FIELDS: FieldProps[] = [];
+export const PROFILE_FIELDS: FieldProps[] = [];
 
 export const makeFormFields = ({ name, email, nickname }: UserInfo) => {
   const result: FieldProps[] = [
@@ -50,10 +50,10 @@ export const makeFormFields = ({ name, email, nickname }: UserInfo) => {
       autoComplete: "new-password",
     },
   ];
-  SETTING_FIELDS.splice(0, SETTING_FIELDS.length, ...result);
+  PROFILE_FIELDS.splice(0, PROFILE_FIELDS.length, ...result);
 };
 
-export const SETTING_FIELDS_SCHEMA = z
+export const PROFILE_FIELDS_SCHEMA = z
   .object({
     name: z.string(),
     nickname: z.string().trim().min(1, {
