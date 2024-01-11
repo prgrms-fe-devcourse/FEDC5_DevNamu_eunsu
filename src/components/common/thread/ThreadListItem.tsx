@@ -22,7 +22,7 @@ interface Props {
 }
 
 const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
-  const { _id: id, content, author, createdAt, likes } = thread;
+  const { _id: id, content, author, createdAt, likes, mentionList } = thread;
 
   const { user } = useGetUserInfo();
   const { likeAndNotify } = useLikeThread(channelId);
@@ -80,7 +80,7 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
             tabIndex={0}
             className="mb-10pxr overflow-hidden truncate text-ellipsis pr-50pxr text-gray-500"
           >
-            {content}
+            <b>{mentionList}</b> {content}
           </div>
           {likes.length > 0 && (
             <LikeToggleButton
