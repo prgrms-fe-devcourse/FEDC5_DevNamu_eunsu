@@ -2,6 +2,8 @@ import { z } from "zod";
 
 import { FieldProps } from "../Base/form";
 
+import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname";
+
 export const REGISTER_FIELDS: FieldProps[] = [
   {
     name: "name",
@@ -20,7 +22,7 @@ export const REGISTER_FIELDS: FieldProps[] = [
     name: "nickname",
     type: "text",
     label: "닉네임(선택)",
-    placeholder: "미기입 시 프롱이로 설정됩니다.",
+    placeholder: `미기입 시 ${ANONYMOUS_NICKNAME}로 설정됩니다.`,
     autoComplete: "nickname",
   },
   {
