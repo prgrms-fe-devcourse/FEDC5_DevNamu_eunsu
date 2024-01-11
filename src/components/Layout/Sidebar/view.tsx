@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { LogIn, MoonIcon, SunIcon, UserRoundCog, LogOut } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -16,6 +17,7 @@ import { ButtonWrappingCSS, IconCSS, IconDescriptionCSS, IconWrappingCSS } from 
 
 import { cn } from "@/lib/utils";
 import usePostLogout from "@/apis/auth/usePostLogout";
+import { LOADING_MESSAGE } from "@/constants/toastMessage";
 
 interface Props {
   pathname: string;
@@ -47,12 +49,20 @@ export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const [profileModalOpen, setProfileModalOpen] = useState(false);
 
-  const { mutate: logout } = usePostLogout();
+  const { mutateAsync: logout } = usePostLogout();
 
   const isLoggedIn = !!getLocalStorage("token", "");
 
+  useEffect(() => {
+    if (isLoggedIn) toast.success("로그인 되었습니다 :D");
+  }, [isLoggedIn]);
+
   const handleLogout = () => {
-    logout();
+    toast.promise(logout(), {
+      loading: LOADING_MESSAGE,
+      success: "로그아웃 되었습니다 :D",
+      error: "로그아웃에 실패했습니다 :(",
+    });
   };
 
   const handlerOpenProfileModal = () => {
@@ -136,7 +146,7 @@ export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props
         </div>
 
         {isLoggedIn && (
-          <div>
+          <div className="flex flex-col items-center">
             <button className={ButtonWrappingCSS} onClick={handlerOpenProfileModal}>
               <div className={cn("relative", IconWrappingCSS)}>
                 <UserRoundCog className={IconCSS} />
