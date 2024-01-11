@@ -11,8 +11,6 @@ export const usePostComment = () => {
   return useMutation({
     mutationFn: createComment,
     onSuccess: (comment) => {
-      console.log(comment);
-
       queryClient.invalidateQueries({ queryKey: threads.threadDetail(comment.post).queryKey });
     },
     onError: () => {},
