@@ -78,7 +78,7 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
       className="relative cursor-pointer px-2.5 py-5 hover:bg-gray-100"
       tabIndex={0}
     >
-      <div className="flex items-center" onClick={onClick}>
+      <div className="flex" onClick={onClick}>
         <Avatar className="mr-3">
           <AvatarImage src="/svg/userProfile.svg" alt="프로필" />
           <AvatarFallback>{author.nickname.charAt(0)}</AvatarFallback>
