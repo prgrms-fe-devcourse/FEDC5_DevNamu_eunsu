@@ -22,7 +22,7 @@ const Sidebar = () => {
 
   if (userInfo.user !== undefined && userInfo.user !== null) {
     const hasNewNotificaiton = userInfo.user.notifications.length > 0 ? true : false;
-    console.log("hasNewNotificaiton", hasNewNotificaiton);
+
     return (
       <SidebarView
         pathname={pathname}
