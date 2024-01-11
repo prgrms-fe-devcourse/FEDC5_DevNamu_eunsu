@@ -4,7 +4,7 @@ import { parseTitleOrComment } from "@/utils/parsingJson";
 
 import { Thread, Comment } from "@/types/thread.ts";
 
-import EmptyThread from "../common/myactivate/emptyThread";
+import EmptyThread from "../common/myactivate/EmptyThread.tsx";
 
 import MyThreadItem from "./MyThreadItem";
 

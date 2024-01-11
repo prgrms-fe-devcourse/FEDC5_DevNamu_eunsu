@@ -4,10 +4,10 @@ import useGetMentioned from "@/apis/mynotification/useGetMentioned";
 const useListedNotificationAndMention = () => {
   const { myNotifications, isPending: notificationPending } = useGetNotification();
   const { myMentions, isPending: mentionPending } = useGetMentioned();
-
   const listedNotificationAndMention = [];
 
   if (myNotifications) listedNotificationAndMention.push(...myNotifications);
+
   if (myMentions) listedNotificationAndMention.push(...myMentions);
 
   listedNotificationAndMention.sort(
