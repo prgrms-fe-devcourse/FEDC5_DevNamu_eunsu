@@ -12,7 +12,7 @@ interface Props {
   onDelete: (event: MouseEvent) => void;
 }
 
-const ThreadToolbar = ({ authorId, handleClickLikeButton, className }: Props) => {
+const ThreadToolbar = ({ authorId, handleClickLikeButton, onDelete, className }: Props) => {
   const { user } = useGetUserInfo();
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
 
@@ -78,6 +78,7 @@ const ThreadToolbar = ({ authorId, handleClickLikeButton, className }: Props) =>
             aria-label="삭제"
             onMouseEnter={handleMouseEnter("delete")}
             onMouseLeave={handleMouseLeave}
+            onClick={onDelete}
           >
             <Trash2 strokeWidth={1} />
             {hoveredButton === "delete" && (
