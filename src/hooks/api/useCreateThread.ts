@@ -17,7 +17,7 @@ const useCreateThread = ({ nickname, channelId, mentionList }: Props) => {
     if (!formValues) return;
 
     const threadRequest = {
-      title: formJSONStringify({ formValues, nickname }),
+      title: formJSONStringify({ formValues, nickname, mentionList }),
       image: null,
       channelId,
     };

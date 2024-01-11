@@ -23,7 +23,7 @@ const useUploadComment = ({ nickname, postId, channelName, mentionList, postAuth
     if (!formValues) return;
 
     const commentRequest = {
-      comment: formJSONStringify({ formValues, nickname }),
+      comment: formJSONStringify({ formValues, nickname, mentionList }),
       postId,
     };
 
