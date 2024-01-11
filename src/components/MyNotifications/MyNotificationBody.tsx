@@ -17,7 +17,7 @@ const isLike = (props: Notification | Conversation): props is Notification => {
   return "like" in props && !!props.like;
 };
 
-const isMention = (props: Notification | Conversation): props is Notification => {
+const isMention = (props: Notification | Conversation): props is Conversation => {
   if (!("message" in props)) return false;
 
   try {
@@ -30,6 +30,7 @@ const isMention = (props: Notification | Conversation): props is Notification =>
 
 const MyNotificationBody = () => {
   const { listedNotificationAndMention, isPending } = useListedNotificationAndMention();
+
   if (isPending) {
     return <span>Loading...</span>;
   }
