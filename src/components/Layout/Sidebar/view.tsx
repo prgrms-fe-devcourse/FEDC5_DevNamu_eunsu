@@ -148,7 +148,7 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
         </div>
 
         {isLoggedIn && (
-          <div>
+          <div className="flex flex-col items-center">
             <button className={ButtonWrappingCSS} onClick={handlerOpenProfileModal}>
               <div className={cn("relative", IconWrappingCSS)}>
                 <UserRoundCog className={IconCSS} />
