@@ -37,7 +37,7 @@ const EditorTextArea = ({ isMention, nickname, editorProps, onClose }: Props) =>
 
   const { upload } = useEditorLogicByProps({
     editorProps,
-    nickname,
+    nickname: user?.nickname || nickname,
     mentionedList: mentionedList.length ? mentionedList : undefined,
   });
 
