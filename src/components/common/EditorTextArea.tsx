@@ -64,7 +64,7 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
     setValue("content", "");
   };
 
-  const hanleKeydown = (event: KeyboardEvent) => {
+  const handleKeydown = (event: KeyboardEvent) => {
     if (event.nativeEvent.isComposing) return;
     if (event.shiftKey && event.key === "Enter") return;
 
@@ -103,7 +103,7 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
           placeholder={user ? `내용을 작성해주세요.` : "로그인이 필요합니다."}
           className="resize-none text-base"
           {...register("content")}
-          onKeyDown={hanleKeydown}
+          onKeyDown={handleKeydown}
         />
         <div className="absolute bottom-2 right-2 flex items-center gap-2">
           <label
