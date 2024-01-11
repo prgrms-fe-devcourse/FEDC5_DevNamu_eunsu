@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import threads from "../thread/queryKey";
-
+import threads from "@/apis/thread/queryKey";
 import { createComment } from "@/apis/comment/queryFn.ts";
 
 export const usePostComment = () => {
