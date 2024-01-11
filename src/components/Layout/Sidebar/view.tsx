@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
-import { LogIn, MoonIcon, SunIcon } from "lucide-react";
+import { LogIn, MoonIcon, SunIcon, UserRoundCog, LogOut } from "lucide-react";
 import { useState } from "react";
-import { LogOut } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -107,11 +106,8 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
             ({ requireAuth }) => !requireAuth || (requireAuth && isLoggedIn),
           ).map(({ url, name, icon: Icon }) => {
             const isSelectedPage = pathname === url;
-            const IconWrap = url ? Link : "button";
-            const props = url ? { to: url } : { onClick: handlerOpenSettingModal, to: url };
-
             return (
-              <IconWrap key={url} {...props} className={ButtonWrappingCSS}>
+              <Link key={url} to={url} className={ButtonWrappingCSS}>
                 <div
                   className={cn(
                     "relative",
@@ -128,7 +124,7 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
                   )}
                 </div>
                 <span className={IconDescriptionCSS}>{name}</span>
-              </IconWrap>
+              </Link>
             );
           })}
           <ThemeConfigDropdown>
@@ -142,12 +138,20 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
         </div>
 
         {isLoggedIn && (
-          <button className={`${ButtonWrappingCSS} mb-6`} onClick={handleLogout}>
-            <div className={cn("relative", IconWrappingCSS)}>
-              <LogOut className={IconCSS} />
-            </div>
-            <span className={IconDescriptionCSS}>로그아웃</span>
-          </button>
+          <div>
+            <button className={`${ButtonWrappingCSS}`} onClick={handlerOpenSettingModal}>
+              <div className={cn("relative", IconWrappingCSS)}>
+                <UserRoundCog className={IconCSS} />
+              </div>
+              <span className={IconDescriptionCSS}>내 정보 변경</span>
+            </button>
+            <button className={`${ButtonWrappingCSS} mb-6`} onClick={handleLogout}>
+              <div className={cn("relative", IconWrappingCSS)}>
+                <LogOut className={IconCSS} />
+              </div>
+              <span className={IconDescriptionCSS}>로그아웃</span>
+            </button>
+          </div>
         )}
       </div>
     </>
