@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { SendHorizontal } from "lucide-react";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, KeyboardEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { Textarea } from "@/components/ui/textarea.tsx";
@@ -41,11 +41,13 @@ const EditorTextArea = ({ isMention, nickname, editorProps, onClose }: Props) =>
     mentionedList: mentionedList.length ? mentionedList : undefined,
   });
 
-  const { register, handleSubmit, watch, setValue } = useForm({
+  const { register, handleSubmit, watch, setValue, getValues } = useForm({
     defaultValues: { anonymous: true, content: "" },
   });
 
   const handleUpload = (formValues: FormValues) => {
+    if (!formValues.content.trim()) return;
+
     if (!user) {
       // TODO: [24/1/11] 이거 나중에 함수로 빼는게 좋을듯해요!
       toast("로그인 한 유저만 글 쓰기가 가능합니다.", {
@@ -61,6 +63,16 @@ const EditorTextArea = ({ isMention, nickname, editorProps, onClose }: Props) =>
     upload(formValues);
     setmentionedList([]);
     setValue("content", "");
+  };
+
+  const handleKeydown = (event: KeyboardEvent) => {
+    if (event.nativeEvent.isComposing) return;
+    if (event.shiftKey && event.key === "Enter") return;
+
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleSubmit(handleUpload)();
+    }
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -92,6 +104,7 @@ const EditorTextArea = ({ isMention, nickname, editorProps, onClose }: Props) =>
           placeholder={user ? `내용을 작성해주세요.` : "로그인이 필요합니다."}
           className="resize-none overflow-hidden pr-200pxr text-base"
           {...register("content")}
+          onKeyDown={handleKeydown}
         />
         <div className="absolute bottom-2 right-2 flex items-center gap-2">
           <label
@@ -136,6 +149,9 @@ const EditorTextArea = ({ isMention, nickname, editorProps, onClose }: Props) =>
           )}
         </div>
       </form>
+      <span className={cn("text-right text-sm", getValues("content") ? "visible" : "invisible")}>
+        <b>Shift + Enter</b>키를 눌러 새 행을 추가합니다
+      </span>
 
       {/*TODO: [24/1/6] 모달 창은 layout단에 위치 시키고 open 여부를 전역상태관리하며 여기서는 트리거 역할만 하기 제안하기, 승인 시 아래 제거(by 성빈님)*/}
       {!isLoggedIn && (

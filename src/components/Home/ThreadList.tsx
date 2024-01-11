@@ -20,16 +20,16 @@ const ThreadList = ({ threads }: Props) => {
   };
 
   useEffect(() => {
-    if (threadListRef.current) {
+    if (threadListRef.current && threads.length > 0) {
       threadListRef.current.scrollTop = threadListRef.current.scrollHeight;
     }
-  }, []);
+  }, [threads.length]);
 
   return (
     <div>
       <ul
         ref={threadListRef}
-        className="flex h-[calc(100vh-250px)] flex-col-reverse overflow-y-auto pt-80pxr"
+        className="flex h-[calc(100vh-250px)] flex-col overflow-y-auto pt-80pxr"
       >
         {threads.map((thread) => (
           <ThreadListItem
