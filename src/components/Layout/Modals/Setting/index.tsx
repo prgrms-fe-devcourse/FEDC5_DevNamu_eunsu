@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { toast } from "sonner";
+import { useEffect } from "react";
 
 import SimpleBaseForm from "../Base/form";
 import SimpleBaseModal from "../Base/modal";
@@ -24,6 +25,10 @@ const SettingModal = ({ open, toggleOpen }: Props) => {
   const { updateUserName, updatePassword, updateAllProfile } = usePutProfile();
 
   if (open && !isPending && user) makeFormFields(user);
+
+  useEffect(() => {
+    if (open) toast.info("닉네임과 비밀번호 설정이 각각 가능합니다.");
+  }, [open]);
 
   const handleSubmit = ({ name, nickname, password }: z.infer<typeof SETTING_FIELDS_SCHEMA>) => {
     const previousNickname = user?.nickname;
