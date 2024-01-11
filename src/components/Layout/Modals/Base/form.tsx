@@ -36,9 +36,9 @@ export interface FieldProps {
 export interface SimpleFormProps extends PropsWithChildren {
   fields: FieldProps[];
   validationSchema: // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  | z.ZodEffects<z.ZodEffects<z.ZodObject<any>>>
+  | z.ZodEffects<z.ZodEffects<z.ZodEffects<z.ZodObject<any>>>>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    | z.ZodEffects<z.ZodObject<any>>
+    | z.ZodEffects<z.ZodEffects<z.ZodObject<any>>>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     | z.ZodObject<any>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

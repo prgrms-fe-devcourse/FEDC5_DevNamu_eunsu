@@ -2,6 +2,8 @@ import { z } from "zod";
 
 import { FieldProps } from "../Base/form";
 
+import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname";
+
 export interface UserInfo {
   name: string;
   email: string;
@@ -42,6 +44,10 @@ export const SETTING_FIELDS_SCHEMA = z
     }),
     password: z.string(),
     passwordConfirm: z.string(),
+  })
+  .refine(({ nickname }) => nickname !== ANONYMOUS_NICKNAME, {
+    message: "기본 닉네임은 사용할 수 없습니다",
+    path: ["nickname"],
   })
   .refine(
     ({ password, passwordConfirm }) =>

@@ -56,6 +56,10 @@ export const REGISTER_FIELDS_SCHEMA = z
     }),
     passwordConfirm: z.string(),
   })
+  .refine(({ nickname }) => nickname !== ANONYMOUS_NICKNAME, {
+    message: "기본 닉네임은 사용할 수 없습니다",
+    path: ["nickname"],
+  })
   .refine(({ password, passwordConfirm }) => password === passwordConfirm, {
     message: "비밀번호가 일치하지 않습니다",
     path: ["passwordConfirm"],
