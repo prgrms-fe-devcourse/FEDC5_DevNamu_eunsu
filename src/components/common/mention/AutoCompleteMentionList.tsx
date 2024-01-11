@@ -8,11 +8,11 @@ export interface ListProps {
   onClick: (people: UserDBProps) => void;
 }
 
-interface mentionedListProps extends ListProps {
+interface MentionedListProps extends ListProps {
   focusIndex: number;
 }
 
-const AutoCompleteMentionList = ({ users, onClick, focusIndex }: mentionedListProps) => {
+const AutoCompleteMentionList = ({ users, onClick, focusIndex }: MentionedListProps) => {
   if (!users.length) return "";
   return (
     <ul className="absolute bottom-12 left-0 right-0 z-10 mt-2 overflow-hidden scroll-auto border bg-white p-2">

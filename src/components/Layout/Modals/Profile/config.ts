@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { FieldProps } from "../Base/form";
 
-import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname";
+import { ANONYMOUS_NICKNAME } from "@/constants/commonConstants.ts";
 
 export interface UserInfo {
   name: string;
