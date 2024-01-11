@@ -15,7 +15,7 @@ interface Props {
  */
 const CommentListItem = ({ commentInfo }: Props) => {
   const { createdAt, comment } = commentInfo;
-  const { content, nickname, mentionList } = parseTitleOrComment(comment);
+  const { content, nickname, mentionedList } = parseTitleOrComment(comment);
 
   return (
     <li className="relative cursor-pointer px-2.5 py-5 hover:bg-gray-100">
@@ -37,7 +37,7 @@ const CommentListItem = ({ commentInfo }: Props) => {
             tabIndex={0}
             className="overflow-hidden truncate text-ellipsis pr-50pxr text-gray-500"
           >
-            <b>{mentionList}</b> {content}
+            <b>{mentionedList}</b> {content}
           </div>
         </div>
       </div>

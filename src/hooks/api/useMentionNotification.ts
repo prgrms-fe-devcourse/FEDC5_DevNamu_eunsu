@@ -10,14 +10,14 @@ interface MentionNotificationProps {
 }
 
 interface Props {
-  mentionList?: UserDBProps[];
+  mentionedList?: UserDBProps[];
 }
-const useMentionNotification = ({ mentionList }: Props) => {
+const useMentionNotification = ({ mentionedList }: Props) => {
   const { mutateAsync: mentionMutate } = usePostMention();
   const { mutate: notificationMutate } = usePostNotification();
 
   const mentionNotification = ({ content, postId, channelName }: MentionNotificationProps) => {
-    mentionList?.forEach(async (mentionUser) => {
+    mentionedList?.forEach(async (mentionUser) => {
       const mentionRequest = {
         message: JSON.stringify({ channelName, postId, content, name: mentionUser.name }),
         receiver: mentionUser.userId,

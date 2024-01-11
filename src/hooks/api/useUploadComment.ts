@@ -10,20 +10,26 @@ interface Props {
   nickname: string | undefined;
   postId: string;
   channelName: string;
-  mentionList?: UserDBProps[];
+  mentionedList?: UserDBProps[];
   postAuthorId: string;
 }
 
-const useUploadComment = ({ nickname, postId, channelName, mentionList, postAuthorId }: Props) => {
+const useUploadComment = ({
+  nickname,
+  postId,
+  channelName,
+  mentionedList,
+  postAuthorId,
+}: Props) => {
   const { mutateAsync: commentMutate } = usePostComment();
   const { mutate: notificationMutate } = usePostNotification();
-  const { mentionNotification } = useMentionNotification({ mentionList });
+  const { mentionNotification } = useMentionNotification({ mentionedList });
 
   const uploadComment = async (formValues: FormValues) => {
     if (!formValues) return;
 
     const commentRequest = {
-      comment: formJSONStringify({ formValues, nickname, mentionList }),
+      comment: formJSONStringify({ formValues, nickname, mentionedList }),
       postId,
     };
 
@@ -38,7 +44,7 @@ const useUploadComment = ({ nickname, postId, channelName, mentionList, postAuth
 
     notificationMutate(notificationRequest);
 
-    if (!mentionList) return;
+    if (!mentionedList) return;
 
     mentionNotification({
       content: formValues.content,

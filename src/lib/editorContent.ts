@@ -5,15 +5,15 @@ import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 interface FormProps {
   formValues: FormValues;
   nickname: string | undefined;
-  mentionList?: UserDBProps[];
+  mentionedList?: UserDBProps[];
 }
 
-export const formJSONStringify = ({ formValues, nickname, mentionList }: FormProps) => {
+export const formJSONStringify = ({ formValues, nickname, mentionedList }: FormProps) => {
   const { anonymous, content } = formValues;
 
   return JSON.stringify({
     content,
     nickname: anonymous ? ANONYMOUS_NICKNAME : nickname,
-    mentionList: mentionList?.map(({ name }) => `@${name}`).join(", "),
+    mentionedList: mentionedList?.map(({ name }) => `@${name}`).join(", "),
   });
 };

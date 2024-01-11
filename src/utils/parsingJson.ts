@@ -9,11 +9,11 @@ export const parseFullName = (fullName: string): { name: string; nickname: strin
 
 export const parseTitleOrComment = (
   title: string,
-): { content: string; nickname: string; mentionList: string } => {
+): { content: string; nickname: string; mentionedList: string } => {
   try {
     return JSON.parse(title);
   } catch (error) {
     console.error("Error parsing title:", error);
-    return { content: "", nickname: "익명의 프롱이", mentionList: "" };
+    return { content: "", nickname: "익명의 프롱이", mentionedList: "" };
   }
 };

@@ -10,17 +10,17 @@ import {
 
 import { Input } from "@/components/ui/input.tsx";
 
-import AutoCompleteMentionList from "@/components/common/mention/AutoCompleteMentionList";
+import AutoCompletementionedList from "@/components/common/mention/AutoCompletementionedList";
 import UserBadgeList from "@/components/common/mention/UserBadgeList";
 import autoComplete from "@/lib/autoComplete.ts";
 import useUserListByDB, { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 
 interface Props {
-  mentionList: UserDBProps[];
+  mentionedList: UserDBProps[];
   onChoose: Dispatch<SetStateAction<UserDBProps[]>>;
 }
 
-const MentionInput = ({ mentionList, onChoose }: Props) => {
+const MentionInput = ({ mentionedList, onChoose }: Props) => {
   const [autoCompleteList, setAutoCompleteList] = useState<Array<UserDBProps>>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const [focusIndex, setFocusIndex] = useState(-1);
@@ -40,7 +40,7 @@ const MentionInput = ({ mentionList, onChoose }: Props) => {
   };
 
   const handleAddChoiceList = (people: UserDBProps) => {
-    const isDuplication = mentionList.find(
+    const isDuplication = mentionedList.find(
       ({ name, userId }) => name === people.name && userId === people.userId,
     );
 
@@ -52,7 +52,7 @@ const MentionInput = ({ mentionList, onChoose }: Props) => {
   };
 
   const handleDeleteChoiceList = (people: UserDBProps) => {
-    const newChoiceList = [...mentionList].filter(
+    const newChoiceList = [...mentionedList].filter(
       ({ name, userId }) => !(name === people.name && userId === people.userId),
     );
     onChoose(newChoiceList);
@@ -83,7 +83,7 @@ const MentionInput = ({ mentionList, onChoose }: Props) => {
 
   return (
     <div className="relative">
-      <UserBadgeList users={mentionList} onClick={handleDeleteChoiceList} />
+      <UserBadgeList users={mentionedList} onClick={handleDeleteChoiceList} />
 
       <Input
         type="text"
@@ -94,7 +94,7 @@ const MentionInput = ({ mentionList, onChoose }: Props) => {
         className="text-base"
       />
 
-      <AutoCompleteMentionList
+      <AutoCompletementionedList
         users={autoCompleteList}
         onClick={handleAddChoiceList}
         focusIndex={focusIndex}

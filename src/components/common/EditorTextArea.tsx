@@ -32,12 +32,12 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
   // TODO: [24/1/10] user는 EditerTextArea를 사용하는 쪽에서 보내주는게 맞다고 생각하지만 빠른 배포를 위해 여기서 불러쓸게요
   const { user, isPending } = useGetUserInfo();
 
-  const [mentionList, setMentionList] = useState<Array<UserDBProps>>([]);
+  const [mentionedList, setmentionedList] = useState<Array<UserDBProps>>([]);
 
   const { upload } = useEditorLogicByProps({
     editorProps,
     nickname,
-    mentionList: mentionList.length ? mentionList : undefined,
+    mentionedList: mentionedList.length ? mentionedList : undefined,
   });
 
   const { register, handleSubmit, watch, setValue } = useForm({
@@ -58,7 +58,7 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
       return;
     }
     upload(formValues);
-    setMentionList([]);
+    setmentionedList([]);
     setValue("content", "");
   };
 
@@ -84,7 +84,7 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
 
   return (
     <div className="flex w-full flex-col gap-1 ">
-      {isMention && <MentionInput mentionList={mentionList} onChoose={setMentionList} />}
+      {isMention && <MentionInput mentionedList={mentionedList} onChoose={setmentionedList} />}
 
       <form className="relative">
         <Textarea
