@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { AxiosError } from "axios";
+import * as Sentry from "@sentry/react";
 
 import { Button } from "@/components/ui/button";
 
@@ -37,6 +38,7 @@ const LoginModal = ({ open, toggleOpen, openRegisterModal }: Props) => {
       messages: {
         success: ({ user: { fullName } }) => {
           const { nickname } = JSON.parse(fullName);
+          Sentry.captureMessage("retention - 로그인");
           return AUTH_SUCCESS_MESSAGE.LOGIN(nickname);
         },
         error: (error: AxiosError) => {

@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import * as Sentry from "@sentry/react";
+
 import useSelectedThreadStore from "@/stores/thread";
 
 import MyNotificationTitle from "@/components/MyNotifications/MyNotificationTitle";
@@ -18,6 +21,10 @@ const MyNotificationsPage = () => {
     putMyMentionedSeen(userInfo.user._id);
     putMyNotificationSeen();
   }
+
+  useEffect(() => {
+    Sentry.captureMessage("visit - MyNotificationsPage");
+  }, []);
 
   return (
     <div className="h-screen overflow-auto p-30pxr">

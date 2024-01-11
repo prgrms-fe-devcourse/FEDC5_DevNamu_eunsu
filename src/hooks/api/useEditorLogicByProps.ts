@@ -34,6 +34,18 @@ const isCommentProps = (props: EditorProps): props is CommentProps => {
   return "channelName" in props;
 };
 
+export const getTypeOfEditor = (props: EditorProps) => {
+  if (isCreateThreadProps(props)) {
+    return "스레드 작성";
+  }
+
+  if (isPatchThreadProps(props)) {
+    return "스레드 수정";
+  }
+
+  return "댓글 작성";
+};
+
 interface Props {
   editorProps: EditorProps;
   nickname: string | undefined;

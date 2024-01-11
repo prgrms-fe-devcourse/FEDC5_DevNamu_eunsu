@@ -1,3 +1,4 @@
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
@@ -9,8 +10,18 @@ export default defineConfig({
     svgr({
       include: "**/*.svg",
     }),
+    sentryVitePlugin({
+      org: "prgms-devnamu",
+      project: "frontend",
+      telemetry: false,
+    }),
   ],
+
   resolve: {
     alias: [{ find: "@", replacement: "/src" }],
+  },
+
+  build: {
+    sourcemap: true,
   },
 });
