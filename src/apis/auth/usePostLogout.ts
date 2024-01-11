@@ -12,7 +12,7 @@ const usePostLogout = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  const { mutateAsync } = useMutation({
+  return useMutation({
     mutationFn: postLogout,
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: auth.userInfo(token).queryKey });
@@ -20,8 +20,6 @@ const usePostLogout = () => {
       if (pathname !== "/") navigate("/");
     },
   });
-
-  return { logout: mutateAsync };
 };
 
 export default usePostLogout;

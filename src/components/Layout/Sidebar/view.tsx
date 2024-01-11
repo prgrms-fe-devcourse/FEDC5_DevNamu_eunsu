@@ -49,7 +49,7 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const [profileModalOpen, setProfileModalOpen] = useState(false);
 
-  const { logout } = usePostLogout();
+  const { mutateAsync: logout } = usePostLogout();
 
   const isLoggedIn = !!getLocalStorage("token", "");
 
