@@ -22,7 +22,7 @@ export const SIDEBAR_ICONS = [
   {
     url: "",
     icon: UserRoundCog,
-    name: "프로필 설정",
+    name: "내 정보 변경",
     requireAuth: true,
   },
 ];
