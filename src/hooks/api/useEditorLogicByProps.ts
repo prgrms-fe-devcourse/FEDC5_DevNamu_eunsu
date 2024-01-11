@@ -69,11 +69,11 @@ const useEditorLogicByProps = ({ editorProps, nickname, mentionedList }: Props) 
   });
 
   useEffect(() => {
-    if (isCreateThreadProps(editorProps)) {
-      setUpload(() => uploadThread);
-    }
     if (isPatchThreadProps(editorProps)) {
       setUpload(() => changeThread);
+    }
+    if (isCreateThreadProps(editorProps)) {
+      setUpload(() => uploadThread);
     }
     if (isCommentProps(editorProps)) {
       setUpload(() => uploadComment);
