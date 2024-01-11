@@ -12,6 +12,8 @@ const useUserListByDB = () => {
 
   useEffect(() => {
     if (!db) return;
+    if (!db.title) return;
+
     setUserListByDB(JSON.parse(JSON.parse(db.title).content));
   }, [db]);
 
