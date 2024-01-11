@@ -95,7 +95,7 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
               <AvatarFallback>{shortenedNickname}</AvatarFallback>
             </Avatar>
           ) : (
-            <button className={`${ButtonWrappingCSS}`} onClick={handlerOpenLoginModal}>
+            <button className={ButtonWrappingCSS} onClick={handlerOpenLoginModal}>
               <div className={cn("relative", IconWrappingCSS)}>
                 <LogIn className={IconCSS} />
               </div>
@@ -139,7 +139,7 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
 
         {isLoggedIn && (
           <div>
-            <button className={`${ButtonWrappingCSS}`} onClick={handlerOpenSettingModal}>
+            <button className={ButtonWrappingCSS} onClick={handlerOpenSettingModal}>
               <div className={cn("relative", IconWrappingCSS)}>
                 <UserRoundCog className={IconCSS} />
               </div>
