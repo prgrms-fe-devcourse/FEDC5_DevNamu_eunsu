@@ -26,10 +26,10 @@ interface Props {
   isMention: boolean;
   nickname: string;
   editorProps: EditorProps;
-  onClose?: () => void;
+  onEditCancel?: () => void;
 }
 
-const EditorTextArea = ({ isMention, nickname, editorProps, onClose }: Props) => {
+const EditorTextArea = ({ isMention, nickname, editorProps, onEditCancel }: Props) => {
   // TODO: [24/1/10] user는 EditerTextArea를 사용하는 쪽에서 보내주는게 맞다고 생각하지만 빠른 배포를 위해 여기서 불러쓸게요
   const { user, isPending } = useGetUserInfo();
 
@@ -112,9 +112,9 @@ const EditorTextArea = ({ isMention, nickname, editorProps, onClose }: Props) =>
             <input type="checkbox" {...register("anonymous")} onClick={handleClickCheckBox} />
             <p className="text-gray-500">익명</p>
           </label>
-          {onClose ? (
+          {onEditCancel ? (
             <div className="flex items-center gap-2 text-white ">
-              <button className="rounded-sm bg-gray-400 p-3" onClick={onClose}>
+              <button className="rounded-sm bg-gray-400 p-3" onClick={onEditCancel}>
                 취소
               </button>
               <button
