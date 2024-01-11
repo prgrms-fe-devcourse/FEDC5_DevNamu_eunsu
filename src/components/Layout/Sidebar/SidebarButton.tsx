@@ -12,7 +12,7 @@ interface Props {
 }
 
 const SidebarButton = ({ Icon, label, onClick, AdditionalCSS = "" }: Props) => (
-  <button className={`${ButtonWrappingCSS} ${AdditionalCSS}`} onClick={onClick}>
+  <button className={cn(ButtonWrappingCSS, AdditionalCSS)} onClick={onClick}>
     <div className={cn("relative", IconWrappingCSS)}>
       <Icon className={IconCSS} />
     </div>
