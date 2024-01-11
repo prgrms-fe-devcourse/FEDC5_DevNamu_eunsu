@@ -1,4 +1,4 @@
-import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname.ts";
+import { ANONYMOUS_NICKNAME } from "@/constants/commonConstants.ts";
 import { FormValues } from "@/components/common/EditorTextArea.tsx";
 import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 

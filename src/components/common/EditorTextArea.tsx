@@ -10,7 +10,7 @@ import { getLocalStorage } from "@/utils/localStorage.ts";
 import { cn } from "@/lib/utils";
 import MentionInput from "@/components/common/mention/MentionInput.tsx";
 import useEditorLogicByProps, { EditorProps } from "@/hooks/api/useEditorLogicByProps.ts";
-import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname.ts";
+import { ANONYMOUS_NICKNAME } from "@/constants/commonConstants.ts";
 import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 import RegisterModal from "@/components/Layout/Modals/Register";
 import useGetUserInfo from "@/apis/auth/useGetUserInfo.ts";
