@@ -30,9 +30,11 @@ const HomePage = () => {
           <ChannelNavigationMenu />
         </div>
         <div className="w-full max-w-4xl px-4">
-          <main className="min-h-[calc(100vh-250px)] rounded-sm border border-t-0 border-solid">
-            <div className="flex min-h-[calc(100vh-250px)] items-center justify-center">
-              {!threads && <EmptyThread type="threads" className="h-full w-full" />}
+          <main className="flex min-h-[calc(100vh-250px)] flex-col rounded-sm border border-t-0 border-solid">
+            <div className="flex min-h-full flex-1 items-center justify-center">
+              {!threads && (
+                <EmptyThread type="threads" className="min-h-[calc(100vh-250px)] w-full" />
+              )}
             </div>
             {threads && <ThreadList threads={threads} />}
           </main>
