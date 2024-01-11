@@ -1,4 +1,4 @@
-import { usePutThread } from "@/apis/thread/usePutThread.ts";
+import usePutThread from "@/apis/thread/usePutThread.ts";
 import { FormValues } from "@/components/common/EditorTextArea.tsx";
 import { formJSONStringify } from "@/lib/editorContent.ts";
 import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
