@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { MoonIcon, SunIcon } from "lucide-react";
+import { LogIn, MoonIcon, SunIcon } from "lucide-react";
 import { useState } from "react";
 import { LogOut } from "lucide-react";
 
@@ -90,10 +90,19 @@ export const SidebarView = ({ pathname, user, numberOfNotifications, theme }: Pr
       {isLoggedIn && <SettingModal open={settingModalOpen} toggleOpen={setSettingModalOpen} />}
       <div className="flex w-20 flex-col items-center justify-between gap-8">
         <div className="mt-4 flex cursor-pointer select-none flex-col items-center gap-2">
-          <Avatar onClick={handlerOpenLoginModal} className="flex items-center">
-            <AvatarImage src={profileImgUrl} alt={nickname} />
-            <AvatarFallback>{shortenedNickname}</AvatarFallback>
-          </Avatar>
+          {isLoggedIn ? (
+            <Avatar className="flex items-center">
+              <AvatarImage src={profileImgUrl} alt={nickname} />
+              <AvatarFallback>{shortenedNickname}</AvatarFallback>
+            </Avatar>
+          ) : (
+            <button className={`${ButtonWrappingCSS} mb-6`} onClick={handlerOpenLoginModal}>
+              <div className={cn("relative", IconWrappingCSS)}>
+                <LogIn className={IconCSS} />
+              </div>
+              <span className={IconDescriptionCSS}>로그인</span>
+            </button>
+          )}
           {SIDEBAR_ICONS.filter(
             ({ requireAuth }) => !requireAuth || (requireAuth && isLoggedIn),
           ).map(({ url, name, icon: Icon }) => {
