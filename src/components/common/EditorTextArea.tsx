@@ -27,9 +27,16 @@ interface Props {
   nickname: string;
   editorProps: EditorProps;
   onEditCancel?: () => void;
+  onEditComplete?: () => void;
 }
 
-const EditorTextArea = ({ isMention, nickname, editorProps, onEditCancel }: Props) => {
+const EditorTextArea = ({
+  isMention,
+  nickname,
+  editorProps,
+  onEditCancel,
+  onEditComplete,
+}: Props) => {
   // TODO: [24/1/10] user는 EditerTextArea를 사용하는 쪽에서 보내주는게 맞다고 생각하지만 빠른 배포를 위해 여기서 불러쓸게요
   const { user, isPending } = useGetUserInfo();
 
@@ -63,6 +70,7 @@ const EditorTextArea = ({ isMention, nickname, editorProps, onEditCancel }: Prop
     upload(formValues);
     setMentionedList([]);
     setValue("content", "");
+    onEditComplete?.();
   };
 
   const handleKeydown = (event: KeyboardEvent) => {
