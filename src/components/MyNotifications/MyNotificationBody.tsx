@@ -30,7 +30,6 @@ const isMention = (props: Notification | Conversation): props is Conversation =>
 
 const MyNotificationBody = () => {
   const { listedNotificationAndMention, isPending } = useListedNotificationAndMention();
-
   if (isPending) {
     return <span>Loading...</span>;
   }

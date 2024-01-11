@@ -30,11 +30,12 @@ export const getThreadsByChannelId = async (channelId: string) => {
 
   return threads.map((thread) => {
     const { name } = parseFullName(thread.author.fullName);
-    const { content, nickname } = parseTitleOrComment(thread.title);
+    const { content, nickname, mentionedList } = parseTitleOrComment(thread.title);
 
     return {
       ...thread,
       content,
+      mentionedList,
       author: {
         ...thread.author,
         name,
@@ -52,15 +53,15 @@ export const deleteThreadLike = (postId: string) =>
 
 export const getThreadByThreadId = async (threadId: string) => {
   const thread = await api.get<Thread>({ url: `/posts/${threadId}` });
+  const { content, nickname, mentionedList } = parseTitleOrComment(thread.title);
 
   if (!thread) return null;
-
-  const { content, nickname } = parseTitleOrComment(thread.title);
 
   return {
     ...thread,
     content,
     nickname,
+    mentionedList,
     author: {
       ...thread.author,
       nickname,
