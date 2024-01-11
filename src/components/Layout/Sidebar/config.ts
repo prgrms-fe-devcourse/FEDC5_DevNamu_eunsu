@@ -1,4 +1,4 @@
-import { BellRingIcon, HomeIcon, PenSquareIcon, SettingsIcon } from "lucide-react";
+import { BellRingIcon, HomeIcon, PenSquareIcon, UserRoundCog } from "lucide-react";
 
 export const SIDEBAR_ICONS = [
   {
@@ -21,8 +21,8 @@ export const SIDEBAR_ICONS = [
   },
   {
     url: "",
-    icon: SettingsIcon,
-    name: "시스템",
+    icon: UserRoundCog,
+    name: "프로필 설정",
     requireAuth: true,
   },
 ];
