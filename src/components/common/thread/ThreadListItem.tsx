@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { MouseEvent, useState } from "react";
 
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
@@ -18,7 +18,7 @@ import useLikeThread from "@/hooks/api/useLikeThread";
 interface Props {
   thread: Thread;
   channelId: string;
-  onClick?: (event: React.MouseEvent<HTMLLIElement, MouseEvent>) => void;
+  onClick?: (event: MouseEvent) => void;
 }
 
 const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
@@ -26,7 +26,7 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
 
   const { user } = useGetUserInfo();
   const { likeAndNotify } = useLikeThread(channelId);
-  const { removeLike } = useDeleteThreadLike();
+  const { removeLike } = useDeleteThreadLike(channelId);
   const [hoveredListId, setHoveredListId] = useState<string | null>(null);
   const likedByUser = likes.find((like) => like.user === user?._id);
   const isAlreadyLikedByUser = !!likedByUser;
@@ -41,12 +41,15 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
     setHoveredListId(null);
   };
 
-  const handleClickLikeButton = () => {
+  const handleClickLikeButton = (event: MouseEvent) => {
+    event.stopPropagation();
+
     if (isAlreadyLikedByUser) removeLike(likedByUser._id);
     else likeAndNotify({ threadId: id, authorId: author._id });
   };
 
-  const handleDelete = () => {
+  const handleClickDeleteButton = (event: MouseEvent) => {
+    event.stopPropagation();
     deleteThread(id);
   };
 
@@ -90,7 +93,7 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
         {hoveredListId === id && (
           <ThreadToolbar
             authorId={author._id}
-            onDelete={handleDelete}
+            onDelete={handleClickDeleteButton}
             handleClickLikeButton={handleClickLikeButton}
             className="absolute -top-6 right-6 z-10"
           />

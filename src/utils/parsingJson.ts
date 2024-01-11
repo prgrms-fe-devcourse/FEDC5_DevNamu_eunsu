@@ -7,7 +7,7 @@ export const parseFullName = (fullName: string): { name: string; nickname: strin
   }
 };
 
-export const parseTitle = (title: string): { content: string; nickname: string } => {
+export const parseTitleOrComment = (title: string): { content: string; nickname: string } => {
   try {
     return JSON.parse(title);
   } catch (error) {

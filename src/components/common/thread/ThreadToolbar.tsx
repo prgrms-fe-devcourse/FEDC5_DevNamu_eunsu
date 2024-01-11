@@ -1,5 +1,5 @@
 import { MessageCircleMoreIcon, PencilLine, Siren, ThumbsUp, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { MouseEvent, useState } from "react";
 
 import ThreadTooltip from "./ThreadTooltip";
 
@@ -7,12 +7,12 @@ import useGetUserInfo from "@/apis/auth/useGetUserInfo";
 
 interface Props {
   authorId: string;
-  handleClickLikeButton: () => void;
+  handleClickLikeButton: (event: MouseEvent) => void;
   className?: string;
-  onDelete: () => void;
+  onDelete: (event: MouseEvent) => void;
 }
 
-const ThreadToolbar = ({ authorId, handleClickLikeButton, className }: Props) => {
+const ThreadToolbar = ({ authorId, handleClickLikeButton, onDelete, className }: Props) => {
   const { user } = useGetUserInfo();
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
 
@@ -78,6 +78,7 @@ const ThreadToolbar = ({ authorId, handleClickLikeButton, className }: Props) =>
             aria-label="삭제"
             onMouseEnter={handleMouseEnter("delete")}
             onMouseLeave={handleMouseLeave}
+            onClick={onDelete}
           >
             <Trash2 strokeWidth={1} />
             {hoveredButton === "delete" && (

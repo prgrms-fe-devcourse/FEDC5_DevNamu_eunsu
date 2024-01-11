@@ -11,21 +11,18 @@ import { cn } from "@/lib/utils";
 const HomePage = () => {
   const { user } = useGetUserInfo();
   const { threads, channelId, channelName } = useThreadsByChannel();
-
   const { selectedThreadId, selectThreadId } = useSelectedThreadStore((state) => state);
-  const selectedThread = threads?.find((thread) => thread._id === selectedThreadId);
 
   const handleCloseThreadDetail = () => {
     selectThreadId(undefined);
   };
 
   return (
-    <div className="relative">
+    <div className="relative overflow-hidden">
       <div
         className={cn(
-          `duration-600 mt-12 flex flex-col items-center justify-center transition-all ${
-            selectedThreadId && "xl:translate-x-[-180px]"
-          }`,
+          "duration-600 mt-12 flex flex-col items-center justify-center transition",
+          selectedThreadId ? "xl:translate-x-[-180px]" : "",
         )}
       >
         <div className="w-full max-w-4xl px-4">
@@ -33,20 +30,18 @@ const HomePage = () => {
         </div>
         <div className="w-full max-w-4xl px-4">
           <main>{threads && <ThreadList threads={threads} />}</main>
-          {user && (
-            <EditorTextArea
-              isMention={channelName !== "incompetent"}
-              nickname={user.nickname}
-              editorProps={{ channelId }}
-            />
-          )}
+          <EditorTextArea
+            isMention={channelName !== "incompetent"}
+            nickname={user?.nickname || "익명의 프롱이"}
+            editorProps={{ channelId }}
+          />
         </div>
       </div>
       <div>
-        {selectedThread && (
+        {selectedThreadId && (
           <ThreadDetailView
-            className="fixed right-0 top-0 z-10 bg-white"
-            thread={selectedThread}
+            className="fixed right-0 top-0 bg-white"
+            threadId={selectedThreadId}
             onClose={handleCloseThreadDetail}
           />
         )}

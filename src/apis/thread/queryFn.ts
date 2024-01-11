@@ -1,6 +1,6 @@
 import api from "@/apis/core";
 
-import { parseFullName, parseTitle } from "@/utils/parsingJson";
+import { parseFullName, parseTitleOrComment } from "@/utils/parsingJson";
 
 import { Like, Thread } from "@/types/thread";
 
@@ -30,7 +30,7 @@ export const getThreadsByChannelId = async (channelId: string) => {
 
   return threads.map((thread) => {
     const { name } = parseFullName(thread.author.fullName);
-    const { content, nickname } = parseTitle(thread.title);
+    const { content, nickname } = parseTitleOrComment(thread.title);
 
     return {
       ...thread,
@@ -52,7 +52,7 @@ export const deleteThreadLike = (postId: string) =>
 
 export const getThreadByThreadId = async (threadId: string) => {
   const thread = await api.get<Thread>({ url: `/posts/${threadId}` });
-  const { content, nickname } = parseTitle(thread.title);
+  const { content, nickname } = parseTitleOrComment(thread.title);
 
   return {
     ...thread,
