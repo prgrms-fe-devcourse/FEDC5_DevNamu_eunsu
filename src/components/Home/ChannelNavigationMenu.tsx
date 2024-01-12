@@ -37,6 +37,14 @@ const ChannelNavigationMenu = () => {
             무능 게시판
           </NavLink>
         </li>
+        <li>
+          <NavLink
+            to="/channels/improvements"
+            className={({ isActive }) => `${getNavLinkClass(isActive)}`}
+          >
+            개선 사항 게시판
+          </NavLink>
+        </li>
       </ul>
     </nav>
   );
