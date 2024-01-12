@@ -20,14 +20,14 @@ const Sidebar = () => {
   const { pathname } = useLocation();
   const userInfo = useGetUserInfo();
 
-  if (userInfo.user !== undefined && userInfo.user !== null) {
-    const hasNewNotificaiton = userInfo.user.notifications.length > 0 ? true : false;
+  if (userInfo.user) {
+    const hasNewNotification = userInfo.user.notifications.length > 0 ? true : false;
 
     return (
       <SidebarView
         pathname={pathname}
         user={user}
-        hasNewNotification={hasNewNotificaiton}
+        hasNewNotification={hasNewNotification}
         theme={theme}
       />
     );
