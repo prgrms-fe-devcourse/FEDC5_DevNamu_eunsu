@@ -9,8 +9,9 @@ export const REGISTER_FIELDS: FieldProps[] = [
     name: "name",
     type: "text",
     label: "이름",
-    autoFocus: true,
     autoComplete: "off",
+    autoFocus: true,
+    placeholder: "반드시 본인 이름을 입력해주세요.",
   },
   {
     name: "email",
@@ -41,9 +42,7 @@ export const REGISTER_FIELDS: FieldProps[] = [
 
 export const REGISTER_FIELDS_SCHEMA = z
   .object({
-    name: z.string().min(1, {
-      message: "이름을 입력해주세요",
-    }),
+    name: z.string(),
     email: z
       .string()
       .min(1, {

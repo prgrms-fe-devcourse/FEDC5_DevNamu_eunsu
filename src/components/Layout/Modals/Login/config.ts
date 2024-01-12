@@ -20,12 +20,7 @@ export const LOGIN_FIELDS: FieldProps[] = [
 ];
 
 export const LOGIN_FIELDS_SCHEMA = z.object({
-  email: z
-    .string()
-    .min(1, {
-      message: "이메일을 입력해주세요",
-    })
-    .email("이메일 형식이 아닙니다"),
+  email: z.string().trim(),
   password: z.string().min(8, {
     message: "비밀번호는 8글자 이상이어야 합니다",
   }),
