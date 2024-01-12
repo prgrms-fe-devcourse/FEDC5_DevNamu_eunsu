@@ -3,6 +3,8 @@ import useSelectedThreadStore from "@/stores/thread";
 import MyNotificationTitle from "@/components/MyNotifications/MyNotificationTitle";
 import MyNotificationBody from "@/components/MyNotifications/MyNotificationBody";
 import ThreadDetailView from "@/components/common/thread/ThreadDetailView";
+import { putMyMentionedSeen, putMyNotificationSeen } from "@/apis/mynotification/queryFn.ts";
+import useGetUserInfo from "@/apis/auth/useGetUserInfo";
 
 const MyNotificationsPage = () => {
   const { selectedThreadId, selectThreadId } = useSelectedThreadStore((state) => state);
@@ -10,6 +12,12 @@ const MyNotificationsPage = () => {
   const handleCloseThreadDetail = () => {
     selectThreadId(undefined);
   };
+
+  const userInfo = useGetUserInfo();
+  if (userInfo.user !== undefined && userInfo.user !== null) {
+    putMyMentionedSeen(userInfo.user._id);
+    putMyNotificationSeen();
+  }
 
   return (
     <div className="h-screen overflow-auto p-30pxr">
