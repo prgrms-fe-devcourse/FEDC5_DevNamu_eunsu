@@ -1,6 +1,7 @@
 import { RefObject, useEffect, useRef } from "react";
 
 interface Props {
+  target: RefObject<Element>;
   handleIntersect: (element: Element) => void;
   options?: IntersectionObserverInit;
 }
@@ -12,14 +13,14 @@ const defaultOptions = {
 };
 
 const useIntersectionObserver = ({
+  target,
   handleIntersect,
   options = defaultOptions,
-}: Props): RefObject<Element> => {
+}: Props): RefObject<IntersectionObserver | null> => {
   const observerRef = useRef<IntersectionObserver | null>(null);
-  const targetRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!targetRef.current) return;
+    if (!target.current) return;
 
     observerRef.current = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -29,14 +30,14 @@ const useIntersectionObserver = ({
       });
     }, options);
 
-    observerRef.current.observe(targetRef.current);
+    observerRef.current.observe(target.current);
 
     return () => {
       observerRef.current?.disconnect();
     };
-  }, [handleIntersect, options]);
+  }, [target, handleIntersect, options]);
 
-  return targetRef;
+  return observerRef;
 };
 
 export default useIntersectionObserver;
