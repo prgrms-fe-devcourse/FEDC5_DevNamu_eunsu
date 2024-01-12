@@ -12,7 +12,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 const ErrorPage = () => {
   const handleGoToHomeClick = () => {
     window.location.href = "/";
-    Sentry.captureMessage(`ui 사용 - 오류 발생 후 홈으로 이동`);
+    Sentry.captureMessage(`ui 사용 - 오류 발생 후 홈으로 이동`, "info");
   };
 
   return (

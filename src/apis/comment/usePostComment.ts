@@ -12,6 +12,5 @@ export const usePostComment = () => {
     onSuccess: (comment) => {
       queryClient.invalidateQueries({ queryKey: threads.threadDetail(comment.post).queryKey });
     },
-    onError: () => {},
   });
 };

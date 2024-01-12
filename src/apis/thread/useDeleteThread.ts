@@ -13,7 +13,6 @@ const useDeleteThread = (channelId: string) => {
         queryKey: threads.threadsByChannel(channelId).queryKey,
       });
     },
-    onError: () => {},
   });
 };
 

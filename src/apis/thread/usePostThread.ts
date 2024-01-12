@@ -15,6 +15,5 @@ export const usePostThread = (channelId: string) => {
         queryKey: threads.threadsByChannel(channelId).queryKey,
       });
     },
-    onError: () => {},
   });
 };

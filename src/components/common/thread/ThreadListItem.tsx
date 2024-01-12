@@ -67,17 +67,17 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
 
     if (isAlreadyLikedByUser) {
       removeLike(likedByUser._id);
-      Sentry.captureMessage("ui 사용 - 좋아요 취소");
+      Sentry.captureMessage("ui 사용 - 좋아요 취소", "info");
     } else {
       likeAndNotify({ threadId: id, authorId: author._id });
-      Sentry.captureMessage("ui 사용 - 좋아요 등록");
+      Sentry.captureMessage("ui 사용 - 좋아요 등록", "info");
     }
   };
 
   const handleClickDeleteButton = (event: MouseEvent) => {
     event.stopPropagation();
     deleteThread(id);
-    Sentry.captureMessage("ui 사용 - 스레드 삭제");
+    Sentry.captureMessage("ui 사용 - 스레드 삭제", "info");
   };
 
   const handleClickEditButton = (threadId: string) => (event: MouseEvent) => {

@@ -52,7 +52,7 @@ const EditorTextArea = ({ isMention, nickname, editorProps, onEditClose, isAnony
 
   const openLoginModal = () => {
     setRegisterModalOpen((prev) => !prev);
-    Sentry.captureMessage("Conversion: 익명 사용자가 로그인 요청을 수락");
+    Sentry.captureMessage("Conversion: 익명 사용자가 로그인 요청을 수락", "info");
   };
 
   const handleUpload = (formValues: FormValues) => {
@@ -67,14 +67,14 @@ const EditorTextArea = ({ isMention, nickname, editorProps, onEditClose, isAnony
         },
         duration: 2000,
       });
-      Sentry.captureMessage("Conversion: 익명 사용자가 로그인 요청을 확인");
+      Sentry.captureMessage("Conversion: 익명 사용자가 로그인 요청을 확인", "info");
       return;
     }
     upload(formValues);
     setMentionedList([]);
     setValue("content", "");
     onEditClose?.();
-    Sentry.captureMessage(`ui 사용 - 에디터 쓰기 ${getTypeOfEditor(editorProps)}`);
+    Sentry.captureMessage(`ui 사용 - 에디터 쓰기 ${getTypeOfEditor(editorProps)}`, "info");
   };
 
   const handleKeydown = (event: KeyboardEvent) => {
@@ -100,7 +100,7 @@ const EditorTextArea = ({ isMention, nickname, editorProps, onEditClose, isAnony
   const handleClickCheckBox = (e: FormEvent<HTMLInputElement>) => {
     // TODO: [24/1/11] nickname은 props로 받아오는게 맞다고 생각합니다. 하지만 여러곳에서 수정이 필요해지니 현재 에디터에 user를 가지고 있어서 임시방편으로 수정하겠습니다.
     if (!e.currentTarget.checked && user?.nickname === ANONYMOUS_NICKNAME) {
-      Sentry.captureMessage("ui 사용 - 익명 여부 토글");
+      Sentry.captureMessage("ui 사용 - 익명 여부 토글", "info");
       setValue("anonymous", true);
       setProfileModalOpen((prev) => !prev);
       return;
