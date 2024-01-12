@@ -18,6 +18,7 @@ import useLikeThread from "@/hooks/api/useLikeThread";
 import useToast from "@/hooks/common/useToast";
 import LoginModal from "@/components/Layout/Modals/Login";
 import RegisterModal from "@/components/Layout/Modals/Register";
+import { ANONYMOUS_NICKNAME } from "@/constants/commonConstants.ts";
 
 interface Props {
   thread: Thread;
@@ -148,6 +149,7 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
             nickname={nickname}
             editorProps={{ prevContent: content, postId: id, channelId }}
             onEditClose={handleCloseEditor}
+            isAnonymous={nickname === ANONYMOUS_NICKNAME}
           />
         )}
       </div>
