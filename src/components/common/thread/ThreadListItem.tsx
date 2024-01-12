@@ -7,6 +7,7 @@ import { formatDate } from "@/utils/formatDate";
 import { Thread } from "@/types/thread";
 
 import LikeToggleButton from "../LikeToggleButton";
+import EditorTextArea from "../EditorTextArea";
 
 import ThreadToolbar from "./ThreadToolbar";
 
@@ -17,6 +18,7 @@ import useLikeThread from "@/hooks/api/useLikeThread";
 import useToast from "@/hooks/common/useToast";
 import LoginModal from "@/components/Layout/Modals/Login";
 import RegisterModal from "@/components/Layout/Modals/Register";
+import { ANONYMOUS_NICKNAME } from "@/constants/commonConstants.ts";
 
 interface Props {
   thread: Thread;
@@ -25,19 +27,30 @@ interface Props {
 }
 
 const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
-  const { _id: id, content, author, createdAt, likes, mentionedList } = thread;
+  const {
+    _id: id,
+    content,
+    author,
+    createdAt,
+    updatedAt,
+    likes,
+    mentionedList,
+    channel,
+    nickname,
+  } = thread;
 
   const { user } = useGetUserInfo();
+  const { mutate: deleteThread } = useDeleteThread(channelId);
   const { likeAndNotify } = useLikeThread(channelId);
   const { removeLike } = useDeleteThreadLike(channelId);
+
+  const [editingThreadId, setEditingThreadId] = useState<string | null>(null);
   const [hoveredListId, setHoveredListId] = useState<string | null>(null);
   const likedByUser = likes.find((like) => like.user === user?._id);
   const isAlreadyLikedByUser = !!likedByUser;
   const { showToast } = useToast();
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
-
-  const { mutate: deleteThread } = useDeleteThread(channelId);
 
   const handleMouseEnter = () => {
     setHoveredListId(id);
@@ -70,6 +83,16 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
     deleteThread(id);
   };
 
+  const handleClickEditButton = (threadId: string) => (event: MouseEvent) => {
+    event.stopPropagation();
+
+    setEditingThreadId(threadId);
+  };
+
+  const handleCloseEditor = () => {
+    setEditingThreadId(null);
+  };
+
   return (
     <li
       key={id}
@@ -78,40 +101,55 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
       className="relative cursor-pointer px-2.5 py-5 hover:bg-gray-100"
       tabIndex={0}
     >
-      <div className="flex" onClick={onClick}>
-        <Avatar className="mr-3">
-          <AvatarImage src="/svg/userProfile.svg" alt="프로필" />
-          <AvatarFallback>{author.nickname.charAt(0)}</AvatarFallback>
-        </Avatar>
-        <div className="min-w-0 flex-grow">
-          <div className="flex justify-between">
-            <span tabIndex={0} className="text-lg font-semibold">
-              {author.nickname}
-            </span>
-            <span tabIndex={0} className="text-gray-400">
-              {formatDate(createdAt)}
-            </span>
+      {editingThreadId !== id && (
+        <div className="flex" onClick={onClick}>
+          <Avatar className="mr-3">
+            <AvatarImage src="/svg/userProfile.svg" alt="프로필" />
+            <AvatarFallback>{author.nickname.charAt(0)}</AvatarFallback>
+          </Avatar>
+          <div className="min-w-0 flex-grow">
+            <div className="flex justify-between">
+              <span tabIndex={0} className="text-lg font-semibold">
+                {author.nickname}
+              </span>
+              <span tabIndex={0} className="text-gray-400">
+                {formatDate(createdAt)}
+              </span>
+            </div>
+            <div tabIndex={0} className="mb-10pxr whitespace-pre-wrap pr-50pxr text-gray-500">
+              <b>{mentionedList && `${mentionedList} `}</b>
+
+              {content}
+              {createdAt !== updatedAt && <i>(편집됨)</i>}
+            </div>
+            {likes.length > 0 && (
+              <LikeToggleButton
+                clicked={isAlreadyLikedByUser}
+                onClick={handleClickLikeButton}
+                numberOfLikes={likes.length}
+              />
+            )}
+            {hoveredListId === id && (
+              <ThreadToolbar
+                authorId={author._id}
+                onDelete={handleClickDeleteButton}
+                handleClickLikeButton={handleClickLikeButton}
+                handleClickEditButton={handleClickEditButton(id)}
+                className="absolute -top-6 right-6 z-10"
+              />
+            )}
           </div>
-          <div
-            tabIndex={0}
-            className="mb-10pxr overflow-hidden truncate text-ellipsis whitespace-pre-wrap pr-50pxr text-gray-500"
-          >
-            <b>{mentionedList}</b> {content}
-          </div>
-          {likes.length > 0 && (
-            <LikeToggleButton
-              clicked={isAlreadyLikedByUser}
-              onClick={handleClickLikeButton}
-              numberOfLikes={likes.length}
-            />
-          )}
         </div>
-        {hoveredListId === id && (
-          <ThreadToolbar
-            authorId={author._id}
-            onDelete={handleClickDeleteButton}
-            handleClickLikeButton={handleClickLikeButton}
-            className="absolute -top-6 right-6"
+      )}
+
+      <div>
+        {editingThreadId === id && (
+          <EditorTextArea
+            isMention={channel.name !== "incompetent"}
+            nickname={nickname}
+            editorProps={{ prevContent: content, postId: id, channelId }}
+            onEditClose={handleCloseEditor}
+            isAnonymous={author.nickname === ANONYMOUS_NICKNAME}
           />
         )}
       </div>

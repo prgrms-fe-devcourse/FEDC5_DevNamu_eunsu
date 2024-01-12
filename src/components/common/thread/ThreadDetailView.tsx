@@ -1,12 +1,15 @@
 import { XIcon } from "lucide-react";
 import { MouseEvent } from "react";
 
+import EditorTextArea from "../EditorTextArea";
+
 import CommentListItem from "./CommentListItem";
 import ThreadListItem from "./ThreadListItem";
 
 import { cn } from "@/lib/utils";
 import useGetThread from "@/apis/thread/useGetThread";
-import EditorTextArea from "@/components/common/EditorTextArea.tsx";
+import useGetUserInfo from "@/apis/auth/useGetUserInfo.ts";
+import useDeleteComment from "@/apis/comment/useDeleteComment.ts";
 
 interface Props {
   threadId: string | undefined;
@@ -22,12 +25,18 @@ const channelMap = {
 };
 
 const ThreadDetailView = ({ threadId, onClose, className }: Props) => {
+  const { user } = useGetUserInfo();
   const { thread } = useGetThread(threadId);
+  const { deleteComment } = useDeleteComment(threadId);
 
   if (!thread) return;
 
   const handleClickDetailInner = (event: MouseEvent) => {
     event.stopPropagation();
+  };
+
+  const handleDeleteComment = (commentId: string) => {
+    deleteComment(commentId);
   };
 
   return (
@@ -56,7 +65,12 @@ const ThreadDetailView = ({ threadId, onClose, className }: Props) => {
       <div className="mb-4">
         <ol className="flex flex-col gap-4">
           {thread.comments.map((comment) => (
-            <CommentListItem key={comment._id} commentInfo={comment} />
+            <CommentListItem
+              key={comment._id}
+              commentInfo={comment}
+              onClose={handleDeleteComment}
+              isAuthor={comment.author._id === user?._id}
+            />
           ))}
         </ol>
       </div>

@@ -3,10 +3,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteComment } from "@/apis/comment/queryFn.ts";
 import threads from "@/apis/thread/queryKey.ts";
 
-const useDeleteComment = (threadId: string) => {
+const useDeleteComment = (threadId: string | undefined) => {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  const { mutate, ...props } = useMutation({
     mutationFn: deleteComment,
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -15,6 +15,8 @@ const useDeleteComment = (threadId: string) => {
     },
     onError: () => {},
   });
+
+  return { deleteComment: mutate, ...props };
 };
 
 export default useDeleteComment;

@@ -9,11 +9,18 @@ import { cn } from "@/lib/utils";
 interface Props {
   authorId: string;
   handleClickLikeButton: (event: MouseEvent) => void;
+  handleClickEditButton: (event: MouseEvent) => void;
   className?: string;
   onDelete: (event: MouseEvent) => void;
 }
 
-const ThreadToolbar = ({ authorId, handleClickLikeButton, onDelete, className }: Props) => {
+const ThreadToolbar = ({
+  authorId,
+  handleClickLikeButton,
+  handleClickEditButton,
+  onDelete,
+  className,
+}: Props) => {
   const { user } = useGetUserInfo();
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
 
@@ -68,6 +75,7 @@ const ThreadToolbar = ({ authorId, handleClickLikeButton, onDelete, className }:
             aria-label="편집"
             onMouseEnter={handleMouseEnter("edit")}
             onMouseLeave={handleMouseLeave}
+            onClick={handleClickEditButton}
           >
             <PencilLine strokeWidth={1} />
             {hoveredButton === "edit" && (

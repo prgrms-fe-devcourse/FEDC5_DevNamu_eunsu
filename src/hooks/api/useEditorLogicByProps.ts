@@ -12,6 +12,7 @@ interface CreateThreadProps {
 interface PatchThreadProps {
   prevContent: string;
   postId: string;
+  channelId: string;
 }
 
 interface CommentProps {
@@ -51,11 +52,14 @@ const useEditorLogicByProps = ({ editorProps, nickname, mentionedList }: Props) 
     channelId: isCreateThreadProps(editorProps) ? editorProps.channelId : "",
     mentionedList,
   });
+
   const { changeThread } = useChangeThread({
     nickname,
     postId: isPatchThreadProps(editorProps) ? editorProps.postId : "",
+    channelId: isPatchThreadProps(editorProps) ? editorProps.channelId : "",
     mentionedList,
   });
+
   const { uploadComment } = useUploadComment({
     nickname,
     postId: isCommentProps(editorProps) ? editorProps.postId : "",
