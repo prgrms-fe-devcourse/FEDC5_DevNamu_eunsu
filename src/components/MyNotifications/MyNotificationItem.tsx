@@ -15,7 +15,7 @@ const channelMap = {
   cheering: "응원",
   compliment: "칭찬",
   incompetent: "무능",
-  improvements: "건의",
+  improvements: "개선 사항",
 };
 
 export const MyNotificationContent = ({
