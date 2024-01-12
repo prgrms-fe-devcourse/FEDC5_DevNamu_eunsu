@@ -14,7 +14,7 @@ const MyThreadsPage = () => {
     selectThreadId(undefined);
   };
   useEffect(() => {
-    Sentry.captureMessage("visit - MyThreadsPage");
+    Sentry.captureMessage("visit - MyThreadsPage", "info");
   }, []);
 
   return (

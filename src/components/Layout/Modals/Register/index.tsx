@@ -40,7 +40,7 @@ const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
   useEffect(() => {
     if (isRegisterSuccess) {
       handleLoginClick();
-      Sentry.captureMessage("conversion - 회원 가입 완료");
+      Sentry.captureMessage("conversion - 회원 가입 완료", "info");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRegisterSuccess]);

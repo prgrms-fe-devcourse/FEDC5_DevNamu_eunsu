@@ -23,7 +23,7 @@ const MyNotificationsPage = () => {
   }
 
   useEffect(() => {
-    Sentry.captureMessage("visit - MyNotificationsPage");
+    Sentry.captureMessage("visit - MyNotificationsPage", "info");
   }, []);
 
   return (

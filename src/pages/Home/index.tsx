@@ -22,7 +22,7 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    Sentry.captureMessage(`visit - HomePage: ${channelName}`);
+    Sentry.captureMessage(`visit - HomePage: ${channelName}`, "info");
   }, [channelName]);
 
   return (
