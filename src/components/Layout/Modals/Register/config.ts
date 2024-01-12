@@ -11,7 +11,7 @@ export const REGISTER_FIELDS: FieldProps[] = [
     label: "이름",
     autoComplete: "off",
     autoFocus: true,
-    placeholder: "반드시 본인 이름을 입력해주세요.",
+    placeholder: "슬랙과 동일한 이름을 입력해주세요. (예: 홍길동, 소피아, ...)",
   },
   {
     name: "email",
