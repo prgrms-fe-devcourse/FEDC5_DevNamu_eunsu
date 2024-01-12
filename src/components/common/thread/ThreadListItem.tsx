@@ -54,7 +54,6 @@ const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) =
   const { showToast } = useToast();
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
-  console.log(comments);
 
   const handleMouseEnter = () => {
     setHoveredListId(id);
