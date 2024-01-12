@@ -28,17 +28,7 @@ interface Props {
 }
 
 const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
-  const {
-    _id: id,
-    content,
-    author,
-    createdAt,
-    updatedAt,
-    likes,
-    mentionedList,
-    channel,
-    nickname,
-  } = thread;
+  const { _id: id, content, author, createdAt, likes, mentionedList, channel, nickname } = thread;
 
   const { user } = useGetUserInfo();
   const { mutate: deleteThread } = useDeleteThread(channelId);
@@ -125,9 +115,7 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
             </div>
             <div tabIndex={0} className="mb-10pxr whitespace-pre-wrap pr-50pxr text-gray-500">
               <b>{mentionedList && `${mentionedList} `}</b>
-
               {content}
-              {createdAt !== updatedAt && <i>(편집됨)</i>}
             </div>
             {likes.length > 0 && (
               <LikeToggleButton
