@@ -12,8 +12,13 @@ import { REGISTER_FIELDS, REGISTER_FIELDS_SCHEMA } from "./config";
 
 import useUpdateUserList from "@/hooks/api/useUpdateUserList.ts";
 import useUserListByDB from "@/hooks/api/useUserListByDB.ts";
-import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname.ts";
-import { AUTH_ERROR_MESSAGE, AUTH_ERROR_RESPONSE } from "@/constants/toastMessage";
+import { ANONYMOUS_NICKNAME } from "@/constants/commonConstants.ts";
+import {
+  AUTH_ERROR_MESSAGE,
+  AUTH_ERROR_RESPONSE,
+  AUTH_SUCCESS_MESSAGE,
+} from "@/constants/toastMessage";
+import useToast from "@/hooks/common/useToast";
 
 interface Props {
   open: boolean;
@@ -24,6 +29,7 @@ interface Props {
 const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
   const { updateUserList, isRegisterSuccess } = useUpdateUserList();
   const { userListByDB } = useUserListByDB();
+  const { showPromiseToast } = useToast();
 
   const handleLoginClick = useCallback(() => {
     toggleOpen(false);
@@ -43,17 +49,19 @@ const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
       return;
     }
     const fullName = { name, nickname: nickname || ANONYMOUS_NICKNAME };
-    toast.promise(updateUserList({ email, fullName, password }), {
-      loading: "잠시만 기다려주세요...",
-      success: (name) => {
-        // TODO: handleLoginClick()이 여기서 안 먹는 이유 찾기 (2024-01-10)
-        return `환영합니다, ${name}님!`;
-      },
-      error: (error: AxiosError) => {
-        if (error?.response?.data === AUTH_ERROR_RESPONSE.ALREADY_USED_EMAIL) {
-          return AUTH_ERROR_MESSAGE.ALREADY_USED_EMAIL;
-        }
-        return AUTH_ERROR_MESSAGE.SERVER_ERROR;
+    showPromiseToast({
+      promise: updateUserList({ email, fullName, password }),
+      messages: {
+        success: (name) => {
+          // TODO: handleLoginClick()이 여기서 안 먹는 이유 찾기 (2024-01-10)
+          return AUTH_SUCCESS_MESSAGE.REGISTER(name);
+        },
+        error: (error: AxiosError) => {
+          if (error?.response?.data === AUTH_ERROR_RESPONSE.ALREADY_USED_EMAIL) {
+            return AUTH_ERROR_MESSAGE.ALREADY_USED_EMAIL;
+          }
+          return AUTH_ERROR_MESSAGE.SERVER_ERROR;
+        },
       },
     });
   };

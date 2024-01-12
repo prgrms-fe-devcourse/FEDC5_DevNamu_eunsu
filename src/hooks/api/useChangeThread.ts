@@ -7,23 +7,23 @@ import useMentionNotification from "@/hooks/api/useMentionNotification.ts";
 interface Props {
   nickname: string | undefined;
   postId: string;
-  mentionList?: UserDBProps[];
+  mentionedList?: UserDBProps[];
 }
-const useChangeThread = ({ nickname, postId, mentionList }: Props) => {
+const useChangeThread = ({ nickname, postId, mentionedList }: Props) => {
   const { mutateAsync: patchThreadMutate } = usePutThread();
-  const { mentionNotification } = useMentionNotification({ mentionList });
+  const { mentionNotification } = useMentionNotification({ mentionedList });
   const changeThread = async (formValues: FormValues) => {
     if (!formValues) return;
 
     const threadRequest = {
-      title: formJSONStringify({ formValues, nickname }),
+      title: formJSONStringify({ formValues, nickname, mentionedList }),
       image: null,
       postId,
     };
 
     const ThreadResponse = await patchThreadMutate(threadRequest);
 
-    if (!mentionList) return;
+    if (!mentionedList) return;
 
     mentionNotification({
       content: formValues.content,

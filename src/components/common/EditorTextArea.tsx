@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { SendHorizontal } from "lucide-react";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, KeyboardEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { Textarea } from "@/components/ui/textarea.tsx";
@@ -10,7 +10,7 @@ import { getLocalStorage } from "@/utils/localStorage.ts";
 import { cn } from "@/lib/utils";
 import MentionInput from "@/components/common/mention/MentionInput.tsx";
 import useEditorLogicByProps, { EditorProps } from "@/hooks/api/useEditorLogicByProps.ts";
-import { ANONYMOUS_NICKNAME } from "@/constants/anonymousNickname.ts";
+import { ANONYMOUS_NICKNAME } from "@/constants/commonConstants.ts";
 import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 import RegisterModal from "@/components/Layout/Modals/Register";
 import useGetUserInfo from "@/apis/auth/useGetUserInfo.ts";
@@ -26,25 +26,28 @@ interface Props {
   isMention: boolean;
   nickname: string;
   editorProps: EditorProps;
+  onClose?: () => void;
 }
 
-const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
+const EditorTextArea = ({ isMention, nickname, editorProps, onClose }: Props) => {
   // TODO: [24/1/10] user는 EditerTextArea를 사용하는 쪽에서 보내주는게 맞다고 생각하지만 빠른 배포를 위해 여기서 불러쓸게요
   const { user, isPending } = useGetUserInfo();
 
-  const [mentionList, setMentionList] = useState<Array<UserDBProps>>([]);
+  const [mentionedList, setMentionedList] = useState<Array<UserDBProps>>([]);
 
   const { upload } = useEditorLogicByProps({
     editorProps,
-    nickname,
-    mentionList: mentionList.length ? mentionList : undefined,
+    nickname: user?.nickname || nickname,
+    mentionedList: mentionedList.length ? mentionedList : undefined,
   });
 
-  const { register, handleSubmit, watch, setValue } = useForm({
+  const { register, handleSubmit, watch, setValue, getValues } = useForm({
     defaultValues: { anonymous: true, content: "" },
   });
 
   const handleUpload = (formValues: FormValues) => {
+    if (!formValues.content.trim()) return;
+
     if (!user) {
       // TODO: [24/1/11] 이거 나중에 함수로 빼는게 좋을듯해요!
       toast("로그인 한 유저만 글 쓰기가 가능합니다.", {
@@ -58,8 +61,18 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
       return;
     }
     upload(formValues);
-    setMentionList([]);
+    setMentionedList([]);
     setValue("content", "");
+  };
+
+  const handleKeydown = (event: KeyboardEvent) => {
+    if (event.nativeEvent.isComposing) return;
+    if (event.shiftKey && event.key === "Enter") return;
+
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleSubmit(handleUpload)();
+    }
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -73,7 +86,8 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
   const [profileModalOpen, setProfileModalOpen] = useState(false);
   const isLoggedIn = !!getLocalStorage("token", "");
   const handleClickCheckBox = (e: FormEvent<HTMLInputElement>) => {
-    if (!e.currentTarget.checked && nickname === ANONYMOUS_NICKNAME) {
+    // TODO: [24/1/11] nickname은 props로 받아오는게 맞다고 생각합니다. 하지만 여러곳에서 수정이 필요해지니 현재 에디터에 user를 가지고 있어서 임시방편으로 수정하겠습니다.
+    if (!e.currentTarget.checked && user?.nickname === ANONYMOUS_NICKNAME) {
       setValue("anonymous", true);
       setProfileModalOpen((prev) => !prev);
       return;
@@ -83,39 +97,54 @@ const EditorTextArea = ({ isMention, nickname, editorProps }: Props) => {
   if (isPending) return <div>로딩 중... </div>;
 
   return (
-    <div className="flex w-full flex-col gap-1 ">
-      {isMention && <MentionInput mentionList={mentionList} onChoose={setMentionList} />}
+    <div className="flex w-full flex-col gap-1">
+      {isMention && <MentionInput mentionedList={mentionedList} onChoose={setMentionedList} />}
 
       <form className="relative">
         <Textarea
           placeholder={user ? `내용을 작성해주세요.` : "로그인이 필요합니다."}
-          className="resize-none text-base"
+          className="resize-none overflow-hidden pr-200pxr text-base"
           {...register("content")}
+          onKeyDown={handleKeydown}
         />
         <div className="absolute bottom-2 right-2 flex items-center gap-2">
-          <label
-            className="flex cursor-pointer items-center gap-2 rounded-xl border p-3"
-            htmlFor="anonymous"
-          >
-            <input
-              type="checkbox"
-              id="anonymous"
-              {...register("anonymous")}
-              onClick={handleClickCheckBox}
-            />
+          <label className="flex cursor-pointer items-center gap-2 rounded-xl border p-3">
+            <input type="checkbox" {...register("anonymous")} onClick={handleClickCheckBox} />
             <p className="text-gray-500">익명</p>
           </label>
-          <button
-            onClick={handleSubmit(handleUpload)}
-            className={cn(
-              "flex h-12 w-12 cursor-pointer items-center justify-center rounded-xl text-black",
-              watch("content") ? "bg-green-600" : "",
-            )}
-          >
-            <SendHorizontal className="h-10 w-10 fill-amber-50 stroke-2" />
-          </button>
+          {onClose ? (
+            <div className="flex items-center gap-2 text-white ">
+              <button className="rounded-sm bg-gray-400 p-3" onClick={onClose}>
+                취소
+              </button>
+              <button
+                onClick={handleSubmit(handleUpload)}
+                className={cn(
+                  "rounded-sm p-3",
+                  watch("content")
+                    ? "border border-[#19d23d] bg-[#19d23d]"
+                    : "border border-gray-300 text-black",
+                )}
+              >
+                확인
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={handleSubmit(handleUpload)}
+              className={cn(
+                "flex h-12 w-12 cursor-pointer items-center justify-center rounded-xl text-black",
+                watch("content") ? "bg-[#19d23d]" : "",
+              )}
+            >
+              <SendHorizontal className="h-10 w-10 fill-amber-50 stroke-2" />
+            </button>
+          )}
         </div>
       </form>
+      <span className={cn("text-right text-sm", getValues("content") ? "visible" : "invisible")}>
+        <b>Shift + Enter</b>키를 눌러 새 행을 추가합니다
+      </span>
 
       {/*TODO: [24/1/6] 모달 창은 layout단에 위치 시키고 open 여부를 전역상태관리하며 여기서는 트리거 역할만 하기 제안하기, 승인 시 아래 제거(by 성빈님)*/}
       {!isLoggedIn && (

@@ -4,6 +4,7 @@ import { MouseEvent, useState } from "react";
 import ThreadTooltip from "./ThreadTooltip";
 
 import useGetUserInfo from "@/apis/auth/useGetUserInfo";
+import { cn } from "@/lib/utils";
 
 interface Props {
   authorId: string;
@@ -26,7 +27,10 @@ const ThreadToolbar = ({ authorId, handleClickLikeButton, onDelete, className }:
 
   return (
     <section
-      className={`flex items-center justify-between rounded-md border border-gray-300 bg-white ${className}`}
+      className={cn(
+        "flex items-center justify-between rounded-md border border-gray-300 bg-white",
+        className,
+      )}
     >
       <button
         className="relative p-2 hover:bg-gray-100"

@@ -14,6 +14,9 @@ import useGetUserInfo from "@/apis/auth/useGetUserInfo";
 import useDeleteThreadLike from "@/apis/thread/useDeleteThreadLike";
 import useDeleteThread from "@/apis/thread/useDeleteThread";
 import useLikeThread from "@/hooks/api/useLikeThread";
+import useToast from "@/hooks/common/useToast";
+import LoginModal from "@/components/Layout/Modals/Login";
+import RegisterModal from "@/components/Layout/Modals/Register";
 
 interface Props {
   thread: Thread;
@@ -22,7 +25,7 @@ interface Props {
 }
 
 const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
-  const { _id: id, content, author, createdAt, likes } = thread;
+  const { _id: id, content, author, createdAt, likes, mentionedList } = thread;
 
   const { user } = useGetUserInfo();
   const { likeAndNotify } = useLikeThread(channelId);
@@ -30,6 +33,9 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
   const [hoveredListId, setHoveredListId] = useState<string | null>(null);
   const likedByUser = likes.find((like) => like.user === user?._id);
   const isAlreadyLikedByUser = !!likedByUser;
+  const { showToast } = useToast();
+  const [isLoginModalOpen, setLoginModalOpen] = useState(false);
+  const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
 
   const { mutate: deleteThread } = useDeleteThread(channelId);
 
@@ -43,6 +49,17 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
 
   const handleClickLikeButton = (event: MouseEvent) => {
     event.stopPropagation();
+
+    if (!user) {
+      showToast({
+        message: "로그인 한 유저만 좋아요가 가능합니다.",
+        actionLabel: "로그인",
+        onActionClick: () => setLoginModalOpen(true),
+        duration: 2000,
+      });
+
+      return;
+    }
 
     if (isAlreadyLikedByUser) removeLike(likedByUser._id);
     else likeAndNotify({ threadId: id, authorId: author._id });
@@ -60,9 +77,8 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
       onMouseLeave={handleMouseLeave}
       className="relative cursor-pointer px-2.5 py-5 hover:bg-gray-100"
       tabIndex={0}
-      onClick={onClick}
     >
-      <div className="flex items-center">
+      <div className="flex" onClick={onClick}>
         <Avatar className="mr-3">
           <AvatarImage src="/svg/userProfile.svg" alt="프로필" />
           <AvatarFallback>{author.nickname.charAt(0)}</AvatarFallback>
@@ -78,9 +94,9 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
           </div>
           <div
             tabIndex={0}
-            className="mb-10pxr overflow-hidden truncate text-ellipsis pr-50pxr text-gray-500"
+            className="mb-10pxr overflow-hidden truncate text-ellipsis whitespace-pre-wrap pr-50pxr text-gray-500"
           >
-            {content}
+            <b>{mentionedList}</b> {content}
           </div>
           {likes.length > 0 && (
             <LikeToggleButton
@@ -95,10 +111,24 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
             authorId={author._id}
             onDelete={handleClickDeleteButton}
             handleClickLikeButton={handleClickLikeButton}
-            className="absolute -top-6 right-6 z-10"
+            className="absolute -top-6 right-6"
           />
         )}
       </div>
+      {!user && (
+        <LoginModal
+          open={isLoginModalOpen}
+          toggleOpen={setLoginModalOpen}
+          openRegisterModal={setRegisterModalOpen}
+        />
+      )}
+      {!user && (
+        <RegisterModal
+          open={isRegisterModalOpen}
+          toggleOpen={setRegisterModalOpen}
+          openLoginModal={setLoginModalOpen}
+        />
+      )}
     </li>
   );
 };

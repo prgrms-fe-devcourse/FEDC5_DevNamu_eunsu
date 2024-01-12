@@ -30,6 +30,7 @@ export interface Thread {
   imagePublicId?: string;
   title: string;
   content: string;
+  mentionedList: string;
   channel: Channel;
   author: User;
   nickname: string;

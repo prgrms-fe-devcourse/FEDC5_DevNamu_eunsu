@@ -36,32 +36,32 @@ const isCommentProps = (props: EditorProps): props is CommentProps => {
 interface Props {
   editorProps: EditorProps;
   nickname: string | undefined;
-  mentionList?: UserDBProps[];
+  mentionedList?: UserDBProps[];
 }
 
 interface UploadHooksProps {
   (params: { anonymous: boolean; content: string }): void;
 }
 
-const useEditorLogicByProps = ({ editorProps, nickname, mentionList }: Props) => {
+const useEditorLogicByProps = ({ editorProps, nickname, mentionedList }: Props) => {
   const [upload, setUpload] = useState<UploadHooksProps>(() => () => {});
 
   const { uploadThread } = useCreateThread({
     nickname,
     channelId: isCreateThreadProps(editorProps) ? editorProps.channelId : "",
-    mentionList,
+    mentionedList,
   });
   const { changeThread } = useChangeThread({
     nickname,
     postId: isPatchThreadProps(editorProps) ? editorProps.postId : "",
-    mentionList,
+    mentionedList,
   });
   const { uploadComment } = useUploadComment({
     nickname,
     postId: isCommentProps(editorProps) ? editorProps.postId : "",
     channelName: isCommentProps(editorProps) ? editorProps.channelName : "",
     postAuthorId: isCommentProps(editorProps) ? editorProps.postAuthorId : "",
-    mentionList,
+    mentionedList,
   });
 
   useEffect(() => {
@@ -74,7 +74,7 @@ const useEditorLogicByProps = ({ editorProps, nickname, mentionList }: Props) =>
     if (isCommentProps(editorProps)) {
       setUpload(() => uploadComment);
     }
-  }, [editorProps, mentionList]);
+  }, [editorProps, mentionedList]);
 
   return { upload };
 };
