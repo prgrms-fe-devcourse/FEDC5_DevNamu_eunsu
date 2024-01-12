@@ -50,7 +50,7 @@ const ThreadDetailView = ({ threadId, onClose, className }: Props) => {
       <div className="flex items-center justify-between p-2">
         <div className="flex items-center gap-2">
           <h2 className="text-2xl font-bold text-gray-700">스레드</h2>
-          <p className="text-sm text-muted-foreground">#{channelMap[thread.channel.name]}게시판</p>
+          <p className="text-sm text-muted-foreground">#{channelMap[thread.channel?.name]}게시판</p>
         </div>
         <button onClick={onClose}>
           <XIcon className="text-gray-500" />
