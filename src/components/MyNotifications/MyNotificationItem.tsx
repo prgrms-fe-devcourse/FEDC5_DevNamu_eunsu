@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 interface Props {
   createdDate: string;
   content: string;
-  channelName?: "compliment" | "cheering" | "incompetent";
+  channelName?: "compliment" | "cheering" | "incompetent" | "improvements";
   postId: string;
   isLike?: boolean;
   isMention?: boolean;
@@ -15,6 +15,7 @@ const channelMap = {
   cheering: "응원",
   compliment: "칭찬",
   incompetent: "무능",
+  improvements: "개선 사항",
 };
 
 export const MyNotificationContent = ({

@@ -7,7 +7,7 @@ import MyComment from "./MyComment";
 
 interface Props {
   type?: "post" | "comment";
-  channel?: "compliment" | "cheering" | "incompetent";
+  channel?: "compliment" | "cheering" | "incompetent" | "improvements";
   title?: string;
   comment?: string;
   createdAt: string;
@@ -19,6 +19,7 @@ const channelMap = {
   cheering: "응원",
   compliment: "칭찬",
   incompetent: "무능",
+  improvements: "개선 사항 ",
 };
 
 const MyThreadItem = ({ title, type, channel, createdAt, comment, onClick }: Props) => {
