@@ -28,7 +28,17 @@ interface Props {
 }
 
 const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
-  const { _id: id, content, author, createdAt, likes, mentionedList, channel, nickname } = thread;
+  const {
+    _id: id,
+    content,
+    author,
+    createdAt,
+    likes,
+    mentionedList,
+    channel,
+    nickname,
+    comments,
+  } = thread;
 
   const { user } = useGetUserInfo();
   const { mutate: deleteThread } = useDeleteThread(channelId);
@@ -42,6 +52,7 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
   const { showToast } = useToast();
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
+  console.log(comments);
 
   const handleMouseEnter = () => {
     setHoveredListId(id);
@@ -113,17 +124,28 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
                 {formatDate(createdAt)}
               </span>
             </div>
-            <div tabIndex={0} className="mb-10pxr whitespace-pre-wrap pr-50pxr text-gray-500">
+            <div
+              tabIndex={0}
+              className="mb-10pxr line-clamp-3 truncate whitespace-pre-wrap pr-50pxr text-gray-500"
+            >
               <b>{mentionedList && `${mentionedList} `}</b>
               {content}
             </div>
-            {likes.length > 0 && (
-              <LikeToggleButton
-                clicked={isAlreadyLikedByUser}
-                onClick={handleClickLikeButton}
-                numberOfLikes={likes.length}
-              />
-            )}
+            <div className="flex items-center justify-start gap-2">
+              {likes.length > 0 && (
+                <LikeToggleButton
+                  clicked={isAlreadyLikedByUser}
+                  onClick={handleClickLikeButton}
+                  numberOfLikes={likes.length}
+                />
+              )}
+
+              {comments.length > 0 && (
+                <div className="mb-10pxr mt-2 w-11/12 text-sm font-bold text-blue-500">
+                  {comments.length} 개의 댓글
+                </div>
+              )}
+            </div>
             {hoveredListId === id && (
               <ThreadToolbar
                 authorId={author._id}
