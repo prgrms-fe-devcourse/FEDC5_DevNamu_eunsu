@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import * as Sentry from "@sentry/react";
 import {
@@ -38,7 +38,20 @@ Sentry.init({
   tracePropagationTargets: [/^https:\/\/devnamu.kro.kr/],
 });
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    mutations: {
+      onError: (error) => {
+        Sentry.captureException(error);
+      },
+    },
+  },
+  queryCache: new QueryCache({
+    onError: (error) => {
+      Sentry.captureException(error);
+    },
+  }),
+});
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

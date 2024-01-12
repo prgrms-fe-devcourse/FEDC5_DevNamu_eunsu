@@ -18,7 +18,6 @@ const usePutThread = () => {
         queryKey: threads.threadDetail(parameters.postId).queryKey,
       });
     },
-    onError: () => {},
   });
 };
 

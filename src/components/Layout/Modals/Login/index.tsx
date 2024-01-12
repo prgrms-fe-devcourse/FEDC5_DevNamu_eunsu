@@ -38,7 +38,7 @@ const LoginModal = ({ open, toggleOpen, openRegisterModal }: Props) => {
       messages: {
         success: ({ user: { fullName } }) => {
           const { nickname } = JSON.parse(fullName);
-          Sentry.captureMessage("retention - 로그인");
+          Sentry.captureMessage("retention - 로그인", "info");
           return AUTH_SUCCESS_MESSAGE.LOGIN(nickname);
         },
         error: (error: AxiosError) => {

@@ -1,5 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { nanoid } from "nanoid";
+import * as Sentry from "@sentry/react";
+
+import { log } from "@/utils/logger";
 
 import { Like, Thread } from "@/types/thread";
 
@@ -44,11 +47,11 @@ const usePostThreadLike = (channelId: string) => {
       return { previousThread };
     },
     onError: (error, threadId, context) => {
-      console.log(threadId, context);
+      log("info", threadId, context);
 
       queryClient.setQueryData(threads.threadDetail(threadId).queryKey, context?.previousThread);
 
-      console.error(error);
+      Sentry.captureException(error);
     },
     onSuccess: (_, threadId) => {
       queryClient.invalidateQueries({
