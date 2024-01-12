@@ -9,8 +9,12 @@ interface Props {
 }
 const CommentNotification = ({ postId, comment, createdAt }: Props) => {
   const createdDate = formatDate(createdAt);
-  const { content } = JSON.parse(comment);
-
+  let content = "";
+  try {
+    content = JSON.parse(comment).content;
+  } catch (e) {
+    content = "댓글이 삭제되었습니다.";
+  }
   return <MyNotificationContent content={content} createdDate={createdDate} postId={postId} />;
 };
 export default CommentNotification;
