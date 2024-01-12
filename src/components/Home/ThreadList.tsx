@@ -1,36 +1,38 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 import useSelectedThreadStore from "@/stores/thread";
 
 import { Thread } from "@/types/thread";
 
 import ThreadListItem from "@/components/common/thread/ThreadListItem";
+import useIntersectionObserver from "@/hooks/common/useIntersectionObserver";
 
 interface Props {
   threads: Thread[];
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
+  fetchNextPage: () => void;
 }
 
-const ThreadList = ({ threads }: Props) => {
-  const threadListRef = useRef<HTMLUListElement>(null);
+const ThreadList = ({ threads, hasNextPage, isFetchingNextPage, fetchNextPage }: Props) => {
+  const threadListItemRef = useRef(null);
 
+  const handleIntersect = () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  };
   const { selectThreadId } = useSelectedThreadStore((state) => state);
 
   const handleClickThread = (threadId: string) => () => {
     selectThreadId(threadId);
   };
 
-  useEffect(() => {
-    if (threadListRef.current && threads.length > 0) {
-      threadListRef.current.scrollTop = threadListRef.current.scrollHeight;
-    }
-  }, [threads.length]);
+  useIntersectionObserver({ target: threadListItemRef, handleIntersect });
 
   return (
     <div>
-      <ul
-        ref={threadListRef}
-        className="flex h-[calc(100vh-250px)] flex-col overflow-y-auto pt-80pxr"
-      >
+      <ul className="flex h-[calc(100vh-250px)] flex-col overflow-auto pt-80pxr">
         {threads.map((thread) => (
           <ThreadListItem
             key={thread._id}
@@ -39,6 +41,7 @@ const ThreadList = ({ threads }: Props) => {
             onClick={handleClickThread(thread._id)}
           />
         ))}
+        <div ref={threadListItemRef}></div>
       </ul>
     </div>
   );
