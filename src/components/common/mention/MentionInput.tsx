@@ -7,6 +7,7 @@ import {
   Dispatch,
   SetStateAction,
 } from "react";
+import * as Sentry from "@sentry/react";
 
 import { Input } from "@/components/ui/input.tsx";
 
@@ -48,6 +49,7 @@ const MentionInput = ({ mentionedList, onChoose }: Props) => {
       onChoose((prev) => [...prev, people]);
     }
 
+    Sentry.captureMessage("ui 사용 - Mention");
     emptyUserInput();
   };
 

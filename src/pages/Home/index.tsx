@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import * as Sentry from "@sentry/react";
+
 import useSelectedThreadStore from "@/stores/thread";
 
 import useGetUserInfo from "@/apis/auth/useGetUserInfo";
@@ -17,6 +20,10 @@ const HomePage = () => {
   const handleCloseThreadDetail = () => {
     selectThreadId(undefined);
   };
+
+  useEffect(() => {
+    Sentry.captureMessage(`visit - HomePage: ${channelName}`);
+  }, [channelName]);
 
   return (
     <div className="relative h-screen overflow-hidden">

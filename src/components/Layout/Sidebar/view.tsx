@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { LogIn, MoonIcon, SunIcon, UserRoundCog, LogOut } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import * as Sentry from "@sentry/react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -68,10 +69,16 @@ export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props
         error: AUTH_ERROR_MESSAGE.LOGOUT,
       },
     });
+    Sentry.captureMessage("retention - 로그아웃");
+  };
+
+  const handleThemeChange = () => {
+    Sentry.captureMessage("ui 사용 - 테마 변경 옵션 띄우기");
   };
 
   const handlerOpenProfileModal = () => {
     setProfileModalOpen(true);
+    Sentry.captureMessage("ui 사용 - 사용자 정보 변경 모달 띄우기");
   };
 
   const handlerOpenLoginModal = () => {
@@ -136,7 +143,7 @@ export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props
             );
           })}
           <ThemeConfigDropdown>
-            <div className={ButtonWrappingCSS}>
+            <div className={ButtonWrappingCSS} onClick={handleThemeChange}>
               <div className={IconWrappingCSS}>
                 <CurrentThemeIcon className={IconCSS} />
               </div>

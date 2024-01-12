@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { SendHorizontal } from "lucide-react";
 import { FormEvent, KeyboardEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
+import * as Sentry from "@sentry/react";
 
 import { Textarea } from "@/components/ui/textarea.tsx";
 
@@ -9,8 +10,11 @@ import { getLocalStorage } from "@/utils/localStorage.ts";
 
 import { cn } from "@/lib/utils";
 import MentionInput from "@/components/common/mention/MentionInput.tsx";
-import useEditorLogicByProps, { EditorProps } from "@/hooks/api/useEditorLogicByProps.ts";
 import { ANONYMOUS_NICKNAME } from "@/constants/commonConstants.ts";
+import useEditorLogicByProps, {
+  EditorProps,
+  getTypeOfEditor,
+} from "@/hooks/api/useEditorLogicByProps.ts";
 import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 import RegisterModal from "@/components/Layout/Modals/Register";
 import useGetUserInfo from "@/apis/auth/useGetUserInfo.ts";
@@ -30,7 +34,7 @@ interface Props {
   isAnonymous?: boolean;
 }
 
-const EditorTextArea = ({ isMention, nickname, editorProps, onEditClose ,isAnonymous}: Props) => {
+const EditorTextArea = ({ isMention, nickname, editorProps, onEditClose, isAnonymous }: Props) => {
   // TODO: [24/1/10] user는 EditerTextArea를 사용하는 쪽에서 보내주는게 맞다고 생각하지만 빠른 배포를 위해 여기서 불러쓸게요
   const { user, isPending } = useGetUserInfo();
 
@@ -46,6 +50,11 @@ const EditorTextArea = ({ isMention, nickname, editorProps, onEditClose ,isAnony
     defaultValues: { anonymous: !!isAnonymous, content: "" },
   });
 
+  const openLoginModal = () => {
+    setRegisterModalOpen((prev) => !prev);
+    Sentry.captureMessage("Conversion: 익명 사용자가 로그인 요청을 수락");
+  };
+
   const handleUpload = (formValues: FormValues) => {
     if (!formValues.content.trim()) return;
 
@@ -54,17 +63,18 @@ const EditorTextArea = ({ isMention, nickname, editorProps, onEditClose ,isAnony
       toast("로그인 한 유저만 글 쓰기가 가능합니다.", {
         action: {
           label: "로그인",
-          onClick: () => setRegisterModalOpen((prev) => !prev),
+          onClick: openLoginModal,
         },
         duration: 2000,
       });
-
+      Sentry.captureMessage("Conversion: 익명 사용자가 로그인 요청을 확인");
       return;
     }
     upload(formValues);
     setMentionedList([]);
     setValue("content", "");
     onEditClose?.();
+    Sentry.captureMessage(`ui 사용 - 에디터 쓰기 ${getTypeOfEditor(editorProps)}`);
   };
 
   const handleKeydown = (event: KeyboardEvent) => {
@@ -90,6 +100,7 @@ const EditorTextArea = ({ isMention, nickname, editorProps, onEditClose ,isAnony
   const handleClickCheckBox = (e: FormEvent<HTMLInputElement>) => {
     // TODO: [24/1/11] nickname은 props로 받아오는게 맞다고 생각합니다. 하지만 여러곳에서 수정이 필요해지니 현재 에디터에 user를 가지고 있어서 임시방편으로 수정하겠습니다.
     if (!e.currentTarget.checked && user?.nickname === ANONYMOUS_NICKNAME) {
+      Sentry.captureMessage("ui 사용 - 익명 여부 토글");
       setValue("anonymous", true);
       setProfileModalOpen((prev) => !prev);
       return;

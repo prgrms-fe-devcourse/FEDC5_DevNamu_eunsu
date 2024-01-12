@@ -1,4 +1,5 @@
 import { MouseEvent, useState } from "react";
+import * as Sentry from "@sentry/react";
 
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
@@ -74,13 +75,19 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
       return;
     }
 
-    if (isAlreadyLikedByUser) removeLike(likedByUser._id);
-    else likeAndNotify({ threadId: id, authorId: author._id });
+    if (isAlreadyLikedByUser) {
+      removeLike(likedByUser._id);
+      Sentry.captureMessage("ui 사용 - 좋아요 취소");
+    } else {
+      likeAndNotify({ threadId: id, authorId: author._id });
+      Sentry.captureMessage("ui 사용 - 좋아요 등록");
+    }
   };
 
   const handleClickDeleteButton = (event: MouseEvent) => {
     event.stopPropagation();
     deleteThread(id);
+    Sentry.captureMessage("ui 사용 - 스레드 삭제");
   };
 
   const handleClickEditButton = (threadId: string) => (event: MouseEvent) => {
