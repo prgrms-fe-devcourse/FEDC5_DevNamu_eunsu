@@ -25,7 +25,7 @@ const Sidebar = () => {
     return (
       <SidebarView
         pathname={pathname}
-        user={user}
+        user={{ nickname: userInfo.user.nickname, profileImgUrl: userInfo.user.image }}
         hasNewNotification={hasNewNotification}
         theme={theme}
       />
