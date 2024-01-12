@@ -149,7 +149,7 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
             nickname={nickname}
             editorProps={{ prevContent: content, postId: id, channelId }}
             onEditClose={handleCloseEditor}
-            isAnonymous={nickname === ANONYMOUS_NICKNAME}
+            isAnonymous={author.nickname === ANONYMOUS_NICKNAME}
           />
         )}
       </div>
