@@ -19,7 +19,6 @@ const theme = "light";
 const Sidebar = () => {
   const { pathname } = useLocation();
   const userInfo = useGetUserInfo();
-
   if (userInfo.user) {
     const hasNewNotification = userInfo.user.notifications.length > 0 ? true : false;
 
