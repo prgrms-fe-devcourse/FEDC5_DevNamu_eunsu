@@ -88,11 +88,7 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
     setEditingThreadId(threadId);
   };
 
-  const handleClickCancelEditButton = () => {
-    setEditingThreadId(null);
-  };
-
-  const handleClickSaveEditButton = () => {
+  const handleCloseEditor = () => {
     setEditingThreadId(null);
   };
 
@@ -149,13 +145,8 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
           <EditorTextArea
             isMention={channel.name !== "incompetent"}
             nickname={nickname}
-            editorProps={{
-              prevContent: mentionedList ? mentionedList + content : content,
-              postId: id,
-              channelId,
-            }}
-            onEditCancel={handleClickCancelEditButton}
-            onEditComplete={handleClickSaveEditButton}
+            editorProps={{ prevContent: content, postId: id, channelId }}
+            onEditClose={handleCloseEditor}
           />
         )}
       </div>
