@@ -116,7 +116,7 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
               </span>
             </div>
             <div tabIndex={0} className="mb-10pxr whitespace-pre-wrap pr-50pxr text-gray-500">
-              <b>{mentionedList}</b>
+              <b>{`${mentionedList} `}</b>
               {content}
               {createdAt !== updatedAt && <i>(편집됨)</i>}
             </div>
