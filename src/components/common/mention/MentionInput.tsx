@@ -49,7 +49,7 @@ const MentionInput = ({ mentionedList, onChoose }: Props) => {
       onChoose((prev) => [...prev, people]);
     }
 
-    Sentry.captureMessage("ui 사용 - Mention");
+    Sentry.captureMessage("ui 사용 - Mention", "info");
     emptyUserInput();
   };
 

@@ -79,17 +79,17 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
 
     if (isAlreadyLikedByUser) {
       removeLike(likedByUser._id);
-      Sentry.captureMessage("ui 사용 - 좋아요 취소");
+      Sentry.captureMessage("ui 사용 - 좋아요 취소", "info");
     } else {
       likeAndNotify({ threadId: id, authorId: author._id });
-      Sentry.captureMessage("ui 사용 - 좋아요 등록");
+      Sentry.captureMessage("ui 사용 - 좋아요 등록", "info");
     }
   };
 
   const handleClickDeleteButton = (event: MouseEvent) => {
     event.stopPropagation();
     deleteThread(id);
-    Sentry.captureMessage("ui 사용 - 스레드 삭제");
+    Sentry.captureMessage("ui 사용 - 스레드 삭제", "info");
   };
 
   const handleClickEditButton = (threadId: string) => (event: MouseEvent) => {
@@ -130,9 +130,7 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
               className="mb-10pxr line-clamp-3 truncate whitespace-pre-wrap pr-50pxr text-gray-500"
             >
               <b>{mentionedList && `${mentionedList} `}</b>
-
               {content}
-              {createdAt !== updatedAt && <i>(편집됨)</i>}
             </div>
             <div className="flex items-center justify-start gap-2">
               {likes.length > 0 && (

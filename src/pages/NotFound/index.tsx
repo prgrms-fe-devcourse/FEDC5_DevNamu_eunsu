@@ -3,7 +3,7 @@ import * as Sentry from "@sentry/react";
 
 const NotFoundPage = () => {
   useEffect(() => {
-    Sentry.captureMessage("visit - NotFoundPage");
+    Sentry.captureMessage("visit - NotFoundPage", "info");
   }, []);
 
   return <div></div>;

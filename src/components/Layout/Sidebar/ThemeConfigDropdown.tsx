@@ -18,11 +18,11 @@ import { IconCSS, IconDescriptionCSS } from "./styles";
  */
 export const ThemeConfigDropdown = ({ children }: PropsWithChildren) => {
   const handleDarkModeClick = () => {
-    Sentry.captureMessage("ui 사용 - 테마 변경 옵션 띄우기 (Dark)");
+    Sentry.captureMessage("ui 사용 - 테마 변경 옵션 띄우기 (Dark)", "info");
   };
 
   const handleLightModeClick = () => {
-    Sentry.captureMessage("ui 사용 - 테마 변경 옵션 띄우기 (Light)");
+    Sentry.captureMessage("ui 사용 - 테마 변경 옵션 띄우기 (Light)", "info");
   };
 
   return (

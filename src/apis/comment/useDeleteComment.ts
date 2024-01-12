@@ -13,7 +13,6 @@ const useDeleteComment = (threadId: string | undefined) => {
         queryKey: threads.threadDetail(threadId).queryKey,
       });
     },
-    onError: () => {},
   });
 
   return { deleteComment: mutate, ...props };
