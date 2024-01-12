@@ -33,7 +33,6 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
     content,
     author,
     createdAt,
-    updatedAt,
     likes,
     mentionedList,
     channel,
