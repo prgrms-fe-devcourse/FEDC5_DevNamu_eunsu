@@ -26,7 +26,7 @@ const CommentListItem = ({ commentInfo, onClose, isAuthor }: Props) => {
   };
 
   return (
-    <li className="relative flex cursor-pointer flex-col gap-1  px-2.5 py-5 hover:bg-gray-100">
+    <li className="relative flex cursor-pointer flex-col gap-1 px-2.5 py-5 hover:bg-gray-100">
       {isAuthor && (
         <button onClick={handleClick} className="flex justify-end ">
           <XIcon className="rounded-sm text-gray-500 hover:bg-gray-600" />
