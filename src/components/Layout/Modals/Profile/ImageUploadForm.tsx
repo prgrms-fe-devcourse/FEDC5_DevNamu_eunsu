@@ -5,9 +5,13 @@ import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
 
-const ImageUploadForm = () => {
+interface Props {
+  profileImage: string | undefined;
+}
+
+const ImageUploadForm = ({ profileImage }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [previewImage, setPreviewImage] = useState("");
+  const [previewImage, setPreviewImage] = useState(profileImage);
 
   const handleClickUpload = () => {
     if (!inputRef.current) return;

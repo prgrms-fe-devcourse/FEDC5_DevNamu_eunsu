@@ -89,7 +89,7 @@ const ProfileModal = ({ open, toggleOpen }: Props) => {
         submitText="저장"
         cancelText="취소"
       >
-        <ImageUploadForm />
+        <ImageUploadForm profileImage={user?.image} />
       </SimpleBaseForm>
     </SimpleBaseModal>
   );
