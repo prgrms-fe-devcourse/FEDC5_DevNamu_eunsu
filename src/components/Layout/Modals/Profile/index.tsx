@@ -7,6 +7,7 @@ import SimpleBaseForm from "../Base/form";
 import SimpleBaseModal from "../Base/modal";
 
 import { makeFormFields, PROFILE_FIELDS, PROFILE_FIELDS_SCHEMA } from "./config";
+import ImageUploadForm from "./ImageUploadForm";
 
 import useGetUserInfo from "@/apis/auth/useGetUserInfo";
 import usePutProfile from "@/apis/auth/usePutProfile";
@@ -26,7 +27,7 @@ const ProfileModal = ({ open, toggleOpen }: Props) => {
   if (open && !isPending && user) makeFormFields(user);
 
   useEffect(() => {
-    if (open) toast.info("닉네임과 비밀번호 설정이 각각 가능합니다.");
+    if (open) toast.info("프로필 이미지와 닉네임, 비밀번호 설정이 각각 가능합니다.");
   }, [open]);
 
   const handleSubmit = ({ name, nickname, password }: z.infer<typeof PROFILE_FIELDS_SCHEMA>) => {
@@ -87,7 +88,9 @@ const ProfileModal = ({ open, toggleOpen }: Props) => {
         onSubmit={handleSubmit}
         submitText="저장"
         cancelText="취소"
-      />
+      >
+        <ImageUploadForm />
+      </SimpleBaseForm>
     </SimpleBaseModal>
   );
 };
