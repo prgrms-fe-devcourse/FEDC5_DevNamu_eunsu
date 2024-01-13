@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { toast } from "sonner";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import * as Sentry from "@sentry/react";
 
 import SimpleBaseForm from "../Base/form";
@@ -23,6 +23,7 @@ const ProfileModal = ({ open, toggleOpen }: Props) => {
   const { user, isPending } = useGetUserInfo();
   const { updateUserName, updatePassword, updateAllProfile } = usePutProfile();
   const { showPromiseToast } = useToast();
+  const [isClickedUploadImage, setIsClickedUploadImage] = useState(false);
 
   if (open && !isPending && user) makeFormFields(user);
 
@@ -71,7 +72,10 @@ const ProfileModal = ({ open, toggleOpen }: Props) => {
           error: AUTH_ERROR_MESSAGE.UPDATE_ALL_PROFILE,
         },
       });
-    } else toast.warning(AUTH_ERROR_MESSAGE.NO_CHANGE);
+    } else {
+      if (!isClickedUploadImage) toast.warning(AUTH_ERROR_MESSAGE.NO_CHANGE);
+      else setIsClickedUploadImage(false);
+    }
   };
 
   return (
@@ -89,7 +93,7 @@ const ProfileModal = ({ open, toggleOpen }: Props) => {
         submitText="저장"
         cancelText="취소"
       >
-        <ImageUploadForm profileImage={user?.image} />
+        <ImageUploadForm profileImage={user?.image} setIsClicked={setIsClickedUploadImage} />
       </SimpleBaseForm>
     </SimpleBaseModal>
   );

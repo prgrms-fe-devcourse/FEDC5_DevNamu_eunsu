@@ -10,9 +10,10 @@ import { AUTH_ERROR_MESSAGE, AUTH_SUCCESS_MESSAGE } from "@/constants/toastMessa
 
 interface Props {
   profileImage: string | undefined;
+  setIsClicked: (isClicked: boolean) => void;
 }
 
-const ImageUploadForm = ({ profileImage }: Props) => {
+const ImageUploadForm = ({ profileImage, setIsClicked }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [previewImage, setPreviewImage] = useState(profileImage);
   const [isDragActive, setIsDragActive] = useState(false);
@@ -22,6 +23,7 @@ const ImageUploadForm = ({ profileImage }: Props) => {
   const handleClickUpload = () => {
     if (!inputRef.current) return;
     inputRef.current.click();
+    setIsClicked(true);
   };
 
   const handleChangeImage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,6 +33,7 @@ const ImageUploadForm = ({ profileImage }: Props) => {
 
   const handleRemoveImage = () => {
     setPreviewImage("");
+    setIsClicked(true);
   };
 
   const handleDragEnter = () => {
