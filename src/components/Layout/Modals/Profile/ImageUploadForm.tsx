@@ -26,9 +26,6 @@ const ImageUploadForm = ({ profileImage }: Props) => {
   const handleUploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const image = event.target.files?.[0];
     if (image) {
-      const formData = new FormData();
-      formData.append("isCover", JSON.stringify(false));
-      formData.append("profileImage", image);
       showPromiseToast({
         promise: uploadProfileImage(formData),
         messages: {
