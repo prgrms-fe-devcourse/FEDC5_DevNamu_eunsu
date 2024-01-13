@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 
+import { cn } from "@/lib/utils";
+
 const ImageUploadForm = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [previewImage, setPreviewImage] = useState("");
@@ -18,6 +20,10 @@ const ImageUploadForm = () => {
       const imagePreviewUrl = URL.createObjectURL(image);
       setPreviewImage(imagePreviewUrl);
     }
+  };
+
+  const handleRemoveImage = () => {
+    setPreviewImage("");
   };
 
   useEffect(() => {
@@ -46,7 +52,7 @@ const ImageUploadForm = () => {
         <Image className="mr-2" />
         사진 업로드
       </Button>
-      <Button variant="outline">
+      <Button variant="outline" onClick={handleRemoveImage}>
         <ImageOff className="mr-2" />
         사진 제거
       </Button>
