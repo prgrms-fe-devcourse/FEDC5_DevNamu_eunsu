@@ -24,21 +24,9 @@ const ImageUploadForm = ({ profileImage }: Props) => {
     inputRef.current.click();
   };
 
-  const handleUploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const image = event.target.files?.[0];
-    if (image) {
-      showPromiseToast({
-        promise: uploadProfileImage(formData),
-        messages: {
-          success: () => {
-            const imagePreviewUrl = URL.createObjectURL(image);
-            setPreviewImage(imagePreviewUrl);
-            return AUTH_SUCCESS_MESSAGE.PROFILE_IMAGE_UPLOAD;
-          },
-          error: AUTH_ERROR_MESSAGE.PROFILE_IMAGE_UPLOAD,
-        },
-      });
-    }
+    if (image) uploadImage(image);
   };
 
   const handleRemoveImage = () => {
@@ -65,6 +53,20 @@ const ImageUploadForm = ({ profileImage }: Props) => {
     if (image) uploadImage(image);
   };
 
+  const uploadImage = (image: File) => {
+    showPromiseToast({
+      promise: uploadProfileImage(image),
+      messages: {
+        success: () => {
+          const imagePreviewUrl = URL.createObjectURL(image);
+          setPreviewImage(imagePreviewUrl);
+          return AUTH_SUCCESS_MESSAGE.PROFILE_IMAGE_UPLOAD;
+        },
+        error: AUTH_ERROR_MESSAGE.PROFILE_IMAGE_UPLOAD,
+      },
+    });
+  };
+
   useEffect(() => {
     return () => {
       if (previewImage) URL.revokeObjectURL(previewImage);
@@ -74,7 +76,7 @@ const ImageUploadForm = ({ profileImage }: Props) => {
   return (
     <div className="flex flex-col items-center">
       <input
-        onChange={handleUploadImage}
+        onChange={handleChangeImage}
         ref={inputRef}
         type="file"
         accept="image/*"
