@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
 import usePutProfile from "@/apis/auth/usePutProfile";
+import useToast from "@/hooks/common/useToast";
+import { AUTH_ERROR_MESSAGE, AUTH_SUCCESS_MESSAGE } from "@/constants/toastMessage";
 
 interface Props {
   profileImage: string | undefined;
@@ -14,6 +16,7 @@ const ImageUploadForm = ({ profileImage }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [previewImage, setPreviewImage] = useState(profileImage);
   const { uploadProfileImage } = usePutProfile();
+  const { showPromiseToast } = useToast();
 
   const handleClickUpload = () => {
     if (!inputRef.current) return;
@@ -23,13 +26,20 @@ const ImageUploadForm = ({ profileImage }: Props) => {
   const handleUploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const image = event.target.files?.[0];
     if (image) {
-      const imagePreviewUrl = URL.createObjectURL(image);
-      setPreviewImage(imagePreviewUrl);
-
       const formData = new FormData();
       formData.append("isCover", JSON.stringify(false));
       formData.append("profileImage", image);
-      uploadProfileImage(formData);
+      showPromiseToast({
+        promise: uploadProfileImage(formData),
+        messages: {
+          success: () => {
+            const imagePreviewUrl = URL.createObjectURL(image);
+            setPreviewImage(imagePreviewUrl);
+            return AUTH_SUCCESS_MESSAGE.PROFILE_IMAGE_UPLOAD;
+          },
+          error: AUTH_ERROR_MESSAGE.PROFILE_IMAGE_UPLOAD,
+        },
+      });
     }
   };
 

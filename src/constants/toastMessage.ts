@@ -11,6 +11,7 @@ export const AUTH_ERROR_MESSAGE = {
   UPDATE_ALL_PROFILE: "닉네임과 비밀번호 설정에 실패하였습니다.",
   NO_CHANGE: "변경된 사항이 없습니다.",
   LOGOUT: "로그아웃에 실패했습니다 :(",
+  PROFILE_IMAGE_UPLOAD: "프로필 이미지 업로드에 실패했습니다.",
 };
 
 export const AUTH_SUCCESS_MESSAGE = {
@@ -18,6 +19,7 @@ export const AUTH_SUCCESS_MESSAGE = {
   UPDATE_PASSWORD: "비밀번호가 수정되었습니다.",
   UPDATE_ALL_PROFILE: "닉네임과 비밀번호가 수정되었습니다.",
   LOGOUT: "로그아웃 되었습니다 :D",
+  PROFILE_IMAGE_UPLOAD: "프로필 이미지가 업로드 되었습니다!",
   LOGIN(nickname: string) {
     return `어서오세요, ${nickname}님!`;
   },
