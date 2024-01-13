@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { SendHorizontal } from "lucide-react";
-import { FormEvent, KeyboardEvent, useEffect, useState } from "react";
+import { FormEvent, KeyboardEvent, useState } from "react";
 import { toast } from "sonner";
 import * as Sentry from "@sentry/react";
 
@@ -55,7 +55,7 @@ const EditorTextArea = ({
   const { register, handleSubmit, watch, setValue, getValues } = useForm({
     defaultValues: {
       anonymous: authorNickname ? authorNickname === ANONYMOUS_NICKNAME : true,
-      content: "",
+      content: "prevContent" in editorProps ? editorProps.prevContent : "",
     },
   });
 
@@ -95,11 +95,6 @@ const EditorTextArea = ({
       handleSubmit(handleUpload)();
     }
   };
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    if ("prevContent" in editorProps) setValue("content", editorProps.prevContent);
-  }, []);
 
   // TODO: [24/1/6] 모달 창은 layout단에 위치 시키고 open 여부를 전역상태관리하며 여기서는 트리거 역할만 하기 제안하기, 승인 시 아래 제거(by 성빈님)
   const [loginModalOpen, setLoginModalOpen] = useState(false);
