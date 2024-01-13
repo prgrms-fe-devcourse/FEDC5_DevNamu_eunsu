@@ -19,14 +19,16 @@ import useLikeThread from "@/hooks/api/useLikeThread";
 import useToast from "@/hooks/common/useToast";
 import LoginModal from "@/components/Layout/Modals/Login";
 import RegisterModal from "@/components/Layout/Modals/Register";
+import { cn } from "@/lib/utils";
 
 interface Props {
   thread: Thread;
   channelId: string;
+  isThreadDetail?: boolean;
   onClick?: (event: MouseEvent) => void;
 }
 
-const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
+const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) => {
   const {
     _id: id,
     content,
@@ -51,6 +53,7 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
   const { showToast } = useToast();
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
+  console.log(comments);
 
   const handleMouseEnter = () => {
     setHoveredListId(id);
@@ -124,7 +127,9 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
             </div>
             <div
               tabIndex={0}
-              className="mb-10pxr line-clamp-3 truncate whitespace-pre-wrap pr-50pxr text-gray-500"
+              className={cn("mb-10pxr whitespace-pre-wrap pr-50pxr text-gray-500", {
+                "line-clamp-3 truncate": !isThreadDetail,
+              })}
             >
               <b>{mentionedList && `${mentionedList} `}</b>
               {content}
