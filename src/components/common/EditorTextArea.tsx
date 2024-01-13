@@ -116,27 +116,27 @@ const EditorTextArea = ({ isMention, nickname, editorProps, onEditClose, isAnony
       <form className="relative">
         <Textarea
           placeholder={user ? `내용을 작성해주세요.` : "로그인이 필요합니다."}
-          className="resize-none overflow-hidden pr-200pxr text-base"
+          className="text-content-5 resize-none overflow-hidden pr-200pxr text-base"
           {...register("content")}
           onKeyDown={handleKeydown}
         />
         <div className="absolute bottom-2 right-2 flex items-center gap-2">
-          <label className="flex cursor-pointer items-center gap-2 rounded-xl border p-3">
+          <label className="border-layer-5 hover:bg-layer-2 flex cursor-pointer items-center gap-2 rounded-xl border p-3">
             <input type="checkbox" {...register("anonymous")} onClick={handleClickCheckBox} />
-            <p className="text-gray-500">익명</p>
+            <p className="text-content-4">익명</p>
           </label>
           {onEditClose ? (
-            <div className="flex items-center gap-2 text-white ">
-              <button className="rounded-sm bg-gray-400 p-3" onClick={onEditClose}>
+            <div className="text-content-4 flex items-center gap-2">
+              <button className="bg-layer-3 hover:bg-layer-4 rounded-sm p-3" onClick={onEditClose}>
                 취소
               </button>
               <button
                 onClick={handleSubmit(handleUpload)}
                 className={cn(
-                  "rounded-sm p-3",
+                  "text-content-5 border-layer-2 rounded-sm border p-3",
                   watch("content")
-                    ? "border border-[#19d23d] bg-[#19d23d]"
-                    : "border border-gray-300 text-black",
+                    ? "border-blue-100 bg-blue-100 dark:text-blue-600"
+                    : "cursor-not-allowed",
                 )}
               >
                 확인
@@ -146,16 +146,26 @@ const EditorTextArea = ({ isMention, nickname, editorProps, onEditClose, isAnony
             <button
               onClick={handleSubmit(handleUpload)}
               className={cn(
-                "flex h-12 w-12 cursor-pointer items-center justify-center rounded-xl text-black",
-                watch("content") ? "bg-[#19d23d]" : "",
+                "text-content-1 bg-layer-4 relative h-12 w-12 cursor-pointer rounded-xl",
+                watch("content") && "bg-blue-200 text-blue-600",
               )}
             >
-              <SendHorizontal className="h-10 w-10 fill-amber-50 stroke-2" />
+              <SendHorizontal
+                className={cn(
+                  "absolute left-4pxr top-1 h-10 w-10 stroke-2",
+                  watch("content") && "fill-blue-300",
+                )}
+              />
             </button>
           )}
         </div>
       </form>
-      <span className={cn("text-right text-sm", getValues("content") ? "visible" : "invisible")}>
+      <span
+        className={cn(
+          "text-content-1 text-right text-sm",
+          getValues("content") ? "visible" : "invisible",
+        )}
+      >
         <b>Shift + Enter</b>키를 눌러 새 행을 추가합니다
       </span>
 

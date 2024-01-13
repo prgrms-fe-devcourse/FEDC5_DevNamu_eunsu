@@ -9,7 +9,11 @@ const UserBadgeList = ({ users, onClick }: ListProps) => {
     <div className="mb-2 flex flex-wrap gap-2">
       {users.map(({ name, userId }) => {
         return (
-          <Badge key={userId} onClick={() => onClick({ name, userId })} className="cursor-pointer">
+          <Badge
+            key={userId}
+            onClick={() => onClick({ name, userId })}
+            className="bg-content-5 cursor-pointer"
+          >
             {name}
           </Badge>
         );

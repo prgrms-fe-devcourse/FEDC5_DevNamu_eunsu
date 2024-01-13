@@ -107,7 +107,7 @@ const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) =
       key={id}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="relative cursor-pointer px-2.5 py-5 hover:bg-gray-100"
+      className="hover:bg-layer-3 relative cursor-pointer px-2.5 py-5"
       tabIndex={0}
     >
       {editingThreadId !== id && (
@@ -118,21 +118,23 @@ const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) =
           </Avatar>
           <div className="min-w-0 flex-grow">
             <div className="flex justify-between">
-              <span tabIndex={0} className="text-lg font-semibold">
+              <span tabIndex={0} className="text-content-5 text-lg font-semibold">
                 {author.nickname}
               </span>
-              <span tabIndex={0} className="text-gray-400">
+              <span tabIndex={0} className="text-content-2">
                 {formatDate(createdAt)}
               </span>
             </div>
             <div
               tabIndex={0}
-              className={cn("mb-10pxr whitespace-pre-wrap pr-50pxr text-gray-500", {
+              className={cn("text-content-5 mb-10pxr whitespace-pre-wrap pr-50pxr", {
                 "line-clamp-3 truncate": !isThreadDetail,
               })}
             >
-              <b>{mentionedList && `${mentionedList} `}</b>
-              {content}
+              <span className="text-content-6 font-bold">
+                {mentionedList && `${mentionedList} `}
+              </span>
+              <span className="text-content-5">{content}</span>
             </div>
             <div className="flex items-center justify-start gap-2">
               {likes.length > 0 && (

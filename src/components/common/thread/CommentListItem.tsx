@@ -26,29 +26,31 @@ const CommentListItem = ({ commentInfo, onClose, isAuthor }: Props) => {
   };
 
   return (
-    <li className="relative flex cursor-pointer flex-col gap-1 px-2.5 py-5 hover:bg-gray-100">
+    <li className="relative flex cursor-pointer flex-col gap-1 px-2.5 py-5 hover:bg-muted">
       {isAuthor && (
         <button onClick={handleClick} className="flex justify-end ">
-          <XIcon className="rounded-sm text-gray-500 hover:bg-gray-600" />
+          <XIcon className="rounded-sm text-muted-foreground hover:bg-gray-600" />
         </button>
       )}
       <div className="flex items-center">
         <Avatar className="mr-3">
           <AvatarImage src="/svg/userProfile.svg" alt="프로필" />
-          <AvatarFallback>{nickname?.charAt(0)}</AvatarFallback>
+          <AvatarFallback className="text-content-1 bg-layer-5">
+            {nickname?.charAt(0)}
+          </AvatarFallback>
         </Avatar>
         <div className="min-w-0 flex-grow">
           <div className="flex justify-between">
             <span tabIndex={0} className="text-lg font-semibold">
               {nickname || "익명의 프롱이"}
             </span>
-            <span tabIndex={0} className="text-gray-400">
+            <span tabIndex={0} className="text-content-2">
               {formatDate(createdAt)}
             </span>
           </div>
           <div
             tabIndex={0}
-            className="overflow-hidden truncate text-ellipsis pr-50pxr text-gray-500"
+            className="overflow-hidden truncate text-ellipsis pr-50pxr text-muted-foreground"
           >
             <b>{mentionedList}</b> {content}
           </div>

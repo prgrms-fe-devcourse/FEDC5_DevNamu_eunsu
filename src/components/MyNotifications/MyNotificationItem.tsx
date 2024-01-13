@@ -1,6 +1,6 @@
 import useThreadStore from "@/stores/thread";
 
-import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 
 interface Props {
   createdDate: string;
@@ -39,13 +39,15 @@ export const MyNotificationContent = ({
   };
 
   return (
-    <li className=" cursor-pointer hover:bg-gray-100" onClick={handleClick(postId)}>
+    <li
+      className="border-b-layer-4 hover:bg-layer-3 cursor-pointer border-b-[1px] pb-3"
+      onClick={handleClick(postId)}
+    >
       <div className="flex items-center justify-between gap-6 pt-3">
-        <p className="pb-1 text-sm text-muted-foreground">{title}</p>
-        <p className="text-xs font-extralight">{createdDate}</p>
+        <p className="text-content-1 pb-1 text-sm">{title}</p>
+        <p className="text-content-2 text-sm font-extralight">{createdDate}</p>
       </div>
-      <div className={isMention ? "font-bold" : "mb-1"}>{content}</div>
-      <Separator className="mt-3" />
+      <div className={cn("text-content-5", isMention ? "font-bold" : "mb-1")}>{content}</div>
     </li>
   );
 };
