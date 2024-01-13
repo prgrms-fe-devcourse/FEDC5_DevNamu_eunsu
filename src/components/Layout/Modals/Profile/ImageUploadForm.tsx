@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
+import usePutProfile from "@/apis/auth/usePutProfile";
 
 interface Props {
   profileImage: string | undefined;
@@ -12,6 +13,7 @@ interface Props {
 const ImageUploadForm = ({ profileImage }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [previewImage, setPreviewImage] = useState(profileImage);
+  const { uploadProfileImage } = usePutProfile();
 
   const handleClickUpload = () => {
     if (!inputRef.current) return;
@@ -23,6 +25,11 @@ const ImageUploadForm = ({ profileImage }: Props) => {
     if (image) {
       const imagePreviewUrl = URL.createObjectURL(image);
       setPreviewImage(imagePreviewUrl);
+
+      const formData = new FormData();
+      formData.append("isCover", JSON.stringify(false));
+      formData.append("profileImage", image);
+      uploadProfileImage(formData);
     }
   };
 
@@ -52,6 +59,7 @@ const ImageUploadForm = ({ profileImage }: Props) => {
           !previewImage ? "bg-white" : "",
         )}
       />
+      <span className="my-1 text-xs text-gray-400">드래그하여 사진을 첨부해보세요!</span>
       <Button className="my-2" onClick={handleClickUpload}>
         <Image className="mr-2" />
         사진 업로드
