@@ -1,5 +1,6 @@
 import { Image, ImageOff } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import * as Sentry from "@sentry/react";
 
 import { Button } from "@/components/ui/button";
 
@@ -63,6 +64,7 @@ const ImageUploadForm = ({ profileImage, setIsClicked }: Props) => {
         success: () => {
           const imagePreviewUrl = URL.createObjectURL(image);
           setPreviewImage(imagePreviewUrl);
+          Sentry.captureMessage("ui 사용 - 사용자 프로필 이미지 변경", "info");
           return AUTH_SUCCESS_MESSAGE.PROFILE_IMAGE_UPLOAD;
         },
         error: AUTH_ERROR_MESSAGE.PROFILE_IMAGE_UPLOAD,
