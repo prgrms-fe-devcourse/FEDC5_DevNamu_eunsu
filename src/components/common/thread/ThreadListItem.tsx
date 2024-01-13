@@ -164,7 +164,7 @@ const ThreadListItem = ({ thread, channelId, onClick }: Props) => {
             nickname={nickname}
             editorProps={{ prevContent: content, postId: id, channelId }}
             onEditClose={handleCloseEditor}
-            authorNickName={author.nickname}
+            authorNickname={author.nickname}
           />
         )}
       </div>

@@ -31,7 +31,7 @@ interface Props {
   nickname: string;
   editorProps: EditorProps;
   onEditClose?: () => void;
-  authorNickName?: string;
+  authorNickname?: string;
 }
 
 const EditorTextArea = ({
@@ -39,7 +39,7 @@ const EditorTextArea = ({
   nickname,
   editorProps,
   onEditClose,
-  authorNickName,
+  authorNickname,
 }: Props) => {
   // TODO: [24/1/10] user는 EditerTextArea를 사용하는 쪽에서 보내주는게 맞다고 생각하지만 빠른 배포를 위해 여기서 불러쓸게요
   const { user, isPending } = useGetUserInfo();
@@ -54,7 +54,7 @@ const EditorTextArea = ({
 
   const { register, handleSubmit, watch, setValue, getValues } = useForm({
     defaultValues: {
-      anonymous: authorNickName ? authorNickName === ANONYMOUS_NICKNAME : true,
+      anonymous: authorNickname ? authorNickname === ANONYMOUS_NICKNAME : true,
       content: "",
     },
   });
