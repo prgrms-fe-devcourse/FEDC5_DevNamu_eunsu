@@ -44,7 +44,6 @@ const EditorTextArea = ({
   // TODO: [24/1/10] user는 EditerTextArea를 사용하는 쪽에서 보내주는게 맞다고 생각하지만 빠른 배포를 위해 여기서 불러쓸게요
   const { user, isPending } = useGetUserInfo();
 
-  console.log("authorNickName", authorNickName);
   const [mentionedList, setMentionedList] = useState<Array<UserDBProps>>([]);
 
   const { upload } = useEditorLogicByProps({
