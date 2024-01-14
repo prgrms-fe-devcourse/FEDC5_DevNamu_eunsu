@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { SendHorizontal } from "lucide-react";
-import { FormEvent, KeyboardEvent, useEffect, useState } from "react";
+import { FormEvent, KeyboardEvent, useState } from "react";
 import { toast } from "sonner";
 import * as Sentry from "@sentry/react";
 
@@ -31,10 +31,16 @@ interface Props {
   nickname: string;
   editorProps: EditorProps;
   onEditClose?: () => void;
-  isAnonymous?: boolean;
+  authorNickname?: string;
 }
 
-const EditorTextArea = ({ isMention, nickname, editorProps, onEditClose, isAnonymous }: Props) => {
+const EditorTextArea = ({
+  isMention,
+  nickname,
+  editorProps,
+  onEditClose,
+  authorNickname,
+}: Props) => {
   // TODO: [24/1/10] user는 EditerTextArea를 사용하는 쪽에서 보내주는게 맞다고 생각하지만 빠른 배포를 위해 여기서 불러쓸게요
   const { user, isPending } = useGetUserInfo();
 
@@ -47,7 +53,10 @@ const EditorTextArea = ({ isMention, nickname, editorProps, onEditClose, isAnony
   });
 
   const { register, handleSubmit, watch, setValue, getValues } = useForm({
-    defaultValues: { anonymous: !!isAnonymous, content: "" },
+    defaultValues: {
+      anonymous: authorNickname ? authorNickname === ANONYMOUS_NICKNAME : true,
+      content: "prevContent" in editorProps ? editorProps.prevContent : "",
+    },
   });
 
   const openLoginModal = () => {
@@ -86,11 +95,6 @@ const EditorTextArea = ({ isMention, nickname, editorProps, onEditClose, isAnony
       handleSubmit(handleUpload)();
     }
   };
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    if ("prevContent" in editorProps) setValue("content", editorProps.prevContent);
-  }, []);
 
   // TODO: [24/1/6] 모달 창은 layout단에 위치 시키고 open 여부를 전역상태관리하며 여기서는 트리거 역할만 하기 제안하기, 승인 시 아래 제거(by 성빈님)
   const [loginModalOpen, setLoginModalOpen] = useState(false);
