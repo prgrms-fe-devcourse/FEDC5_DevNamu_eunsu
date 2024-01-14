@@ -1,4 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import * as Sentry from "@sentry/react";
+
+import { log } from "@/utils/logger";
 
 import { Thread } from "@/types/thread";
 
@@ -58,7 +61,10 @@ const useDeleteThreadLike = ({ channelId, threadId }: Parameters) => {
 
       return { previousThread, previousThreads };
     },
-    onError: (error, _, context) => {
+    onError: (error, likeId, context) => {
+      log("info", likeId, context);
+      Sentry.captureException(error);
+
       queryClient.setQueryData(threads.threadDetail(threadId).queryKey, context?.previousThread);
       queryClient.setQueryData(
         threads.threadsByChannel(channelId).queryKey,
