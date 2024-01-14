@@ -41,7 +41,7 @@ const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) =
   } = thread;
 
   const { user } = useGetUserInfo();
-  const { mutate: deleteThread } = useDeleteThread(channelId);
+  const { deleteThread } = useDeleteThread(channelId);
   const { toggleLike } = useToggleLike({ channelId, threadId: id });
   const { showToast } = useToast();
 

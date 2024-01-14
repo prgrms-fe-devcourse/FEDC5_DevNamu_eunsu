@@ -6,7 +6,7 @@ import threads from "@/apis/thread/queryKey.ts";
 const useDeleteThread = (channelId: string) => {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  const { mutate, isPending, isError } = useMutation({
     mutationFn: deleteThread,
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -14,6 +14,12 @@ const useDeleteThread = (channelId: string) => {
       });
     },
   });
+
+  return {
+    deleteThread: mutate,
+    isPending,
+    isError,
+  };
 };
 
 export default useDeleteThread;
