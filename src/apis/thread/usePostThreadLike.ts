@@ -19,16 +19,23 @@ const usePostThreadLike = (channelId: string) => {
     Like,
     Error,
     string,
-    { previousThread: Thread | undefined }
+    { previousThread: Thread | undefined; previousThreads: Thread[] | undefined }
   >({
     mutationFn: (threadId: string) => postThreadLike(threadId),
     onMutate: async (threadId) => {
       await queryClient.cancelQueries({
         queryKey: threads.threadDetail(threadId).queryKey,
       });
+      await queryClient.cancelQueries({
+        queryKey: threads.threadsByChannel(channelId).queryKey,
+      });
 
       const previousThread = queryClient.getQueryData<Thread>(
         threads.threadDetail(threadId).queryKey,
+      );
+
+      const previousThreads = queryClient.getQueryData<Thread[]>(
+        threads.threadsByChannel(channelId).queryKey,
       );
 
       const optimisticLike = {
@@ -41,19 +48,56 @@ const usePostThreadLike = (channelId: string) => {
 
       queryClient.setQueryData(threads.threadDetail(threadId).queryKey, (oldThread: Thread) => ({
         ...oldThread,
-        likes: oldThread?.likes ? [...oldThread.likes, optimisticLike] : [optimisticLike],
+        likes: oldThread ? [...oldThread.likes, optimisticLike] : [optimisticLike],
       }));
 
-      return { previousThread };
+      queryClient.setQueryData(
+        threads.threadsByChannel(channelId).queryKey,
+        (oldThreads: Thread[] | undefined) => {
+          if (!oldThreads) return [];
+
+          return oldThreads.map((thread) =>
+            thread._id === threadId
+              ? { ...thread, likes: [...thread.likes, optimisticLike] }
+              : thread,
+          );
+        },
+      );
+
+      return { previousThread, previousThreads };
     },
     onError: (error, threadId, context) => {
       log("info", threadId, context);
 
       queryClient.setQueryData(threads.threadDetail(threadId).queryKey, context?.previousThread);
+      queryClient.setQueryData(
+        threads.threadsByChannel(channelId).queryKey,
+        context?.previousThreads,
+      );
 
       Sentry.captureException(error);
     },
-    onSuccess: (_, threadId) => {
+    onSuccess: (like, threadId) => {
+      queryClient.setQueryData(threads.threadDetail(threadId).queryKey, (oldThread: Thread) => {
+        const filteredLikes = oldThread.likes.filter((l) => l.user !== user?._id);
+        return {
+          ...oldThread,
+          likes: [...filteredLikes, like],
+        };
+      });
+
+      queryClient.setQueryData(
+        threads.threadsByChannel(channelId).queryKey,
+        (oldThreads: Thread[] | undefined) => {
+          if (!oldThreads) return [];
+          return oldThreads.map((thread) =>
+            thread._id === threadId
+              ? { ...thread, likes: [...thread.likes.filter((l) => l.user !== user?._id), like] }
+              : thread,
+          );
+        },
+      );
+
       queryClient.invalidateQueries({
         queryKey: threads.threadDetail(threadId).queryKey,
       });
