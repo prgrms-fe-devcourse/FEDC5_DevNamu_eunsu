@@ -112,7 +112,14 @@ const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) =
       {editingThreadId !== id && (
         <div className="flex" onClick={onClick}>
           <Avatar className="mr-3">
-            <AvatarImage src="/svg/userProfile.svg" alt="프로필" />
+            <AvatarImage
+              src={
+                author.nickname !== ANONYMOUS_NICKNAME && author.image
+                  ? author.image
+                  : "/svg/userProfile.svg"
+              }
+              alt="프로필"
+            />
             <AvatarFallback>{author.nickname.charAt(0)}</AvatarFallback>
           </Avatar>
           <div className="min-w-0 flex-grow">
