@@ -7,13 +7,17 @@ import { log } from "@/utils/logger";
 import { Like, Thread } from "@/types/thread";
 
 import useGetUserInfo from "../auth/useGetUserInfo";
+import { usePostNotification } from "../notification/usePostNotification";
 
 import { postThreadLike } from "./queryFn";
 import threads from "./queryKey";
 
+import { NOTIFICATION_TYPES } from "@/constants/notification";
+
 const usePostThreadLike = (channelId: string) => {
   const queryClient = useQueryClient();
   const { user } = useGetUserInfo();
+  const { mutate: notificationMutate } = usePostNotification();
 
   const { mutate, isPending, isError } = useMutation<
     Like,
@@ -78,6 +82,15 @@ const usePostThreadLike = (channelId: string) => {
       Sentry.captureException(error);
     },
     onSuccess: (like, threadId) => {
+      const notificationRequest = {
+        notificationType: NOTIFICATION_TYPES.LIKE,
+        notificationTypeId: like._id,
+        userId: like.user,
+        postId: like.post,
+      };
+
+      notificationMutate(notificationRequest);
+
       queryClient.setQueryData(threads.threadDetail(threadId).queryKey, (oldThread: Thread) => {
         const filteredLikes = oldThread.likes.filter((l) => l.user !== user?._id);
         return {
