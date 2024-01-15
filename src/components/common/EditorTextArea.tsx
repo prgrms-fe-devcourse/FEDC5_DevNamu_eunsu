@@ -3,13 +3,8 @@ import { SendHorizontal } from "lucide-react";
 import { FormEvent, KeyboardEvent, useState } from "react";
 import { toast } from "sonner";
 import * as Sentry from "@sentry/react";
-import { useOverlay } from "@toss/use-overlay";
-
-import useModalStore from "@/stores/modal";
 
 import { Textarea } from "@/components/ui/textarea.tsx";
-
-import ProfileModal from "../Layout/Modals/Profile";
 
 import { cn } from "@/lib/utils";
 import MentionInput from "@/components/common/mention/MentionInput.tsx";
@@ -20,7 +15,7 @@ import useEditorLogicByProps, {
 } from "@/hooks/api/useEditorLogicByProps.ts";
 import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 import useGetUserInfo from "@/apis/auth/useGetUserInfo.ts";
-import LoginModal from "@/components/Layout/Modals/Login";
+import useModal from "@/hooks/common/useModal";
 
 export interface FormValues {
   anonymous: boolean;
@@ -44,8 +39,7 @@ const EditorTextArea = ({
 }: Props) => {
   // TODO: [24/1/10] user는 EditerTextArea를 사용하는 쪽에서 보내주는게 맞다고 생각하지만 빠른 배포를 위해 여기서 불러쓸게요
   const { user, isPending } = useGetUserInfo();
-  const { open } = useOverlay();
-  const { toggleModal } = useModalStore();
+  const { openLoginModal, openProfileModal } = useModal();
 
   const [mentionedList, setMentionedList] = useState<Array<UserDBProps>>([]);
 
@@ -71,11 +65,8 @@ const EditorTextArea = ({
         action: {
           label: "로그인",
           onClick: () => {
-            open(({ isOpen, close }) => {
-              toggleModal("Login");
-              Sentry.captureMessage("Conversion: 익명 사용자가 로그인 요청을 수락", "info");
-              return <LoginModal open={isOpen} toggleOpen={close} />;
-            });
+            Sentry.captureMessage("Conversion: 익명 사용자가 로그인 요청을 수락", "info");
+            openLoginModal();
           },
         },
         duration: 2000,
@@ -106,9 +97,7 @@ const EditorTextArea = ({
     if (!e.currentTarget.checked && user?.nickname === ANONYMOUS_NICKNAME) {
       Sentry.captureMessage("ui 사용 - 익명 여부 토글", "info");
       setValue("anonymous", true);
-      open(({ isOpen, close }) => {
-        return <ProfileModal open={isOpen} toggleOpen={close} />;
-      });
+      openProfileModal();
       return;
     }
   };

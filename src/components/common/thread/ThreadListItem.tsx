@@ -1,8 +1,5 @@
 import { MouseEvent, useState } from "react";
 import * as Sentry from "@sentry/react";
-import { useOverlay } from "@toss/use-overlay";
-
-import useModalStore from "@/stores/modal";
 
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
@@ -20,8 +17,8 @@ import useDeleteThreadLike from "@/apis/thread/useDeleteThreadLike";
 import useDeleteThread from "@/apis/thread/useDeleteThread";
 import useLikeThread from "@/hooks/api/useLikeThread";
 import useToast from "@/hooks/common/useToast";
-import LoginModal from "@/components/Layout/Modals/Login";
 import { cn } from "@/lib/utils";
+import useModal from "@/hooks/common/useModal";
 
 interface Props {
   thread: Thread;
@@ -53,8 +50,7 @@ const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) =
   const likedByUser = likes.find((like) => like.user === user?._id);
   const isAlreadyLikedByUser = !!likedByUser;
   const { showToast } = useToast();
-  const { open } = useOverlay();
-  const { toggleModal } = useModalStore();
+  const { openLoginModal } = useModal();
 
   const handleMouseEnter = () => {
     setHoveredListId(id);
@@ -71,12 +67,7 @@ const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) =
       showToast({
         message: "로그인 한 유저만 좋아요가 가능합니다.",
         actionLabel: "로그인",
-        onActionClick: () => {
-          open(({ isOpen, close }) => {
-            toggleModal("Login");
-            return <LoginModal open={isOpen} toggleOpen={close} />;
-          });
-        },
+        onActionClick: openLoginModal,
         duration: 2000,
       });
 

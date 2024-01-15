@@ -3,16 +3,10 @@ import { LogIn, MoonIcon, SunIcon, UserRoundCog, LogOut } from "lucide-react";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import * as Sentry from "@sentry/react";
-import { useOverlay } from "@toss/use-overlay";
-
-import useModalStore from "@/stores/modal";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { getLocalStorage } from "@/utils/localStorage";
-
-import LoginModal from "../Modals/Login";
-import ProfileModal from "../Modals/Profile";
 
 import { SIDEBAR_ICONS } from "./config";
 import { ThemeConfigDropdown } from "./ThemeConfigDropdown";
@@ -23,6 +17,7 @@ import { cn } from "@/lib/utils";
 import usePostLogout from "@/apis/auth/usePostLogout";
 import useToast from "@/hooks/common/useToast";
 import { AUTH_ERROR_MESSAGE, AUTH_SUCCESS_MESSAGE } from "@/constants/toastMessage";
+import useModal from "@/hooks/common/useModal";
 
 interface Props {
   pathname: string;
@@ -52,14 +47,14 @@ export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props
 
   const { mutateAsync: logout } = usePostLogout();
   const { showPromiseToast } = useToast();
-  const { open } = useOverlay();
-  const { isOpenLoginModal, toggleModal } = useModalStore();
+  const { openLoginModal: handlerOpenLoginModal, openProfileModal: handlerOpenProfileModal } =
+    useModal();
 
   const isLoggedIn = !!getLocalStorage("token", "");
 
   useEffect(() => {
-    if (isLoggedIn && !isOpenLoginModal) toast.success("로그인 되었습니다 :D");
-  }, [isLoggedIn, isOpenLoginModal]);
+    if (isLoggedIn) toast.success("로그인 되었습니다 :D");
+  }, [isLoggedIn]);
 
   const handleLogout = () => {
     showPromiseToast({
@@ -76,19 +71,6 @@ export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props
     Sentry.captureMessage("ui 사용 - 테마 변경 옵션 띄우기", "info");
   };
 
-  const handlerOpenProfileModal = () => {
-    open(({ isOpen, close }) => {
-      return <ProfileModal open={isOpen} toggleOpen={close} />;
-    });
-    Sentry.captureMessage("ui 사용 - 사용자 정보 변경 모달 띄우기", "info");
-  };
-
-  const handlerOpenLoginModal = () => {
-    open(({ isOpen, close }) => {
-      toggleModal("Login");
-      return <LoginModal open={isOpen} toggleOpen={close} />;
-    });
-  };
   /*
     Link Button과 DarkMode Dropdown 버튼이 공유하는 CSS가 많아서 styles로 상수화함.
     (Link를 쓰지 말고 navigate를 써도 될 듯)

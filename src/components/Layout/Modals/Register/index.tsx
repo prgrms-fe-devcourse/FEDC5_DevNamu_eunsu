@@ -3,13 +3,11 @@ import { useCallback, useEffect } from "react";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
 import * as Sentry from "@sentry/react";
-import { useOverlay } from "@toss/use-overlay";
 
 import { Button } from "@/components/ui/button";
 
 import SimpleBaseForm from "../Base/form";
 import SimpleBaseModal from "../Base/modal";
-import LoginModal from "../Login";
 
 import { REGISTER_FIELDS, REGISTER_FIELDS_SCHEMA } from "./config";
 
@@ -22,6 +20,7 @@ import {
   AUTH_SUCCESS_MESSAGE,
 } from "@/constants/toastMessage";
 import useToast from "@/hooks/common/useToast";
+import useModal from "@/hooks/common/useModal";
 
 interface Props {
   open: boolean;
@@ -32,11 +31,11 @@ const RegisterModal = ({ open, toggleOpen }: Props) => {
   const { updateUserList, isRegisterSuccess } = useUpdateUserList();
   const { userListByDB } = useUserListByDB();
   const { showPromiseToast } = useToast();
-  const { open: openLoginModal } = useOverlay();
+  const { openLoginModal } = useModal();
 
   const handleLoginClick = useCallback(() => {
     toggleOpen(false);
-    openLoginModal(({ isOpen, close }) => <LoginModal open={isOpen} toggleOpen={close} />);
+    openLoginModal();
   }, [toggleOpen, openLoginModal]);
 
   useEffect(() => {
