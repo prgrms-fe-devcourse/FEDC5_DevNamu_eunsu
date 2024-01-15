@@ -32,7 +32,7 @@ const isMention = (props: Notification | Conversation): props is Conversation =>
 const MyNotificationBody = () => {
   const { listedNotificationAndMention, isPending } = useListedNotificationAndMention();
   if (isPending) {
-    return <MyThreadSkeleton />;
+    return <MyThreadSkeleton count={15} />;
   }
   if (listedNotificationAndMention.length === 0) {
     return <EmptyThread type="notification" className="h-[calc(100vh-7rem)] min-h-[20rem]" />;
