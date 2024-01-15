@@ -1,13 +1,18 @@
 import { Image } from "lucide-react";
 import { useRef, useState } from "react";
 import * as Sentry from "@sentry/react";
+import { AxiosError } from "axios";
 
 import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
 import usePutProfile from "@/apis/auth/usePutProfile";
 import useToast from "@/hooks/common/useToast";
-import { AUTH_ERROR_MESSAGE, AUTH_SUCCESS_MESSAGE } from "@/constants/toastMessage";
+import {
+  AUTH_ERROR_MESSAGE,
+  AUTH_ERROR_RESPONSE,
+  AUTH_SUCCESS_MESSAGE,
+} from "@/constants/toastMessage";
 
 interface Props {
   profileImage: string | undefined;
@@ -61,7 +66,12 @@ const ImageUploadForm = ({ profileImage, setIsClicked }: Props) => {
           Sentry.captureMessage("ui 사용 - 사용자 프로필 이미지 변경", "info");
           return AUTH_SUCCESS_MESSAGE.PROFILE_IMAGE_UPLOAD;
         },
-        error: AUTH_ERROR_MESSAGE.PROFILE_IMAGE_UPLOAD,
+        error: (error: AxiosError) => {
+          if (error?.response?.data === AUTH_ERROR_RESPONSE.IMAGE_UNMATCHED) {
+            return AUTH_ERROR_MESSAGE.IMAGE_UNMATCHED;
+          }
+          return AUTH_ERROR_MESSAGE.PROFILE_IMAGE_UPLOAD;
+        },
       },
     });
   };
