@@ -1,4 +1,4 @@
-import { Image, ImageOff } from "lucide-react";
+import { Image } from "lucide-react";
 import { useRef, useState } from "react";
 import * as Sentry from "@sentry/react";
 
@@ -30,11 +30,6 @@ const ImageUploadForm = ({ profileImage, setIsClicked }: Props) => {
   const handleChangeImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const image = event.target.files?.[0];
     if (image) uploadImage(image);
-  };
-
-  const handleRemoveImage = () => {
-    setPreviewImage("");
-    setIsClicked(true);
   };
 
   const handleDragEnter = () => {
@@ -97,13 +92,9 @@ const ImageUploadForm = ({ profileImage, setIsClicked }: Props) => {
         />
       </div>
       <span className="mb-1 mt-2 text-xs text-gray-400">드래그하여 사진을 첨부해보세요!</span>
-      <Button className="my-2" onClick={handleClickUpload}>
+      <Button className="mt-2" onClick={handleClickUpload}>
         <Image className="mr-2" />
         사진 업로드
-      </Button>
-      <Button variant="outline" onClick={handleRemoveImage}>
-        <ImageOff className="mr-2" />
-        사진 제거
       </Button>
     </div>
   );
