@@ -56,10 +56,10 @@ export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props
   const alreadyLoggedIn = getLocalStorage("isLogin", false);
 
   useEffect(() => {
-    if (isLoggedIn) {
-      if (!alreadyLoggedIn) setLocalStorage("isLogin", true);
-      else toast.success("자동 로그인 되었습니다 :D");
-    }
+    if (!isLoggedIn) return;
+
+    if (!alreadyLoggedIn) setLocalStorage("isLogin", true);
+    else toast.success("자동 로그인 되었습니다 :D");
   }, [isLoggedIn, alreadyLoggedIn]);
 
   const handleLoginModalOpen = () => {
