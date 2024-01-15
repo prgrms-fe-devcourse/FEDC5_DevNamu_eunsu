@@ -37,7 +37,7 @@ export const putUserPassword = (password: string) =>
 export const postProfileImage = (image: File) => {
   const formData = new FormData();
   formData.append("isCover", JSON.stringify(false));
-  formData.append("profileImage", image);
+  formData.append("image", image);
 
   return api.post<User>({
     url: "/users/upload-photo",
