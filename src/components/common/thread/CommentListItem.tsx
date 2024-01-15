@@ -7,17 +7,20 @@ import { parseTitleOrComment } from "@/utils/parsingJson";
 
 import { Comment } from "@/types/thread";
 
+import { ANONYMOUS_NICKNAME } from "@/constants/commonConstants";
+
 interface Props {
   commentInfo: Comment;
   onClose: (commentId: string) => void;
   isAuthor: boolean;
+  profileImage: string | undefined;
 }
 
 /**
  * 일관성 유지를 위해 ThreadListItem의 기능을 단순히 제거한 버전으로 스타일의 변경은 없는 코드이다.
  * 컴포넌트 통합 혹은 중복 코드 제거 등의 책임은 ThreadListItem 작성자에게 있다.
  */
-const CommentListItem = ({ commentInfo, onClose, isAuthor }: Props) => {
+const CommentListItem = ({ commentInfo, onClose, isAuthor, profileImage }: Props) => {
   const { createdAt, comment, _id } = commentInfo;
   const { content, nickname, mentionedList } = parseTitleOrComment(comment);
 
@@ -34,7 +37,14 @@ const CommentListItem = ({ commentInfo, onClose, isAuthor }: Props) => {
       )}
       <div className="flex items-center">
         <Avatar className="mr-3">
-          <AvatarImage src="/svg/userProfile.svg" alt="프로필" />
+          <AvatarImage
+            src={
+              nickname !== ANONYMOUS_NICKNAME && profileImage
+                ? profileImage
+                : "/svg/userProfile.svg"
+            }
+            alt="프로필"
+          />
           <AvatarFallback className="text-content-1 bg-layer-5">
             {nickname?.charAt(0)}
           </AvatarFallback>
