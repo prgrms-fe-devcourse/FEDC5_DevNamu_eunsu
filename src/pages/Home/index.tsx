@@ -12,7 +12,7 @@ import useThreadsByChannel from "@/hooks/api/useThreadsByChannel";
 import { cn } from "@/lib/utils";
 
 const HomePage = () => {
-  const { threads, isFetchingNextPage, hasNextPage, fetchNextPage, channelId } =
+  const { threads, isFetchingNextPage, hasNextPage, fetchNextPage, channelId, channelName } =
     useThreadsByChannel();
 
   const { user } = useGetUserInfo();
@@ -48,6 +48,7 @@ const HomePage = () => {
               hasNextPage={hasNextPage}
               isFetchingNextPage={isFetchingNextPage}
               fetchNextPage={fetchNextPage}
+              channelName={channelName}
             />
           </main>
           <EditorTextArea
