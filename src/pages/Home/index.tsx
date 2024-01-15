@@ -52,7 +52,7 @@ const HomePage = () => {
             />
           </main>
           <EditorTextArea
-            isMention={true}
+            isMention={channelName !== "incompetent"}
             nickname={user?.nickname || "익명의 프롱이"}
             editorProps={{ channelId }}
           />
