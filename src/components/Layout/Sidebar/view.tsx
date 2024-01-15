@@ -3,10 +3,14 @@ import { LogIn, MoonIcon, SunIcon, UserRoundCog, LogOut } from "lucide-react";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import * as Sentry from "@sentry/react";
+import { useOverlay } from "@toss/use-overlay";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { getLocalStorage } from "@/utils/localStorage";
+
+import LoginModal from "../Modals/Login";
+import ProfileModal from "../Modals/Profile";
 
 import { SIDEBAR_ICONS } from "./config";
 import { ThemeConfigDropdown } from "./ThemeConfigDropdown";
@@ -17,7 +21,6 @@ import { cn } from "@/lib/utils";
 import usePostLogout from "@/apis/auth/usePostLogout";
 import useToast from "@/hooks/common/useToast";
 import { AUTH_ERROR_MESSAGE, AUTH_SUCCESS_MESSAGE } from "@/constants/toastMessage";
-import useModal from "@/hooks/common/useModal";
 
 interface Props {
   pathname: string;
@@ -47,14 +50,26 @@ export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props
 
   const { mutateAsync: logout } = usePostLogout();
   const { showPromiseToast } = useToast();
-  const { openLoginModal: handlerOpenLoginModal, openProfileModal: handlerOpenProfileModal } =
-    useModal();
+  const { open } = useOverlay();
 
   const isLoggedIn = !!getLocalStorage("token", "");
 
   useEffect(() => {
     if (isLoggedIn) toast.success("로그인 되었습니다 :D");
   }, [isLoggedIn]);
+
+  const handleLoginModalOpen = () => {
+    open(({ isOpen, close }) => {
+      return <LoginModal open={isOpen} close={close} />;
+    });
+  };
+
+  const handleProfileModalOpen = () => {
+    open(({ isOpen, close }) => {
+      Sentry.captureMessage("ui 사용 - 사용자 정보 변경 모달 띄우기", "info");
+      return <ProfileModal open={isOpen} close={close} />;
+    });
+  };
 
   const handleLogout = () => {
     showPromiseToast({
@@ -89,7 +104,7 @@ export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props
               <AvatarFallback>{shortenedNickname}</AvatarFallback>
             </Avatar>
           ) : (
-            <SidebarButton label="로그인" Icon={LogIn} onClick={handlerOpenLoginModal} />
+            <SidebarButton label="로그인" Icon={LogIn} onClick={handleLoginModalOpen} />
           )}
           {SIDEBAR_ICONS.filter(
             ({ requireAuth }) => !requireAuth || (requireAuth && isLoggedIn),
@@ -129,7 +144,7 @@ export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props
             <SidebarButton
               label="내 정보 수정"
               Icon={UserRoundCog}
-              onClick={handlerOpenProfileModal}
+              onClick={handleProfileModalOpen}
             />
             <SidebarButton
               label="로그아웃"

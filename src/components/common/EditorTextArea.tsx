@@ -2,8 +2,12 @@ import { useForm } from "react-hook-form";
 import { SendHorizontal } from "lucide-react";
 import { FormEvent, KeyboardEvent, useState } from "react";
 import * as Sentry from "@sentry/react";
+import { useOverlay } from "@toss/use-overlay";
 
 import { Textarea } from "@/components/ui/textarea.tsx";
+
+import LoginModal from "../Layout/Modals/Login";
+import ProfileModal from "../Layout/Modals/Profile";
 
 import { cn } from "@/lib/utils";
 import MentionInput from "@/components/common/mention/MentionInput.tsx";
@@ -14,7 +18,6 @@ import useEditorLogicByProps, {
 } from "@/hooks/api/useEditorLogicByProps.ts";
 import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 import useGetUserInfo from "@/apis/auth/useGetUserInfo.ts";
-import useModal from "@/hooks/common/useModal";
 import useToast from "@/hooks/common/useToast";
 
 export interface FormValues {
@@ -39,8 +42,8 @@ const EditorTextArea = ({
 }: Props) => {
   // TODO: [24/1/10] user는 EditerTextArea를 사용하는 쪽에서 보내주는게 맞다고 생각하지만 빠른 배포를 위해 여기서 불러쓸게요
   const { user, isPending } = useGetUserInfo();
-  const { openLoginModal, openProfileModal } = useModal();
   const { showToast } = useToast();
+  const { open } = useOverlay();
 
   const [mentionedList, setMentionedList] = useState<Array<UserDBProps>>([]);
 
@@ -66,7 +69,9 @@ const EditorTextArea = ({
         actionLabel: "로그인",
         onActionClick: () => {
           Sentry.captureMessage("Conversion: 익명 사용자가 로그인 요청을 수락", "info");
-          openLoginModal();
+          open(({ isOpen, close }) => {
+            return <LoginModal open={isOpen} close={close} />;
+          });
         },
       });
       return;
@@ -93,7 +98,10 @@ const EditorTextArea = ({
     if (!e.currentTarget.checked && user?.nickname === ANONYMOUS_NICKNAME) {
       Sentry.captureMessage("ui 사용 - 익명 여부 토글", "info");
       setValue("anonymous", true);
-      openProfileModal();
+      open(({ isOpen, close }) => {
+        Sentry.captureMessage("ui 사용 - 사용자 정보 변경 모달 띄우기", "info");
+        return <ProfileModal open={isOpen} close={close} />;
+      });
       return;
     }
   };
