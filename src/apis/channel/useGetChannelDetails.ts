@@ -7,6 +7,7 @@ const useChannelDetailsQuery = (id: string) => {
 
   return {
     channelDetails: data,
+    totalThread: data?.posts.length || 0,
     isLoading,
     isError,
     error,
