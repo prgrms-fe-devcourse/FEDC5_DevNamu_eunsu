@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import { SendHorizontal } from "lucide-react";
 import { FormEvent, KeyboardEvent, useState } from "react";
-import { toast } from "sonner";
 import * as Sentry from "@sentry/react";
 
 import { Textarea } from "@/components/ui/textarea.tsx";
@@ -16,6 +15,7 @@ import useEditorLogicByProps, {
 import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 import useGetUserInfo from "@/apis/auth/useGetUserInfo.ts";
 import useModal from "@/hooks/common/useModal";
+import useToast from "@/hooks/common/useToast";
 
 export interface FormValues {
   anonymous: boolean;
@@ -40,6 +40,7 @@ const EditorTextArea = ({
   // TODO: [24/1/10] user는 EditerTextArea를 사용하는 쪽에서 보내주는게 맞다고 생각하지만 빠른 배포를 위해 여기서 불러쓸게요
   const { user, isPending } = useGetUserInfo();
   const { openLoginModal, openProfileModal } = useModal();
+  const { showToast } = useToast();
 
   const [mentionedList, setMentionedList] = useState<Array<UserDBProps>>([]);
 
@@ -60,18 +61,14 @@ const EditorTextArea = ({
     if (!formValues.content.trim()) return;
 
     if (!user) {
-      // TODO: [24/1/11] 이거 나중에 함수로 빼는게 좋을듯해요!
-      toast("로그인 한 유저만 글 쓰기가 가능합니다.", {
-        action: {
-          label: "로그인",
-          onClick: () => {
-            Sentry.captureMessage("Conversion: 익명 사용자가 로그인 요청을 수락", "info");
-            openLoginModal();
-          },
+      showToast({
+        message: "로그인 한 유저만 글 쓰기가 가능합니다.",
+        actionLabel: "로그인",
+        onActionClick: () => {
+          Sentry.captureMessage("Conversion: 익명 사용자가 로그인 요청을 수락", "info");
+          openLoginModal();
         },
-        duration: 2000,
       });
-      Sentry.captureMessage("Conversion: 익명 사용자가 로그인 요청을 확인", "info");
       return;
     }
     upload(formValues);
