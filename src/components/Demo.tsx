@@ -1,6 +1,8 @@
-import sendMessageBySlackBot from "@/lib/sendMessageBySlackBot.ts";
+import usePostMessage from "@/apis/slackBot/usePostMessage.ts";
 
 const Demo = () => {
+  const { sendMessageBySlackBot } = usePostMessage();
+
   const handleSendMsg = () => {
     sendMessageBySlackBot({ userName: "wognskec" });
   };
