@@ -24,7 +24,7 @@ import useModal from "@/hooks/common/useModal";
 
 interface Props {
   open: boolean;
-  toggleOpen: (open: boolean) => void;
+  toggleOpen: () => void;
 }
 
 const RegisterModal = ({ open, toggleOpen }: Props) => {
@@ -34,7 +34,7 @@ const RegisterModal = ({ open, toggleOpen }: Props) => {
   const { openLoginModal } = useModal();
 
   const handleLoginClick = useCallback(() => {
-    toggleOpen(false);
+    toggleOpen();
     openLoginModal();
   }, [toggleOpen, openLoginModal]);
 

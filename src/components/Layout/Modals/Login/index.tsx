@@ -20,7 +20,7 @@ import useModal from "@/hooks/common/useModal";
 
 interface Props {
   open: boolean;
-  toggleOpen: (open: boolean) => void;
+  toggleOpen: () => void;
 }
 
 const LoginModal = ({ open, toggleOpen }: Props) => {
@@ -29,7 +29,7 @@ const LoginModal = ({ open, toggleOpen }: Props) => {
   const { openRegisterModal } = useModal();
 
   const handleRegisterClick = () => {
-    toggleOpen(!open);
+    toggleOpen();
     openRegisterModal();
   };
 

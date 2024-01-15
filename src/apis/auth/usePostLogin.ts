@@ -5,7 +5,7 @@ import { setLocalStorage } from "@/utils/localStorage";
 import { postLogin, LoginRequest } from "./queryFn";
 
 interface Props {
-  toggleOpen: (open: boolean) => void;
+  toggleOpen: () => void;
 }
 
 const usePostLogin = ({ toggleOpen }: Props) => {
@@ -13,7 +13,7 @@ const usePostLogin = ({ toggleOpen }: Props) => {
     mutationFn: (body: LoginRequest) => postLogin(body),
     onSuccess: ({ token }) => {
       setLocalStorage("token", token);
-      toggleOpen(false);
+      toggleOpen();
     },
   });
 
