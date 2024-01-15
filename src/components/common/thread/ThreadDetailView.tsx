@@ -56,15 +56,15 @@ const ThreadDetailView = ({ threadId, onClose, className }: Props) => {
           <XIcon className="text-gray-500" />
         </button>
       </div>
-      <ThreadListItem thread={thread} channelId={thread.channel._id} />
+      <ThreadListItem thread={thread} channelId={thread.channel?._id} />
       <div className="mx-2 flex items-center gap-2">
-        <span className="text-gray-500">{thread.comments.length}개의 댓글</span>
+        <span className="text-gray-500">{thread.comments?.length}개의 댓글</span>
         <hr className="flex-1" />
       </div>
 
       <div className="mb-4">
         <ol className="flex flex-col gap-4">
-          {thread.comments.map((comment) => (
+          {thread.comments?.map((comment) => (
             <CommentListItem
               key={comment._id}
               commentInfo={comment}
@@ -80,9 +80,9 @@ const ThreadDetailView = ({ threadId, onClose, className }: Props) => {
           isMention={true}
           nickname={thread.nickname}
           editorProps={{
-            channelName: thread.channel.name,
+            channelName: thread.channel?.name,
             postId: thread._id,
-            postAuthorId: thread.author._id,
+            postAuthorId: thread.author?._id,
           }}
         />
       </div>
