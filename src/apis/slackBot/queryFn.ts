@@ -35,7 +35,7 @@ const createMessage = ({ mentionedList }: Props) => {
 const createAxios = (message: string) =>
   axios({
     method: "post",
-    url: import.meta.env.VITE_CORS_PROXY + import.meta.env.VITE_SLECT_HOOKS_URL, // url에 webhookurl 을 넣어주세요.
+    url: import.meta.env.VITE_CORS_PROXY + import.meta.env.VITE_SLECT_HOOKS_URL,
     headers: {
       "Content-Type": "application/json",
       "x-cors-api-key": import.meta.env.VITE_CORS_PROXY_KEY,

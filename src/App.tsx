@@ -1,8 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster } from "sonner";
 
-import Demo from "@/components/Demo.tsx";
-
 import HomePage from "./pages/Home";
 import MyThreadsPage from "./pages/MyThreads";
 import MyNotificationsPage from "./pages/MyNotifications";
@@ -18,7 +16,6 @@ const App = () => (
         <Route path="channels/*" element={<HomePage />} />
         <Route path="my-threads" element={<MyThreadsPage />} />
         <Route path="my-notifications" element={<MyNotificationsPage />} />
-        <Route path="demo" element={<Demo />} />
       </Route>
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
