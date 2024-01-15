@@ -4,16 +4,11 @@ import { setLocalStorage } from "@/utils/localStorage";
 
 import { postLogin, LoginRequest } from "./queryFn";
 
-interface Props {
-  toggleOpen: () => void;
-}
-
-const usePostLogin = ({ toggleOpen }: Props) => {
+const usePostLogin = () => {
   const { mutateAsync } = useMutation({
     mutationFn: (body: LoginRequest) => postLogin(body),
     onSuccess: ({ token }) => {
       setLocalStorage("token", token);
-      toggleOpen();
     },
   });
 

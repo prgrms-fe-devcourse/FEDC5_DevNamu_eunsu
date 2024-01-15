@@ -14,7 +14,7 @@ const useUpdateUserList = () => {
     channelId: import.meta.env.VITE_ADMIN_CHANNEL,
   });
 
-  const { login } = usePostLogin({ toggleOpen: () => {} });
+  const { login } = usePostLogin();
   const { userListByDB } = useUserListByDB();
   const { mutate: logoutMutate } = usePostLogout();
 

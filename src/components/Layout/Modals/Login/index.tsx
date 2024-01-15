@@ -24,7 +24,7 @@ interface Props {
 }
 
 const LoginModal = ({ open, toggleOpen }: Props) => {
-  const { login } = usePostLogin({ toggleOpen });
+  const { login } = usePostLogin();
   const { showPromiseToast } = useToast();
   const { openRegisterModal } = useModal();
 
@@ -38,8 +38,9 @@ const LoginModal = ({ open, toggleOpen }: Props) => {
       promise: login(loginInfo),
       messages: {
         success: ({ user: { fullName } }) => {
-          const { nickname } = JSON.parse(fullName);
+          toggleOpen();
           Sentry.captureMessage("retention - 로그인", "info");
+          const { nickname } = JSON.parse(fullName);
           return AUTH_SUCCESS_MESSAGE.LOGIN(nickname);
         },
         error: (error: AxiosError) => {
