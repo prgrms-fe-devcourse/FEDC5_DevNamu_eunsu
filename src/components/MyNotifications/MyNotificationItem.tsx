@@ -40,12 +40,14 @@ export const MyNotificationContent = ({
 
   return (
     <li className=" cursor-pointer hover:bg-gray-100" onClick={handleClick(postId)}>
-      <div className="flex items-center justify-between gap-6 pt-3">
-        <p className="pb-1 text-sm text-muted-foreground">{title}</p>
-        <p className="text-xs font-extralight">{createdDate}</p>
+      <div className="flex items-center justify-between gap-6 pb-2 pt-5">
+        <p className="text-m text-muted-foreground">{title}</p>
+        <p className="text-s font-extralight">{createdDate}</p>
       </div>
-      <div className={isMention ? "font-bold" : "mb-1"}>{content}</div>
-      <Separator className="mt-3" />
+      <div className={isMention ? "mb-2 pb-3 text-lg font-bold" : "mb-2 pb-3 text-lg"}>
+        {content}
+      </div>
+      <Separator />
     </li>
   );
 };
