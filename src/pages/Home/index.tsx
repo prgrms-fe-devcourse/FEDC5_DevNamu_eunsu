@@ -12,7 +12,7 @@ import useThreadsByChannel from "@/hooks/api/useThreadsByChannel";
 import { cn } from "@/lib/utils";
 
 const HomePage = () => {
-  const { threads, isFetchingNextPage, hasNextPage, fetchNextPage, channelId, totalThreads } =
+  const { threads, isFetchingNextPage, hasNextPage, fetchNextPage, channelId } =
     useThreadsByChannel();
 
   const { user } = useGetUserInfo();
@@ -43,12 +43,11 @@ const HomePage = () => {
               {isFetchingNextPage && <LucideLoader2 className="mt-10 h-10 w-10 animate-spin" />}
             </div>
             <ThreadList
-              threads={threads}
+              // TODO: 재준님의 스켈레톤 붙이기 [2024.01.16]
+              threads={threads || []}
               hasNextPage={hasNextPage}
               isFetchingNextPage={isFetchingNextPage}
               fetchNextPage={fetchNextPage}
-              channelId={channelId}
-              totalThread={totalThreads}
             />
           </main>
           <EditorTextArea
