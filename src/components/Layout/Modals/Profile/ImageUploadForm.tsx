@@ -1,5 +1,5 @@
 import { Image, ImageOff } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import * as Sentry from "@sentry/react";
 
 import { Button } from "@/components/ui/button";
@@ -61,9 +61,8 @@ const ImageUploadForm = ({ profileImage, setIsClicked }: Props) => {
     showPromiseToast({
       promise: uploadProfileImage(image),
       messages: {
-        success: () => {
-          const imagePreviewUrl = URL.createObjectURL(image);
-          setPreviewImage(imagePreviewUrl);
+        success: ({ image }) => {
+          setPreviewImage(image);
           Sentry.captureMessage("ui 사용 - 사용자 프로필 이미지 변경", "info");
           return AUTH_SUCCESS_MESSAGE.PROFILE_IMAGE_UPLOAD;
         },
@@ -71,12 +70,6 @@ const ImageUploadForm = ({ profileImage, setIsClicked }: Props) => {
       },
     });
   };
-
-  useEffect(() => {
-    return () => {
-      if (previewImage) URL.revokeObjectURL(previewImage);
-    };
-  }, [previewImage]);
 
   return (
     <div className="flex flex-col items-center">
