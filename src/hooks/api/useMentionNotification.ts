@@ -2,7 +2,6 @@ import { usePostNotification } from "@/apis/notification/usePostNotification.ts"
 import { usePostMention } from "@/apis/mention/usePostMention.ts";
 import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 import { NOTIFICATION_TYPES } from "@/constants/notification";
-import useGetUserInfo from "@/apis/auth/useGetUserInfo.ts";
 import usePostSlackMessage from "@/apis/slackBot/usePostSlackMessage.ts";
 
 interface MentionNotificationProps {
@@ -17,7 +16,6 @@ interface Props {
 const useMentionNotification = ({ mentionedList }: Props) => {
   const { mutateAsync: mentionMutate } = usePostMention();
   const { mutate: notificationMutate } = usePostNotification();
-  const { user } = useGetUserInfo();
   const { sendMessageBySlackBot } = usePostSlackMessage();
 
   const mentionNotification = ({ content, postId, channelName }: MentionNotificationProps) => {
@@ -32,11 +30,11 @@ const useMentionNotification = ({ mentionedList }: Props) => {
           postId,
           content,
           receiverName: mentionUser.name,
-          senderId: user?._id,
         }),
         receiver: mentionUser.userId,
       };
 
+      console.log("mentionRequest", mentionRequest);
       const mentionResponse = await mentionMutate(mentionRequest);
 
       const notificationRequest = {
