@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-const CustomSkeleton = () => {
+const CustomThreadSkeleton = () => {
   return (
     <li className="relative mb-5 px-2.5 py-2.5 ">
       <div className="flex">
@@ -23,11 +23,16 @@ const CustomSkeleton = () => {
 
 const ThreadSkeleton = () => {
   return (
-    <ul className="flex h-[calc(100vh-250px)] flex-col overflow-y-auto pt-40pxr">
-      <CustomSkeleton />
-      <CustomSkeleton />
-      <CustomSkeleton />
-      <CustomSkeleton />
+    <ul className="flex h-[calc(100vh-250px)] flex-col  pt-40pxr">
+      <CustomThreadSkeleton />
+      <CustomThreadSkeleton />
+      <CustomThreadSkeleton />
+      <CustomThreadSkeleton />
+      <CustomThreadSkeleton />
+      <CustomThreadSkeleton />
+      <CustomThreadSkeleton />
+      <CustomThreadSkeleton />
+      <CustomThreadSkeleton />
     </ul>
   );
 };

@@ -10,7 +10,7 @@ import ThreadList from "@/components/Home/ThreadList";
 import EditorTextArea from "@/components/common/EditorTextArea";
 import ThreadDetailView from "@/components/common/thread/ThreadDetailView";
 import { cn } from "@/lib/utils";
-import ThreadSkeleton from "@/components/common/thread/ThreadSkeleton";
+import ThreadSkeleton from "@/components/Skelton/ThreadSkeleton";
 
 const HomePage = () => {
   const { user } = useGetUserInfo();
