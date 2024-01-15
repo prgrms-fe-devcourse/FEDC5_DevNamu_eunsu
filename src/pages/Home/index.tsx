@@ -40,7 +40,7 @@ const HomePage = () => {
         <div className="w-full max-w-4xl px-4">
           <main className="flex min-h-[calc(100vh-300px)] flex-col rounded-sm border border-t-0 border-solid">
             <div className="flex-column min-h-full flex-1 items-center justify-center">
-              {!threads && <ThreadSkeleton />}
+              {!threads && <ThreadSkeleton count={10} />}
             </div>
             {threads && <ThreadList threads={threads} />}
           </main>

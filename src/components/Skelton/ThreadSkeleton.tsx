@@ -1,5 +1,8 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
+interface Props {
+  count: number;
+}
 const CustomThreadSkeleton = () => {
   return (
     <li className="relative mb-5 px-2.5 py-2.5 ">
@@ -21,19 +24,13 @@ const CustomThreadSkeleton = () => {
   );
 };
 
-const ThreadSkeleton = () => {
+const ThreadSkeleton = ({ count }: Props) => {
+  const skeletons = Array.from({ length: count }, (_, index) => (
+    <CustomThreadSkeleton key={index} />
+  ));
+
   return (
-    <ul className="flex h-[calc(100vh-250px)] flex-col overflow-hidden pt-40pxr">
-      <CustomThreadSkeleton />
-      <CustomThreadSkeleton />
-      <CustomThreadSkeleton />
-      <CustomThreadSkeleton />
-      <CustomThreadSkeleton />
-      <CustomThreadSkeleton />
-      <CustomThreadSkeleton />
-      <CustomThreadSkeleton />
-      <CustomThreadSkeleton />
-    </ul>
+    <ul className="pt-40px flex h-[calc(100vh-250px)] flex-col overflow-hidden">{skeletons}</ul>
   );
 };
 
