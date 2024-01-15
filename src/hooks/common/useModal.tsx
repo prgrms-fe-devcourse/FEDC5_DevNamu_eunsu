@@ -10,20 +10,20 @@ const useModal = () => {
 
   const openLoginModal = () => {
     open(({ isOpen, close }) => {
-      return <LoginModal open={isOpen} toggleOpen={close} />;
+      return <LoginModal open={isOpen} close={close} />;
     });
   };
 
   const openRegisterModal = () => {
     open(({ isOpen, close }) => {
-      return <RegisterModal open={isOpen} toggleOpen={close} />;
+      return <RegisterModal open={isOpen} close={close} />;
     });
   };
 
   const openProfileModal = () => {
     open(({ isOpen, close }) => {
       Sentry.captureMessage("ui 사용 - 사용자 정보 변경 모달 띄우기", "info");
-      return <ProfileModal open={isOpen} toggleOpen={close} />;
+      return <ProfileModal open={isOpen} close={close} />;
     });
   };
 

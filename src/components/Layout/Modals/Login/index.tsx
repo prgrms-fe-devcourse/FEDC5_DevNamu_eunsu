@@ -20,16 +20,16 @@ import useModal from "@/hooks/common/useModal";
 
 interface Props {
   open: boolean;
-  toggleOpen: () => void;
+  close: () => void;
 }
 
-const LoginModal = ({ open, toggleOpen }: Props) => {
+const LoginModal = ({ open, close }: Props) => {
   const { login } = usePostLogin();
   const { showPromiseToast } = useToast();
   const { openRegisterModal } = useModal();
 
   const handleRegisterClick = () => {
-    toggleOpen();
+    close();
     openRegisterModal();
   };
 
@@ -38,7 +38,7 @@ const LoginModal = ({ open, toggleOpen }: Props) => {
       promise: login(loginInfo),
       messages: {
         success: ({ user: { fullName } }) => {
-          toggleOpen();
+          close();
           Sentry.captureMessage("retention - 로그인", "info");
           const { nickname } = JSON.parse(fullName);
           return AUTH_SUCCESS_MESSAGE.LOGIN(nickname);
@@ -57,7 +57,7 @@ const LoginModal = ({ open, toggleOpen }: Props) => {
     <SimpleBaseModal
       dialogOptions={{
         open,
-        onOpenChange: toggleOpen,
+        onOpenChange: close,
       }}
       title="로그인"
       header={

@@ -24,19 +24,19 @@ import useModal from "@/hooks/common/useModal";
 
 interface Props {
   open: boolean;
-  toggleOpen: () => void;
+  close: () => void;
 }
 
-const RegisterModal = ({ open, toggleOpen }: Props) => {
+const RegisterModal = ({ open, close }: Props) => {
   const { updateUserList, isRegisterSuccess } = useUpdateUserList();
   const { userListByDB } = useUserListByDB();
   const { showPromiseToast } = useToast();
   const { openLoginModal } = useModal();
 
   const handleLoginClick = useCallback(() => {
-    toggleOpen();
+    close();
     openLoginModal();
-  }, [toggleOpen, openLoginModal]);
+  }, [close, openLoginModal]);
 
   useEffect(() => {
     if (isRegisterSuccess) {
@@ -75,7 +75,7 @@ const RegisterModal = ({ open, toggleOpen }: Props) => {
     <SimpleBaseModal
       dialogOptions={{
         open,
-        onOpenChange: toggleOpen,
+        onOpenChange: close,
       }}
       title="회원가입"
       header={
