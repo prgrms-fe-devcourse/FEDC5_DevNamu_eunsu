@@ -5,6 +5,7 @@ import { formJSONStringify } from "@/lib/editorContent.ts";
 import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 import useMentionNotification from "@/hooks/api/useMentionNotification.ts";
 import { NOTIFICATION_TYPES } from "@/constants/notification";
+import usePostSlackMessage from "@/apis/slackBot/usePostSlackMessage.ts";
 
 interface Props {
   nickname: string | undefined;
@@ -24,6 +25,7 @@ const useUploadComment = ({
   const { mutateAsync: commentMutate } = usePostComment();
   const { mutate: notificationMutate } = usePostNotification();
   const { mentionNotification } = useMentionNotification({ mentionedList });
+  const { sendMessageBySlackBot } = usePostSlackMessage();
 
   const uploadComment = async (formValues: FormValues) => {
     if (!formValues) return;
@@ -51,6 +53,8 @@ const useUploadComment = ({
       postId,
       channelName,
     });
+
+    sendMessageBySlackBot({ mentionedList });
   };
 
   return { uploadComment };
