@@ -26,15 +26,15 @@ const MyThreadItem = ({ title, type, channel, createdAt, comment, onClick }: Pro
   const createdDate = formatDate(createdAt);
 
   return (
-    <ul className="cursor-pointer list-none hover:bg-gray-100" onClick={onClick}>
-      <div className="flex items-center justify-between gap-6 pt-3">
+    <ul className=" cursor-pointer list-none hover:bg-gray-100" onClick={onClick}>
+      <div className="flex items-center justify-between gap-6 pb-2 pt-5">
         {channel ? (
-          <p className="text-sm text-muted-foreground">#{channelMap[channel]}게시판</p>
+          <p className="text-m text-muted-foreground">#{channelMap[channel]}게시판</p>
         ) : (
-          <p className="text-sm text-muted-foreground">#작성한 댓글 </p>
+          <p className="text-m text-muted-foreground">#작성한 댓글 </p>
         )}
 
-        <p className="text-xs font-extralight">{createdDate}</p>
+        <p className="text-s font-extralight">{createdDate}</p>
       </div>
       {type === "post" ? (
         <MyPost title={title || "잘못된 데이터 입니다."} />
