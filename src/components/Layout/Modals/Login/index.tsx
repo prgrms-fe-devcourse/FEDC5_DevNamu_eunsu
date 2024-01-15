@@ -1,11 +1,13 @@
 import { z } from "zod";
 import { AxiosError } from "axios";
 import * as Sentry from "@sentry/react";
+import { useOverlay } from "@toss/use-overlay";
 
 import { Button } from "@/components/ui/button";
 
 import SimpleBaseForm from "../Base/form";
 import SimpleBaseModal from "../Base/modal";
+import RegisterModal from "../Register";
 
 import { LOGIN_FIELDS, LOGIN_FIELDS_SCHEMA } from "./config";
 
@@ -20,16 +22,16 @@ import useToast from "@/hooks/common/useToast";
 interface Props {
   open: boolean;
   toggleOpen: (open: boolean) => void;
-  openRegisterModal: (open: boolean) => void;
 }
 
-const LoginModal = ({ open, toggleOpen, openRegisterModal }: Props) => {
+const LoginModal = ({ open, toggleOpen }: Props) => {
   const { login } = usePostLogin({ toggleOpen });
   const { showPromiseToast } = useToast();
+  const { open: openRegisterModal } = useOverlay();
 
   const handleRegisterClick = () => {
     toggleOpen(!open);
-    openRegisterModal(true);
+    openRegisterModal(({ isOpen, close }) => <RegisterModal open={isOpen} toggleOpen={close} />);
   };
 
   const handleSubmit = (loginInfo: z.infer<typeof LOGIN_FIELDS_SCHEMA>) => {
