@@ -1,4 +1,5 @@
 import { useOverlay } from "@toss/use-overlay";
+import * as Sentry from "@sentry/react";
 
 import LoginModal from "@/components/Layout/Modals/Login";
 import ProfileModal from "@/components/Layout/Modals/Profile";
@@ -21,6 +22,7 @@ const useModal = () => {
 
   const openProfileModal = () => {
     open(({ isOpen, close }) => {
+      Sentry.captureMessage("ui 사용 - 사용자 정보 변경 모달 띄우기", "info");
       return <ProfileModal open={isOpen} toggleOpen={close} />;
     });
   };
