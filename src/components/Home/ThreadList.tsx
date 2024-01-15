@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 import useSelectedThreadStore from "@/stores/thread";
 
@@ -9,13 +9,21 @@ import useIntersectionObserver from "@/hooks/common/useIntersectionObserver";
 
 interface Props {
   threads: Thread[];
+  channelName: string;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
   fetchNextPage: () => void;
 }
 
-const ThreadList = ({ threads, hasNextPage, isFetchingNextPage, fetchNextPage }: Props) => {
+const ThreadList = ({
+  isFetchingNextPage,
+  hasNextPage,
+  fetchNextPage,
+  threads,
+  channelName,
+}: Props) => {
   const threadListItemRef = useRef(null);
+  const threadListRef = useRef<HTMLUListElement>(null);
 
   const handleIntersect = () => {
     if (hasNextPage && !isFetchingNextPage) {
@@ -30,17 +38,48 @@ const ThreadList = ({ threads, hasNextPage, isFetchingNextPage, fetchNextPage }:
 
   useIntersectionObserver({ target: threadListItemRef, handleIntersect });
 
+  const handleScroll = useCallback(() => {
+    if (threadListRef.current) {
+      localStorage.setItem(
+        `scrollPosition-${channelName}`,
+        String(threadListRef.current.scrollTop),
+      );
+    }
+  }, [channelName]);
+
+  useEffect(() => {
+    const savedScrollPosition = localStorage.getItem(`scrollPosition-${channelName}`);
+    if (savedScrollPosition && threadListRef.current) {
+      threadListRef.current.scrollTop = parseInt(savedScrollPosition, 10);
+    }
+
+    if (threadListRef.current) {
+      threadListRef.current.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (threadListRef.current) {
+        threadListRef.current.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [channelName, handleScroll]);
+
   return (
     <div>
-      <ul className="flex h-[calc(100vh-250px)] flex-col overflow-auto pt-80pxr">
-        {threads.map((thread) => (
-          <ThreadListItem
-            key={thread._id}
-            thread={thread}
-            channelId={thread.channel._id}
-            onClick={handleClickThread(thread._id)}
-          />
-        ))}
+      <ul
+        ref={threadListRef}
+        className="flex h-[calc(100vh-250px)] flex-col-reverse overflow-auto pt-80pxr"
+      >
+        {threads
+          ?.reverse()
+          .map((thread) => (
+            <ThreadListItem
+              key={thread._id}
+              thread={thread}
+              channelId={thread.channel._id}
+              onClick={handleClickThread(thread._id)}
+            />
+          ))}
         <div ref={threadListItemRef}></div>
       </ul>
     </div>
