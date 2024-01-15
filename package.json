@@ -50,6 +50,7 @@
     "@radix-ui/react-tooltip": "^1.0.7",
     "@sentry/react": "^7.93.0",
     "@sentry/vite-plugin": "^2.10.2",
+    "@slack/web-api": "^6.11.2",
     "@tanstack/react-query": "^5.15.0",
     "@tanstack/react-query-devtools": "^5.15.0",
     "axios": "^1.6.3",
