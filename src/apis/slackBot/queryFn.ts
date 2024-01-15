@@ -1,7 +1,12 @@
 import axios from "axios";
 
-export const postMessageSlackBot = ({ userName }: { userName: string }) => {
-  const message = `<@${userName}>님! 익명의 누군가가 ${userName}님을 멘션하였습니다. <https://devnamu.kro.kr|데브나무>에 가입하시고 내용을 확인하세요!`;
+import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
+
+export const postMessageSlackBot = ({ mentionedList }: { mentionedList: UserDBProps[] }) => {
+  const mentionMessage = mentionedList.map(({ slackId }) => `<@${slackId}>`).join(", ");
+  const nameList = mentionedList.map(({ name }) => name).join(", ");
+
+  const message = `${mentionMessage}님! 익명의 누군가가 ${nameList}님을 멘션하였습니다. <https://devnamu.kro.kr|데브나무>에 가입하시고 내용을 확인하세요!`;
 
   return axios({
     method: "post",

@@ -1,10 +1,15 @@
-import usePostMessage from "@/apis/slackBot/usePostMessage.ts";
+import usePostMessage from "@/apis/slackBot/usePostSlackMessage.ts";
 
 const Demo = () => {
   const { sendMessageBySlackBot } = usePostMessage();
 
+  const userId = "65981ab1a125832f20ab1315"; // admin 계정
+  const mentionList = [{ name: "조재훈", userId, slackId: "U06DUUT9PA7" }];
+
   const handleSendMsg = () => {
-    sendMessageBySlackBot({ userName: "wognskec" });
+    sendMessageBySlackBot({
+      mentionedList: mentionList,
+    });
   };
   return (
     <div>

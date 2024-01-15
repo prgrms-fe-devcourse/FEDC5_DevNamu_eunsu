@@ -5,6 +5,7 @@ import useGetThread from "@/apis/thread/useGetThread.ts";
 export interface UserDBProps {
   name: string;
   userId: string;
+  slackId: string;
 }
 const useUserListByDB = () => {
   const [userListByDB, setUserListByDB] = useState<UserDBProps[]>([]);

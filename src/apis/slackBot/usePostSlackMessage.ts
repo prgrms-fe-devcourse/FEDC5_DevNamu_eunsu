@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 
 import { postMessageSlackBot } from "@/apis/slackBot/queryFn.ts";
 
-const usePostMessage = () => {
+const usePostSlackMessage = () => {
   const { mutate, ...props } = useMutation({
     mutationFn: postMessageSlackBot,
   });
@@ -13,4 +13,4 @@ const usePostMessage = () => {
   };
 };
 
-export default usePostMessage;
+export default usePostSlackMessage;
