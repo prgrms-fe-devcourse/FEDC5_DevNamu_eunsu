@@ -7,7 +7,7 @@ import { useOverlay } from "@toss/use-overlay";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-import { getLocalStorage } from "@/utils/localStorage";
+import { getLocalStorage, setLocalStorage } from "@/utils/localStorage";
 
 import LoginModal from "../Modals/Login";
 import ProfileModal from "../Modals/Profile";
@@ -53,10 +53,14 @@ export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props
   const { open } = useOverlay();
 
   const isLoggedIn = !!getLocalStorage("token", "");
+  const alreadyLoggedIn = getLocalStorage("isLogin", false);
 
   useEffect(() => {
-    if (isLoggedIn) toast.success("로그인 되었습니다 :D");
-  }, [isLoggedIn]);
+    if (isLoggedIn) {
+      if (!alreadyLoggedIn) setLocalStorage("isLogin", true);
+      else toast.success("자동 로그인 되었습니다 :D");
+    }
+  }, [isLoggedIn, alreadyLoggedIn]);
 
   const handleLoginModalOpen = () => {
     open(({ isOpen, close }) => {
