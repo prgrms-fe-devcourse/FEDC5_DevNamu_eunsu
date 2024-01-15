@@ -2,13 +2,38 @@ import axios from "axios";
 
 import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 
-export const postMessageSlackBot = ({ mentionedList }: { mentionedList: UserDBProps[] }) => {
+interface Props {
+  mentionedList: UserDBProps[];
+}
+export const postMessageSlackBot = ({ mentionedList }: Props) => {
+  const memberList = [] as UserDBProps[];
+  const notMemberList = [] as UserDBProps[];
+
+  mentionedList.forEach((people) => {
+    people.userId === import.meta.env.VITE_ADMIN_USERID
+      ? notMemberList.push(people)
+      : memberList.push(people);
+  });
+
+  const sendMessage = [];
+  if (memberList.length)
+    sendMessage.push(createMessage({ mentionedList: memberList }) + "에서 확인해주세요!");
+
+  if (notMemberList.length)
+    sendMessage.push(createMessage({ mentionedList: notMemberList }) + "에 가입해서 확인해주세요!");
+
+  return Promise.all(sendMessage.map((message) => createAxios(message)));
+};
+
+const createMessage = ({ mentionedList }: Props) => {
   const mentionMessage = mentionedList.map(({ slackId }) => `<@${slackId}>`).join(", ");
   const nameList = mentionedList.map(({ name }) => name).join(", ");
 
-  const message = `${mentionMessage}님! 익명의 누군가가 ${nameList}님을 멘션하였습니다. <https://devnamu.kro.kr|데브나무>에 가입하시고 내용을 확인하세요!`;
+  return `${mentionMessage}님! 익명의 누군가가 ${nameList}님을 멘션하였습니다.\n <https://devnamu.kro.kr|데브나무>`;
+};
 
-  return axios({
+const createAxios = (message: string) =>
+  axios({
     method: "post",
     url: import.meta.env.VITE_CORS_PROXY + import.meta.env.VITE_SLECT_HOOKS_URL, // url에 webhookurl 을 넣어주세요.
     headers: {
@@ -19,4 +44,3 @@ export const postMessageSlackBot = ({ mentionedList }: { mentionedList: UserDBPr
       text: message,
     },
   });
-};
