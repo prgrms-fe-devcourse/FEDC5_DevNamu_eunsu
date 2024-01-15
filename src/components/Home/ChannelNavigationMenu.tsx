@@ -10,46 +10,27 @@ const getNavLinkClass = (isActive: boolean) => {
 };
 
 const ChannelNavigationMenu = () => {
+  const channels = [
+    { path: "/", name: "칭찬 게시판" },
+    { path: "/channels/cheering", name: "응원 게시판" },
+    { path: "/channels/incompetent", name: "무능 게시판" },
+    { path: "/channels/chat", name: "잡담 게시판" },
+    { path: "/channels/improvements", name: "개선 사항 게시판" },
+  ];
+
   return (
     <nav className="border-b-2 border-gray-500 py-2">
       <ul className="flex">
-        <li>
-          <NavLink
-            to={location.pathname === "/" ? "/" : "/channels/compliment"}
-            className={({ isActive }) => `${getNavLinkClass(isActive)}`}
-          >
-            칭찬 게시판
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to="/channels/cheering"
-            className={({ isActive }) => `${getNavLinkClass(isActive)}`}
-          >
-            응원 게시판
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to="/channels/incompetent"
-            className={({ isActive }) => `${getNavLinkClass(isActive)}`}
-          >
-            무능 게시판
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/channels/chat" className={({ isActive }) => `${getNavLinkClass(isActive)}`}>
-            잡담 게시판
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to="/channels/improvements"
-            className={({ isActive }) => `${getNavLinkClass(isActive)}`}
-          >
-            개선 사항 게시판
-          </NavLink>
-        </li>
+        {channels.map((channel) => (
+          <li key={channel.path}>
+            <NavLink
+              to={channel.path === "/" ? "/" : channel.path}
+              className={({ isActive }) => `${getNavLinkClass(isActive)}`}
+            >
+              {channel.name}
+            </NavLink>
+          </li>
+        ))}
       </ul>
     </nav>
   );
