@@ -2,6 +2,8 @@ import { MouseEvent, useState } from "react";
 import * as Sentry from "@sentry/react";
 import { useOverlay } from "@toss/use-overlay";
 
+import useModalStore from "@/stores/modal";
+
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 import { formatDate } from "@/utils/formatDate";
@@ -52,6 +54,7 @@ const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) =
   const isAlreadyLikedByUser = !!likedByUser;
   const { showToast } = useToast();
   const { open } = useOverlay();
+  const { toggleModal } = useModalStore();
 
   const handleMouseEnter = () => {
     setHoveredListId(id);
@@ -70,6 +73,7 @@ const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) =
         actionLabel: "로그인",
         onActionClick: () => {
           open(({ isOpen, close }) => {
+            toggleModal("Login");
             return <LoginModal open={isOpen} toggleOpen={close} />;
           });
         },

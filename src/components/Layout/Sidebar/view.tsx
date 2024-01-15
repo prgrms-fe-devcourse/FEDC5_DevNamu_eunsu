@@ -5,6 +5,8 @@ import { toast } from "sonner";
 import * as Sentry from "@sentry/react";
 import { useOverlay } from "@toss/use-overlay";
 
+import useModalStore from "@/stores/modal";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { getLocalStorage } from "@/utils/localStorage";
@@ -51,12 +53,13 @@ export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props
   const { mutateAsync: logout } = usePostLogout();
   const { showPromiseToast } = useToast();
   const { open } = useOverlay();
+  const { isOpenLoginModal, toggleModal } = useModalStore();
 
   const isLoggedIn = !!getLocalStorage("token", "");
 
   useEffect(() => {
-    if (isLoggedIn) toast.success("로그인 되었습니다 :D");
-  }, [isLoggedIn]);
+    if (isLoggedIn && !isOpenLoginModal) toast.success("로그인 되었습니다 :D");
+  }, [isLoggedIn, isOpenLoginModal]);
 
   const handleLogout = () => {
     showPromiseToast({

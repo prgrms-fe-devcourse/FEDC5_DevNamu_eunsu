@@ -3,6 +3,8 @@ import { AxiosError } from "axios";
 import * as Sentry from "@sentry/react";
 import { useOverlay } from "@toss/use-overlay";
 
+import useModalStore from "@/stores/modal";
+
 import { Button } from "@/components/ui/button";
 
 import SimpleBaseForm from "../Base/form";
@@ -28,6 +30,7 @@ const LoginModal = ({ open, toggleOpen }: Props) => {
   const { login } = usePostLogin({ toggleOpen });
   const { showPromiseToast } = useToast();
   const { open: openRegisterModal } = useOverlay();
+  const { toggleModal } = useModalStore();
 
   const handleRegisterClick = () => {
     toggleOpen(!open);
@@ -41,6 +44,7 @@ const LoginModal = ({ open, toggleOpen }: Props) => {
         success: ({ user: { fullName } }) => {
           const { nickname } = JSON.parse(fullName);
           Sentry.captureMessage("retention - 로그인", "info");
+          toggleModal("Login");
           return AUTH_SUCCESS_MESSAGE.LOGIN(nickname);
         },
         error: (error: AxiosError) => {

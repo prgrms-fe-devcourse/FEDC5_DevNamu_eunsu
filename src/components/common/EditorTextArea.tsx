@@ -5,6 +5,8 @@ import { toast } from "sonner";
 import * as Sentry from "@sentry/react";
 import { useOverlay } from "@toss/use-overlay";
 
+import useModalStore from "@/stores/modal";
+
 import { Textarea } from "@/components/ui/textarea.tsx";
 
 import ProfileModal from "../Layout/Modals/Profile";
@@ -43,6 +45,7 @@ const EditorTextArea = ({
   // TODO: [24/1/10] user는 EditerTextArea를 사용하는 쪽에서 보내주는게 맞다고 생각하지만 빠른 배포를 위해 여기서 불러쓸게요
   const { user, isPending } = useGetUserInfo();
   const { open } = useOverlay();
+  const { toggleModal } = useModalStore();
 
   const [mentionedList, setMentionedList] = useState<Array<UserDBProps>>([]);
 
@@ -69,6 +72,7 @@ const EditorTextArea = ({
           label: "로그인",
           onClick: () => {
             open(({ isOpen, close }) => {
+              toggleModal("Login");
               Sentry.captureMessage("Conversion: 익명 사용자가 로그인 요청을 수락", "info");
               return <LoginModal open={isOpen} toggleOpen={close} />;
             });
