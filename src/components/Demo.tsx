@@ -11,9 +11,12 @@ const Demo = () => {
       mentionedList: mentionList,
     });
   };
+
   return (
-    <div>
-      <button onClick={handleSendMsg}>test</button>
+    <div className="flex flex-col items-center gap-10">
+      <button onClick={handleSendMsg} className="h-100pxr w-1/2 border-2">
+        슬랙 봇 test
+      </button>
     </div>
   );
 };
