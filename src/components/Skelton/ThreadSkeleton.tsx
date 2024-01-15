@@ -23,7 +23,7 @@ const CustomThreadSkeleton = () => {
 
 const ThreadSkeleton = () => {
   return (
-    <ul className="flex h-[calc(100vh-250px)] flex-col  pt-40pxr">
+    <ul className="flex h-[calc(100vh-250px)] flex-col overflow-hidden pt-40pxr">
       <CustomThreadSkeleton />
       <CustomThreadSkeleton />
       <CustomThreadSkeleton />
