@@ -7,7 +7,7 @@ import { parseTitleOrComment } from "@/utils/parsingJson";
 
 import { Comment } from "@/types/thread";
 
-import { ANONYMOUS_NICKNAME } from "@/constants/commonConstants";
+import { ANONYMOUS_NICKNAME, DEFAULT_PROFILE } from "@/constants/commonConstants";
 
 interface Props {
   commentInfo: Comment;
@@ -38,11 +38,7 @@ const CommentListItem = ({ commentInfo, onClose, isAuthor, profileImage }: Props
       <div className="flex items-center">
         <Avatar className="mr-3">
           <AvatarImage
-            src={
-              nickname !== ANONYMOUS_NICKNAME && profileImage
-                ? profileImage
-                : "/svg/userProfile.svg"
-            }
+            src={nickname !== ANONYMOUS_NICKNAME && profileImage ? profileImage : DEFAULT_PROFILE}
             alt="프로필"
           />
           <AvatarFallback className="text-content-1 bg-layer-5">

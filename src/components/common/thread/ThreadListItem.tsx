@@ -20,6 +20,7 @@ import useToast from "@/hooks/common/useToast";
 import LoginModal from "@/components/Layout/Modals/Login";
 import RegisterModal from "@/components/Layout/Modals/Register";
 import { cn } from "@/lib/utils";
+import { ANONYMOUS_NICKNAME, DEFAULT_PROFILE } from "@/constants/commonConstants";
 
 interface Props {
   thread: Thread;
@@ -116,7 +117,7 @@ const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) =
               src={
                 author.nickname !== ANONYMOUS_NICKNAME && author.image
                   ? author.image
-                  : "/svg/userProfile.svg"
+                  : DEFAULT_PROFILE
               }
               alt="프로필"
             />

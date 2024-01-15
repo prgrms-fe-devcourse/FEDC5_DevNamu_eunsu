@@ -13,6 +13,7 @@ import {
   AUTH_ERROR_RESPONSE,
   AUTH_SUCCESS_MESSAGE,
 } from "@/constants/toastMessage";
+import { DEFAULT_PROFILE } from "@/constants/commonConstants";
 
 interface Props {
   profileImage: string | undefined;
@@ -93,7 +94,7 @@ const ImageUploadForm = ({ profileImage, setIsClicked }: Props) => {
         onDrop={handleDrop}
       >
         <img
-          src={previewImage || "/svg/userProfile.svg"}
+          src={previewImage || DEFAULT_PROFILE}
           className={cn(
             "h-40 w-40 rounded-full border-2 border-solid border-white bg-gray-200 object-cover",
             !previewImage ? "bg-white" : "",
