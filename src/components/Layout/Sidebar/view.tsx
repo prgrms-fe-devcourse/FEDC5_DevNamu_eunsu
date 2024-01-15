@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { LogIn, MoonIcon, SunIcon, UserRoundCog, LogOut } from "lucide-react";
+import { LogIn, MoonIcon, SunIcon, UserRoundCog, LogOut, HelpCircle } from "lucide-react";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import * as Sentry from "@sentry/react";
@@ -143,8 +143,9 @@ export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props
               <span className={IconDescriptionCSS}>테마 설정</span>
             </div>
           </ThemeConfigDropdown>
+          {/* // TODO: useOverlay 적용 후 삭제 예정 */}
+          <SidebarButton label="이용 방법" Icon={HelpCircle} onClick={() => {}} />
         </div>
-
         {isLoggedIn && (
           <div className="flex flex-col items-center">
             <SidebarButton
