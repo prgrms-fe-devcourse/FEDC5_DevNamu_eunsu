@@ -1,3 +1,4 @@
+import { VitePluginRadar } from "vite-plugin-radar";
 import { sentryVitePlugin } from "@sentry/vite-plugin";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
@@ -14,6 +15,11 @@ export default defineConfig({
       org: "jojaehun",
       project: "javascript-react",
       telemetry: false,
+    }),
+    VitePluginRadar({
+      analytics: {
+        id: process.env.VITE_GA4_ID,
+      },
     }),
   ],
 
