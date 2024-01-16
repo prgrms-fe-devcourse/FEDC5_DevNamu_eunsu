@@ -70,6 +70,7 @@ const ThreadDetailView = ({ threadId, onClose, className }: Props) => {
               commentInfo={comment}
               onClose={handleDeleteComment}
               isAuthor={comment.author._id === user?._id}
+              profileImage={comment.author.image}
             />
           ))}
         </ol>

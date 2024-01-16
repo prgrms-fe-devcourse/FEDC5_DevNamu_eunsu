@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { getLocalStorage } from "@/utils/localStorage";
 
-import { postUserProfileImage, putUserInfo, putUserPassword } from "./queryFn";
+import { postProfileImage, putUserInfo, putUserPassword } from "./queryFn";
 import auth from "./queryKey";
 
 const usePutProfile = () => {
@@ -22,8 +22,8 @@ const usePutProfile = () => {
     mutationFn: (password: string) => putUserPassword(password),
   });
 
-  const { mutateAsync: updateProfileImage } = useMutation({
-    mutationFn: (image: string) => postUserProfileImage(image),
+  const { mutateAsync: uploadProfileImage } = useMutation({
+    mutationFn: postProfileImage,
   });
 
   const updateAllProfile = async (userInfo: string, password: string) => {
@@ -35,7 +35,7 @@ const usePutProfile = () => {
     updateUserName,
     updatePassword,
     updateAllProfile,
-    updateProfileImage,
+    uploadProfileImage,
   };
 };
 

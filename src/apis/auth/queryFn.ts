@@ -34,5 +34,14 @@ export const putUserInfo = (userInfo: string) =>
 export const putUserPassword = (password: string) =>
   api.put<string>({ url: "/settings/update-password", data: { password } });
 
-export const postUserProfileImage = (image: string) =>
-  api.post<User>({ url: "/users/upload-photo", data: { isCover: false, image } });
+export const postProfileImage = (image: File) => {
+  const formData = new FormData();
+  formData.append("isCover", JSON.stringify(false));
+  formData.append("image", image);
+
+  return api.post<User>({
+    url: "/users/upload-photo",
+    data: formData,
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+};
