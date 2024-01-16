@@ -1,5 +1,6 @@
 import { MouseEvent, useState } from "react";
 import * as Sentry from "@sentry/react";
+import { useOverlay } from "@toss/use-overlay";
 
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
@@ -16,9 +17,8 @@ import useGetUserInfo from "@/apis/auth/useGetUserInfo";
 import useDeleteThread from "@/apis/thread/useDeleteThread";
 import useToggleLike from "@/hooks/api/useToggleLike";
 import useToast from "@/hooks/common/useToast";
-import LoginModal from "@/components/Layout/Modals/Login";
-import RegisterModal from "@/components/Layout/Modals/Register";
 import { cn } from "@/lib/utils";
+import LoginModal from "@/components/Layout/Modals/Login";
 import { ANONYMOUS_NICKNAME, DEFAULT_PROFILE } from "@/constants/commonConstants";
 
 interface Props {
@@ -45,11 +45,10 @@ const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) =
   const { deleteThread } = useDeleteThread(channelId);
   const { toggleLike } = useToggleLike({ channelId, threadId: id });
   const { showToast } = useToast();
+  const { open } = useOverlay();
 
   const [editingThreadId, setEditingThreadId] = useState<string | null>(null);
   const [hoveredListId, setHoveredListId] = useState<string | null>(null);
-  const [isLoginModalOpen, setLoginModalOpen] = useState(false);
-  const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
 
   const likeId = likes.find((like) => like.user === user?._id)?._id;
 
@@ -68,7 +67,11 @@ const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) =
       showToast({
         message: "로그인 한 유저만 좋아요가 가능합니다.",
         actionLabel: "로그인",
-        onActionClick: () => setLoginModalOpen(true),
+        onActionClick: () => {
+          open(({ isOpen, close }) => {
+            return <LoginModal open={isOpen} close={close} />;
+          });
+        },
         duration: 2000,
       });
 
@@ -144,15 +147,15 @@ const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) =
                 />
               )}
 
-              {comments.length > 0 && (
+              {comments?.length > 0 && (
                 <div className="mb-10pxr mt-2 w-11/12 text-sm font-bold text-blue-500">
-                  {comments.length} 개의 댓글
+                  {comments?.length} 개의 댓글
                 </div>
               )}
             </div>
             {hoveredListId === id && (
               <ThreadToolbar
-                authorId={author._id}
+                authorId={author?._id}
                 onDelete={handleClickDeleteButton}
                 handleClickLikeButton={handleClickLikeButton}
                 handleClickEditButton={handleClickEditButton(id)}
@@ -174,20 +177,6 @@ const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) =
           />
         )}
       </div>
-      {!user && (
-        <LoginModal
-          open={isLoginModalOpen}
-          toggleOpen={setLoginModalOpen}
-          openRegisterModal={setRegisterModalOpen}
-        />
-      )}
-      {!user && (
-        <RegisterModal
-          open={isRegisterModalOpen}
-          toggleOpen={setRegisterModalOpen}
-          openLoginModal={setLoginModalOpen}
-        />
-      )}
     </li>
   );
 };

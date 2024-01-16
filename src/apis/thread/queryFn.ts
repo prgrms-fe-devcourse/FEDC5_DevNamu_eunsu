@@ -17,6 +17,8 @@ interface PatchThread extends DefaultThreadRequest {
   postId: string;
 }
 
+const THREAD_OFFSET = 10;
+
 export const createThread = async (postInfo: CreateThread) => {
   return await api.post<Thread>({ url: `/posts/create`, data: postInfo });
 };
@@ -25,10 +27,13 @@ export const patchThread = async (postInfo: PatchThread) => {
   return await api.put<Thread>({ url: `/posts/update`, data: postInfo });
 };
 
-export const getThreadsByChannelId = async (channelId: string) => {
-  const threads = await api.get<Thread[]>({ url: `/posts/channel/${channelId}` });
+export const getThreadsByChannelId = async (channelId: string, offset: number) => {
+  const response = await api.get<Thread[]>({
+    url: `/posts/channel/${channelId}`,
+    params: { offset, limit: THREAD_OFFSET },
+  });
 
-  return threads.map((thread) => {
+  const threads = response.map((thread) => {
     const { name } = parseFullName(thread.author.fullName);
     const { content, nickname, mentionedList } = parseTitleOrComment(thread.title);
 
@@ -36,6 +41,7 @@ export const getThreadsByChannelId = async (channelId: string) => {
       ...thread,
       content,
       mentionedList,
+      nextPage: offset + THREAD_OFFSET,
       author: {
         ...thread.author,
         name,
@@ -43,6 +49,8 @@ export const getThreadsByChannelId = async (channelId: string) => {
       },
     };
   });
+
+  return threads;
 };
 
 export const postThreadLike = (threadId: string) =>

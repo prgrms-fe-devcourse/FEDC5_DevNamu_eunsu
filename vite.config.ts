@@ -1,27 +1,39 @@
+import { VitePluginRadar } from "vite-plugin-radar";
 import { sentryVitePlugin } from "@sentry/vite-plugin";
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [
-    react(),
-    svgr({
-      include: "**/*.svg",
-    }),
-    sentryVitePlugin({
-      org: "jojaehun",
-      project: "javascript-react",
-      telemetry: false,
-    }),
-  ],
+// env를 사용하기 위해선 loadEnv(mode)가 필요해 해당 방식을 사용
+// https://stackoverflow.com/questions/66389043/how-can-i-use-vite-env-variables-in-vite-config-js
+export default ({ mode }) => {
+  process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
 
-  resolve: {
-    alias: [{ find: "@", replacement: "/src" }],
-  },
+  return defineConfig({
+    plugins: [
+      react(),
+      svgr({
+        include: "**/*.svg",
+      }),
+      sentryVitePlugin({
+        org: process.env.SENTRY_ORG,
+        project: process.env.SENTRY_PROJECT,
+        telemetry: false,
+      }),
+      VitePluginRadar({
+        enableDev: false,
+        analytics: {
+          id: process.env.GA4_ID,
+        },
+      }),
+    ],
 
-  build: {
-    sourcemap: true,
-  },
-});
+    resolve: {
+      alias: [{ find: "@", replacement: "/src" }],
+    },
+
+    build: {
+      sourcemap: true,
+    },
+  });
+};
