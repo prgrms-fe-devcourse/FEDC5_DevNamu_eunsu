@@ -8,15 +8,22 @@ import ThreadDetailView from "@/components/common/thread/ThreadDetailView";
 import EmptyThread from "@/components/common/myactivate/EmptyThread";
 import ThreadList from "@/components/Home/ThreadList";
 import EditorTextArea from "@/components/common/EditorTextArea";
+import ThreadListSkeleton from "@/components/Skelton/ThreadListSkeleton";
 import useThreadsByChannel from "@/hooks/api/useThreadsByChannel";
 import { cn } from "@/lib/utils";
 
 const HomePage = () => {
-  const { threads, isFetchingNextPage, hasNextPage, fetchNextPage, channelId, channelName } =
-    useThreadsByChannel();
+  const {
+    threads,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+    channelId,
+    channelName,
+    isThreadsPending,
+  } = useThreadsByChannel();
 
   const { user } = useGetUserInfo();
-
   const { selectedThreadId, selectThreadId } = useSelectedThreadStore((state) => state);
 
   const handleCloseThreadDetail = () => {
@@ -36,21 +43,23 @@ const HomePage = () => {
         </div>
 
         <div className="w-full max-w-4xl px-4">
-          <main className="flex min-h-[calc(100vh-300px)] flex-col rounded-sm border border-t-0 border-layer-4">
-            <div className="flex min-h-full flex-1 items-center justify-center">
+          <main className="border-layer-4 flex min-h-[calc(100vh-300px)] flex-col rounded-sm border border-t-0">
+            <div className="flex items-center justify-center">
+              {isThreadsPending && <ThreadListSkeleton count={10} />}
               {threads?.length === 0 && (
-                <EmptyThread type="threads" className="min-h-[calc(100vh-250px)] w-full" />
+                <EmptyThread className="min-h-[calc(100vh-300px)] w-full" />
               )}
               {isFetchingNextPage && <LucideLoader2 className="mt-10 h-10 w-10 animate-spin" />}
             </div>
-            <ThreadList
-              // TODO: 재준님의 스켈레톤 붙이기 [2024.01.16]
-              threads={threads || []}
-              hasNextPage={hasNextPage}
-              isFetchingNextPage={isFetchingNextPage}
-              fetchNextPage={fetchNextPage}
-              channelName={channelName}
-            />
+            {threads && threads?.length !== 0 && (
+              <ThreadList
+                threads={threads}
+                hasNextPage={hasNextPage}
+                isFetchingNextPage={isFetchingNextPage}
+                fetchNextPage={fetchNextPage}
+                channelName={channelName}
+              />
+            )}
           </main>
           <EditorTextArea
             isMention={channelName !== "incompetent"}

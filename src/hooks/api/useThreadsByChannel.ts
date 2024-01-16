@@ -21,10 +21,10 @@ const useThreadsByChannel = () => {
     isChannelError: channelQuery.isError,
     channelError: channelQuery.error,
     threads: threadsQuery.threads,
+    isThreadsPending: threadsQuery.isPending,
     fetchNextPage: threadsQuery.fetchNextPage,
     hasNextPage: threadsQuery.hasNextPage,
     isFetchingNextPage: threadsQuery.isFetchingNextPage,
-    isThreadsLoading: threadsQuery.isPending,
     isThreadsError: threadsQuery.isError,
     threadsError: threadsQuery.error,
   };
