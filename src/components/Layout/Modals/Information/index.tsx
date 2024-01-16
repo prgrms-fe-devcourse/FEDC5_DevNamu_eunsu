@@ -1,5 +1,6 @@
 import SimpleBaseModal from "../Base/modal";
 
+import { REPOSITORY_URL } from "@/constants/commonConstants";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -37,11 +38,7 @@ const InformationModal = ({ open, toggleOpen }: Props) => {
         <p>원하는 개선사항은 개선사항 채널에 편하게 익명으로 남겨주세요.</p>
         <p className="mt-6 text-center text-sm text-gray-400">
           데나무숲을 만든 사람들이 궁금하다면{" "}
-          <a
-            className="text-lime-600 underline"
-            target="_blank"
-            href="https://github.com/prgrms-fe-devcourse/FEDC5_DevNamu_eunsu"
-          >
+          <a className="text-lime-600 underline" target="_blank" href={REPOSITORY_URL}>
             깃허브
           </a>
           를 방문해주세요!
