@@ -10,6 +10,7 @@ import usePostSlackMessage from "@/apis/slackBot/usePostSlackMessage.ts";
 interface Props {
   nickname: string | undefined;
   postId: string;
+  channelId: string;
   channelName: string;
   mentionedList?: UserDBProps[];
   postAuthorId: string;
@@ -18,11 +19,12 @@ interface Props {
 const useUploadComment = ({
   nickname,
   postId,
+  channelId,
   channelName,
   mentionedList,
   postAuthorId,
 }: Props) => {
-  const { mutateAsync: commentMutate } = usePostComment();
+  const { mutateAsync: commentMutate } = usePostComment(channelId);
   const { mutate: notificationMutate } = usePostNotification();
   const { mentionNotification } = useMentionNotification({ mentionedList });
   const { sendMessageBySlackBot } = usePostSlackMessage();

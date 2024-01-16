@@ -16,15 +16,13 @@ interface PatchThreadProps {
 }
 
 interface CommentProps {
+  channelId: string;
   channelName: string;
   postId: string;
   postAuthorId: string;
 }
 
 export type EditorProps = CreateThreadProps | PatchThreadProps | CommentProps;
-const isCreateThreadProps = (props: EditorProps): props is CreateThreadProps => {
-  return "channelId" in props;
-};
 
 const isPatchThreadProps = (props: EditorProps): props is PatchThreadProps => {
   return "prevContent" in props;
@@ -35,15 +33,15 @@ const isCommentProps = (props: EditorProps): props is CommentProps => {
 };
 
 export const getTypeOfEditor = (props: EditorProps) => {
-  if (isCreateThreadProps(props)) {
-    return "스레드 작성";
+  if (isCommentProps(props)) {
+    return "댓글 작성";
   }
 
   if (isPatchThreadProps(props)) {
     return "스레드 수정";
   }
 
-  return "댓글 작성";
+  return "스레드 작성";
 };
 
 interface Props {
@@ -61,14 +59,14 @@ const useEditorLogicByProps = ({ editorProps, nickname, mentionedList }: Props) 
 
   const { uploadThread } = useCreateThread({
     nickname,
-    channelId: isCreateThreadProps(editorProps) ? editorProps.channelId : "",
+    channelId: editorProps.channelId,
     mentionedList,
   });
 
   const { changeThread } = useChangeThread({
     nickname,
     postId: isPatchThreadProps(editorProps) ? editorProps.postId : "",
-    channelId: isPatchThreadProps(editorProps) ? editorProps.channelId : "",
+    channelId: editorProps.channelId,
     mentionedList,
   });
 
@@ -78,18 +76,20 @@ const useEditorLogicByProps = ({ editorProps, nickname, mentionedList }: Props) 
     channelName: isCommentProps(editorProps) ? editorProps.channelName : "",
     postAuthorId: isCommentProps(editorProps) ? editorProps.postAuthorId : "",
     mentionedList,
+    channelId: editorProps.channelId,
   });
 
   useEffect(() => {
-    if (isCreateThreadProps(editorProps)) {
-      setUpload(() => uploadThread);
-    }
     if (isPatchThreadProps(editorProps)) {
       setUpload(() => changeThread);
+      return;
     }
     if (isCommentProps(editorProps)) {
       setUpload(() => uploadComment);
+      return;
     }
+
+    setUpload(() => uploadThread);
   }, [editorProps, mentionedList]);
 
   return { upload };
