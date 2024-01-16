@@ -4,7 +4,7 @@ interface Props {
   count: number;
 }
 
-const ThreadSkeleton = ({ count }: Props) => {
+const ThreadListSkeleton = ({ count }: Props) => {
   const skeletons = Array.from({ length: count }, (_, index) => (
     <ThreadListItemSkeleton key={index} />
   ));
@@ -14,4 +14,4 @@ const ThreadSkeleton = ({ count }: Props) => {
   );
 };
 
-export default ThreadSkeleton;
+export default ThreadListSkeleton;

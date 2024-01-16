@@ -10,7 +10,7 @@ import ThreadList from "@/components/Home/ThreadList";
 import EditorTextArea from "@/components/common/EditorTextArea";
 import ThreadDetailView from "@/components/common/thread/ThreadDetailView";
 import { cn } from "@/lib/utils";
-import ThreadSkeleton from "@/components/Skelton/ThreadSkeleton";
+import ThreadListSkeleton from "@/components/Skelton/ThreadListSkeleton";
 
 const HomePage = () => {
   const { user } = useGetUserInfo();
@@ -40,7 +40,7 @@ const HomePage = () => {
         <div className="w-full max-w-4xl px-4">
           <main className="flex min-h-[calc(100vh-300px)] flex-col rounded-sm border border-t-0 border-solid">
             <div className="flex-column min-h-full flex-1 items-center justify-center">
-              {!threads && <ThreadSkeleton count={10} />}
+              {!threads && <ThreadListSkeleton count={10} />}
             </div>
             {threads && <ThreadList threads={threads} />}
           </main>
