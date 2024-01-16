@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { LogIn, MoonIcon, SunIcon, UserRoundCog, LogOut } from "lucide-react";
+import { LogIn, MoonIcon, SunIcon, UserRoundCog, LogOut, HelpCircle } from "lucide-react";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import * as Sentry from "@sentry/react";
@@ -11,6 +11,7 @@ import { getLocalStorage, setLocalStorage } from "@/utils/localStorage";
 
 import LoginModal from "../Modals/Login";
 import ProfileModal from "../Modals/Profile";
+import InformationModal from "../Modals/Information";
 
 import { SIDEBAR_ICONS } from "./config";
 import { ThemeConfigDropdown } from "./ThemeConfigDropdown";
@@ -72,6 +73,13 @@ export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props
     open(({ isOpen, close }) => {
       Sentry.captureMessage("ui 사용 - 사용자 정보 변경 모달 띄우기", "info");
       return <ProfileModal open={isOpen} close={close} />;
+    });
+  };
+
+  const handleInfoModalOpen = () => {
+    open(({ isOpen, close }) => {
+      Sentry.captureMessage("ui 사용 - 이용 방법 모달 띄우기", "info");
+      return <InformationModal open={isOpen} close={close} />;
     });
   };
 
@@ -143,8 +151,8 @@ export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props
               <span className={IconDescriptionCSS}>테마 설정</span>
             </div>
           </ThemeConfigDropdown>
+          <SidebarButton label="이용 방법" Icon={HelpCircle} onClick={handleInfoModalOpen} />
         </div>
-
         {isLoggedIn && (
           <div className="flex flex-col items-center">
             <SidebarButton
