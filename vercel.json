@@ -1,3 +1,12 @@
 {
-  "routes": [{ "src": "/[^.]+", "dest": "/", "status": 200 }]
+  "rewrites": [
+    {
+      "source": "/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/api/:path*",
+      "destination": "http://172.67.167.196:443/:path*"
+    }
+  ]
 }
