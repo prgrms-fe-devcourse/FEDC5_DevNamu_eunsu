@@ -40,17 +40,17 @@ const MentionInput = ({ mentionedList, onChoose }: Props) => {
     inputRef.current.value = "";
   };
 
-  const handleAddChoiceList = (people: UserDBProps) => {
-    const isDuplication = mentionedList.find(({ slackId }) => slackId === people.slackId);
+  const handleAddChoiceList = (user: UserDBProps) => {
+    const isDuplication = mentionedList.find(({ slackId }) => slackId === user.slackId);
 
-    if (!isDuplication) onChoose((prev) => [...prev, people]);
+    if (!isDuplication) onChoose((prev) => [...prev, user]);
 
     Sentry.captureMessage("ui 사용 - Mention", "info");
     emptyUserInput();
   };
 
-  const handleDeleteChoiceList = (people: UserDBProps) => {
-    const newChoiceList = [...mentionedList].filter(({ slackId }) => slackId !== people.slackId);
+  const handleDeleteChoiceList = (user: UserDBProps) => {
+    const newChoiceList = [...mentionedList].filter(({ slackId }) => slackId !== user.slackId);
     onChoose(newChoiceList);
   };
 

@@ -4,17 +4,17 @@ import { ListProps } from "@/components/common/mention/AutoCompleteMentionList";
 import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 
 const UserBadgeList = ({ users, onClick }: ListProps) => {
-  const handleClick = (people: UserDBProps) => () => onClick(people);
+  const handleClick = (user: UserDBProps) => () => onClick(user);
 
   return (
     <div className="mb-2 flex flex-wrap gap-2 ">
-      {users.map((people) => (
+      {users.map((user) => (
         <Badge
-          key={people.slackId}
-          onClick={handleClick(people)}
+          key={user.slackId}
+          onClick={handleClick(user)}
           className="bg-content-5 cursor-pointer"
         >
-          {people.name}
+          {user.name}
         </Badge>
       ))}
     </div>
