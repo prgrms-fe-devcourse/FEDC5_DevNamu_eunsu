@@ -69,10 +69,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-// <main className="flex min-h-[calc(100vh-300px)] flex-col rounded-sm border border-t-0 border-solid">
-//           <div className="flex min-h-full flex-1 items-center justify-center">
-//             {threads?.length === 0 && (
-//               <EmptyThread type="threads" className="min-h-[calc(100vh-250px)] w-full" />
-//             )}
-//             {isFetchingNextPage && <LucideLoader2 className="mt-10 h-10 w-10 animate-spin" />}
-//           </div>
