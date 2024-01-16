@@ -1,7 +1,5 @@
 import * as Sentry from "@sentry/react";
 
-import { getLocalStorage } from "@/utils/localStorage";
-
 import usePostThreadLike from "@/apis/thread/usePostThreadLike";
 import useDeleteThreadLike from "@/apis/thread/useDeleteThreadLike";
 
@@ -11,13 +9,10 @@ interface Parameters {
 }
 
 const useToggleLike = ({ channelId, threadId }: Parameters) => {
-  const token = getLocalStorage("token", "");
   const { likeThread, isPending: isLikePending } = usePostThreadLike(channelId);
   const { removeLike, isPending: isUnLikePending } = useDeleteThreadLike({ channelId, threadId });
 
   const toggleLike = (likeId: string | undefined) => {
-    if (!token) return;
-
     if (isLikePending || isUnLikePending) return;
 
     if (!likeId) {
