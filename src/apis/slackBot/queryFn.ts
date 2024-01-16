@@ -32,10 +32,11 @@ const createMessage = ({ mentionedList }: Props) => {
   return `${mentionMessage}님! 익명의 누군가가 ${nameList}님을 멘션하였습니다.\n <https://devnamu.kro.kr|데브나무>`;
 };
 
-const createAxios = (message: string) =>
-  axios({
+const createAxios = (message: string) => {
+  const url = import.meta.env.VITE_CORS_PROXY + import.meta.env.VITE_SLECT_HOOKS_URL;
+  return axios({
     method: "post",
-    url: import.meta.env.VITE_CORS_PROXY + import.meta.env.VITE_SLECT_HOOKS_URL,
+    url,
     headers: {
       "Content-Type": "application/json",
       "x-cors-api-key": import.meta.env.VITE_CORS_PROXY_KEY,
@@ -44,3 +45,4 @@ const createAxios = (message: string) =>
       text: message,
     },
   });
+};
