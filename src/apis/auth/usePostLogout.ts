@@ -14,6 +14,7 @@ const usePostLogout = () => {
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: auth.userInfo(token).queryKey });
       removeLocalStorage("token");
+      removeLocalStorage("isLogin");
       if (location.pathname.includes("my")) location.pathname = "/";
     },
   });
