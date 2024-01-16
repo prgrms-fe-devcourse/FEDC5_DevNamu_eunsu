@@ -1,10 +1,15 @@
+import { LucideLoader2 } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 import useSelectedThreadStore from "@/stores/thread";
 
+import useGetUserInfo from "@/apis/auth/useGetUserInfo";
 import ChannelNavigationMenu from "@/components/Home/ChannelNavigationMenu";
 import ThreadDetailView from "@/components/common/thread/ThreadDetailView";
+import EmptyThread from "@/components/common/myactivate/EmptyThread";
+import ThreadList from "@/components/Home/ThreadList";
+import EditorTextArea from "@/components/common/EditorTextArea";
 import { cn } from "@/lib/utils";
 import useGetChannelDetails from "@/apis/channel/useGetChannelDetails";
 import thread from "@/apis/thread/queryKey";
@@ -16,7 +21,7 @@ const HomePage = () => {
   const { channelDetails, totalThread } = useGetChannelDetails(channelName);
   const channelId = channelDetails?._id;
 
-  const { data } = useInfiniteQuery({
+  const { data, isFetchingNextPage, hasNextPage, fetchNextPage } = useInfiniteQuery({
     queryKey: thread.threadsByChannel(channelId).queryKey,
     queryFn: channelId
       ? ({ pageParam = totalThread }) => getThreadsByChannelId(channelId, pageParam)
@@ -32,16 +37,15 @@ const HomePage = () => {
     initialPageParam: totalThread,
   });
 
-  // const { user } = useGetUserInfo();
+  const { user } = useGetUserInfo();
 
   const { selectedThreadId, selectThreadId } = useSelectedThreadStore((state) => state);
 
   const handleCloseThreadDetail = () => {
     selectThreadId(undefined);
   };
-  console.log(data);
 
-  // const threads = data?.pages.flatMap((page) => page);
+  const threads = data?.pages.flatMap((page) => page);
 
   return (
     <div className="relative h-screen overflow-hidden">
@@ -54,7 +58,7 @@ const HomePage = () => {
         <div className="w-full max-w-4xl px-4">
           <ChannelNavigationMenu />
         </div>
-        {/* <div className="w-full max-w-4xl px-4">
+        <div className="w-full max-w-4xl px-4">
           <main className="flex min-h-[calc(100vh-300px)] flex-col rounded-sm border border-t-0 border-solid">
             <div className="flex min-h-full flex-1 items-center justify-center">
               {threads?.length === 0 && (
@@ -78,7 +82,7 @@ const HomePage = () => {
               editorProps={{ channelId: channelDetails?._id }}
             />
           )}
-        </div> */}
+        </div>
       </div>
 
       <div>
