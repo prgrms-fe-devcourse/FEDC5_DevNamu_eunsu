@@ -1,5 +1,6 @@
 import { LucideLoader2 } from "lucide-react";
 import { useLocation } from "react-router-dom";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 import useSelectedThreadStore from "@/stores/thread";
 
@@ -10,20 +11,31 @@ import EmptyThread from "@/components/common/myactivate/EmptyThread";
 import ThreadList from "@/components/Home/ThreadList";
 import EditorTextArea from "@/components/common/EditorTextArea";
 import { cn } from "@/lib/utils";
-import useGetThreads from "@/apis/thread/useGetThreads";
 import useGetChannelDetails from "@/apis/channel/useGetChannelDetails";
+import thread from "@/apis/thread/queryKey";
+import { getThreadsByChannelId } from "@/apis/thread/queryFn";
 
 const HomePage = () => {
-  // const { isFetchingNextPage, hasNextPage, fetchNextPage, channelId, channelName } =
-  //   useThreadsByChannel();
   const location = useLocation();
   const channelName = location.pathname.split("/").pop() || "compliment";
   const { channelDetails, totalThread } = useGetChannelDetails(channelName);
+  const channelId = channelDetails?._id;
 
-  const { threads, isFetchingNextPage, hasNextPage, fetchNextPage } = useGetThreads(
-    channelDetails?._id,
-    totalThread,
-  );
+  const { data, isFetchingNextPage, hasNextPage, fetchNextPage } = useInfiniteQuery({
+    queryKey: thread.threadsByChannel(channelId).queryKey,
+    queryFn: channelId
+      ? ({ pageParam = totalThread }) => getThreadsByChannelId(channelId, pageParam)
+      : undefined,
+    enabled: !!channelId && !!totalThread,
+    getNextPageParam: (lastPage) => {
+      if (!lastPage[0]) return;
+
+      const nextPageOffset = lastPage[0].nextPage;
+      if (nextPageOffset < 0) return undefined;
+      return nextPageOffset;
+    },
+    initialPageParam: totalThread,
+  });
 
   const { user } = useGetUserInfo();
 
@@ -32,6 +44,8 @@ const HomePage = () => {
   const handleCloseThreadDetail = () => {
     selectThreadId(undefined);
   };
+
+  const threads = data?.pages.flatMap((page) => page);
 
   return (
     <div className="relative h-screen overflow-hidden">
@@ -50,7 +64,7 @@ const HomePage = () => {
               {threads?.length === 0 && (
                 <EmptyThread type="threads" className="min-h-[calc(100vh-250px)] w-full" />
               )}
-              {isFetchingNextPage && <LucideLoader2 className="mt-10 h-10 w-10 animate-spin" />}
+              {isFetchingNextPage && <LucideLoader2 className="h-10 w-10 animate-spin" />}
             </div>
             <ThreadList
               // TODO: 재준님의 스켈레톤 붙이기 [2024.01.16]

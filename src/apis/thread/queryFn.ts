@@ -17,7 +17,7 @@ interface PatchThread extends DefaultThreadRequest {
   postId: string;
 }
 
-const THREAD_OFFSET = 10;
+const THREAD_OFFSET = 6;
 
 export const createThread = async (postInfo: CreateThread) => {
   return await api.post<Thread>({ url: `/posts/create`, data: postInfo });
@@ -28,9 +28,11 @@ export const patchThread = async (postInfo: PatchThread) => {
 };
 
 export const getThreadsByChannelId = async (channelId: string, offset: number) => {
+  const calculatedOffset = Math.max(offset - THREAD_OFFSET, 0);
+
   const response = await api.get<Thread[]>({
     url: `/posts/channel/${channelId}`,
-    params: { offset, limit: THREAD_OFFSET },
+    params: { offset: calculatedOffset, limit: THREAD_OFFSET },
   });
 
   const threads = response.map((thread) => {
