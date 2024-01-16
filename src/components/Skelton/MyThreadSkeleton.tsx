@@ -10,10 +10,10 @@ const CustomMyThreadSkeleton = () => {
       <div className="flex">
         <div className="min-w-0 flex-grow">
           <div className="flex justify-between">
-            <Skeleton className="h-6 w-[120px]" />
-            <Skeleton className="h-6 w-[120px]" />
+            <Skeleton className="h-6 w-[120px] bg-layer-4" />
+            <Skeleton className="h-6 w-[120px] bg-layer-4" />
           </div>
-          <Skeleton className="mb-4 mt-2 h-6 w-[750px]" />
+          <Skeleton className="mb-4 mt-2 h-6 w-[750px] bg-layer-4" />
           <Separator />
         </div>
       </div>
