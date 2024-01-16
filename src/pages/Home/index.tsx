@@ -32,6 +32,11 @@ const HomePage = () => {
 
   return (
     <div className="relative h-screen overflow-hidden">
+      {isFetchingNextPage && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40">
+          <LucideLoader2 className="z-50 mt-10 h-10 w-10 animate-spin" />
+        </div>
+      )}
       <div
         className={cn(
           "duration-600 mt-12 flex flex-col items-center justify-center transition",
@@ -49,7 +54,6 @@ const HomePage = () => {
               {threads?.length === 0 && (
                 <EmptyThread className="min-h-[calc(100vh-300px)] w-full" />
               )}
-              {isFetchingNextPage && <LucideLoader2 className="mt-10 h-10 w-10 animate-spin" />}
             </div>
             {threads && threads?.length !== 0 && (
               <ThreadList
