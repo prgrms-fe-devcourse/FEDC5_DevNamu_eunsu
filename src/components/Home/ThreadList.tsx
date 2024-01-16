@@ -68,7 +68,7 @@ const ThreadList = ({
     <div>
       <ul
         ref={threadListRef}
-        className="flex h-[calc(100vh-250px)] flex-col-reverse overflow-auto pt-80pxr"
+        className="flex h-[calc(100vh-250px)] flex-col overflow-auto pt-80pxr"
       >
         {threads
           ?.reverse()
