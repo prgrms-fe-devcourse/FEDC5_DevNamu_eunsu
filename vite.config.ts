@@ -16,14 +16,14 @@ export default ({ mode }) => {
         include: "**/*.svg",
       }),
       sentryVitePlugin({
-        org: "jojaehun",
-        project: "javascript-react",
+        org: process.env.SENTRY_ORG,
+        project: process.env.SENTRY_PROJECT,
         telemetry: false,
       }),
       VitePluginRadar({
         enableDev: false,
         analytics: {
-          id: process.env.VITE_GA4_ID,
+          id: process.env.GA4_ID,
         },
       }),
     ],
