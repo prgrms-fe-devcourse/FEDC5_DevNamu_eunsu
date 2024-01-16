@@ -5,16 +5,9 @@ import { Thread } from "@/types/thread";
 import threads from "./queryKey";
 
 const useGetThreads = (channelId: string | undefined) => {
-  const { data, isLoading, isError, error } = useQuery<Thread[]>(
-    threads.threadsByChannel(channelId),
-  );
+  const { data, ...rest } = useQuery<Thread[]>(threads.threadsByChannel(channelId));
 
-  return {
-    threads: data?.slice().reverse(),
-    isLoading,
-    isError,
-    error,
-  };
+  return { threads: data?.slice().reverse(), ...rest };
 };
 
 export default useGetThreads;
