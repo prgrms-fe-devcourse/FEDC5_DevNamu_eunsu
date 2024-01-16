@@ -14,9 +14,9 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "eslint",
-      "prettier"
+      "prettier --check"
     ],
-    "*.{css,json,html}": "prettier"
+    "*.{css,json,html}": "prettier --check"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.3",
