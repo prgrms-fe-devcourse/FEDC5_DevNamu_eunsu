@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef } from "react";
+import cloneDeep from "lodash.clonedeep";
 
 import useSelectedThreadStore from "@/stores/thread";
 
@@ -15,7 +16,7 @@ interface Props {
   fetchNextPage: () => void;
 }
 
-const ThreadList = ({
+const ThreadList2 = ({
   isFetchingNextPage,
   hasNextPage,
   fetchNextPage,
@@ -25,7 +26,8 @@ const ThreadList = ({
   const threadListItemRef = useRef(null);
   const threadListRef = useRef<HTMLUListElement>(null);
 
-  console.log("threadList-1", threads);
+  const reverse = cloneDeep(threads).reverse();
+  console.log("threadList-2", reverse);
 
   const handleIntersect = () => {
     if (hasNextPage && !isFetchingNextPage) {
@@ -72,7 +74,7 @@ const ThreadList = ({
         ref={threadListRef}
         className="flex h-[calc(100vh-250px)] flex-col-reverse overflow-auto pt-80pxr"
       >
-        {threads.reverse().map((thread) => (
+        {reverse.map((thread) => (
           <ThreadListItem
             key={thread._id}
             thread={thread}
@@ -86,4 +88,4 @@ const ThreadList = ({
   );
 };
 
-export default ThreadList;
+export default ThreadList2;
