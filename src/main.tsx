@@ -10,6 +10,7 @@ import {
   useLocation,
   useNavigationType,
 } from "react-router-dom";
+import { OverlayProvider } from "@toss/use-overlay";
 
 import App from "./App";
 import ErrorPage from "./pages/Error";
@@ -65,7 +66,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <Sentry.ErrorBoundary fallback={<ErrorPage />}>
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
-        <App />
+        <OverlayProvider>
+          <App />
+        </OverlayProvider>
       </QueryClientProvider>
     </Sentry.ErrorBoundary>
   </React.StrictMode>,

@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
 import { LogIn, MoonIcon, SunIcon, UserRoundCog, LogOut } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { toast } from "sonner";
 import * as Sentry from "@sentry/react";
+import { useOverlay } from "@toss/use-overlay";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { getLocalStorage } from "@/utils/localStorage";
 
 import LoginModal from "../Modals/Login";
-import RegisterModal from "../Modals/Register";
 import ProfileModal from "../Modals/Profile";
 
 import { SIDEBAR_ICONS } from "./config";
@@ -48,18 +48,28 @@ export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props
 
   const CurrentThemeIcon = themeIconConfig[theme];
 
-  const [loginModalOpen, setLoginModalOpen] = useState(false);
-  const [registerModalOpen, setRegisterModalOpen] = useState(false);
-  const [profileModalOpen, setProfileModalOpen] = useState(false);
-
   const { mutateAsync: logout } = usePostLogout();
   const { showPromiseToast } = useToast();
+  const { open } = useOverlay();
 
   const isLoggedIn = !!getLocalStorage("token", "");
 
   useEffect(() => {
     if (isLoggedIn) toast.success("로그인 되었습니다 :D");
   }, [isLoggedIn]);
+
+  const handleLoginModalOpen = () => {
+    open(({ isOpen, close }) => {
+      return <LoginModal open={isOpen} close={close} />;
+    });
+  };
+
+  const handleProfileModalOpen = () => {
+    open(({ isOpen, close }) => {
+      Sentry.captureMessage("ui 사용 - 사용자 정보 변경 모달 띄우기", "info");
+      return <ProfileModal open={isOpen} close={close} />;
+    });
+  };
 
   const handleLogout = () => {
     showPromiseToast({
@@ -76,14 +86,6 @@ export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props
     Sentry.captureMessage("ui 사용 - 테마 변경 옵션 띄우기", "info");
   };
 
-  const handlerOpenProfileModal = () => {
-    setProfileModalOpen(true);
-    Sentry.captureMessage("ui 사용 - 사용자 정보 변경 모달 띄우기", "info");
-  };
-
-  const handlerOpenLoginModal = () => {
-    if (!isLoggedIn) setLoginModalOpen(true);
-  };
   /*
     Link Button과 DarkMode Dropdown 버튼이 공유하는 CSS가 많아서 styles로 상수화함.
     (Link를 쓰지 말고 navigate를 써도 될 듯)
@@ -94,21 +96,6 @@ export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props
   */
   return (
     <>
-      {!isLoggedIn && (
-        <LoginModal
-          open={loginModalOpen}
-          toggleOpen={setLoginModalOpen}
-          openRegisterModal={setRegisterModalOpen}
-        />
-      )}
-      {!isLoggedIn && (
-        <RegisterModal
-          open={registerModalOpen}
-          toggleOpen={setRegisterModalOpen}
-          openLoginModal={setLoginModalOpen}
-        />
-      )}
-      {isLoggedIn && <ProfileModal open={profileModalOpen} toggleOpen={setProfileModalOpen} />}
       <div className="flex w-20 flex-col items-center justify-between gap-8">
         <div className="mt-4 flex cursor-pointer select-none flex-col items-center gap-2">
           {isLoggedIn ? (
@@ -119,7 +106,7 @@ export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props
               </AvatarFallback>
             </Avatar>
           ) : (
-            <SidebarButton label="로그인" Icon={LogIn} onClick={handlerOpenLoginModal} />
+            <SidebarButton label="로그인" Icon={LogIn} onClick={handleLoginModalOpen} />
           )}
           {SIDEBAR_ICONS.filter(
             ({ requireAuth }) => !requireAuth || (requireAuth && isLoggedIn),
@@ -159,7 +146,7 @@ export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props
             <SidebarButton
               label="내 정보 수정"
               Icon={UserRoundCog}
-              onClick={handlerOpenProfileModal}
+              onClick={handleProfileModalOpen}
             />
             <SidebarButton
               label="로그아웃"
