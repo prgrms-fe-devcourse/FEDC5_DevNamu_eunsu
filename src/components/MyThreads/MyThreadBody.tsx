@@ -5,6 +5,7 @@ import { parseTitleOrComment } from "@/utils/parsingJson";
 import { Thread, Comment } from "@/types/thread.ts";
 
 import EmptyThread from "../common/myactivate/EmptyThread.tsx";
+import MyThreadSkeleton from "../Skelton/MyThreadSkeleton.tsx";
 
 import MyThreadItem from "./MyThreadItem";
 
@@ -31,7 +32,7 @@ const MyThreadBody = () => {
   const id = user ? user._id : DEFAULT_VALUE;
   const { listedThreadsAndComments, isPending } = useListedThreadsAndComments(id);
   if (isPending) {
-    return <div>loading...</div>;
+    return <MyThreadSkeleton count={15} />;
   }
   if (listedThreadsAndComments.length === 0) {
     return <EmptyThread type="thread" className="h-[calc(100vh-10.5rem)] min-h-[20rem]" />;

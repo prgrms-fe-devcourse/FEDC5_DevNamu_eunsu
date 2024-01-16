@@ -1,12 +1,13 @@
 import { useForm } from "react-hook-form";
 import { SendHorizontal } from "lucide-react";
-import { FormEvent, KeyboardEvent, useEffect, useState } from "react";
-import { toast } from "sonner";
+import { FormEvent, KeyboardEvent, useState } from "react";
 import * as Sentry from "@sentry/react";
+import { useOverlay } from "@toss/use-overlay";
 
 import { Textarea } from "@/components/ui/textarea.tsx";
 
-import { getLocalStorage } from "@/utils/localStorage.ts";
+import LoginModal from "../Layout/Modals/Login";
+import ProfileModal from "../Layout/Modals/Profile";
 
 import { cn } from "@/lib/utils";
 import MentionInput from "@/components/common/mention/MentionInput.tsx";
@@ -16,10 +17,8 @@ import useEditorLogicByProps, {
   getTypeOfEditor,
 } from "@/hooks/api/useEditorLogicByProps.ts";
 import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
-import RegisterModal from "@/components/Layout/Modals/Register";
 import useGetUserInfo from "@/apis/auth/useGetUserInfo.ts";
-import LoginModal from "@/components/Layout/Modals/Login";
-import ProfileModal from "@/components/Layout/Modals/Profile";
+import useToast from "@/hooks/common/useToast";
 
 export interface FormValues {
   anonymous: boolean;
@@ -31,12 +30,20 @@ interface Props {
   nickname: string;
   editorProps: EditorProps;
   onEditClose?: () => void;
-  isAnonymous?: boolean;
+  authorNickname?: string;
 }
 
-const EditorTextArea = ({ isMention, nickname, editorProps, onEditClose, isAnonymous }: Props) => {
+const EditorTextArea = ({
+  isMention,
+  nickname,
+  editorProps,
+  onEditClose,
+  authorNickname,
+}: Props) => {
   // TODO: [24/1/10] user는 EditerTextArea를 사용하는 쪽에서 보내주는게 맞다고 생각하지만 빠른 배포를 위해 여기서 불러쓸게요
   const { user, isPending } = useGetUserInfo();
+  const { showToast } = useToast();
+  const { open } = useOverlay();
 
   const [mentionedList, setMentionedList] = useState<Array<UserDBProps>>([]);
 
@@ -47,27 +54,26 @@ const EditorTextArea = ({ isMention, nickname, editorProps, onEditClose, isAnony
   });
 
   const { register, handleSubmit, watch, setValue, getValues } = useForm({
-    defaultValues: { anonymous: !!isAnonymous, content: "" },
+    defaultValues: {
+      anonymous: authorNickname ? authorNickname === ANONYMOUS_NICKNAME : true,
+      content: "prevContent" in editorProps ? editorProps.prevContent : "",
+    },
   });
-
-  const openLoginModal = () => {
-    setRegisterModalOpen((prev) => !prev);
-    Sentry.captureMessage("Conversion: 익명 사용자가 로그인 요청을 수락", "info");
-  };
 
   const handleUpload = (formValues: FormValues) => {
     if (!formValues.content.trim()) return;
 
     if (!user) {
-      // TODO: [24/1/11] 이거 나중에 함수로 빼는게 좋을듯해요!
-      toast("로그인 한 유저만 글 쓰기가 가능합니다.", {
-        action: {
-          label: "로그인",
-          onClick: openLoginModal,
+      showToast({
+        message: "로그인 한 유저만 글 쓰기가 가능합니다.",
+        actionLabel: "로그인",
+        onActionClick: () => {
+          Sentry.captureMessage("Conversion: 익명 사용자가 로그인 요청을 수락", "info");
+          open(({ isOpen, close }) => {
+            return <LoginModal open={isOpen} close={close} />;
+          });
         },
-        duration: 2000,
       });
-      Sentry.captureMessage("Conversion: 익명 사용자가 로그인 요청을 확인", "info");
       return;
     }
     upload(formValues);
@@ -87,22 +93,15 @@ const EditorTextArea = ({ isMention, nickname, editorProps, onEditClose, isAnony
     }
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    if ("prevContent" in editorProps) setValue("content", editorProps.prevContent);
-  }, []);
-
-  // TODO: [24/1/6] 모달 창은 layout단에 위치 시키고 open 여부를 전역상태관리하며 여기서는 트리거 역할만 하기 제안하기, 승인 시 아래 제거(by 성빈님)
-  const [loginModalOpen, setLoginModalOpen] = useState(false);
-  const [registerModalOpen, setRegisterModalOpen] = useState(false);
-  const [profileModalOpen, setProfileModalOpen] = useState(false);
-  const isLoggedIn = !!getLocalStorage("token", "");
   const handleClickCheckBox = (e: FormEvent<HTMLInputElement>) => {
     // TODO: [24/1/11] nickname은 props로 받아오는게 맞다고 생각합니다. 하지만 여러곳에서 수정이 필요해지니 현재 에디터에 user를 가지고 있어서 임시방편으로 수정하겠습니다.
     if (!e.currentTarget.checked && user?.nickname === ANONYMOUS_NICKNAME) {
       Sentry.captureMessage("ui 사용 - 익명 여부 토글", "info");
       setValue("anonymous", true);
-      setProfileModalOpen((prev) => !prev);
+      open(({ isOpen, close }) => {
+        Sentry.captureMessage("ui 사용 - 사용자 정보 변경 모달 띄우기", "info");
+        return <ProfileModal open={isOpen} close={close} />;
+      });
       return;
     }
   };
@@ -116,27 +115,27 @@ const EditorTextArea = ({ isMention, nickname, editorProps, onEditClose, isAnony
       <form className="relative">
         <Textarea
           placeholder={user ? `내용을 작성해주세요.` : "로그인이 필요합니다."}
-          className="resize-none overflow-hidden pr-200pxr text-base"
+          className="text-content-5 resize-none overflow-hidden pr-200pxr text-base"
           {...register("content")}
           onKeyDown={handleKeydown}
         />
         <div className="absolute bottom-2 right-2 flex items-center gap-2">
-          <label className="flex cursor-pointer items-center gap-2 rounded-xl border p-3">
+          <label className="border-layer-5 hover:bg-layer-2 flex cursor-pointer items-center gap-2 rounded-xl border p-3">
             <input type="checkbox" {...register("anonymous")} onClick={handleClickCheckBox} />
-            <p className="text-gray-500">익명</p>
+            <p className="text-content-4">익명</p>
           </label>
           {onEditClose ? (
-            <div className="flex items-center gap-2 text-white ">
-              <button className="rounded-sm bg-gray-400 p-3" onClick={onEditClose}>
+            <div className="text-content-4 flex items-center gap-2">
+              <button className="bg-layer-3 hover:bg-layer-4 rounded-sm p-3" onClick={onEditClose}>
                 취소
               </button>
               <button
                 onClick={handleSubmit(handleUpload)}
                 className={cn(
-                  "rounded-sm p-3",
+                  "text-content-5 border-layer-2 rounded-sm border p-3",
                   watch("content")
-                    ? "border border-[#19d23d] bg-[#19d23d]"
-                    : "border border-gray-300 text-black",
+                    ? "border-blue-100 bg-blue-100 dark:text-blue-600"
+                    : "cursor-not-allowed",
                 )}
               >
                 확인
@@ -146,35 +145,28 @@ const EditorTextArea = ({ isMention, nickname, editorProps, onEditClose, isAnony
             <button
               onClick={handleSubmit(handleUpload)}
               className={cn(
-                "flex h-12 w-12 cursor-pointer items-center justify-center rounded-xl text-black",
-                watch("content") ? "bg-[#19d23d]" : "",
+                "text-content-1 bg-layer-4 relative h-12 w-12 cursor-pointer rounded-xl",
+                watch("content") && "bg-blue-200 text-blue-600",
               )}
             >
-              <SendHorizontal className="h-10 w-10 fill-amber-50 stroke-2" />
+              <SendHorizontal
+                className={cn(
+                  "absolute left-4pxr top-1 h-10 w-10 stroke-2",
+                  watch("content") && "fill-blue-300",
+                )}
+              />
             </button>
           )}
         </div>
       </form>
-      <span className={cn("text-right text-sm", getValues("content") ? "visible" : "invisible")}>
+      <span
+        className={cn(
+          "text-content-1 text-right text-sm",
+          getValues("content") ? "visible" : "invisible",
+        )}
+      >
         <b>Shift + Enter</b>키를 눌러 새 행을 추가합니다
       </span>
-
-      {/*TODO: [24/1/6] 모달 창은 layout단에 위치 시키고 open 여부를 전역상태관리하며 여기서는 트리거 역할만 하기 제안하기, 승인 시 아래 제거(by 성빈님)*/}
-      {!isLoggedIn && (
-        <LoginModal
-          open={loginModalOpen}
-          toggleOpen={setLoginModalOpen}
-          openRegisterModal={setRegisterModalOpen}
-        />
-      )}
-      {!isLoggedIn && (
-        <RegisterModal
-          open={registerModalOpen}
-          toggleOpen={setRegisterModalOpen}
-          openLoginModal={setLoginModalOpen}
-        />
-      )}
-      {isLoggedIn && <ProfileModal open={profileModalOpen} toggleOpen={setProfileModalOpen} />}
     </div>
   );
 };

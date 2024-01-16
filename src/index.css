@@ -24,9 +24,42 @@
     --input: 240 5.9% 90%;
     --ring: 240 5% 64.9%;
     --radius: 0.5rem;
+
+    --layer1: 0 0% 94%;
+    --layer2: 0 0% 92%;
+    --layer3: 0 0% 88%;
+    --layer4: 0 0% 84%;
+    --layer5: 0 0% 80%;
+    --layer6: 0 0% 76%;
+    --layer7: 0 0% 72%;
+
+    --content1: 0 0% 50%;
+    --content2: 0 0% 42%;
+    --content3: 0 0% 34%;
+    --content4: 0 0% 26%;
+    --content5: 0 0% 18%;
+    --content6: 0 0% 10%;
+    --content7: 0 0% 2%;
   }
 
-  .dark {
+  :root.dark {
+    /* 다크 모드가 라이트 모드와 동일 비율로 줄어들면 훨씬 어두워서 눈이 아픔 */
+    --layer1: 0 0% 8%;
+    --layer2: 0 0% 10%;
+    --layer3: 0 0% 14%;
+    --layer4: 0 0% 18%;
+    --layer5: 0 0% 22%;
+    --layer6: 0 0% 26%;
+    --layer7: 0 0% 30%;
+
+    --content1: 0 0% 50%;
+    --content2: 0 0% 58%;
+    --content3: 0 0% 66%;
+    --content4: 0 0% 74%;
+    --content5: 0 0% 82%;
+    --content6: 0 0% 90%;
+    --content7: 0 0% 98%;
+
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
     --card: 240 10% 3.9%;
@@ -50,6 +83,11 @@
 
   html {
     font-size: 100%;
+  }
+
+  /* 다크 모드 배경 색 변경 시 */
+  * {
+    transition: background-color 200ms ease;
   }
 }
 

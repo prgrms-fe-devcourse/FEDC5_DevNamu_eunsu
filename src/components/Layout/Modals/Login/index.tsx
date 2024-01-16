@@ -1,11 +1,13 @@
 import { z } from "zod";
 import { AxiosError } from "axios";
 import * as Sentry from "@sentry/react";
+import { useOverlay } from "@toss/use-overlay";
 
 import { Button } from "@/components/ui/button";
 
 import SimpleBaseForm from "../Base/form";
 import SimpleBaseModal from "../Base/modal";
+import RegisterModal from "../Register";
 
 import { LOGIN_FIELDS, LOGIN_FIELDS_SCHEMA } from "./config";
 
@@ -19,17 +21,19 @@ import useToast from "@/hooks/common/useToast";
 
 interface Props {
   open: boolean;
-  toggleOpen: (open: boolean) => void;
-  openRegisterModal: (open: boolean) => void;
+  close: () => void;
 }
 
-const LoginModal = ({ open, toggleOpen, openRegisterModal }: Props) => {
-  const { login } = usePostLogin({ toggleOpen });
+const LoginModal = ({ open, close }: Props) => {
+  const { login } = usePostLogin();
   const { showPromiseToast } = useToast();
+  const { open: openModal } = useOverlay();
 
   const handleRegisterClick = () => {
-    toggleOpen(!open);
-    openRegisterModal(true);
+    close();
+    openModal(({ isOpen, close }) => {
+      return <RegisterModal open={isOpen} close={close} />;
+    });
   };
 
   const handleSubmit = (loginInfo: z.infer<typeof LOGIN_FIELDS_SCHEMA>) => {
@@ -37,8 +41,9 @@ const LoginModal = ({ open, toggleOpen, openRegisterModal }: Props) => {
       promise: login(loginInfo),
       messages: {
         success: ({ user: { fullName } }) => {
-          const { nickname } = JSON.parse(fullName);
+          close();
           Sentry.captureMessage("retention - 로그인", "info");
+          const { nickname } = JSON.parse(fullName);
           return AUTH_SUCCESS_MESSAGE.LOGIN(nickname);
         },
         error: (error: AxiosError) => {
@@ -55,7 +60,7 @@ const LoginModal = ({ open, toggleOpen, openRegisterModal }: Props) => {
     <SimpleBaseModal
       dialogOptions={{
         open,
-        onOpenChange: toggleOpen,
+        onOpenChange: close,
       }}
       title="로그인"
       header={
