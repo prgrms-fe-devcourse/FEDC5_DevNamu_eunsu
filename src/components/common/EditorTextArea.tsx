@@ -31,6 +31,7 @@ interface Props {
   editorProps: EditorProps;
   onEditClose?: () => void;
   authorNickname?: string;
+  channelId?: string;
 }
 
 const EditorTextArea = ({
