@@ -10,6 +10,7 @@ import ThreadList from "@/components/Home/ThreadList";
 import EditorTextArea from "@/components/common/EditorTextArea";
 import useThreadsByChannel from "@/hooks/api/useThreadsByChannel";
 import { cn } from "@/lib/utils";
+import ThreadList2 from "@/components/Home/ThreadList2.tsx";
 
 const HomePage = () => {
   const { threads, isFetchingNextPage, hasNextPage, fetchNextPage, channelId, channelName } =
@@ -42,19 +43,37 @@ const HomePage = () => {
               )}
               {isFetchingNextPage && <LucideLoader2 className="mt-10 h-10 w-10 animate-spin" />}
             </div>
-            <ThreadList
-              // TODO: 재준님의 스켈레톤 붙이기 [2024.01.16]
-              threads={threads || []}
-              hasNextPage={hasNextPage}
-              isFetchingNextPage={isFetchingNextPage}
-              fetchNextPage={fetchNextPage}
-              channelName={channelName}
-            />
+            <div className="flex">
+              <ThreadList
+                // TODO: 재준님의 스켈레톤 붙이기 [2024.01.16]
+                threads={threads || []}
+                hasNextPage={hasNextPage}
+                isFetchingNextPage={isFetchingNextPage}
+                fetchNextPage={fetchNextPage}
+                channelName={channelName}
+              />
+              <ThreadList2
+                // TODO: 재준님의 스켈레톤 붙이기 [2024.01.16]
+                threads={threads || []}
+                hasNextPage={hasNextPage}
+                isFetchingNextPage={isFetchingNextPage}
+                fetchNextPage={fetchNextPage}
+                channelName={channelName}
+              />
+            </div>
           </main>
           <EditorTextArea
             isMention={channelName !== "incompetent"}
             nickname={user?.nickname || "익명의 프롱이"}
             editorProps={{ channelId }}
+          />
+          <ThreadList
+            // TODO: 재준님의 스켈레톤 붙이기 [2024.01.16]
+            threads={threads || []}
+            hasNextPage={hasNextPage}
+            isFetchingNextPage={isFetchingNextPage}
+            fetchNextPage={fetchNextPage}
+            channelName={channelName}
           />
         </div>
       </div>
