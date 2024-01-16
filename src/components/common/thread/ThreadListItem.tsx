@@ -1,5 +1,4 @@
 import { MouseEvent, useState } from "react";
-import * as Sentry from "@sentry/react";
 import { useOverlay } from "@toss/use-overlay";
 
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -84,7 +83,7 @@ const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) =
   const handleClickDeleteButton = (event: MouseEvent) => {
     event.stopPropagation();
     deleteThread(id);
-    Sentry.captureMessage("ui 사용 - 스레드 삭제", "info");
+    gtag("event", "ui사용_스레드_삭제");
   };
 
   const handleClickEditButton = (threadId: string) => (event: MouseEvent) => {
@@ -102,7 +101,7 @@ const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) =
       key={id}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="hover:bg-layer-3 relative cursor-pointer px-2.5 py-5"
+      className="relative cursor-pointer px-2.5 py-5 hover:bg-layer-3"
       tabIndex={0}
     >
       {editingThreadId !== id && (
@@ -120,7 +119,7 @@ const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) =
           </Avatar>
           <div className="min-w-0 flex-grow">
             <div className="flex justify-between">
-              <span tabIndex={0} className="text-content-5 text-lg font-semibold">
+              <span tabIndex={0} className="text-lg font-semibold text-content-5">
                 {author.nickname}
               </span>
               <span tabIndex={0} className="text-content-2">
@@ -129,11 +128,11 @@ const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) =
             </div>
             <div
               tabIndex={0}
-              className={cn("text-content-5 mb-10pxr whitespace-pre-wrap pr-50pxr", {
+              className={cn("mb-10pxr whitespace-pre-wrap pr-50pxr text-content-5", {
                 "line-clamp-3 truncate": !isThreadDetail,
               })}
             >
-              <span className="text-content-6 font-bold">
+              <span className="font-bold text-content-6">
                 {mentionedList && `${mentionedList} `}
               </span>
               <span className="text-content-5">{content}</span>

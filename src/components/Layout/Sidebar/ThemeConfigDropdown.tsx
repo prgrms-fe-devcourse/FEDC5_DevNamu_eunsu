@@ -1,6 +1,5 @@
 import { MoonIcon, SunIcon } from "lucide-react";
 import { PropsWithChildren } from "react";
-import * as Sentry from "@sentry/react";
 
 import {
   DropdownMenu,
@@ -23,14 +22,14 @@ export const ThemeConfigDropdown = ({ children }: PropsWithChildren) => {
     log("info", "dark");
     localStorage.setItem("theme", "dark");
     document.documentElement.classList.add("dark");
-    Sentry.captureMessage("ui 사용 - 테마 변경 옵션 띄우기 (Dark)", "info");
+    gtag("event", "ui사용_테마_변경_Dark");
   };
 
   const handleLightModeClick = () => {
     log("info", "light");
     localStorage.setItem("theme", "light");
     document.documentElement.classList.remove("dark");
-    Sentry.captureMessage("ui 사용 - 테마 변경 옵션 띄우기 (Light)", "info");
+    gtag("event", "ui사용_테마_변경_Light");
   };
 
   return (

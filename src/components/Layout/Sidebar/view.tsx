@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { LogIn, MoonIcon, SunIcon, UserRoundCog, LogOut, HelpCircle } from "lucide-react";
 import { useEffect } from "react";
 import { toast } from "sonner";
-import * as Sentry from "@sentry/react";
 import { useOverlay } from "@toss/use-overlay";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -71,14 +70,14 @@ export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props
 
   const handleProfileModalOpen = () => {
     open(({ isOpen, close }) => {
-      Sentry.captureMessage("ui 사용 - 사용자 정보 변경 모달 띄우기", "info");
+      gtag("event", "ui사용_사용자_정보_변경_모달_띄우기");
       return <ProfileModal open={isOpen} close={close} />;
     });
   };
 
   const handleInfoModalOpen = () => {
     open(({ isOpen, close }) => {
-      Sentry.captureMessage("ui 사용 - 이용 방법 모달 띄우기", "info");
+      gtag("event", "ui사용_이용_방법_모달_띄우기");
       return <InformationModal open={isOpen} close={close} />;
     });
   };
@@ -91,11 +90,11 @@ export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props
         error: AUTH_ERROR_MESSAGE.LOGOUT,
       },
     });
-    Sentry.captureMessage("retention - 로그아웃", "info");
+    gtag("event", "retention_로그아웃");
   };
 
   const handleThemeChange = () => {
-    Sentry.captureMessage("ui 사용 - 테마 변경 옵션 띄우기", "info");
+    gtag("event", "ui사용_테마_변경_옵션_띄우기");
   };
 
   /*
@@ -113,7 +112,7 @@ export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props
           {isLoggedIn ? (
             <Avatar className="flex items-center">
               <AvatarImage src={profileImgUrl} alt={nickname} />
-              <AvatarFallback className="text-content-6 bg-layer-3 dark:bg-blue-300">
+              <AvatarFallback className="bg-layer-3 text-content-6 dark:bg-blue-300">
                 {shortenedNickname}
               </AvatarFallback>
             </Avatar>

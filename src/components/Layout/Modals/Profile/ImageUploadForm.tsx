@@ -1,6 +1,5 @@
 import { Image } from "lucide-react";
 import { useRef, useState } from "react";
-import * as Sentry from "@sentry/react";
 import { AxiosError } from "axios";
 
 import { Button } from "@/components/ui/button";
@@ -64,7 +63,7 @@ const ImageUploadForm = ({ profileImage, setIsClicked }: Props) => {
       messages: {
         success: ({ image }) => {
           setPreviewImage(image);
-          Sentry.captureMessage("ui 사용 - 사용자 프로필 이미지 변경", "info");
+          gtag("event", "ui사용_사용자_프로필_이미지_변경");
           return AUTH_SUCCESS_MESSAGE.PROFILE_IMAGE_UPLOAD;
         },
         error: (error: AxiosError) => {

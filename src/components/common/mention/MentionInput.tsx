@@ -7,7 +7,6 @@ import {
   Dispatch,
   SetStateAction,
 } from "react";
-import * as Sentry from "@sentry/react";
 
 import { Input } from "@/components/ui/input.tsx";
 
@@ -49,7 +48,7 @@ const MentionInput = ({ mentionedList, onChoose }: Props) => {
       onChoose((prev) => [...prev, people]);
     }
 
-    Sentry.captureMessage("ui 사용 - Mention", "info");
+    gtag("event", "ui사용_Mention");
     emptyUserInput();
   };
 
@@ -93,7 +92,7 @@ const MentionInput = ({ mentionedList, onChoose }: Props) => {
         onKeyDown={handleKeyDown}
         ref={inputRef}
         placeholder="멘션할 대상을 선택해주세요."
-        className="text-content-5 placeholder-content-1 text-base"
+        className="text-base text-content-5 placeholder-content-1"
       />
 
       <AutoCompleteMentionList

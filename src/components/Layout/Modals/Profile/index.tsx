@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
-import * as Sentry from "@sentry/react";
 
 import SimpleBaseForm from "../Base/form";
 import SimpleBaseModal from "../Base/modal";
@@ -42,7 +41,7 @@ const ProfileModal = ({ open, close }: Props) => {
         messages: {
           success: () => {
             close();
-            Sentry.captureMessage("ui 사용 - 사용자 닉네임 변경", "info");
+            gtag("event", "ui사용_사용자_닉네임_변경");
             return AUTH_SUCCESS_MESSAGE.UPDATE_PROFILE;
           },
           error: AUTH_ERROR_MESSAGE.SERVER_ERROR,
@@ -54,7 +53,7 @@ const ProfileModal = ({ open, close }: Props) => {
         messages: {
           success: () => {
             close();
-            Sentry.captureMessage("ui 사용 - 사용자 비밀번호 변경", "info");
+            gtag("event", "ui사용_사용자_비밀번호_변경");
             return AUTH_SUCCESS_MESSAGE.UPDATE_PASSWORD;
           },
           error: AUTH_ERROR_MESSAGE.SERVER_ERROR,
@@ -66,7 +65,7 @@ const ProfileModal = ({ open, close }: Props) => {
         messages: {
           success: () => {
             close();
-            Sentry.captureMessage("ui 사용 - 사용자 프로필 변경", "info");
+            gtag("event", "ui사용_사용자 프로필 변경");
             return AUTH_SUCCESS_MESSAGE.UPDATE_ALL_PROFILE;
           },
           error: AUTH_ERROR_MESSAGE.UPDATE_ALL_PROFILE,
