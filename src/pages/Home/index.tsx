@@ -1,4 +1,5 @@
 import { LucideLoader2 } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 import useSelectedThreadStore from "@/stores/thread";
 
@@ -8,12 +9,21 @@ import ThreadDetailView from "@/components/common/thread/ThreadDetailView";
 import EmptyThread from "@/components/common/myactivate/EmptyThread";
 import ThreadList from "@/components/Home/ThreadList";
 import EditorTextArea from "@/components/common/EditorTextArea";
-import useThreadsByChannel from "@/hooks/api/useThreadsByChannel";
 import { cn } from "@/lib/utils";
+import useGetThreads from "@/apis/thread/useGetThreads";
+import useGetChannelDetails from "@/apis/channel/useGetChannelDetails";
 
 const HomePage = () => {
-  const { threads, isFetchingNextPage, hasNextPage, fetchNextPage, channelId, channelName } =
-    useThreadsByChannel();
+  // const { isFetchingNextPage, hasNextPage, fetchNextPage, channelId, channelName } =
+  //   useThreadsByChannel();
+  const location = useLocation();
+  const channelName = location.pathname.split("/").pop() || "compliment";
+  const { channelDetails, totalThread } = useGetChannelDetails(channelName);
+
+  const { threads, isFetchingNextPage, hasNextPage, fetchNextPage } = useGetThreads(
+    channelDetails?._id,
+    totalThread,
+  );
 
   const { user } = useGetUserInfo();
 
@@ -51,11 +61,13 @@ const HomePage = () => {
               channelName={channelName}
             />
           </main>
-          <EditorTextArea
-            isMention={channelName !== "incompetent"}
-            nickname={user?.nickname || "익명의 프롱이"}
-            editorProps={{ channelId }}
-          />
+          {channelDetails && (
+            <EditorTextArea
+              isMention={channelName !== "incompetent"}
+              nickname={user?.nickname || "익명의 프롱이"}
+              editorProps={{ channelId: channelDetails?._id }}
+            />
+          )}
         </div>
       </div>
 
