@@ -1,6 +1,3 @@
-import { useEffect } from "react";
-import * as Sentry from "@sentry/react";
-
 import useSelectedThreadStore from "@/stores/thread";
 
 import MyThreadDescription from "@/components/MyThreads/MyThreadDescription";
@@ -13,9 +10,6 @@ const MyThreadsPage = () => {
   const handleCloseThreadDetail = () => {
     selectThreadId(undefined);
   };
-  useEffect(() => {
-    Sentry.captureMessage("visit - MyThreadsPage", "info");
-  }, []);
 
   return (
     <div className="relative h-screen overflow-auto p-30pxr">

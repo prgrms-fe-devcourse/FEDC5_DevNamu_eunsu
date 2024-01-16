@@ -1,4 +1,3 @@
-import * as Sentry from "@sentry/react";
 import { Terminal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -12,7 +11,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 const ErrorPage = () => {
   const handleGoToHomeClick = () => {
     window.location.href = "/";
-    Sentry.captureMessage(`ui 사용 - 오류 발생 후 홈으로 이동`, "info");
+    gtag("event", `ui사용_오류_발생_후_홈으로_이동`);
   };
 
   return (
