@@ -33,7 +33,6 @@ export const getThreadsByChannelId = async (channelId: string, offset: number) =
     params: { offset, limit: THREAD_OFFSET },
   });
 
-  console.log("offset", offset);
   console.log("getThreadsByChannelId-response", response);
 
   const threads = response.map((thread) => {

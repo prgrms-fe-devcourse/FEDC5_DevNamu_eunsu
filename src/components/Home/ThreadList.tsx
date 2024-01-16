@@ -25,6 +25,9 @@ const ThreadList = ({
   const threadListItemRef = useRef(null);
   const threadListRef = useRef<HTMLUListElement>(null);
 
+  console.log("threadList-threads", threads);
+  console.log("threadList-threads-?.reverse()", threads.reverse());
+
   const handleIntersect = () => {
     if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
