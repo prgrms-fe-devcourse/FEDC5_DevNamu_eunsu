@@ -25,7 +25,6 @@ const ThreadList = ({
   const threadListItemRef = useRef(null);
   const threadListRef = useRef<HTMLUListElement>(null);
 
-  threads.reverse();
   console.log("threadList-1", threads);
 
   const handleIntersect = () => {
@@ -73,7 +72,7 @@ const ThreadList = ({
         ref={threadListRef}
         className="flex h-[calc(100vh-250px)] flex-col-reverse overflow-auto pt-80pxr"
       >
-        {threads.map((thread) => (
+        {threads.reverse().map((thread) => (
           <ThreadListItem
             key={thread._id}
             thread={thread}
