@@ -26,8 +26,9 @@ const ThreadList2 = ({
   const threadListItemRef = useRef(null);
   const threadListRef = useRef<HTMLUListElement>(null);
 
+  console.log("threadList-2-1", threads);
   const reverse = cloneDeep(threads).reverse();
-  console.log("threadList-2", reverse);
+  console.log("threadList-2-2", reverse);
 
   const handleIntersect = () => {
     if (hasNextPage && !isFetchingNextPage) {
