@@ -9,6 +9,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { log } from "@/utils/logger";
+
 import { IconCSS, IconDescriptionCSS } from "./styles";
 // TODO: [2023-12-29] 전역 상태 혹은 반영구 저장소와 연동해야 하므로 해당 Custom Hook과 연동하기
 /**
@@ -18,10 +20,16 @@ import { IconCSS, IconDescriptionCSS } from "./styles";
  */
 export const ThemeConfigDropdown = ({ children }: PropsWithChildren) => {
   const handleDarkModeClick = () => {
+    log("info", "dark");
+    localStorage.setItem("theme", "dark");
+    document.documentElement.classList.add("dark");
     Sentry.captureMessage("ui 사용 - 테마 변경 옵션 띄우기 (Dark)", "info");
   };
 
   const handleLightModeClick = () => {
+    log("info", "light");
+    localStorage.setItem("theme", "light");
+    document.documentElement.classList.remove("dark");
     Sentry.captureMessage("ui 사용 - 테마 변경 옵션 띄우기 (Light)", "info");
   };
 

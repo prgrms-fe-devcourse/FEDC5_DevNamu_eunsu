@@ -15,15 +15,15 @@ interface MentionedListProps extends ListProps {
 const AutoCompleteMentionList = ({ users, onClick, focusIndex }: MentionedListProps) => {
   if (!users.length) return "";
   return (
-    <ul className="absolute bottom-12 left-0 right-0 z-10 mt-2 overflow-hidden scroll-auto border bg-white p-2">
+    <ul className="bg-layer-1 absolute bottom-12 left-0 right-0 z-10 mt-2 overflow-hidden scroll-auto border p-2">
       {users.map(({ name, userId }, index) => {
         return (
           <li key={userId + name}>
             <p
               onClick={() => onClick({ name, userId })}
               className={cn(
-                "cursor-pointer py-2 hover:bg-gray-100 hover:font-bold",
-                focusIndex === index ? "bg-gray-100 font-bold" : "",
+                "hover:bg-layer-3 text-content-4 cursor-pointer py-2 hover:font-bold",
+                focusIndex === index ? "bg-layer-3 font-bold" : "",
               )}
             >
               {name}

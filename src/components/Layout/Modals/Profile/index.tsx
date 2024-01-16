@@ -1,12 +1,13 @@
 import { z } from "zod";
 import { toast } from "sonner";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import * as Sentry from "@sentry/react";
 
 import SimpleBaseForm from "../Base/form";
 import SimpleBaseModal from "../Base/modal";
 
 import { makeFormFields, PROFILE_FIELDS, PROFILE_FIELDS_SCHEMA } from "./config";
+import ImageUploadForm from "./ImageUploadForm";
 
 import useGetUserInfo from "@/apis/auth/useGetUserInfo";
 import usePutProfile from "@/apis/auth/usePutProfile";
@@ -22,11 +23,12 @@ const ProfileModal = ({ open, toggleOpen }: Props) => {
   const { user, isPending } = useGetUserInfo();
   const { updateUserName, updatePassword, updateAllProfile } = usePutProfile();
   const { showPromiseToast } = useToast();
+  const [isClickedUploadImage, setIsClickedUploadImage] = useState(false);
 
   if (open && !isPending && user) makeFormFields(user);
 
   useEffect(() => {
-    if (open) toast.info("닉네임과 비밀번호 설정이 각각 가능합니다.");
+    if (open) toast.info("프로필 이미지와 닉네임, 비밀번호 설정이 각각 가능합니다.");
   }, [open]);
 
   const handleSubmit = ({ name, nickname, password }: z.infer<typeof PROFILE_FIELDS_SCHEMA>) => {
@@ -70,7 +72,10 @@ const ProfileModal = ({ open, toggleOpen }: Props) => {
           error: AUTH_ERROR_MESSAGE.UPDATE_ALL_PROFILE,
         },
       });
-    } else toast.warning(AUTH_ERROR_MESSAGE.NO_CHANGE);
+    } else {
+      if (!isClickedUploadImage) toast.warning(AUTH_ERROR_MESSAGE.NO_CHANGE);
+      else setIsClickedUploadImage(false);
+    }
   };
 
   return (
@@ -87,7 +92,9 @@ const ProfileModal = ({ open, toggleOpen }: Props) => {
         onSubmit={handleSubmit}
         submitText="저장"
         cancelText="취소"
-      />
+      >
+        <ImageUploadForm profileImage={user?.image} setIsClicked={setIsClickedUploadImage} />
+      </SimpleBaseForm>
     </SimpleBaseModal>
   );
 };
