@@ -24,6 +24,7 @@ const useRegister = () => {
     } catch (error) {
       log("error", "Error reading from Register:", error);
       Sentry.captureException(error);
+      throw new Error();
     }
   };
 
