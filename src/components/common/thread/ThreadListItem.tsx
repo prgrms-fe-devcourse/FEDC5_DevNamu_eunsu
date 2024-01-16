@@ -147,15 +147,15 @@ const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) =
                 />
               )}
 
-              {comments.length > 0 && (
+              {comments?.length > 0 && (
                 <div className="mb-10pxr mt-2 w-11/12 text-sm font-bold text-blue-500">
-                  {comments.length} 개의 댓글
+                  {comments?.length} 개의 댓글
                 </div>
               )}
             </div>
             {hoveredListId === id && (
               <ThreadToolbar
-                authorId={author._id}
+                authorId={author?._id}
                 onDelete={handleClickDeleteButton}
                 handleClickLikeButton={handleClickLikeButton}
                 handleClickEditButton={handleClickEditButton(id)}

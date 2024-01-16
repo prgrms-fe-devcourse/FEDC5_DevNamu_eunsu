@@ -64,7 +64,7 @@ const ThreadDetailView = ({ threadId, onClose, className }: Props) => {
 
       <div className="mb-4">
         <ol className="flex flex-col gap-4">
-          {thread.comments.map((comment) => (
+          {thread.comments?.map((comment) => (
             <CommentListItem
               key={comment._id}
               commentInfo={comment}
@@ -81,9 +81,9 @@ const ThreadDetailView = ({ threadId, onClose, className }: Props) => {
           isMention={true}
           nickname={thread.nickname}
           editorProps={{
-            channelName: thread.channel.name,
+            channelName: thread.channel?.name,
             postId: thread._id,
-            postAuthorId: thread.author._id,
+            postAuthorId: thread.author?._id,
           }}
         />
       </div>
