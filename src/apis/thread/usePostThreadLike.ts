@@ -81,21 +81,21 @@ const usePostThreadLike = (channelId: string) => {
 
       Sentry.captureException(error);
     },
-    onSuccess: (like, threadId) => {
+    onSuccess: (likeResponse, threadId) => {
       const notificationRequest = {
         notificationType: NOTIFICATION_TYPES.LIKE,
-        notificationTypeId: like._id,
-        userId: like.user,
-        postId: like.post,
+        notificationTypeId: likeResponse._id,
+        userId: likeResponse.user,
+        postId: likeResponse.post,
       };
 
       notificationMutate(notificationRequest);
 
       queryClient.setQueryData(threads.threadDetail(threadId).queryKey, (oldThread: Thread) => {
-        const filteredLikes = oldThread.likes.filter((l) => l.user !== user?._id);
+        const filteredLikes = oldThread.likes.filter((like) => like.user !== user?._id);
         return {
           ...oldThread,
-          likes: [...filteredLikes, like],
+          likes: [...filteredLikes, likeResponse],
         };
       });
 
@@ -105,7 +105,10 @@ const usePostThreadLike = (channelId: string) => {
           if (!oldThreads) return [];
           return oldThreads.map((thread) =>
             thread._id === threadId
-              ? { ...thread, likes: [...thread.likes.filter((l) => l.user !== user?._id), like] }
+              ? {
+                  ...thread,
+                  likes: [...thread.likes.filter((like) => like.user !== user?._id), likeResponse],
+                }
               : thread,
           );
         },
