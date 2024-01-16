@@ -10,8 +10,8 @@ import { cn } from "@/lib/utils";
 import useGetThread from "@/apis/thread/useGetThread";
 import useGetUserInfo from "@/apis/auth/useGetUserInfo.ts";
 import useDeleteComment from "@/apis/comment/useDeleteComment.ts";
-import ThreadListItemSkeleton from "@/components/Skelton/ThreadListItemSkelton";
 import CommentListItemSkeleton from "@/components/Skelton/CommentListItemSkeleton";
+import ThreadDetailItemSkeleton from "@/components/Skelton/ThreaDetailItemSkeleton";
 
 interface Props {
   threadId: string | undefined;
@@ -59,7 +59,7 @@ const ThreadDetailView = ({ threadId, onClose, className }: Props) => {
           <XIcon className="text-content-1" />
         </button>
       </div>
-      {isPending && <ThreadListItemSkeleton />}
+      {isPending && <ThreadDetailItemSkeleton />}
       {thread && (
         <ThreadListItem thread={thread} channelId={thread.channel._id} isThreadDetail={true} />
       )}
