@@ -70,6 +70,7 @@ const ThreadList = ({
         ref={threadListRef}
         className="flex h-[calc(100vh-250px)] flex-col overflow-auto pt-80pxr"
       >
+        <div ref={threadListItemRef}></div>
         {threads
           ?.reverse()
           .map((thread) => (
@@ -80,7 +81,6 @@ const ThreadList = ({
               onClick={handleClickThread(thread._id)}
             />
           ))}
-        <div ref={threadListItemRef}></div>
       </ul>
     </div>
   );
