@@ -17,9 +17,16 @@ const useMentionNotification = ({ mentionedList }: Props) => {
   const { mutate: notificationMutate } = usePostNotification();
 
   const mentionNotification = ({ content, postId, channelName }: MentionNotificationProps) => {
-    mentionedList?.forEach(async (mentionUser) => {
+    if (!mentionedList) return;
+
+    mentionedList.forEach(async (mentionUser) => {
       const mentionRequest = {
-        message: JSON.stringify({ channelName, postId, content, name: mentionUser.name }),
+        message: JSON.stringify({
+          channelName,
+          postId,
+          content,
+          receiverName: mentionUser.name,
+        }),
         receiver: mentionUser.userId,
       };
 

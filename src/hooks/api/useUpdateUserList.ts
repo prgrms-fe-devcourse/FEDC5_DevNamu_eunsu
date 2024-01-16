@@ -1,13 +1,9 @@
-import { RegisterRequest } from "@/apis/auth/queryFn.ts";
 import useChangeThread from "@/hooks/api/useChangeThread.ts";
 import useUserListByDB from "@/hooks/api/useUserListByDB.ts";
 import usePostLogin from "@/apis/auth/usePostLogin";
 import usePostLogout from "@/apis/auth/usePostLogout.ts";
-import useRegister from "@/apis/auth/useRegister.ts";
 
 const useUpdateUserList = () => {
-  const { mutateAsync, isError, isSuccess, error } = useRegister();
-
   const { changeThread } = useChangeThread({
     nickname: "데브코스 관리자",
     postId: import.meta.env.VITE_ADMIN_DB,
@@ -16,15 +12,9 @@ const useUpdateUserList = () => {
 
   const { login } = usePostLogin();
   const { userListByDB } = useUserListByDB();
-  const { mutate: logoutMutate } = usePostLogout();
+  const { mutate: logout } = usePostLogout();
 
-  const updateUserList = async (body: RegisterRequest) => {
-    const {
-      user: { _id },
-    } = await mutateAsync(body);
-
-    const { name } = body.fullName;
-
+  const updateUserList = async ({ _id, name }: { _id: string; name: string }) => {
     const newUserList = userListByDB.map((user) =>
       user.name === name ? { ...user, userId: _id } : user,
     );
@@ -39,16 +29,13 @@ const useUpdateUserList = () => {
       content: JSON.stringify(newUserList),
     });
 
-    logoutMutate();
+    logout();
 
     return name;
   };
 
   return {
     updateUserList,
-    isRegisterSuccess: isSuccess,
-    isRegisterError: isError,
-    registerError: error,
   };
 };
 

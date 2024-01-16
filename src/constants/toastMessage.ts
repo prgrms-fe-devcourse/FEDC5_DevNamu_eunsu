@@ -25,8 +25,8 @@ export const AUTH_SUCCESS_MESSAGE = {
   LOGIN(nickname: string) {
     return `어서오세요, ${nickname}님!`;
   },
-  REGISTER(name: string) {
-    return `환영합니다, ${name}님!`;
+  REGISTER(name: string | undefined) {
+    return "환영합니다" + (name ? `${name}님!` : "");
   },
 };
 

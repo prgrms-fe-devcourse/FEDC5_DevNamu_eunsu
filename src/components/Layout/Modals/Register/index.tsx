@@ -13,7 +13,6 @@ import LoginModal from "../Login";
 
 import { REGISTER_FIELDS, REGISTER_FIELDS_SCHEMA } from "./config";
 
-import useUpdateUserList from "@/hooks/api/useUpdateUserList.ts";
 import useUserListByDB from "@/hooks/api/useUserListByDB.ts";
 import { ANONYMOUS_NICKNAME } from "@/constants/commonConstants.ts";
 import {
@@ -22,6 +21,7 @@ import {
   AUTH_SUCCESS_MESSAGE,
 } from "@/constants/toastMessage";
 import useToast from "@/hooks/common/useToast";
+import useRegister from "@/hooks/api/useRegister.ts";
 
 interface Props {
   open: boolean;
@@ -29,7 +29,7 @@ interface Props {
 }
 
 const RegisterModal = ({ open, close }: Props) => {
-  const { updateUserList, isRegisterSuccess } = useUpdateUserList();
+  const { register, isRegisterSuccess } = useRegister();
   const { userListByDB } = useUserListByDB();
   const { showPromiseToast } = useToast();
   const { open: openModal } = useOverlay();
@@ -58,7 +58,7 @@ const RegisterModal = ({ open, close }: Props) => {
     }
     const fullName = { name, nickname: nickname || ANONYMOUS_NICKNAME };
     showPromiseToast({
-      promise: updateUserList({ email, fullName, password }),
+      promise: register({ email, fullName, password }),
       messages: {
         success: (name) => {
           // TODO: handleLoginClick()이 여기서 안 먹는 이유 찾기 (2024-01-10)
