@@ -19,7 +19,7 @@ const usePostThreadLike = (channelId: string) => {
   const { user } = useGetUserInfo();
   const { mutate: notificationMutate } = usePostNotification();
 
-  const { mutate, isPending, isError } = useMutation<
+  const { mutate, ...rest } = useMutation<
     Like,
     Error,
     string,
@@ -124,11 +124,7 @@ const usePostThreadLike = (channelId: string) => {
     },
   });
 
-  return {
-    likeThread: mutate,
-    isPending,
-    isError,
-  };
+  return { likeThread: mutate, ...rest };
 };
 
 export default usePostThreadLike;

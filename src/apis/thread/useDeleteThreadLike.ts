@@ -16,7 +16,7 @@ interface Parameters {
 const useDeleteThreadLike = ({ channelId, threadId }: Parameters) => {
   const queryClient = useQueryClient();
 
-  const { mutate, isPending, isError } = useMutation({
+  const { mutate, ...rest } = useMutation({
     mutationFn: (likeId: string) => deleteThreadLike(likeId),
     onMutate: async (likeId) => {
       await queryClient.cancelQueries({
@@ -96,11 +96,7 @@ const useDeleteThreadLike = ({ channelId, threadId }: Parameters) => {
     },
   });
 
-  return {
-    removeLike: mutate,
-    isPending,
-    isError,
-  };
+  return { removeLike: mutate, ...rest };
 };
 
 export default useDeleteThreadLike;
