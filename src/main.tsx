@@ -15,6 +15,13 @@ import { OverlayProvider } from "@toss/use-overlay";
 import App from "./App";
 import ErrorPage from "./pages/Error";
 
+const usingSystemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+if (localStorage.theme === "dark" || (!localStorage.theme && usingSystemDark)) {
+  document.documentElement.classList.add("dark");
+} else {
+  document.documentElement.classList.remove("dark");
+}
+
 Sentry.init({
   dsn: import.meta.env.VITE_SENTRY_DSN,
   integrations: [

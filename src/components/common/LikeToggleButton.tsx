@@ -17,10 +17,8 @@ const LikeToggleButton = ({ clicked, onClick, numberOfLikes }: LikeToggleButtonP
     <Button
       onClick={onClick}
       className={cn(
-        "h-7 select-none gap-1 rounded-2xl border-2 border-gray-100 bg-gray-100 px-2 text-xs text-gray-600",
-        clicked
-          ? "border-sky-500 bg-blue-100 font-bold text-sky-700 hover:bg-blue-200"
-          : "hover:border-gray-600 hover:bg-white",
+        "bg-layer-4 border-layer-4 text-content-5 hover:bg-layer-6 hover:border-content-4 h-7 select-none gap-1 rounded-2xl border-2 px-2 text-xs",
+        clicked && "border-sky-500 bg-blue-100 font-bold text-sky-700 hover:bg-blue-200",
       )}
     >
       <img src={thumbsUpIcon} className="h-4 w-4" />

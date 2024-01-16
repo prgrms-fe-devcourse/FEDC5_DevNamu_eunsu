@@ -101,7 +101,9 @@ export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props
           {isLoggedIn ? (
             <Avatar className="flex items-center">
               <AvatarImage src={profileImgUrl} alt={nickname} />
-              <AvatarFallback>{shortenedNickname}</AvatarFallback>
+              <AvatarFallback className="text-content-6 bg-layer-3 dark:bg-blue-300">
+                {shortenedNickname}
+              </AvatarFallback>
             </Avatar>
           ) : (
             <SidebarButton label="로그인" Icon={LogIn} onClick={handleLoginModalOpen} />
@@ -116,13 +118,13 @@ export const SidebarView = ({ pathname, user, hasNewNotification, theme }: Props
                   className={cn(
                     "relative",
                     IconWrappingCSS,
-                    isSelectedPage && "bg-[rgba(124,40,82,0.25)] text-2xl",
+                    isSelectedPage && "bg-[rgba(124,40,82,0.25)] text-2xl dark:bg-white/10",
                   )}
                 >
                   <Icon className={IconCSS} />
                   {/* TODO: [2023-12-29] 지금처럼 url로 분기하지 않고 showBubble로 추상화하기 */}
                   {url === "/my-notifications" && hasNewNotification && (
-                    <div className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-2xl bg-[rgba(124,40,82,0.75)] text-xs text-white"></div>
+                    <div className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-2xl bg-[rgba(124,40,82,0.75)] text-xs text-foreground dark:bg-white/20"></div>
                   )}
                 </div>
                 <span className={IconDescriptionCSS}>{name}</span>
