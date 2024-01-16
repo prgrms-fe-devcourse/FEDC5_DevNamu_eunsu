@@ -17,7 +17,7 @@ const useThreadsByChannel = () => {
     isChannelError: channelQuery.isError,
     channelError: channelQuery.error,
     threads: threadsQuery.threads,
-    isThreadsLoading: threadsQuery.isLoading,
+    isThreadsPending: threadsQuery.isPending,
     isThreadsError: threadsQuery.isError,
     threadsError: threadsQuery.error,
   };
