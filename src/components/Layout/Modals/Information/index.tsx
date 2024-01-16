@@ -5,17 +5,17 @@ import { cn } from "@/lib/utils";
 
 interface Props {
   open: boolean;
-  toggleOpen: (open: boolean) => void;
+  close: (open: boolean) => void;
 }
 
 const titleCSS = "mb-2 mt-5 text-base font-bold text-lime-600";
 
-const InformationModal = ({ open, toggleOpen }: Props) => {
+const InformationModal = ({ open, close }: Props) => {
   return (
     <SimpleBaseModal
       dialogOptions={{
         open,
-        onOpenChange: toggleOpen,
+        onOpenChange: close,
       }}
       title="데나무숲 이용 안내"
     >
