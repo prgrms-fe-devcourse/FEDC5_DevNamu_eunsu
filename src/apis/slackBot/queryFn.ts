@@ -33,10 +33,9 @@ const createMessage = ({ mentionedList }: Props) => {
 };
 
 const createAxios = (message: string) => {
-  const url = import.meta.env.VITE_CORS_PROXY + import.meta.env.VITE_SLECT_HOOKS_URL;
   return axios({
     method: "post",
-    url,
+    url: import.meta.env.VITE_CORS_PROXY + import.meta.env.VITE_SLECT_HOOKS_URL,
     headers: {
       "Content-Type": "application/json",
       "x-cors-api-key": import.meta.env.VITE_CORS_PROXY_KEY,
