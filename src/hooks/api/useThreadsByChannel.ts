@@ -13,6 +13,8 @@ const useThreadsByChannel = () => {
     channelQuery.channelDetails?.posts.length || 0,
   );
 
+  console.log("threadsQuery", threadsQuery);
+
   return {
     channelName,
     totalThreads: channelQuery.channelDetails?.posts.length || 0,

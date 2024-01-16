@@ -15,6 +15,7 @@ const HomePage = () => {
   const { threads, isFetchingNextPage, hasNextPage, fetchNextPage, channelId, channelName } =
     useThreadsByChannel();
 
+  console.log("home-threads", threads);
   const { user } = useGetUserInfo();
 
   const { selectedThreadId, selectThreadId } = useSelectedThreadStore((state) => state);

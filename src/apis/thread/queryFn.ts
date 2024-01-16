@@ -33,6 +33,9 @@ export const getThreadsByChannelId = async (channelId: string, offset: number) =
     params: { offset, limit: THREAD_OFFSET },
   });
 
+  console.log("offset", offset);
+  console.log("getThreadsByChannelId-response", response);
+
   const threads = response.map((thread) => {
     const { name } = parseFullName(thread.author.fullName);
     const { content, nickname, mentionedList } = parseTitleOrComment(thread.title);
