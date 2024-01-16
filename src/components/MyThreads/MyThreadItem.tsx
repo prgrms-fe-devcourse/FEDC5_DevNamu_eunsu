@@ -1,4 +1,4 @@
-import { formatDate } from "@/utils/formatDate";
+import { formatDateFns } from "@/utils/formatDateFns";
 
 import MyPost from "./MyPost";
 import MyComment from "./MyComment";
@@ -21,7 +21,7 @@ const channelMap = {
 };
 
 const MyThreadItem = ({ title, type, channel, createdAt, comment, onClick }: Props) => {
-  const createdDate = formatDate(createdAt);
+  const createdDate = formatDateFns(createdAt);
   const headerText = channel ? `#${channelMap[channel]}게시판` : "#작성한 댓글";
 
   return (

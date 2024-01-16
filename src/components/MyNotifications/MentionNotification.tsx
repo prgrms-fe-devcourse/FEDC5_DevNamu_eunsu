@@ -1,4 +1,4 @@
-import { formatDate } from "@/utils/formatDate.ts";
+import { formatDateFns } from "@/utils/formatDateFns";
 
 import { MyNotificationContent } from "@/components/MyNotifications/MyNotificationItem.tsx";
 
@@ -8,7 +8,7 @@ interface Props {
 }
 
 const MentionNotification = ({ message, createdAt }: Props) => {
-  const createdDate = formatDate(createdAt);
+  const createdDate = formatDateFns(createdAt);
   const { channelName, postId, content } = JSON.parse(message);
 
   return (

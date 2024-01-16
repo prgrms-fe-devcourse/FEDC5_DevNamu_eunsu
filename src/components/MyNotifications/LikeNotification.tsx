@@ -1,4 +1,4 @@
-import { formatDate } from "@/utils/formatDate.ts";
+import { formatDateFns } from "@/utils/formatDateFns";
 
 import { LikeByNotification } from "@/types/thread";
 
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const LikeNotification = ({ createdAt, like }: Props) => {
-  const createdDate = formatDate(createdAt);
+  const createdDate = formatDateFns(createdAt);
 
   const { content } = JSON.parse(like.post.title);
 
