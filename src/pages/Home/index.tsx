@@ -38,8 +38,8 @@ const HomePage = () => {
         </div>
 
         <div className="w-full max-w-4xl px-4">
-          <main className="flex min-h-[calc(100vh-300px)] flex-col rounded-sm border border-t-0 border-solid">
-            <div className="flex-column min-h-full flex-1 items-center justify-center">
+          <main className="flex min-h-[calc(100vh-300px)] flex-col rounded-sm border border-t-0 border-layer-4">
+            <div className="flex min-h-full flex-1 items-center justify-center">
               {!threads && <ThreadListSkeleton count={10} />}
             </div>
             {threads && <ThreadList threads={threads} />}
@@ -54,7 +54,7 @@ const HomePage = () => {
       <div>
         {selectedThreadId && (
           <ThreadDetailView
-            className="fixed right-0 top-0 bg-white"
+            className="fixed right-0 top-0"
             threadId={selectedThreadId}
             onClose={handleCloseThreadDetail}
           />

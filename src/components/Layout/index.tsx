@@ -7,7 +7,7 @@ const Layout = () => {
   return (
     <div className="bg flex h-screen w-screen flex-row">
       <Sidebar />
-      <div className="w-full bg-white">
+      <div className="bg-layer-1 w-full">
         <Outlet />
       </div>
     </div>

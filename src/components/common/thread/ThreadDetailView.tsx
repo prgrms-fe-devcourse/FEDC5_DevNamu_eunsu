@@ -43,23 +43,23 @@ const ThreadDetailView = ({ threadId, onClose, className }: Props) => {
     <div
       onClick={handleClickDetailInner}
       className={cn(
-        "flex h-screen min-w-500pxr max-w-500pxr list-none flex-col overflow-auto border-l border-gray-200 px-4 py-5 shadow-xl",
+        "bg-layer-1 border-layer-7 flex h-screen min-w-500pxr max-w-500pxr list-none flex-col overflow-auto border-l px-4 py-5 shadow-xl",
         className,
       )}
     >
       <div className="flex items-center justify-between p-2">
         <div className="flex items-center gap-2">
-          <h2 className="text-2xl font-bold text-gray-700">스레드</h2>
-          <p className="text-sm text-muted-foreground">#{channelMap[thread.channel?.name]}게시판</p>
+          <h2 className="text-content-3 text-2xl font-bold">스레드</h2>
+          <p className="text-content-1 text-sm">#{channelMap[thread.channel?.name]}게시판</p>
         </div>
         <button onClick={onClose}>
-          <XIcon className="text-gray-500" />
+          <XIcon className="text-content-1" />
         </button>
       </div>
       <ThreadListItem thread={thread} channelId={thread.channel._id} isThreadDetail={true} />
       <div className="mx-2 flex items-center gap-2">
-        <span className="text-gray-500">{thread.comments.length}개의 댓글</span>
-        <hr className="flex-1" />
+        <span className="text-content-1">{thread.comments.length}개의 댓글</span>
+        <hr className="border-layer-6 h-0 flex-1 border-0 border-b-[1px]" />
       </div>
 
       <div className="mb-4">

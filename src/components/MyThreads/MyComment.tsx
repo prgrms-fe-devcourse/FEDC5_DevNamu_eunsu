@@ -9,7 +9,7 @@ const MyComment = ({ comment }: Props) => {
 
   return (
     <li>
-      <div className="mb-2 pb-3 text-lg font-normal">{content}</div>
+      <div className="mb-2 pb-3 text-lg font-normal text-content-5">{content}</div>
     </li>
   );
 };
