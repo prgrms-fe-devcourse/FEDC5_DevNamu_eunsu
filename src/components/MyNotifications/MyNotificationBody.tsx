@@ -2,6 +2,7 @@ import { Conversation, Notification } from "@/types/notification";
 import { LikeByNotification } from "@/types/thread.ts";
 
 import EmptyThread from "../common/myactivate/EmptyThread.tsx";
+import MyThreadSkeleton from "../Skelton/MyThreadSkeleton.tsx";
 
 import LikeNotification from "./LikeNotification";
 
@@ -31,7 +32,7 @@ const isMention = (props: Notification | Conversation): props is Conversation =>
 const MyNotificationBody = () => {
   const { listedNotificationAndMention, isPending } = useListedNotificationAndMention();
   if (isPending) {
-    return <span>Loading...</span>;
+    return <MyThreadSkeleton count={15} />;
   }
   if (listedNotificationAndMention.length === 0) {
     return <EmptyThread type="notification" className="h-[calc(100vh-7rem)] min-h-[20rem]" />;

@@ -26,12 +26,12 @@ const MyThreadItem = ({ title, type, channel, createdAt, comment, onClick }: Pro
 
   return (
     <ul
-      className="border-b-layer-4 hover:bg-layer-3 cursor-pointer list-none border-b-[1px]"
+      className="cursor-pointer list-none border-b-[1px] border-b-layer-4 hover:bg-layer-3"
       onClick={onClick}
     >
-      <div className="flex items-center justify-between gap-6 pt-3">
-        <p className="text-content-1 text-sm">{headerText}</p>
-        <p className="text-content-2 text-sm font-extralight">{createdDate}</p>
+      <div className="flex items-center justify-between gap-6 pb-2 pt-5">
+        <p className="text-sm text-content-1">{headerText}</p>
+        <p className="text-s font-extralight text-content-2">{createdDate}</p>
       </div>
       {type === "post" ? (
         <MyPost title={title || "잘못된 데이터 입니다."} />

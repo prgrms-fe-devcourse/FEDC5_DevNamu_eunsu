@@ -40,14 +40,21 @@ export const MyNotificationContent = ({
 
   return (
     <li
-      className="border-b-layer-4 hover:bg-layer-3 cursor-pointer border-b-[1px] pb-3"
+      className="cursor-pointer border-b-[1px] border-b-layer-4 hover:bg-layer-3"
       onClick={handleClick(postId)}
     >
-      <div className="flex items-center justify-between gap-6 pt-3">
-        <p className="text-content-1 pb-1 text-sm">{title}</p>
-        <p className="text-content-2 text-sm font-extralight">{createdDate}</p>
+      <div className="flex items-center justify-between gap-6 pb-2 pt-5">
+        <p className="text-m text-content-1">{title}</p>
+        <p className="text-s font-extralight text-content-2">{createdDate}</p>
       </div>
-      <div className={cn("text-content-5", isMention ? "font-bold" : "mb-1")}>{content}</div>
+      <div
+        className={cn(
+          "text-content-5",
+          isMention ? "mb-2 pb-3 text-lg font-bold" : "mb-2 pb-3 text-lg",
+        )}
+      >
+        {content}
+      </div>
     </li>
   );
 };
