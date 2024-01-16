@@ -35,12 +35,12 @@ const ThreadToolbar = ({
   return (
     <section
       className={cn(
-        "flex items-center justify-between rounded-md border border-gray-300 bg-white",
+        "border-layer-5 bg-layer-1 flex items-center justify-between rounded-md border",
         className,
       )}
     >
       <button
-        className="relative p-2 hover:bg-gray-100"
+        className="hover:bg-layer-4 relative p-2"
         aria-label="좋아요"
         onMouseEnter={handleMouseEnter("like")}
         onMouseLeave={handleMouseLeave}
@@ -55,7 +55,7 @@ const ThreadToolbar = ({
         )}
       </button>
       <button
-        className="relative p-2 hover:bg-gray-100"
+        className="hover:bg-layer-4 relative p-2"
         aria-label="댓글 열기"
         onMouseEnter={handleMouseEnter("comment")}
         onMouseLeave={handleMouseLeave}
@@ -71,7 +71,7 @@ const ThreadToolbar = ({
       {user?._id === authorId && (
         <>
           <button
-            className="relative p-2 hover:bg-gray-100"
+            className="hover:bg-layer-4 relative p-2"
             aria-label="편집"
             onMouseEnter={handleMouseEnter("edit")}
             onMouseLeave={handleMouseLeave}
@@ -86,7 +86,7 @@ const ThreadToolbar = ({
             )}
           </button>
           <button
-            className="relative p-2 hover:bg-gray-100"
+            className="hover:bg-layer-4 relative p-2"
             aria-label="삭제"
             onMouseEnter={handleMouseEnter("delete")}
             onMouseLeave={handleMouseLeave}
@@ -104,7 +104,7 @@ const ThreadToolbar = ({
       )}
 
       <button
-        className="relative overflow-x-visible p-2 text-red-500 hover:bg-gray-100"
+        className="hover:bg-layer-4 relative overflow-x-visible p-2 text-red-500"
         aria-label="신고"
         onMouseEnter={handleMouseEnter("report")}
         onMouseLeave={handleMouseLeave}

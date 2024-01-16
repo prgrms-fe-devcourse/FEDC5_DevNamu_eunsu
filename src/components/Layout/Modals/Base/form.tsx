@@ -80,7 +80,7 @@ const SimpleBaseForm = ({
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{label}</FormLabel>
+                <FormLabel className="text-content-6">{label}</FormLabel>
                 <FormControl>
                   <Input
                     {...props} // type, autoFocus, placeholder, autoComplete
@@ -94,7 +94,7 @@ const SimpleBaseForm = ({
                   />
                 </FormControl>
                 <FormDescription>{desc}</FormDescription>
-                <FormMessage />
+                <FormMessage className="text-red-600 dark:text-red-400" />
               </FormItem>
             )}
           />
@@ -102,7 +102,7 @@ const SimpleBaseForm = ({
         <div className="flex items-center justify-center">
           <Button type="submit">{submitText}</Button>
           {cancelText && (
-            <DialogClose className="ml-2 rounded-md border bg-background px-4 py-2.5 text-sm font-medium">
+            <DialogClose className="bg-danger ml-2 rounded-md border px-4 py-2.5 text-sm font-medium">
               {cancelText}
             </DialogClose>
           )}

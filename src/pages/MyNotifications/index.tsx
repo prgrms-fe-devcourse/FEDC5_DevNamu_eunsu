@@ -34,7 +34,7 @@ const MyNotificationsPage = () => {
         <ThreadDetailView
           threadId={selectedThreadId}
           onClose={handleCloseThreadDetail}
-          className="fixed right-0 top-0 bg-white"
+          className="fixed right-0 top-0"
         />
       )}
     </div>

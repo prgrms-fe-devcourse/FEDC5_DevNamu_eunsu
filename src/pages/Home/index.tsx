@@ -37,7 +37,7 @@ const HomePage = () => {
           <ChannelNavigationMenu />
         </div>
         <div className="w-full max-w-4xl px-4">
-          <main className="flex min-h-[calc(100vh-300px)] flex-col rounded-sm border border-t-0 border-solid">
+          <main className="border-layer-4 flex min-h-[calc(100vh-300px)] flex-col rounded-sm border border-t-0">
             <div className="flex min-h-full flex-1 items-center justify-center">
               {!threads && (
                 <EmptyThread type="threads" className="min-h-[calc(100vh-250px)] w-full" />
@@ -55,7 +55,7 @@ const HomePage = () => {
       <div>
         {selectedThreadId && (
           <ThreadDetailView
-            className="fixed right-0 top-0 bg-white"
+            className="fixed right-0 top-0"
             threadId={selectedThreadId}
             onClose={handleCloseThreadDetail}
           />

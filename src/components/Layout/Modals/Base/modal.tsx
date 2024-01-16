@@ -20,7 +20,7 @@ const SimpleBaseModal = ({ dialogOptions = {}, title, header, children }: Props)
     <Dialog {...dialogOptions}>
       <DialogContent
         onOpenAutoFocus={(e) => e.preventDefault()}
-        className="max-h-[800px] overflow-y-auto sm:max-w-[425px]"
+        className="bg-layer-1 max-h-[800px] overflow-y-auto sm:max-w-[425px]"
       >
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>

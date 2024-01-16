@@ -4,8 +4,8 @@ import { cn } from "@/lib/utils";
 
 const getNavLinkClass = (isActive: boolean) => {
   return cn(
-    `text-gray-600 rounded-t-md hover:bg-gray-100 hover:text-gray-800 text-center text-lg font-medium px-4 py-3 border border-b-0`,
-    isActive ? "bg-gray-100" : "",
+    `text-content-1 border border-layer-4 border-b-0 bg-layer-3 rounded-t-md hover:bg-layer-3 text-center text-lg font-medium px-4 py-3`,
+    isActive && "bg-layer-1 text-content-4",
   );
 };
 
@@ -19,7 +19,7 @@ const ChannelNavigationMenu = () => {
   ];
 
   return (
-    <nav className="border-b-2 border-gray-500 py-2">
+    <nav className="border-layer-4 border-b-2 py-2">
       <ul className="flex">
         {channels.map((channel) => (
           <li key={channel.path}>
