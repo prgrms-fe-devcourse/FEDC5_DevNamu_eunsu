@@ -80,7 +80,7 @@ const ThreadList = ({
               onClick={handleClickThread(thread._id)}
             />
           ))}
-        {/* <div ref={threadListItemRef}></div> */}
+        <div ref={threadListItemRef}></div>
       </ul>
     </div>
   );
