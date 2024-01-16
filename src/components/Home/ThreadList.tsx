@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useRef } from "react";
 
 import useSelectedThreadStore from "@/stores/thread";
 
@@ -20,7 +20,7 @@ const ThreadList = ({
   hasNextPage,
   fetchNextPage,
   threads,
-  channelName,
+  // channelName,
 }: Props) => {
   const threadListItemRef = useRef(null);
   const threadListRef = useRef<HTMLUListElement>(null);
@@ -38,31 +38,31 @@ const ThreadList = ({
 
   useIntersectionObserver({ target: threadListItemRef, handleIntersect });
 
-  const handleScroll = useCallback(() => {
-    if (threadListRef.current) {
-      localStorage.setItem(
-        `scrollPosition-${channelName}`,
-        String(threadListRef.current.scrollTop),
-      );
-    }
-  }, [channelName]);
+  // const handleScroll = useCallback(() => {
+  //   if (threadListRef.current) {
+  //     localStorage.setItem(
+  //       `scrollPosition-${channelName}`,
+  //       String(threadListRef.current.scrollTop),
+  //     );
+  //   }
+  // }, [channelName]);
 
-  useEffect(() => {
-    const savedScrollPosition = localStorage.getItem(`scrollPosition-${channelName}`);
-    if (savedScrollPosition && threadListRef.current) {
-      threadListRef.current.scrollTop = parseInt(savedScrollPosition, 10);
-    }
+  // useEffect(() => {
+  //   const savedScrollPosition = localStorage.getItem(`scrollPosition-${channelName}`);
+  //   if (savedScrollPosition && threadListRef.current) {
+  //     threadListRef.current.scrollTop = parseInt(savedScrollPosition, 10);
+  //   }
 
-    if (threadListRef.current) {
-      threadListRef.current.addEventListener("scroll", handleScroll);
-    }
+  //   if (threadListRef.current) {
+  //     threadListRef.current.addEventListener("scroll", handleScroll);
+  //   }
 
-    return () => {
-      if (threadListRef.current) {
-        threadListRef.current.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, [channelName, handleScroll]);
+  //   return () => {
+  //     if (threadListRef.current) {
+  //       threadListRef.current.removeEventListener("scroll", handleScroll);
+  //     }
+  //   };
+  // }, [channelName, handleScroll]);
 
   return (
     <div>
