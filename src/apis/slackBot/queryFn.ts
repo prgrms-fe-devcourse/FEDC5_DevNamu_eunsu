@@ -6,8 +6,8 @@ interface Props {
   mentionedList: UserDBProps[];
 }
 export const postMessageSlackBot = ({ mentionedList }: Props) => {
-  const memberList = [] as UserDBProps[];
-  const notMemberList = [] as UserDBProps[];
+  const memberList: UserDBProps[] = [];
+  const notMemberList: UserDBProps[] = [];
 
   mentionedList.forEach((people) => {
     people.userId === import.meta.env.VITE_ADMIN_USERID
