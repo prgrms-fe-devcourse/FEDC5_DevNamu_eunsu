@@ -3,11 +3,13 @@ import { useCallback, useEffect } from "react";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
 import * as Sentry from "@sentry/react";
+import { useOverlay } from "@toss/use-overlay";
 
 import { Button } from "@/components/ui/button";
 
 import SimpleBaseForm from "../Base/form";
 import SimpleBaseModal from "../Base/modal";
+import LoginModal from "../Login";
 
 import { REGISTER_FIELDS, REGISTER_FIELDS_SCHEMA } from "./config";
 
@@ -23,19 +25,21 @@ import useRegister from "@/hooks/api/useRegister.ts";
 
 interface Props {
   open: boolean;
-  toggleOpen: (open: boolean) => void;
-  openLoginModal: (open: boolean) => void;
+  close: () => void;
 }
 
-const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
+const RegisterModal = ({ open, close }: Props) => {
   const { register, isRegisterSuccess } = useRegister();
   const { userListByDB } = useUserListByDB();
   const { showPromiseToast } = useToast();
+  const { open: openModal } = useOverlay();
 
   const handleLoginClick = useCallback(() => {
-    toggleOpen(false);
-    openLoginModal(true);
-  }, [toggleOpen, openLoginModal]);
+    close();
+    openModal(({ isOpen, close }) => {
+      return <LoginModal open={isOpen} close={close} />;
+    });
+  }, [close]);
 
   useEffect(() => {
     if (isRegisterSuccess) {
@@ -74,7 +78,7 @@ const RegisterModal = ({ open, toggleOpen, openLoginModal }: Props) => {
     <SimpleBaseModal
       dialogOptions={{
         open,
-        onOpenChange: toggleOpen,
+        onOpenChange: close,
       }}
       title="회원가입"
       header={

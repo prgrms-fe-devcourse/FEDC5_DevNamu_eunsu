@@ -7,28 +7,39 @@ import { log } from "@/utils/logger";
 import { Like, Thread } from "@/types/thread";
 
 import useGetUserInfo from "../auth/useGetUserInfo";
+import { usePostNotification } from "../notification/usePostNotification";
 
 import { postThreadLike } from "./queryFn";
 import threads from "./queryKey";
 
+import { NOTIFICATION_TYPES } from "@/constants/notification";
+
 const usePostThreadLike = (channelId: string) => {
   const queryClient = useQueryClient();
   const { user } = useGetUserInfo();
+  const { mutate: notificationMutate } = usePostNotification();
 
-  const { mutate, isPending, isError } = useMutation<
+  const { mutate, ...rest } = useMutation<
     Like,
     Error,
     string,
-    { previousThread: Thread | undefined }
+    { previousThread: Thread | undefined; previousThreads: Thread[] | undefined }
   >({
     mutationFn: (threadId: string) => postThreadLike(threadId),
     onMutate: async (threadId) => {
       await queryClient.cancelQueries({
         queryKey: threads.threadDetail(threadId).queryKey,
       });
+      await queryClient.cancelQueries({
+        queryKey: threads.threadsByChannel(channelId).queryKey,
+      });
 
       const previousThread = queryClient.getQueryData<Thread>(
         threads.threadDetail(threadId).queryKey,
+      );
+
+      const previousThreads = queryClient.getQueryData<Thread[]>(
+        threads.threadsByChannel(channelId).queryKey,
       );
 
       const optimisticLike = {
@@ -41,19 +52,68 @@ const usePostThreadLike = (channelId: string) => {
 
       queryClient.setQueryData(threads.threadDetail(threadId).queryKey, (oldThread: Thread) => ({
         ...oldThread,
-        likes: oldThread?.likes ? [...oldThread.likes, optimisticLike] : [optimisticLike],
+        likes: oldThread ? [...oldThread.likes, optimisticLike] : [optimisticLike],
       }));
 
-      return { previousThread };
+      queryClient.setQueryData(
+        threads.threadsByChannel(channelId).queryKey,
+        (oldThreads: Thread[] | undefined) => {
+          if (!oldThreads) return [];
+
+          return oldThreads.map((thread) =>
+            thread._id === threadId
+              ? { ...thread, likes: [...thread.likes, optimisticLike] }
+              : thread,
+          );
+        },
+      );
+
+      return { previousThread, previousThreads };
     },
     onError: (error, threadId, context) => {
       log("info", threadId, context);
 
       queryClient.setQueryData(threads.threadDetail(threadId).queryKey, context?.previousThread);
+      queryClient.setQueryData(
+        threads.threadsByChannel(channelId).queryKey,
+        context?.previousThreads,
+      );
 
       Sentry.captureException(error);
     },
-    onSuccess: (_, threadId) => {
+    onSuccess: (likeResponse, threadId) => {
+      const notificationRequest = {
+        notificationType: NOTIFICATION_TYPES.LIKE,
+        notificationTypeId: likeResponse._id,
+        userId: likeResponse.user,
+        postId: likeResponse.post,
+      };
+
+      notificationMutate(notificationRequest);
+
+      queryClient.setQueryData(threads.threadDetail(threadId).queryKey, (oldThread: Thread) => {
+        const filteredLikes = oldThread.likes.filter((like) => like.user !== user?._id);
+        return {
+          ...oldThread,
+          likes: [...filteredLikes, likeResponse],
+        };
+      });
+
+      queryClient.setQueryData(
+        threads.threadsByChannel(channelId).queryKey,
+        (oldThreads: Thread[] | undefined) => {
+          if (!oldThreads) return [];
+          return oldThreads.map((thread) =>
+            thread._id === threadId
+              ? {
+                  ...thread,
+                  likes: [...thread.likes.filter((like) => like.user !== user?._id), likeResponse],
+                }
+              : thread,
+          );
+        },
+      );
+
       queryClient.invalidateQueries({
         queryKey: threads.threadDetail(threadId).queryKey,
       });
@@ -64,11 +124,7 @@ const usePostThreadLike = (channelId: string) => {
     },
   });
 
-  return {
-    likeThread: mutate,
-    isPending,
-    isError,
-  };
+  return { likeThread: mutate, ...rest };
 };
 
 export default usePostThreadLike;
