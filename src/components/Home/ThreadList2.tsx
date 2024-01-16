@@ -26,9 +26,9 @@ const ThreadList2 = ({
   const threadListItemRef = useRef(null);
   const threadListRef = useRef<HTMLUListElement>(null);
 
-  console.log("threadList-2-1", threads);
+  console.log("2-1", threads);
   const reverse = cloneDeep(threads).reverse();
-  console.log("threadList-2-2", reverse);
+  console.log("2-2", reverse);
 
   const handleIntersect = () => {
     if (hasNextPage && !isFetchingNextPage) {
@@ -75,14 +75,17 @@ const ThreadList2 = ({
         ref={threadListRef}
         className="flex h-[calc(100vh-250px)] flex-col-reverse overflow-auto pt-80pxr"
       >
-        {reverse.map((thread) => (
-          <ThreadListItem
-            key={thread._id}
-            thread={thread}
-            channelId={thread.channel._id}
-            onClick={handleClickThread(thread._id)}
-          />
-        ))}
+        {reverse.map((thread, idx) => {
+          idx === 0 && console.log("2-3", reverse);
+          return (
+            <ThreadListItem
+              key={thread._id}
+              thread={thread}
+              channelId={thread.channel._id}
+              onClick={handleClickThread(thread._id)}
+            />
+          );
+        })}
         <div ref={threadListItemRef}></div>
       </ul>
     </div>

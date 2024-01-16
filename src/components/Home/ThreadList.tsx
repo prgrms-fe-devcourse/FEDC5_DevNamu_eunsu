@@ -72,14 +72,17 @@ const ThreadList = ({
         ref={threadListRef}
         className="flex h-[calc(100vh-250px)] flex-col-reverse overflow-auto pt-80pxr"
       >
-        {threads.reverse().map((thread) => (
-          <ThreadListItem
-            key={thread._id}
-            thread={thread}
-            channelId={thread.channel._id}
-            onClick={handleClickThread(thread._id)}
-          />
-        ))}
+        {threads.reverse().map((thread, idx) => {
+          idx === 0 && console.log("1-2", threads);
+          return (
+            <ThreadListItem
+              key={thread._id}
+              thread={thread}
+              channelId={thread.channel._id}
+              onClick={handleClickThread(thread._id)}
+            />
+          );
+        })}
         <div ref={threadListItemRef}></div>
       </ul>
     </div>
