@@ -30,7 +30,7 @@ const ThreadDetailView = ({ threadId, onClose, className }: Props) => {
   const { user } = useGetUserInfo();
   const { thread, isPending } = useGetThread(threadId);
 
-  const { deleteComment } = useDeleteComment(threadId);
+  const { deleteComment } = useDeleteComment({ threadId, channelId: thread?.channel._id });
 
   const handleClickDetailInner = (event: MouseEvent) => {
     event.stopPropagation();
@@ -90,7 +90,8 @@ const ThreadDetailView = ({ threadId, onClose, className }: Props) => {
             isMention={true}
             nickname={thread.nickname}
             editorProps={{
-              channelName: thread.channel?.name,
+              channelId: thread.channel._id,
+              channelName: thread.channel.name,
               postId: thread._id,
               postAuthorId: thread.author?._id,
             }}

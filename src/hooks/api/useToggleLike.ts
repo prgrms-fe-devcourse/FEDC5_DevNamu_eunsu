@@ -1,5 +1,3 @@
-import * as Sentry from "@sentry/react";
-
 import usePostThreadLike from "@/apis/thread/usePostThreadLike";
 import useDeleteThreadLike from "@/apis/thread/useDeleteThreadLike";
 
@@ -17,12 +15,12 @@ const useToggleLike = ({ channelId, threadId }: Parameters) => {
 
     if (!likeId) {
       likeThread(threadId);
-      Sentry.captureMessage("ui 사용 - 좋아요 등록", "info");
+      gtag("event", "ui사용_좋아요_등록");
     }
 
     if (likeId) {
       removeLike(likeId);
-      Sentry.captureMessage("ui 사용 - 좋아요 삭제", "info");
+      gtag("event", "ui사용_좋아요_삭제");
     }
   };
 

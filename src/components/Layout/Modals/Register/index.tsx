@@ -2,7 +2,6 @@ import { z } from "zod";
 import { useCallback, useEffect } from "react";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
-import * as Sentry from "@sentry/react";
 import { useOverlay } from "@toss/use-overlay";
 
 import { Button } from "@/components/ui/button";
@@ -44,7 +43,7 @@ const RegisterModal = ({ open, close }: Props) => {
   useEffect(() => {
     if (isRegisterSuccess) {
       handleLoginClick();
-      Sentry.captureMessage("conversion - 회원 가입 완료", "info");
+      gtag("event", "conversion_회원_가입_완료");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRegisterSuccess]);

@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import { SendHorizontal } from "lucide-react";
 import { FormEvent, KeyboardEvent, useState } from "react";
-import * as Sentry from "@sentry/react";
 import { useOverlay } from "@toss/use-overlay";
 
 import { Textarea } from "@/components/ui/textarea.tsx";
@@ -31,6 +30,7 @@ interface Props {
   editorProps: EditorProps;
   onEditClose?: () => void;
   authorNickname?: string;
+  channelId?: string;
 }
 
 const EditorTextArea = ({
@@ -68,7 +68,7 @@ const EditorTextArea = ({
         message: "로그인 한 유저만 글 쓰기가 가능합니다.",
         actionLabel: "로그인",
         onActionClick: () => {
-          Sentry.captureMessage("Conversion: 익명 사용자가 로그인 요청을 수락", "info");
+          gtag("event", "conversion_익명_사용자가_로그인_요청을_수락");
           open(({ isOpen, close }) => {
             return <LoginModal open={isOpen} close={close} />;
           });
@@ -80,7 +80,7 @@ const EditorTextArea = ({
     setMentionedList([]);
     setValue("content", "");
     onEditClose?.();
-    Sentry.captureMessage(`ui 사용 - 에디터 쓰기 ${getTypeOfEditor(editorProps)}`, "info");
+    gtag("event", `ui사용_에디터_쓰기_${getTypeOfEditor(editorProps)}`);
   };
 
   const handleKeydown = (event: KeyboardEvent) => {
@@ -96,10 +96,10 @@ const EditorTextArea = ({
   const handleClickCheckBox = (e: FormEvent<HTMLInputElement>) => {
     // TODO: [24/1/11] nickname은 props로 받아오는게 맞다고 생각합니다. 하지만 여러곳에서 수정이 필요해지니 현재 에디터에 user를 가지고 있어서 임시방편으로 수정하겠습니다.
     if (!e.currentTarget.checked && user?.nickname === ANONYMOUS_NICKNAME) {
-      Sentry.captureMessage("ui 사용 - 익명 여부 토글", "info");
+      gtag("event", "ui사용_익명_여부_토글");
       setValue("anonymous", true);
       open(({ isOpen, close }) => {
-        Sentry.captureMessage("ui 사용 - 사용자 정보 변경 모달 띄우기", "info");
+        gtag("event", "ui사용_사용자_정보_변경_모달_띄우기");
         return <ProfileModal open={isOpen} close={close} />;
       });
       return;
@@ -115,24 +115,24 @@ const EditorTextArea = ({
       <form className="relative">
         <Textarea
           placeholder={user ? `내용을 작성해주세요.` : "로그인이 필요합니다."}
-          className="text-content-5 resize-none overflow-hidden pr-200pxr text-base"
+          className="resize-none overflow-hidden pr-200pxr text-base text-content-5"
           {...register("content")}
           onKeyDown={handleKeydown}
         />
         <div className="absolute bottom-2 right-2 flex items-center gap-2">
-          <label className="border-layer-5 hover:bg-layer-2 flex cursor-pointer items-center gap-2 rounded-xl border p-3">
+          <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-layer-5 p-3 hover:bg-layer-2">
             <input type="checkbox" {...register("anonymous")} onClick={handleClickCheckBox} />
             <p className="text-content-4">익명</p>
           </label>
           {onEditClose ? (
-            <div className="text-content-4 flex items-center gap-2">
-              <button className="bg-layer-3 hover:bg-layer-4 rounded-sm p-3" onClick={onEditClose}>
+            <div className="flex items-center gap-2 text-content-4">
+              <button className="rounded-sm bg-layer-3 p-3 hover:bg-layer-4" onClick={onEditClose}>
                 취소
               </button>
               <button
                 onClick={handleSubmit(handleUpload)}
                 className={cn(
-                  "text-content-5 border-layer-2 rounded-sm border p-3",
+                  "rounded-sm border border-layer-2 p-3 text-content-5",
                   watch("content")
                     ? "border-blue-100 bg-blue-100 dark:text-blue-600"
                     : "cursor-not-allowed",
@@ -145,7 +145,7 @@ const EditorTextArea = ({
             <button
               onClick={handleSubmit(handleUpload)}
               className={cn(
-                "text-content-1 bg-layer-4 relative h-12 w-12 cursor-pointer rounded-xl",
+                "relative h-12 w-12 cursor-pointer rounded-xl bg-layer-4 text-content-1",
                 watch("content") && "bg-blue-200 text-blue-600",
               )}
             >
@@ -161,7 +161,7 @@ const EditorTextArea = ({
       </form>
       <span
         className={cn(
-          "text-content-1 text-right text-sm",
+          "text-right text-sm text-content-1",
           getValues("content") ? "visible" : "invisible",
         )}
       >
