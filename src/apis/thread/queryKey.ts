@@ -9,7 +9,7 @@ import { getThreadByThreadId, getThreadsByChannelId } from "./queryFn";
 const threads = createQueryKeys("thread", {
   threadsByChannel: (channelId: string | undefined) => ({
     queryKey: ["threads", channelId],
-    queryFn: channelId ? () => getThreadsByChannelId(channelId) : undefined,
+    queryFn: channelId ? () => getThreadsByChannelId(channelId, 0) : undefined,
     enabled: !!channelId,
     select: (threads: Thread[]) =>
       threads.map((thread) => {
