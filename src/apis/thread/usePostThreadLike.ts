@@ -19,7 +19,7 @@ const usePostThreadLike = (channelId: string) => {
   const { user } = useGetUserInfo();
   const { mutate: notificationMutate } = usePostNotification();
 
-  const { mutate, ...rest } = useMutation<
+  const { mutate, isPending, isError, error } = useMutation<
     Like,
     Error,
     string,
@@ -57,14 +57,17 @@ const usePostThreadLike = (channelId: string) => {
 
       queryClient.setQueryData(
         threads.threadsByChannel(channelId).queryKey,
-        (oldThreads: Thread[] | undefined) => {
-          if (!oldThreads) return [];
-
-          return oldThreads.map((thread) =>
-            thread._id === threadId
-              ? { ...thread, likes: [...thread.likes, optimisticLike] }
-              : thread,
-          );
+        ({ pages, pageParams }: { pages: Thread[][]; pageParams: number[] }) => {
+          return {
+            pages: pages.map((page) =>
+              page.map((thread) =>
+                thread._id === threadId
+                  ? { ...thread, likes: [...thread.likes, optimisticLike] }
+                  : thread,
+              ),
+            ),
+            pageParams,
+          };
         },
       );
 
@@ -101,19 +104,24 @@ const usePostThreadLike = (channelId: string) => {
 
       queryClient.setQueryData(
         threads.threadsByChannel(channelId).queryKey,
-        (oldThreads: Thread[] | undefined) => {
-          if (!oldThreads) return [];
-          return oldThreads.map((thread) =>
-            thread._id === threadId
-              ? {
-                  ...thread,
-                  likes: [...thread.likes.filter((like) => like.user !== user?._id), likeResponse],
-                }
-              : thread,
-          );
+        ({ pages, pageParams }: { pages: Thread[][]; pageParams: number[] }) => {
+          return {
+            pages: pages.map((page) =>
+              page.map((thread) =>
+                thread._id === threadId
+                  ? {
+                      ...thread,
+                      likes: thread.likes
+                        ? [...thread.likes.filter((like) => like.user !== user?._id), likeResponse]
+                        : [likeResponse],
+                    }
+                  : thread,
+              ),
+            ),
+            pageParams,
+          };
         },
       );
-
       queryClient.invalidateQueries({
         queryKey: threads.threadDetail(threadId).queryKey,
       });
@@ -124,7 +132,7 @@ const usePostThreadLike = (channelId: string) => {
     },
   });
 
-  return { likeThread: mutate, ...rest };
+  return { likeThread: mutate, isPending, isError, error };
 };
 
 export default usePostThreadLike;

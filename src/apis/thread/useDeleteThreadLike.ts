@@ -48,14 +48,17 @@ const useDeleteThreadLike = ({ channelId, threadId }: Parameters) => {
 
       queryClient.setQueryData(
         threads.threadsByChannel(channelId).queryKey,
-        (oldThreads: Thread[] | undefined) => {
-          if (!oldThreads) return [];
-
-          return oldThreads.map((thread) =>
-            thread._id === threadId
-              ? { ...thread, likes: thread.likes.filter((like) => like._id !== likeId) }
-              : thread,
-          );
+        ({ pages, pageParams }: { pages: Thread[][]; pageParams: number[] }) => {
+          return {
+            pages: pages.map((page) =>
+              page.map((thread) =>
+                thread._id === threadId
+                  ? { ...thread, likes: thread.likes.filter((like) => like._id !== likeId) }
+                  : thread,
+              ),
+            ),
+            pageParams,
+          };
         },
       );
 
@@ -80,14 +83,20 @@ const useDeleteThreadLike = ({ channelId, threadId }: Parameters) => {
 
       queryClient.setQueryData(
         threads.threadsByChannel(channelId).queryKey,
-        (oldThreads: Thread[] | undefined) => {
-          if (!oldThreads) return [];
-
-          return oldThreads.map((thread) =>
-            thread._id === threadId
-              ? { ...thread, likes: thread.likes.filter((like) => like._id !== likeResponse._id) }
-              : thread,
-          );
+        ({ pages, pageParams }: { pages: Thread[][]; pageParams: number[] }) => {
+          return {
+            pages: pages.map((page) =>
+              page.map((thread) =>
+                thread._id === threadId
+                  ? {
+                      ...thread,
+                      likes: thread.likes.filter((like) => like._id !== likeResponse._id),
+                    }
+                  : thread,
+              ),
+            ),
+            pageParams,
+          };
         },
       );
 

@@ -35,13 +35,13 @@ const CommentListItem = ({ commentInfo, onClose, isAuthor, profileImage }: Props
           <XIcon className="rounded-sm text-muted-foreground hover:bg-gray-600" />
         </button>
       )}
-      <div className="flex items-center">
+      <div className="flex">
         <Avatar className="mr-3">
           <AvatarImage
             src={nickname !== ANONYMOUS_NICKNAME && profileImage ? profileImage : DEFAULT_PROFILE}
             alt="프로필"
           />
-          <AvatarFallback className="text-content-1 bg-layer-5">
+          <AvatarFallback className="bg-layer-5 text-content-1">
             {nickname?.charAt(0)}
           </AvatarFallback>
         </Avatar>
@@ -54,10 +54,7 @@ const CommentListItem = ({ commentInfo, onClose, isAuthor, profileImage }: Props
               {formatDate(createdAt)}
             </span>
           </div>
-          <div
-            tabIndex={0}
-            className="overflow-hidden truncate text-ellipsis pr-50pxr text-muted-foreground"
-          >
+          <div tabIndex={0} className="overflow-hidden pr-50pxr text-muted-foreground">
             <b>{mentionedList}</b> {content}
           </div>
         </div>

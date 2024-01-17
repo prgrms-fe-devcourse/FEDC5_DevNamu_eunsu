@@ -109,18 +109,18 @@ const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) =
           <Avatar className="mr-3">
             <AvatarImage
               src={
-                author.nickname !== ANONYMOUS_NICKNAME && author.image
-                  ? author.image
+                author?.nickname !== ANONYMOUS_NICKNAME && author?.image
+                  ? author?.image
                   : DEFAULT_PROFILE
               }
               alt="프로필"
             />
-            <AvatarFallback>{author.nickname.charAt(0)}</AvatarFallback>
+            <AvatarFallback>{author?.nickname.charAt(0)}</AvatarFallback>
           </Avatar>
           <div className="min-w-0 flex-grow">
             <div className="flex justify-between">
               <span tabIndex={0} className="text-lg font-semibold text-content-5">
-                {author.nickname}
+                {author?.nickname}
               </span>
               <span tabIndex={0} className="text-content-2">
                 {formatDate(createdAt)}

@@ -8,7 +8,7 @@ const useThreadsByChannel = () => {
   const channelName = location.pathname.split("/").pop() || "compliment";
 
   const channelQuery = useGetChannelDetails(channelName);
-  const threadsQuery = useGetThreads(channelQuery.channelDetails?._id);
+  const threadsQuery = useGetThreads(channelQuery.channelDetails?._id, channelQuery.totalThread);
 
   return {
     channelName,
@@ -17,7 +17,10 @@ const useThreadsByChannel = () => {
     isChannelError: channelQuery.isError,
     channelError: channelQuery.error,
     threads: threadsQuery.threads,
-    isThreadsLoading: threadsQuery.isPending,
+    isFetchingNextPage: threadsQuery.isFetchingNextPage,
+    fetchNextPage: threadsQuery.fetchNextPage,
+    hasNextPage: threadsQuery.hasNextPage,
+    isThreadsPending: threadsQuery.isPending,
     isThreadsError: threadsQuery.isError,
     threadsError: threadsQuery.error,
   };

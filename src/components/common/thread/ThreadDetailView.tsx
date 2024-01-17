@@ -52,7 +52,7 @@ const ThreadDetailView = ({ threadId, onClose, className }: Props) => {
         <div className="flex items-center gap-2">
           <h2 className="text-content-3 text-2xl font-bold">스레드</h2>
           {thread && (
-            <p className="text-content-1 text-sm">#{channelMap[thread.channel.name]}게시판</p>
+            <p className="text-content-1 text-sm">#{channelMap[thread.channel?.name]}게시판</p>
           )}
         </div>
         <button onClick={onClose}>
@@ -61,10 +61,10 @@ const ThreadDetailView = ({ threadId, onClose, className }: Props) => {
       </div>
       {isPending && <ThreadDetailItemSkeleton />}
       {thread && (
-        <ThreadListItem thread={thread} channelId={thread.channel._id} isThreadDetail={true} />
+        <ThreadListItem thread={thread} channelId={thread.channel?._id} isThreadDetail={true} />
       )}
       <div className="mx-2 flex items-center gap-2">
-        <span className="text-content-1">{thread?.comments.length}개의 댓글</span>
+        <span className="text-content-1">{thread?.comments?.length}개의 댓글</span>
         <hr className="border-layer-6 h-0 flex-1 border-0 border-b-[1px]" />
       </div>
 
@@ -72,7 +72,7 @@ const ThreadDetailView = ({ threadId, onClose, className }: Props) => {
         <ol className="flex flex-col gap-4">
           {isPending && <CommentListItemSkeleton commentsCount={thread?.comments.length || 2} />}
           {thread &&
-            thread.comments.map((comment) => (
+            thread.comments?.map((comment) => (
               <CommentListItem
                 key={comment._id}
                 commentInfo={comment}
@@ -93,7 +93,7 @@ const ThreadDetailView = ({ threadId, onClose, className }: Props) => {
               channelId: thread.channel._id,
               channelName: thread.channel.name,
               postId: thread._id,
-              postAuthorId: thread.author._id,
+              postAuthorId: thread.author?._id,
             }}
           />
         )}
