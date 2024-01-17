@@ -83,7 +83,7 @@ const ProfileModal = ({ open, close }: Props) => {
         open,
         onOpenChange: close,
       }}
-      title="내 프로필 편집"
+      title="내 정보 수정"
     >
       <SimpleBaseForm
         fields={PROFILE_FIELDS}
