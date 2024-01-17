@@ -28,3 +28,4 @@ dist-ssr
 
 # adminData
 src/constants/adminData.ts
+src/Demo.tsx

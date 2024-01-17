@@ -19,18 +19,26 @@ const useUpdateUserList = () => {
       user.name === name ? { ...user, userId: _id } : user,
     );
 
-    await login({
-      email: import.meta.env.VITE_ADMIN_ID,
-      password: import.meta.env.VITE_ADMIN_PW,
-    });
+    try {
+      await login({
+        email: import.meta.env.VITE_ADMIN_ID,
+        password: import.meta.env.VITE_ADMIN_PW,
+      });
+    } catch (e) {
+      console.log("회원정보 변경 -로그인 에러");
+    }
 
-    await changeThread({
-      anonymous: false,
-      content: JSON.stringify(newUserList),
-    });
+    try {
+      await changeThread({
+        anonymous: false,
+        content: JSON.stringify(newUserList),
+      });
+    } catch (e) {
+      logout();
+      console.log("회원정보 변경 에러 - 관리자 문의");
+    }
 
     logout();
-
     return name;
   };
 
