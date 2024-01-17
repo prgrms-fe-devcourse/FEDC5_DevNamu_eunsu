@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { AxiosError } from "axios";
 import { useOverlay } from "@toss/use-overlay";
 
 import { Button } from "@/components/ui/button";
@@ -11,12 +10,6 @@ import RegisterModal from "../Register";
 import { LOGIN_FIELDS, LOGIN_FIELDS_SCHEMA } from "./config";
 
 import usePostLogin from "@/apis/auth/usePostLogin";
-import {
-  AUTH_ERROR_MESSAGE,
-  AUTH_ERROR_RESPONSE,
-  AUTH_SUCCESS_MESSAGE,
-} from "@/constants/toastMessage";
-import useToast from "@/hooks/common/useToast";
 
 interface Props {
   open: boolean;
@@ -25,7 +18,6 @@ interface Props {
 
 const LoginModal = ({ open, close }: Props) => {
   const { login } = usePostLogin();
-  const { showPromiseToast } = useToast();
   const { open: openModal } = useOverlay();
 
   const handleRegisterClick = () => {
@@ -36,23 +28,7 @@ const LoginModal = ({ open, close }: Props) => {
   };
 
   const handleSubmit = (loginInfo: z.infer<typeof LOGIN_FIELDS_SCHEMA>) => {
-    showPromiseToast({
-      promise: login(loginInfo),
-      messages: {
-        success: ({ user: { fullName } }) => {
-          close();
-          gtag("event", "retention_로그인");
-          const { nickname } = JSON.parse(fullName);
-          return AUTH_SUCCESS_MESSAGE.LOGIN(nickname);
-        },
-        error: (error: AxiosError) => {
-          if (error?.response?.data === AUTH_ERROR_RESPONSE.LOGIN_FAILED) {
-            return AUTH_ERROR_MESSAGE.LOGIN_FAILED;
-          }
-          return AUTH_ERROR_MESSAGE.SERVER_ERROR;
-        },
-      },
-    });
+    login(loginInfo);
   };
 
   return (
