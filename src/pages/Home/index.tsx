@@ -33,7 +33,7 @@ const HomePage = () => {
   return (
     <div className="relative h-screen overflow-hidden">
       {isFetchingNextPage && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40">
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-black bg-opacity-40">
           <LucideLoader2 className="z-50 mt-10 h-10 w-10 animate-spin" />
         </div>
       )}
