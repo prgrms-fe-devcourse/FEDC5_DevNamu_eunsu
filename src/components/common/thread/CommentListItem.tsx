@@ -35,7 +35,7 @@ const CommentListItem = ({ commentInfo, onClose, isAuthor, profileImage }: Props
           <XIcon className="rounded-sm text-muted-foreground hover:bg-gray-600" />
         </button>
       )}
-      <div className="flex items-center">
+      <div className="flex">
         <Avatar className="mr-3">
           <AvatarImage
             src={nickname !== ANONYMOUS_NICKNAME && profileImage ? profileImage : DEFAULT_PROFILE}
