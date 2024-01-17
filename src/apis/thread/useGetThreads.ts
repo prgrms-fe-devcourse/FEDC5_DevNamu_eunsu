@@ -4,8 +4,6 @@ import { getThreadsByChannelId } from "./queryFn";
 import threads from "./queryKey";
 
 const useGetThreads = (channelId: string | undefined, totalThreads: number) => {
-  console.log(totalThreads);
-
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending, isError, error } =
     useInfiniteQuery({
       queryKey: threads.threadsByChannel(channelId).queryKey,
