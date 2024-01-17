@@ -27,8 +27,6 @@ const usePostThreadLike = (channelId: string) => {
   >({
     mutationFn: (threadId: string) => postThreadLike(threadId),
     onMutate: async (threadId) => {
-      console.log("좋아요 하기", threadId);
-
       await queryClient.cancelQueries({
         queryKey: threads.threadDetail(threadId).queryKey,
       });
