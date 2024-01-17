@@ -24,6 +24,8 @@ const channelMap = {
   cheering: "응원",
   compliment: "칭찬",
   incompetent: "무능",
+  improvements: "개선 사항",
+  chat: "잡담",
 };
 
 const ThreadDetailView = ({ threadId, onClose, className }: Props) => {
@@ -44,15 +46,15 @@ const ThreadDetailView = ({ threadId, onClose, className }: Props) => {
     <div
       onClick={handleClickDetailInner}
       className={cn(
-        "bg-layer-1 border-layer-7 flex h-screen min-w-500pxr max-w-500pxr list-none flex-col overflow-auto border-l px-4 py-5 shadow-xl",
+        "flex h-screen min-w-500pxr max-w-500pxr list-none flex-col overflow-auto border-l border-layer-7 bg-layer-1 px-4 py-5 shadow-xl",
         className,
       )}
     >
       <div className="flex items-center justify-between p-2">
         <div className="flex items-center gap-2">
-          <h2 className="text-content-3 text-2xl font-bold">스레드</h2>
+          <h2 className="text-2xl font-bold text-content-3">스레드</h2>
           {thread && (
-            <p className="text-content-1 text-sm">#{channelMap[thread.channel?.name]}게시판</p>
+            <p className="text-sm text-content-1">#{channelMap[thread.channel?.name]}게시판</p>
           )}
         </div>
         <button onClick={onClose}>
@@ -65,7 +67,7 @@ const ThreadDetailView = ({ threadId, onClose, className }: Props) => {
       )}
       <div className="mx-2 flex items-center gap-2">
         <span className="text-content-1">{thread?.comments?.length}개의 댓글</span>
-        <hr className="border-layer-6 h-0 flex-1 border-0 border-b-[1px]" />
+        <hr className="h-0 flex-1 border-0 border-b-[1px] border-layer-6" />
       </div>
 
       <div className="mb-4">
