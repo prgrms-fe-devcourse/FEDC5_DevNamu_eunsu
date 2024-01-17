@@ -1,3 +1,7 @@
+import * as Sentry from "@sentry/react";
+
+import { log } from "@/utils/logger.ts";
+
 import useChangeThread from "@/hooks/api/useChangeThread.ts";
 import useUserListByDB from "@/hooks/api/useUserListByDB.ts";
 import usePostLogin from "@/apis/auth/usePostLogin";
@@ -24,8 +28,10 @@ const useUpdateUserList = () => {
         email: import.meta.env.VITE_ADMIN_ID,
         password: import.meta.env.VITE_ADMIN_PW,
       });
-    } catch (e) {
+    } catch (error) {
       console.log("회원정보 변경 -로그인 에러");
+      log("error", "회원정보 변경 -로그인 에러:", error);
+      Sentry.captureException(error);
     }
 
     try {
@@ -33,9 +39,10 @@ const useUpdateUserList = () => {
         anonymous: false,
         content: JSON.stringify(newUserList),
       });
-    } catch (e) {
+    } catch (error) {
       logout();
-      console.log("회원정보 변경 에러 - 관리자 문의");
+      log("error", "회원정보 변경 에러 - 관리자 문의:", error);
+      Sentry.captureException(error);
     }
 
     logout();
