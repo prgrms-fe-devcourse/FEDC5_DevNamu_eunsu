@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 interface Props {
   createdDate: string;
   content: string;
-  channelName?: "compliment" | "cheering" | "incompetent" | "improvements";
+  channelName?: "compliment" | "cheering" | "incompetent" | "improvements" | "chat";
   postId: string;
   isLike?: boolean;
   isMention?: boolean;
@@ -16,6 +16,7 @@ const channelMap = {
   compliment: "칭찬",
   incompetent: "무능",
   improvements: "개선 사항",
+  chat: "잡담",
 };
 
 export const MyNotificationContent = ({
