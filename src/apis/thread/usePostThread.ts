@@ -38,7 +38,6 @@ export const usePostThread = (channelId: string) => {
         threads.threadsByChannel(channelId).queryKey,
         ({ pages, pageParams }: { pages: Thread[][]; pageParams: number[] }) => {
           const updatedPages = [[parsedPostedThread, ...pages[0]]];
-          console.log(pages, postedThread);
 
           return { pages: updatedPages, pageParams };
         },
