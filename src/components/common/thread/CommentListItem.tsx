@@ -8,6 +8,7 @@ import { parseTitleOrComment } from "@/utils/parsingJson";
 import { Comment } from "@/types/thread";
 
 import { ANONYMOUS_NICKNAME, DEFAULT_PROFILE } from "@/constants/commonConstants";
+import useToast from "@/hooks/common/useToast";
 
 interface Props {
   commentInfo: Comment;
@@ -24,8 +25,15 @@ const CommentListItem = ({ commentInfo, onClose, isAuthor, profileImage }: Props
   const { createdAt, comment, _id } = commentInfo;
   const { content, nickname, mentionedList } = parseTitleOrComment(comment);
 
+  const { showToast } = useToast();
+
   const handleClick = () => {
     onClose(_id);
+
+    showToast({
+      message: "댓글을 삭제 중입니다.",
+      duration: 800,
+    });
   };
 
   return (
