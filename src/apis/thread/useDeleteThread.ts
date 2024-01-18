@@ -1,5 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+import { Thread } from "@/types/thread";
+
 import { deleteThread } from "@/apis/thread/queryFn.ts";
 import threads from "@/apis/thread/queryKey.ts";
 
@@ -8,10 +10,22 @@ const useDeleteThread = (channelId: string) => {
 
   const { mutate, ...rest } = useMutation({
     mutationFn: deleteThread,
-    onSuccess: () => {
+    onSuccess: (deleteThread: Thread) => {
       queryClient.invalidateQueries({
         queryKey: threads.threadsByChannel(channelId).queryKey,
       });
+
+      queryClient.setQueryData(
+        threads.threadsByChannel(channelId).queryKey,
+        ({ pages, pageParams }: { pages: Thread[][]; pageParams: number[] }) => {
+          const updatedPages = pages[0].filter((thread) => thread._id !== deleteThread._id);
+
+          return {
+            pages: [updatedPages],
+            pageParams,
+          };
+        },
+      );
     },
   });
 
