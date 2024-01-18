@@ -12,7 +12,7 @@ import useGetUserInfo from "@/apis/auth/useGetUserInfo.ts";
 import useDeleteComment from "@/apis/comment/useDeleteComment.ts";
 import CommentListItemSkeleton from "@/components/Skelton/CommentListItemSkeleton";
 import ThreadDetailItemSkeleton from "@/components/Skelton/ThreaDetailItemSkeleton";
-import ThreadError from "@/components/Error/thread/ThreadError";
+import ApiError from "@/components/Error/ApiError";
 
 interface Props {
   threadId: string | undefined;
@@ -51,7 +51,7 @@ const ThreadDetailView = ({ threadId, onClose, className }: Props) => {
         className,
       )}
     >
-      {isError && <ThreadError refetch={refetch} className="h-full" />}
+      {isError && <ApiError refetch={refetch} className="h-full" />}
       {!isError && (
         <div>
           <div className="flex items-center justify-between p-2">

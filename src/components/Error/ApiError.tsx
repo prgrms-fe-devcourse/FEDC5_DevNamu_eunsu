@@ -7,7 +7,7 @@ interface Props {
   className?: string;
 }
 
-const ThreadError = ({ refetch, className }: Props) => {
+const ApiError = ({ refetch, className }: Props) => {
   return (
     <div className={cn("flex w-full items-center justify-center text-center", className)}>
       <div>
@@ -21,4 +21,4 @@ const ThreadError = ({ refetch, className }: Props) => {
   );
 };
 
-export default ThreadError;
+export default ApiError;

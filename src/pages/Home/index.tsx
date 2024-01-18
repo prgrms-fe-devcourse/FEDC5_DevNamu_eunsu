@@ -11,7 +11,7 @@ import EditorTextArea from "@/components/common/EditorTextArea";
 import ThreadListSkeleton from "@/components/Skelton/ThreadListSkeleton";
 import useThreadsByChannel from "@/hooks/api/useThreadsByChannel";
 import { cn } from "@/lib/utils";
-import ThreadError from "@/components/Error/thread/ThreadError";
+import ApiError from "@/components/Error/ApiError";
 
 const HomePage = () => {
   const {
@@ -58,9 +58,7 @@ const HomePage = () => {
                 <EmptyThread className="min-h-[calc(100vh-300px)] w-full" />
               )}
             </div>
-            {isThreadsError && (
-              <ThreadError refetch={refetch} className="min-h-[calc(100vh-300px)]" />
-            )}
+            {isThreadsError && <ApiError refetch={refetch} className="min-h-[calc(100vh-300px)]" />}
             {threads && threads?.length !== 0 && (
               <ThreadList
                 threads={threads}
