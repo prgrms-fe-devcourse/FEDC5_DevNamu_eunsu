@@ -32,21 +32,20 @@ const useDeleteComment = ({ threadId, channelId }: Parameters) => {
       queryClient.setQueryData(
         threads.threadsByChannel(channelId).queryKey,
         ({ pages, pageParams }: { pages: Thread[][]; pageParams: number[] }) => {
-          return {
-            pages: pages.map((page) =>
-              page.map((thread) =>
-                thread._id === deletedComment.post
-                  ? {
-                      ...thread,
-                      comments: thread.comments.filter(
-                        (comment) => comment._id !== deletedComment._id,
-                      ),
-                    }
-                  : thread,
-              ),
+          const updatedPages = pages.map((page) =>
+            page.map((thread) =>
+              thread._id === deletedComment.post
+                ? {
+                    ...thread,
+                    comments: thread.comments.filter(
+                      (comment) => comment._id !== deletedComment._id,
+                    ),
+                  }
+                : thread,
             ),
-            pageParams,
-          };
+          );
+
+          return { pages: updatedPages, pageParams };
         },
       );
     },

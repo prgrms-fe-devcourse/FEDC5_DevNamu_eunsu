@@ -26,19 +26,15 @@ export const usePostComment = (channelId: string | undefined) => {
       queryClient.setQueryData(
         threads.threadsByChannel(channelId).queryKey,
         ({ pages, pageParams }: { pages: Thread[][]; pageParams: number[] }) => {
-          return {
-            pages: pages.map((page) =>
-              page.map((thread) =>
-                thread._id === comment.post
-                  ? {
-                      ...thread,
-                      comments: [...thread.comments, comment],
-                    }
-                  : thread,
-              ),
+          const updatedPages = pages.map((page) =>
+            page.map((thread) =>
+              thread._id === comment.post
+                ? { ...thread, comments: [...thread.comments, comment] }
+                : thread,
             ),
-            pageParams,
-          };
+          );
+
+          return { pages: updatedPages, pageParams };
         },
       );
     },
