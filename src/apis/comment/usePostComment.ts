@@ -1,5 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+import { Thread } from "@/types/thread";
+
 import threads from "@/apis/thread/queryKey";
 import { createComment } from "@/apis/comment/queryFn.ts";
 
@@ -12,6 +14,33 @@ export const usePostComment = (channelId: string | undefined) => {
     onSuccess: (comment) => {
       queryClient.invalidateQueries({ queryKey: threads.threadDetail(comment.post).queryKey });
       queryClient.invalidateQueries({ queryKey: threads.threadsByChannel(channelId).queryKey });
+
+      queryClient.setQueryData(
+        threads.threadDetail(comment.post).queryKey,
+        (threadDetail: Thread) => ({
+          ...threadDetail,
+          comments: [...threadDetail.comments, comment],
+        }),
+      );
+
+      queryClient.setQueryData(
+        threads.threadsByChannel(channelId).queryKey,
+        ({ pages, pageParams }: { pages: Thread[][]; pageParams: number[] }) => {
+          return {
+            pages: pages.map((page) =>
+              page.map((thread) =>
+                thread._id === comment.post
+                  ? {
+                      ...thread,
+                      comments: [...thread.comments, comment],
+                    }
+                  : thread,
+              ),
+            ),
+            pageParams,
+          };
+        },
+      );
     },
   });
 };
