@@ -23,6 +23,7 @@ const useThreadsByChannel = () => {
     isThreadsPending: threadsQuery.isPending,
     isThreadsError: threadsQuery.isError,
     threadsError: threadsQuery.error,
+    refetch: threadsQuery.refetch,
   };
 };
 

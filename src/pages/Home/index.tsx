@@ -11,6 +11,7 @@ import EditorTextArea from "@/components/common/EditorTextArea";
 import ThreadListSkeleton from "@/components/Skelton/ThreadListSkeleton";
 import useThreadsByChannel from "@/hooks/api/useThreadsByChannel";
 import { cn } from "@/lib/utils";
+import ApiError from "@/components/Error/ApiError";
 
 const HomePage = () => {
   const {
@@ -21,6 +22,8 @@ const HomePage = () => {
     channelId,
     channelName,
     isThreadsPending,
+    isThreadsError,
+    refetch,
   } = useThreadsByChannel();
 
   const { user } = useGetUserInfo();
@@ -55,6 +58,7 @@ const HomePage = () => {
                 <EmptyThread className="min-h-[calc(100vh-300px)] w-full" />
               )}
             </div>
+            {isThreadsError && <ApiError refetch={refetch} className="min-h-[calc(100vh-300px)]" />}
             {threads && threads?.length !== 0 && (
               <ThreadList
                 threads={threads}
