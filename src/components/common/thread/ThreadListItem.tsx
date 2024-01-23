@@ -115,7 +115,7 @@ const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) =
               }
               alt="프로필"
             />
-            <AvatarFallback>{author?.nickname.charAt(0)}</AvatarFallback>
+            <AvatarFallback>{author?.nickname?.charAt(0)}</AvatarFallback>
           </Avatar>
           <div className="min-w-0 flex-grow">
             <div className="flex justify-between">

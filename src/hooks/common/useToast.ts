@@ -6,8 +6,8 @@ import { LOADING_MESSAGE } from "@/constants/toastMessage";
 interface ToastParameters {
   message: string;
   duration?: number;
-  actionLabel: string;
-  onActionClick: () => void;
+  actionLabel?: string;
+  onActionClick?: () => void;
 }
 
 interface PromiseToastParameters<T> {
@@ -18,17 +18,28 @@ interface PromiseToastParameters<T> {
   };
 }
 
+interface ToastOptions {
+  duration?: number;
+  action?: {
+    label: string;
+    onClick: () => void;
+  };
+}
+
 const useToast = () => {
   const showToast = ({ message, duration = 2000, actionLabel, onActionClick }: ToastParameters) => {
-    toast(message, {
-      action: actionLabel
-        ? {
-            label: actionLabel,
-            onClick: onActionClick,
-          }
-        : undefined,
+    const toastOptions: ToastOptions = {
       duration,
-    });
+    };
+
+    if (actionLabel && onActionClick) {
+      toastOptions.action = {
+        label: actionLabel,
+        onClick: onActionClick,
+      };
+    }
+
+    toast(message, toastOptions);
   };
 
   const showPromiseToast = <T>({ promise, messages }: PromiseToastParameters<T>) => {
