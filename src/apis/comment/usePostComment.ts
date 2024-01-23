@@ -12,9 +12,6 @@ export const usePostComment = (channelId: string | undefined) => {
   return useMutation({
     mutationFn: createComment,
     onSuccess: (comment) => {
-      queryClient.invalidateQueries({ queryKey: threads.threadDetail(comment.post).queryKey });
-      queryClient.invalidateQueries({ queryKey: threads.threadsByChannel(channelId).queryKey });
-
       queryClient.setQueryData(
         threads.threadDetail(comment.post).queryKey,
         (threadDetail: Thread) => ({
@@ -37,6 +34,9 @@ export const usePostComment = (channelId: string | undefined) => {
           return { pages: updatedPages, pageParams };
         },
       );
+
+      queryClient.invalidateQueries({ queryKey: threads.threadDetail(comment.post).queryKey });
+      queryClient.invalidateQueries({ queryKey: threads.threadsByChannel(channelId).queryKey });
     },
   });
 };

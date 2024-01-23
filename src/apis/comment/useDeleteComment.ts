@@ -16,14 +16,6 @@ const useDeleteComment = ({ threadId, channelId }: Parameters) => {
   const { mutate, ...props } = useMutation({
     mutationFn: deleteComment,
     onSuccess: (deletedComment: Comment) => {
-      queryClient.invalidateQueries({
-        queryKey: threads.threadDetail(threadId).queryKey,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: threads.threadsByChannel(channelId).queryKey,
-      });
-
       queryClient.setQueryData(threads.threadDetail(threadId).queryKey, (threadDetail: Thread) => ({
         ...threadDetail,
         comments: threadDetail.comments.filter((comment) => comment._id !== deletedComment._id),
@@ -48,6 +40,14 @@ const useDeleteComment = ({ threadId, channelId }: Parameters) => {
           return { pages: updatedPages, pageParams };
         },
       );
+
+      queryClient.invalidateQueries({
+        queryKey: threads.threadDetail(threadId).queryKey,
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: threads.threadsByChannel(channelId).queryKey,
+      });
     },
   });
 
