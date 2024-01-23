@@ -11,10 +11,6 @@ const useDeleteThread = (channelId: string) => {
   const { mutate, ...rest } = useMutation({
     mutationFn: deleteThread,
     onSuccess: (deleteThread: Thread) => {
-      queryClient.invalidateQueries({
-        queryKey: threads.threadsByChannel(channelId).queryKey,
-      });
-
       queryClient.setQueryData(
         threads.threadsByChannel(channelId).queryKey,
         ({ pages, pageParams }: { pages: Thread[][]; pageParams: number[] }) => {
@@ -26,6 +22,10 @@ const useDeleteThread = (channelId: string) => {
           };
         },
       );
+
+      queryClient.invalidateQueries({
+        queryKey: threads.threadsByChannel(channelId).queryKey,
+      });
     },
   });
 

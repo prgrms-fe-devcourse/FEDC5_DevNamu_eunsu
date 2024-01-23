@@ -30,10 +30,6 @@ export const usePostThread = (channelId: string) => {
         },
       };
 
-      queryClient.invalidateQueries({
-        queryKey: threads.threadsByChannel(channelId).queryKey,
-      });
-
       queryClient.setQueryData(
         threads.threadsByChannel(channelId).queryKey,
         ({ pages, pageParams }: { pages: Thread[][]; pageParams: number[] }) => {
@@ -42,6 +38,10 @@ export const usePostThread = (channelId: string) => {
           return { pages: updatedPages, pageParams };
         },
       );
+
+      queryClient.invalidateQueries({
+        queryKey: threads.threadsByChannel(channelId).queryKey,
+      });
     },
   });
 };
