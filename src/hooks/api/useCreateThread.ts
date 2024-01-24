@@ -1,5 +1,5 @@
 import { usePostThread } from "@/apis/thread/usePostThread";
-import { FormValues } from "@/components/common/EditorTextArea.tsx";
+import { FormValues } from "@/components/common/editor/EditorTextAreaPresentational.tsx";
 import { formJSONStringify } from "@/lib/editorContent.ts";
 import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 import useMentionNotification from "@/hooks/api/useMentionNotification.ts";
