@@ -1,5 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+import { parseFullName, parseTitleOrComment } from "@/utils/parsingJson";
+
+import { Thread } from "@/types/thread";
+
 import threads from "./queryKey";
 
 import { createThread } from "@/apis/thread/queryFn.ts";
@@ -10,7 +14,31 @@ export const usePostThread = (channelId: string) => {
 
   return useMutation({
     mutationFn: createThread,
-    onSuccess: () => {
+    onSuccess: (postedThread: Thread) => {
+      const { name } = parseFullName(postedThread.author.fullName);
+      const { content, nickname, mentionedList } = parseTitleOrComment(postedThread.title);
+
+      const parsedPostedThread = {
+        ...postedThread,
+        content,
+        mentionedList,
+        nickname,
+        author: {
+          ...postedThread.author,
+          name,
+          nickname,
+        },
+      };
+
+      queryClient.setQueryData(
+        threads.threadsByChannel(channelId).queryKey,
+        ({ pages, pageParams }: { pages: Thread[][]; pageParams: number[] }) => {
+          const updatedPages = [[parsedPostedThread, ...pages[0]]];
+
+          return { pages: updatedPages, pageParams };
+        },
+      );
+
       queryClient.invalidateQueries({
         queryKey: threads.threadsByChannel(channelId).queryKey,
       });
