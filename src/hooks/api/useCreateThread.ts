@@ -3,6 +3,7 @@ import { FormValues } from "@/components/common/EditorTextArea.tsx";
 import { formJSONStringify } from "@/lib/editorContent.ts";
 import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 import useMentionNotification from "@/hooks/api/useMentionNotification.ts";
+import usePostSlackMessage from "@/apis/slackBot/usePostSlackMessage.ts";
 
 interface Props {
   nickname: string | undefined;
@@ -17,7 +18,7 @@ export interface FormSubmitProps {
 const useCreateThread = ({ nickname, channelId }: Props) => {
   const { mutateAsync: createThreadMutate } = usePostThread(channelId);
   const { mentionNotification } = useMentionNotification();
-  // const { sendMessageBySlackBot } = usePostSlackMessage();
+  const { sendMessageBySlackBot } = usePostSlackMessage();
   const uploadThread = async ({ formValues, mentionedList }: FormSubmitProps) => {
     if (!formValues) return;
 
@@ -38,7 +39,7 @@ const useCreateThread = ({ nickname, channelId }: Props) => {
       channelName: threadResponse.channel.name,
     });
 
-    // sendMessageBySlackBot({ mentionedList });
+    sendMessageBySlackBot({ mentionedList });
   };
   return { uploadThread };
 };

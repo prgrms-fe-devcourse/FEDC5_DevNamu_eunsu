@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import useCreateThread, { FormSubmitProps } from "@/hooks/api/useCreateThread.ts";
 import useChangeThread from "@/hooks/api/useChangeThread.ts";
 import useUploadComment from "@/hooks/api/useUploadComment.ts";
-import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 
 interface CreateThreadProps {
   channelId: string;
@@ -47,14 +46,13 @@ export const getTypeOfEditor = (props: EditorProps) => {
 interface Props {
   editorProps: EditorProps;
   nickname: string | undefined;
-  mentionedList?: UserDBProps[];
 }
 
 interface UploadHooksProps {
   (params: FormSubmitProps): void;
 }
 
-const useEditorLogicByProps = ({ editorProps, nickname, mentionedList }: Props) => {
+const useEditorLogicByProps = ({ editorProps, nickname }: Props) => {
   const [upload, setUpload] = useState<UploadHooksProps>(() => () => {});
 
   const { uploadThread } = useCreateThread({
@@ -87,7 +85,7 @@ const useEditorLogicByProps = ({ editorProps, nickname, mentionedList }: Props) 
     }
 
     setUpload(() => uploadThread);
-  }, [editorProps, mentionedList]);
+  }, [editorProps]);
 
   return { upload };
 };
