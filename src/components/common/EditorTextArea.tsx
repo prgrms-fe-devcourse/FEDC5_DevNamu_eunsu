@@ -76,7 +76,8 @@ const EditorTextArea = ({
       });
       return;
     }
-    upload(formValues);
+
+    upload({ formValues, mentionedList });
     setMentionedList([]);
     setValue("content", "");
     onEditClose?.();
