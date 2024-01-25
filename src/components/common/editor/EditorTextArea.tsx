@@ -1,14 +1,5 @@
 import { useForm } from "react-hook-form";
-import {
-  createContext,
-  Dispatch,
-  FormEvent,
-  KeyboardEvent,
-  ReactNode,
-  SetStateAction,
-  useContext,
-  useState,
-} from "react";
+import { FormEvent, KeyboardEvent, ReactNode, useContext } from "react";
 import { useOverlay } from "@toss/use-overlay";
 
 import { Textarea } from "@/components/ui/textarea.tsx";
@@ -18,10 +9,9 @@ import ProfileModal from "../../Layout/Modals/Profile";
 
 import { cn } from "@/lib/utils.ts";
 import { ANONYMOUS_NICKNAME } from "@/constants/commonConstants.ts";
-import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 import useToast from "@/hooks/common/useToast.ts";
 import { FormSubmitProps } from "@/hooks/api/useCreateThread.ts";
-import MentionInput from "@/components/common/mention/MentionInput.tsx";
+import { EditorContext } from "@/components/common/editor/EditorContextProvider.tsx";
 
 export interface FormValues {
   anonymous: boolean;
@@ -41,7 +31,7 @@ interface Props {
 interface TextAreaProps extends Props {
   submitButton?: ReactNode;
 }
-const TextArea = ({
+export default function TextArea({
   nickname,
   isLogin,
   onSubmit,
@@ -49,7 +39,7 @@ const TextArea = ({
   onEditClose,
   authorNickname,
   submitButton,
-}: TextAreaProps) => {
+}: TextAreaProps) {
   const { showToast } = useToast();
   const { open } = useOverlay();
 
@@ -137,25 +127,4 @@ const TextArea = ({
       </span>
     </>
   );
-};
-
-interface EditorTextAreaPresentationalProps {
-  children?: ReactNode;
 }
-
-export const EditorContext = createContext<{
-  mentionedList: UserDBProps[];
-  setMentionedList: Dispatch<SetStateAction<UserDBProps[]>>;
-}>({ mentionedList: [], setMentionedList: () => {} });
-
-const EditorTextAreaPresentational = ({ children }: EditorTextAreaPresentationalProps) => {
-  const [mentionedList, setMentionedList] = useState<Array<UserDBProps>>([]);
-  const providerValue = { mentionedList, setMentionedList };
-
-  return <EditorContext.Provider value={providerValue}>{children}</EditorContext.Provider>;
-};
-
-EditorTextAreaPresentational.Mention = MentionInput;
-EditorTextAreaPresentational.TextArea = TextArea;
-
-export default EditorTextAreaPresentational;
