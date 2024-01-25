@@ -23,7 +23,7 @@ const CreateThreadContainer = (createThreadProps: Props) => {
       <EditorContextProvider.TextArea
         {...createThreadProps}
         onSubmit={handleSubmit}
-        submitButton={<CreateSubmit />}
+        submitButton={(props) => <CreateSubmit {...props} />}
       />
     </EditorContextProvider>
   );

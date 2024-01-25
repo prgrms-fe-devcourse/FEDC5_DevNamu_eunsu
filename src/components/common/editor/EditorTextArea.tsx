@@ -1,5 +1,5 @@
-import { useForm } from "react-hook-form";
-import { FormEvent, KeyboardEvent, ReactNode, useContext } from "react";
+import { useForm, UseFormHandleSubmit } from "react-hook-form";
+import { FormEvent, KeyboardEvent, useContext } from "react";
 import { useOverlay } from "@toss/use-overlay";
 
 import { Textarea } from "@/components/ui/textarea.tsx";
@@ -29,9 +29,15 @@ interface Props {
 }
 
 interface TextAreaProps extends Props {
-  submitButton?: ReactNode;
+  submitButton?: ({
+    handleSubmit,
+    isValues,
+  }: {
+    handleSubmit: UseFormHandleSubmit<FormValues>;
+    isValues: boolean;
+  }) => JSX.Element;
 }
-export default function TextArea({
+export default function ContentTextArea({
   nickname,
   isLogin,
   onSubmit,
@@ -43,7 +49,7 @@ export default function TextArea({
   const { showToast } = useToast();
   const { open } = useOverlay();
 
-  const { register, handleSubmit, setValue, getValues } = useForm({
+  const { register, handleSubmit, setValue, getValues } = useForm<FormValues>({
     defaultValues: {
       anonymous: authorNickname ? authorNickname === ANONYMOUS_NICKNAME : true,
       content: prevContent || "",
@@ -112,8 +118,10 @@ export default function TextArea({
             <input type="checkbox" {...register("anonymous")} onClick={handleClickCheckBox} />
             <p className="text-content-4">익명</p>
           </label>
-
-          {submitButton}
+          {submitButton?.({
+            handleSubmit: () => handleSubmit(handleUpload),
+            isValues: !!getValues("content"),
+          })}
         </div>
       </form>
 

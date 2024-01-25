@@ -2,7 +2,7 @@ import { createContext, Dispatch, ReactNode, SetStateAction, useState } from "re
 
 import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 import MentionInput from "@/components/common/mention/MentionInput.tsx";
-import TextArea from "@/components/common/editor/EditorTextArea.tsx";
+import ContentTextArea from "@/components/common/editor/EditorTextArea.tsx";
 
 interface Props {
   children?: ReactNode;
@@ -20,6 +20,6 @@ const EditorContextProvider = ({ children }: Props) => {
 };
 
 EditorContextProvider.Mention = MentionInput;
-EditorContextProvider.TextArea = TextArea;
+EditorContextProvider.TextArea = ContentTextArea;
 
 export default EditorContextProvider;
