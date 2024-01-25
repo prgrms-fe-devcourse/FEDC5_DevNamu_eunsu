@@ -1,5 +1,6 @@
-import EditorTextAreaPresentational from "@/components/common/editor/EditorTextAreaPresentational.tsx";
 import useCreateThread, { FormSubmitProps } from "@/hooks/api/useCreateThread.ts";
+import EditorTextAreaPresentational from "@/components/common/editor/EditorTextArea.tsx";
+import CreateSubmit from "@/components/common/editor/CreateSubmit.tsx";
 
 interface Props {
   isMention: boolean;
@@ -16,7 +17,17 @@ const CreateThreadContainer = (createThreadProps: Props) => {
     uploadThread(params);
   };
 
-  return <EditorTextAreaPresentational {...createThreadProps} onSubmit={handleSubmit} />;
+  // return <EditorTextAreaPresentational {...createThreadProps} onSubmit={handleSubmit} />;
+  return (
+    <EditorTextAreaPresentational>
+      <EditorTextAreaPresentational.Mention />
+      <EditorTextAreaPresentational.TextArea
+        {...createThreadProps}
+        onSubmit={handleSubmit}
+        submitButton={<CreateSubmit />}
+      />
+    </EditorTextAreaPresentational>
+  );
 };
 
 export default CreateThreadContainer;
