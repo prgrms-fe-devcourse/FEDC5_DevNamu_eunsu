@@ -36,8 +36,10 @@ const useUpdateUserList = () => {
 
     try {
       await changeThread({
-        anonymous: false,
-        content: JSON.stringify(newUserList),
+        formValues: {
+          anonymous: false,
+          content: JSON.stringify(newUserList),
+        },
       });
     } catch (error) {
       logout();
