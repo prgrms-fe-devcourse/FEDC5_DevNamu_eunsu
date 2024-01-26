@@ -33,6 +33,7 @@ const CreateCommentContainer = (createCommentProps: Props) => {
       <EditorContextProvider.TextArea
         {...createCommentProps}
         onSubmit={handleSubmit}
+        placeholder="댓글을 작성해주세요."
         submitArea={(props) => <CreateSubmit {...props} />}
       />
     </EditorContextProvider>

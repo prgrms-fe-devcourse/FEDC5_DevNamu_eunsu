@@ -26,6 +26,7 @@ const CreateThreadContainer = (createThreadProps: Props) => {
       <EditorContextProvider.TextArea
         {...createThreadProps}
         onSubmit={handleSubmit}
+        placeholder="스레드를 작성해주세요."
         submitArea={(props) => <CreateSubmit {...props} />}
       />
     </EditorContextProvider>

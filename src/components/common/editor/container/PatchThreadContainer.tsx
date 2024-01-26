@@ -28,6 +28,7 @@ const PatchThreadContainer = (patchThreadProps: Props) => {
       <EditorContextProvider.TextArea
         {...patchThreadProps}
         onSubmit={handleSubmit}
+        placeholder="스레드를 수정해주세요."
         submitArea={(props) => <PatchSubmit {...props} onEditClose={onEditClose} />}
       />
     </EditorContextProvider>

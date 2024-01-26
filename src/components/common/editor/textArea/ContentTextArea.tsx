@@ -21,6 +21,8 @@ interface Props {
   nickname: string;
   isLogin: boolean;
   onSubmit: (params: FormSubmitProps) => void;
+  placeholder: string;
+  submitArea: (props: SubmitProps) => JSX.Element;
   prevContent?: string;
   authorNickname?: string;
 }
@@ -30,18 +32,15 @@ export interface SubmitProps {
   isContent: boolean;
 }
 
-interface TextAreaProps extends Props {
-  submitArea?: (props: SubmitProps) => JSX.Element;
-}
-
 export default function ContentTextArea({
   nickname,
   isLogin,
   onSubmit,
   prevContent,
+  placeholder,
   authorNickname,
   submitArea,
-}: TextAreaProps) {
+}: Props) {
   const { showToast } = useToast();
   const { open } = useOverlay();
 
@@ -103,7 +102,7 @@ export default function ContentTextArea({
     <>
       <form className="relative">
         <Textarea
-          placeholder={isLogin ? `내용을 작성해주세요.` : "로그인이 필요합니다."}
+          placeholder={isLogin ? placeholder : "로그인이 필요합니다."}
           className="resize-none overflow-hidden pr-200pxr text-base text-content-5"
           {...register("content")}
           onKeyDown={handleKeydown}
