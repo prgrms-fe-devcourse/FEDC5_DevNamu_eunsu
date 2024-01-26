@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils.ts";
-import { SubmitProps } from "@/components/common/editor/presenter/ContentTextArea.tsx";
+import { SubmitProps } from "@/components/common/editor/textArea/ContentTextArea.tsx";
 
 interface Props extends SubmitProps {
   onEditClose: () => void;

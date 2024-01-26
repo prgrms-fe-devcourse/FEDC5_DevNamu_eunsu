@@ -1,5 +1,5 @@
 import useCreateThread, { FormSubmitProps } from "@/hooks/api/useCreateThread.ts";
-import CreateSubmit from "@/components/common/editor/submit/CreateSubmit.tsx";
+import CreateSubmit from "@/components/common/editor/textArea/CreateSubmit.tsx";
 import EditorContextProvider from "@/components/common/editor/presenter/EditorContextProvider.tsx";
 
 interface Props {
@@ -26,7 +26,7 @@ const CreateThreadContainer = (createThreadProps: Props) => {
       <EditorContextProvider.TextArea
         {...createThreadProps}
         onSubmit={handleSubmit}
-        submitButton={(props) => <CreateSubmit {...props} />}
+        submitArea={(props) => <CreateSubmit {...props} />}
       />
     </EditorContextProvider>
   );

@@ -1,7 +1,7 @@
 import { SendHorizontal } from "lucide-react";
 
 import { cn } from "@/lib/utils.ts";
-import { SubmitProps } from "@/components/common/editor/presenter/ContentTextArea.tsx";
+import { SubmitProps } from "@/components/common/editor/textArea/ContentTextArea.tsx";
 
 const CreateSubmit = ({ onSubmit, isContent }: SubmitProps) => {
   return (

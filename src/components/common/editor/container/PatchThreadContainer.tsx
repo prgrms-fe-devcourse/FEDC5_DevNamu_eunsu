@@ -1,7 +1,7 @@
 import { FormSubmitProps } from "@/hooks/api/useCreateThread.ts";
 import useChangeThread from "@/hooks/api/useChangeThread.ts";
 import EditorContextProvider from "@/components/common/editor/presenter/EditorContextProvider.tsx";
-import PatchSubmit from "@/components/common/editor/submit/PatchSubmit.tsx";
+import PatchSubmit from "@/components/common/editor/textArea/PatchSubmit.tsx";
 
 interface Props {
   nickname: string;
@@ -28,7 +28,7 @@ const PatchThreadContainer = (patchThreadProps: Props) => {
       <EditorContextProvider.TextArea
         {...patchThreadProps}
         onSubmit={handleSubmit}
-        submitButton={(props) => <PatchSubmit {...props} onEditClose={onEditClose} />}
+        submitArea={(props) => <PatchSubmit {...props} onEditClose={onEditClose} />}
       />
     </EditorContextProvider>
   );

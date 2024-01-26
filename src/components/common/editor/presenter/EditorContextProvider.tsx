@@ -2,7 +2,7 @@ import { createContext, Dispatch, ReactNode, SetStateAction, useState } from "re
 
 import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 import MentionInput from "@/components/common/mention/MentionInput.tsx";
-import ContentTextArea from "@/components/common/editor/presenter/ContentTextArea.tsx";
+import ContentTextArea from "@/components/common/editor/textArea/ContentTextArea.tsx";
 
 interface Props {
   children?: ReactNode;

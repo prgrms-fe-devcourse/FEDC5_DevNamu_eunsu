@@ -1,7 +1,7 @@
 import { FormSubmitProps } from "@/hooks/api/useCreateThread.ts";
 import useUploadComment from "@/hooks/api/useUploadComment.ts";
 import EditorContextProvider from "@/components/common/editor/presenter/EditorContextProvider.tsx";
-import CreateSubmit from "@/components/common/editor/submit/CreateSubmit.tsx";
+import CreateSubmit from "@/components/common/editor/textArea/CreateSubmit.tsx";
 
 interface Props {
   isMention: boolean;
@@ -33,7 +33,7 @@ const CreateCommentContainer = (createCommentProps: Props) => {
       <EditorContextProvider.TextArea
         {...createCommentProps}
         onSubmit={handleSubmit}
-        submitButton={(props) => <CreateSubmit {...props} />}
+        submitArea={(props) => <CreateSubmit {...props} />}
       />
     </EditorContextProvider>
   );

@@ -31,7 +31,7 @@ export interface SubmitProps {
 }
 
 interface TextAreaProps extends Props {
-  submitButton?: (props: SubmitProps) => JSX.Element;
+  submitArea?: (props: SubmitProps) => JSX.Element;
 }
 
 export default function ContentTextArea({
@@ -40,7 +40,7 @@ export default function ContentTextArea({
   onSubmit,
   prevContent,
   authorNickname,
-  submitButton,
+  submitArea,
 }: TextAreaProps) {
   const { showToast } = useToast();
   const { open } = useOverlay();
@@ -114,7 +114,7 @@ export default function ContentTextArea({
             <p className="text-content-4">익명</p>
           </label>
 
-          {submitButton?.({
+          {submitArea?.({
             onSubmit: handleSubmit(handleUpload),
             isContent: !!watch("content"),
           })}
