@@ -18,7 +18,7 @@ import useToast from "@/hooks/common/useToast";
 import { cn } from "@/lib/utils";
 import LoginModal from "@/components/Layout/Modals/Login";
 import { ANONYMOUS_NICKNAME, DEFAULT_PROFILE } from "@/constants/commonConstants";
-import PatchThreadContainer from "@/components/common/editor/PatchThreadContainer.tsx";
+import PatchThreadContainer from "@/components/common/editor/container/PatchThreadContainer.tsx";
 
 interface Props {
   thread: Thread;
@@ -28,17 +28,7 @@ interface Props {
 }
 
 const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) => {
-  const {
-    _id: id,
-    content,
-    author,
-    createdAt,
-    likes,
-    mentionedList,
-    channel,
-    nickname,
-    comments,
-  } = thread;
+  const { _id: id, content, author, createdAt, likes, mentionedList, nickname, comments } = thread;
 
   const { user } = useGetUserInfo();
   const { deleteThread } = useDeleteThread(channelId);
@@ -168,7 +158,6 @@ const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) =
       <div>
         {editingThreadId === id && (
           <PatchThreadContainer
-            isMention={channel.name !== "incompetent"}
             nickname={nickname}
             postId={id}
             isLogin={!!user}

@@ -11,7 +11,7 @@ import ThreadListSkeleton from "@/components/Skelton/ThreadListSkeleton";
 import useThreadsByChannel from "@/hooks/api/useThreadsByChannel";
 import { cn } from "@/lib/utils";
 import ApiError from "@/components/Error/ApiError";
-import CreateThreadContainer from "@/components/common/editor/CreateThreadContainer.tsx";
+import CreateThreadContainer from "@/components/common/editor/container/CreateThreadContainer.tsx";
 
 const HomePage = () => {
   const {

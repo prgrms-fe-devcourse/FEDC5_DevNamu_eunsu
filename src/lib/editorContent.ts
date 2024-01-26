@@ -1,5 +1,5 @@
 import { ANONYMOUS_NICKNAME } from "@/constants/commonConstants.ts";
-import { FormValues } from "@/components/common/editor/EditorTextAreaPresentational.tsx";
+import { FormValues } from "@/components/common/editor/presenter/ContentTextArea.tsx";
 import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 
 interface FormProps {

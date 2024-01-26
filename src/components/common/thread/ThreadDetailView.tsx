@@ -11,7 +11,7 @@ import useDeleteComment from "@/apis/comment/useDeleteComment.ts";
 import CommentListItemSkeleton from "@/components/Skelton/CommentListItemSkeleton";
 import ThreadDetailItemSkeleton from "@/components/Skelton/ThreaDetailItemSkeleton";
 import ApiError from "@/components/Error/ApiError";
-import CreateCommentContainer from "@/components/common/editor/CreateCommentContainer.tsx";
+import CreateCommentContainer from "@/components/common/editor/container/CreateCommentContainer.tsx";
 
 interface Props {
   threadId: string | undefined;

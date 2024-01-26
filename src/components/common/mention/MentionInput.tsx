@@ -6,7 +6,7 @@ import AutoCompleteMentionList from "@/components/common/mention/AutoCompleteMen
 import UserBadgeList from "@/components/common/mention/UserBadgeList";
 import autoComplete from "@/lib/autoComplete.ts";
 import useUserListByDB, { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
-import { EditorContext } from "@/components/common/editor/EditorContextProvider.tsx";
+import { EditorContext } from "@/components/common/editor/presenter/EditorContextProvider.tsx";
 
 export default function MentionInput(): JSX.Element {
   const { mentionedList, setMentionedList } = useContext(EditorContext);

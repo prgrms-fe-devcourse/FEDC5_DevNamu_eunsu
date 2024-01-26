@@ -1,19 +1,16 @@
 import { useForm } from "react-hook-form";
-import { SendHorizontal } from "lucide-react";
-import { FormEvent, KeyboardEvent, useState } from "react";
+import { FormEvent, KeyboardEvent, useContext } from "react";
 import { useOverlay } from "@toss/use-overlay";
 
 import { Textarea } from "@/components/ui/textarea.tsx";
 
-import LoginModal from "../../Layout/Modals/Login";
-import ProfileModal from "../../Layout/Modals/Profile";
-
 import { cn } from "@/lib/utils.ts";
-import MentionInput from "@/components/common/mention/MentionInput.tsx";
 import { ANONYMOUS_NICKNAME } from "@/constants/commonConstants.ts";
-import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 import useToast from "@/hooks/common/useToast.ts";
 import { FormSubmitProps } from "@/hooks/api/useCreateThread.ts";
+import { EditorContext } from "@/components/common/editor/presenter/EditorContextProvider.tsx";
+import LoginModal from "@/components/Layout/Modals/Login";
+import ProfileModal from "@/components/Layout/Modals/Profile";
 
 export interface FormValues {
   anonymous: boolean;
@@ -21,35 +18,41 @@ export interface FormValues {
 }
 
 interface Props {
-  isMention: boolean;
   nickname: string;
   isLogin: boolean;
   onSubmit: (params: FormSubmitProps) => void;
   prevContent?: string;
-  onEditClose?: () => void;
   authorNickname?: string;
 }
 
-const EditorTextArea = ({
-  isMention,
+export interface SubmitProps {
+  onSubmit: () => void;
+  isContent: boolean;
+}
+
+interface TextAreaProps extends Props {
+  submitButton?: (props: SubmitProps) => JSX.Element;
+}
+
+export default function ContentTextArea({
   nickname,
   isLogin,
   onSubmit,
   prevContent,
-  onEditClose,
   authorNickname,
-}: Props) => {
+  submitButton,
+}: TextAreaProps) {
   const { showToast } = useToast();
   const { open } = useOverlay();
 
-  const [mentionedList, setMentionedList] = useState<Array<UserDBProps>>([]);
-
-  const { register, handleSubmit, watch, setValue, getValues } = useForm({
+  const { register, handleSubmit, setValue, watch } = useForm<FormValues>({
     defaultValues: {
       anonymous: authorNickname ? authorNickname === ANONYMOUS_NICKNAME : true,
       content: prevContent || "",
     },
   });
+
+  const { mentionedList, setMentionedList } = useContext(EditorContext);
 
   const handleUpload = (formValues: FormValues) => {
     if (!formValues.content.trim()) return;
@@ -71,7 +74,6 @@ const EditorTextArea = ({
     onSubmit({ formValues, mentionedList });
     setMentionedList([]);
     setValue("content", "");
-    onEditClose?.();
     gtag("event", `ui사용_에디터_쓰기`);
   };
 
@@ -98,9 +100,7 @@ const EditorTextArea = ({
   };
 
   return (
-    <div className="flex w-full flex-col gap-1">
-      {isMention && <MentionInput mentionedList={mentionedList} onChoose={setMentionedList} />}
-
+    <>
       <form className="relative">
         <Textarea
           placeholder={isLogin ? `내용을 작성해주세요.` : "로그인이 필요합니다."}
@@ -113,51 +113,22 @@ const EditorTextArea = ({
             <input type="checkbox" {...register("anonymous")} onClick={handleClickCheckBox} />
             <p className="text-content-4">익명</p>
           </label>
-          {onEditClose ? (
-            <div className="flex items-center gap-2 text-content-4">
-              <button className="rounded-sm bg-layer-3 p-3 hover:bg-layer-4" onClick={onEditClose}>
-                취소
-              </button>
-              <button
-                onClick={handleSubmit(handleUpload)}
-                className={cn(
-                  "rounded-sm border border-layer-2 p-3 text-content-5",
-                  watch("content")
-                    ? "border-blue-100 bg-blue-100 dark:text-blue-600"
-                    : "cursor-not-allowed",
-                )}
-              >
-                확인
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={handleSubmit(handleUpload)}
-              className={cn(
-                "relative h-12 w-12 cursor-pointer rounded-xl bg-layer-4 text-content-1",
-                watch("content") && "bg-blue-200 text-blue-600",
-              )}
-            >
-              <SendHorizontal
-                className={cn(
-                  "absolute left-4pxr top-1 h-10 w-10 stroke-2",
-                  watch("content") && "fill-blue-300",
-                )}
-              />
-            </button>
-          )}
+
+          {submitButton?.({
+            onSubmit: handleSubmit(handleUpload),
+            isContent: !!watch("content"),
+          })}
         </div>
       </form>
+
       <span
         className={cn(
           "text-right text-sm text-content-1",
-          getValues("content") ? "visible" : "invisible",
+          watch("content") ? "visible" : "invisible",
         )}
       >
         <b>Shift + Enter</b>키를 눌러 새 행을 추가합니다
       </span>
-    </div>
+    </>
   );
-};
-
-export default EditorTextArea;
+}

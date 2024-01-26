@@ -1,6 +1,6 @@
 import useCreateThread, { FormSubmitProps } from "@/hooks/api/useCreateThread.ts";
-import CreateSubmit from "@/components/common/editor/CreateSubmit.tsx";
-import EditorContextProvider from "@/components/common/editor/EditorContextProvider.tsx";
+import CreateSubmit from "@/components/common/editor/submit/CreateSubmit.tsx";
+import EditorContextProvider from "@/components/common/editor/presenter/EditorContextProvider.tsx";
 
 interface Props {
   isMention: boolean;
@@ -9,17 +9,20 @@ interface Props {
   channelId: string;
 }
 const CreateThreadContainer = (createThreadProps: Props) => {
+  const { nickname, channelId } = createThreadProps;
+
   const { uploadThread } = useCreateThread({
-    nickname: createThreadProps.nickname,
-    channelId: createThreadProps.channelId,
+    nickname,
+    channelId,
   });
+
   const handleSubmit = (params: FormSubmitProps) => {
     uploadThread(params);
   };
 
   return (
     <EditorContextProvider>
-      <EditorContextProvider.Mention />
+      {createThreadProps.isMention && <EditorContextProvider.Mention />}
       <EditorContextProvider.TextArea
         {...createThreadProps}
         onSubmit={handleSubmit}
