@@ -32,7 +32,7 @@ export interface SubmitProps {
   isContent: boolean;
 }
 
-export default function ContentTextArea({
+const ContentTextArea = ({
   nickname,
   isLogin,
   onSubmit,
@@ -40,7 +40,7 @@ export default function ContentTextArea({
   placeholder,
   authorNickname,
   submitArea,
-}: Props) {
+}: Props) => {
   const { showToast } = useToast();
   const { open } = useOverlay();
 
@@ -130,4 +130,6 @@ export default function ContentTextArea({
       </span>
     </>
   );
-}
+};
+
+export default ContentTextArea;

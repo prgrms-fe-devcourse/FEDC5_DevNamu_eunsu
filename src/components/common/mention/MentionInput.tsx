@@ -8,7 +8,7 @@ import autoComplete from "@/lib/autoComplete.ts";
 import useUserListByDB, { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 import { EditorContext } from "@/components/common/editor/presenter/EditorContextProvider.tsx";
 
-export default function MentionInput(): JSX.Element {
+const MentionInput = () => {
   const { mentionedList, setMentionedList } = useContext(EditorContext);
   const [autoCompleteList, setAutoCompleteList] = useState<Array<UserDBProps>>([]);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -85,4 +85,6 @@ export default function MentionInput(): JSX.Element {
       />
     </div>
   );
-}
+};
+
+export default MentionInput;
