@@ -66,7 +66,7 @@ const MentionInput = () => {
   }, [autoCompleteList]);
 
   return (
-    <div className="relative">
+    <div className="relative mb-1">
       <UserBadgeList users={mentionedList} onClick={handleDeleteChoiceList} />
 
       <Input
