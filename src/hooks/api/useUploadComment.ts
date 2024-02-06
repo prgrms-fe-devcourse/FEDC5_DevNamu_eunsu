@@ -1,35 +1,26 @@
 import { usePostComment } from "@/apis/comment/usePostComment.ts";
 import { usePostNotification } from "@/apis/notification/usePostNotification.ts";
-import { FormValues } from "@/components/common/EditorTextArea.tsx";
 import { formJSONStringify } from "@/lib/editorContent.ts";
-import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 import useMentionNotification from "@/hooks/api/useMentionNotification.ts";
 import { NOTIFICATION_TYPES } from "@/constants/notification";
 import usePostSlackMessage from "@/apis/slackBot/usePostSlackMessage.ts";
+import { FormSubmitProps } from "@/hooks/api/useCreateThread.ts";
 
 interface Props {
   nickname: string | undefined;
   postId: string;
   channelId: string;
   channelName: string;
-  mentionedList?: UserDBProps[];
   postAuthorId: string;
 }
 
-const useUploadComment = ({
-  nickname,
-  postId,
-  channelId,
-  channelName,
-  mentionedList,
-  postAuthorId,
-}: Props) => {
+const useUploadComment = ({ nickname, postId, channelId, channelName, postAuthorId }: Props) => {
   const { mutateAsync: commentMutate } = usePostComment(channelId);
   const { mutate: notificationMutate } = usePostNotification();
-  const { mentionNotification } = useMentionNotification({ mentionedList });
+  const { mentionNotification } = useMentionNotification();
   const { sendMessageBySlackBot } = usePostSlackMessage();
 
-  const uploadComment = async (formValues: FormValues) => {
+  const uploadComment = async ({ formValues, mentionedList }: FormSubmitProps) => {
     if (!formValues) return;
 
     const commentRequest = {

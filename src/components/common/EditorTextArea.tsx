@@ -50,7 +50,6 @@ const EditorTextArea = ({
   const { upload } = useEditorLogicByProps({
     editorProps,
     nickname: user?.nickname || nickname,
-    mentionedList: mentionedList.length ? mentionedList : undefined,
   });
 
   const { register, handleSubmit, watch, setValue, getValues } = useForm({
@@ -76,7 +75,8 @@ const EditorTextArea = ({
       });
       return;
     }
-    upload(formValues);
+
+    upload({ formValues, mentionedList });
     setMentionedList([]);
     setValue("content", "");
     onEditClose?.();

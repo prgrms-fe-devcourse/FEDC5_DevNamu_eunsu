@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 
-import useCreateThread from "@/hooks/api/useCreateThread.ts";
+import useCreateThread, { FormSubmitProps } from "@/hooks/api/useCreateThread.ts";
 import useChangeThread from "@/hooks/api/useChangeThread.ts";
 import useUploadComment from "@/hooks/api/useUploadComment.ts";
-import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 
 interface CreateThreadProps {
   channelId: string;
@@ -47,27 +46,24 @@ export const getTypeOfEditor = (props: EditorProps) => {
 interface Props {
   editorProps: EditorProps;
   nickname: string | undefined;
-  mentionedList?: UserDBProps[];
 }
 
 interface UploadHooksProps {
-  (params: { anonymous: boolean; content: string }): void;
+  (params: FormSubmitProps): void;
 }
 
-const useEditorLogicByProps = ({ editorProps, nickname, mentionedList }: Props) => {
+const useEditorLogicByProps = ({ editorProps, nickname }: Props) => {
   const [upload, setUpload] = useState<UploadHooksProps>(() => () => {});
 
   const { uploadThread } = useCreateThread({
     nickname,
     channelId: editorProps.channelId,
-    mentionedList,
   });
 
   const { changeThread } = useChangeThread({
     nickname,
     postId: isPatchThreadProps(editorProps) ? editorProps.postId : "",
     channelId: editorProps.channelId,
-    mentionedList,
   });
 
   const { uploadComment } = useUploadComment({
@@ -75,7 +71,6 @@ const useEditorLogicByProps = ({ editorProps, nickname, mentionedList }: Props) 
     postId: isCommentProps(editorProps) ? editorProps.postId : "",
     channelName: isCommentProps(editorProps) ? editorProps.channelName : "",
     postAuthorId: isCommentProps(editorProps) ? editorProps.postAuthorId : "",
-    mentionedList,
     channelId: editorProps.channelId,
   });
 
@@ -90,7 +85,7 @@ const useEditorLogicByProps = ({ editorProps, nickname, mentionedList }: Props) 
     }
 
     setUpload(() => uploadThread);
-  }, [editorProps, mentionedList]);
+  }, [editorProps]);
 
   return { upload };
 };

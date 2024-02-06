@@ -8,13 +8,18 @@ import usePostSlackMessage from "@/apis/slackBot/usePostSlackMessage.ts";
 interface Props {
   nickname: string | undefined;
   channelId: string;
+}
+
+export interface FormSubmitProps {
+  formValues: FormValues;
   mentionedList?: UserDBProps[];
 }
-const useCreateThread = ({ nickname, channelId, mentionedList }: Props) => {
+
+const useCreateThread = ({ nickname, channelId }: Props) => {
   const { mutateAsync: createThreadMutate } = usePostThread(channelId);
-  const { mentionNotification } = useMentionNotification({ mentionedList });
+  const { mentionNotification } = useMentionNotification();
   const { sendMessageBySlackBot } = usePostSlackMessage();
-  const uploadThread = async (formValues: FormValues) => {
+  const uploadThread = async ({ formValues, mentionedList }: FormSubmitProps) => {
     if (!formValues) return;
 
     const threadRequest = {
@@ -28,6 +33,7 @@ const useCreateThread = ({ nickname, channelId, mentionedList }: Props) => {
     if (!mentionedList) return;
 
     mentionNotification({
+      mentionedList,
       content: formValues.content,
       postId: threadResponse._id,
       channelName: threadResponse.channel.name,
