@@ -8,7 +8,6 @@ import { formatDate } from "@/utils/formatDate";
 import { Thread } from "@/types/thread";
 
 import LikeToggleButton from "../LikeToggleButton";
-import EditorTextArea from "../EditorTextArea";
 
 import ThreadToolbar from "./ThreadToolbar";
 
@@ -19,6 +18,7 @@ import useToast from "@/hooks/common/useToast";
 import { cn } from "@/lib/utils";
 import LoginModal from "@/components/Layout/Modals/Login";
 import { ANONYMOUS_NICKNAME, DEFAULT_PROFILE } from "@/constants/commonConstants";
+import PatchThreadContainer from "@/components/common/editor/container/PatchThreadContainer.tsx";
 
 interface Props {
   thread: Thread;
@@ -28,17 +28,7 @@ interface Props {
 }
 
 const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) => {
-  const {
-    _id: id,
-    content,
-    author,
-    createdAt,
-    likes,
-    mentionedList,
-    channel,
-    nickname,
-    comments,
-  } = thread;
+  const { _id: id, content, author, createdAt, likes, mentionedList, nickname, comments } = thread;
 
   const { user } = useGetUserInfo();
   const { deleteThread } = useDeleteThread(channelId);
@@ -167,10 +157,12 @@ const ThreadListItem = ({ thread, channelId, isThreadDetail, onClick }: Props) =
 
       <div>
         {editingThreadId === id && (
-          <EditorTextArea
-            isMention={channel.name !== "incompetent"}
+          <PatchThreadContainer
             nickname={nickname}
-            editorProps={{ prevContent: content, postId: id, channelId }}
+            postId={id}
+            isLogin={!!user}
+            channelId={channelId}
+            prevContent={content}
             onEditClose={handleCloseEditor}
             authorNickname={author.nickname}
           />

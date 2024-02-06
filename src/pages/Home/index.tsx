@@ -7,11 +7,11 @@ import ChannelNavigationMenu from "@/components/Home/ChannelNavigationMenu";
 import ThreadDetailView from "@/components/common/thread/ThreadDetailView";
 import EmptyThread from "@/components/common/myactivate/EmptyThread";
 import ThreadList from "@/components/Home/ThreadList";
-import EditorTextArea from "@/components/common/EditorTextArea";
 import ThreadListSkeleton from "@/components/Skelton/ThreadListSkeleton";
 import useThreadsByChannel from "@/hooks/api/useThreadsByChannel";
 import { cn } from "@/lib/utils";
 import ApiError from "@/components/Error/ApiError";
+import CreateThreadContainer from "@/components/common/editor/container/CreateThreadContainer.tsx";
 
 const HomePage = () => {
   const {
@@ -69,10 +69,11 @@ const HomePage = () => {
               />
             )}
           </main>
-          <EditorTextArea
+          <CreateThreadContainer
             isMention={channelName !== "incompetent"}
             nickname={user?.nickname || "익명의 프롱이"}
-            editorProps={{ channelId }}
+            isLogin={!!user}
+            channelId={channelId}
           />
         </div>
       </div>

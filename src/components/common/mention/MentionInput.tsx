@@ -1,12 +1,4 @@
-import {
-  FormEvent,
-  useRef,
-  useState,
-  KeyboardEvent,
-  useEffect,
-  Dispatch,
-  SetStateAction,
-} from "react";
+import { FormEvent, useRef, useState, KeyboardEvent, useEffect, useContext } from "react";
 
 import { Input } from "@/components/ui/input.tsx";
 
@@ -14,13 +6,10 @@ import AutoCompleteMentionList from "@/components/common/mention/AutoCompleteMen
 import UserBadgeList from "@/components/common/mention/UserBadgeList";
 import autoComplete from "@/lib/autoComplete.ts";
 import useUserListByDB, { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
+import { EditorContext } from "@/components/common/editor/presenter/EditorContextProvider.tsx";
 
-interface Props {
-  mentionedList: UserDBProps[];
-  onChoose: Dispatch<SetStateAction<UserDBProps[]>>;
-}
-
-const MentionInput = ({ mentionedList, onChoose }: Props) => {
+const MentionInput = () => {
+  const { mentionedList, setMentionedList } = useContext(EditorContext);
   const [autoCompleteList, setAutoCompleteList] = useState<Array<UserDBProps>>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const [focusIndex, setFocusIndex] = useState(-1);
@@ -42,7 +31,7 @@ const MentionInput = ({ mentionedList, onChoose }: Props) => {
   const handleAddChoiceList = (user: UserDBProps) => {
     const isDuplication = mentionedList.find(({ slackId }) => slackId === user.slackId);
 
-    if (!isDuplication) onChoose((prev) => [...prev, user]);
+    if (!isDuplication) setMentionedList((prev) => [...prev, user]);
 
     gtag("event", "ui사용_Mention");
     emptyUserInput();
@@ -50,7 +39,7 @@ const MentionInput = ({ mentionedList, onChoose }: Props) => {
 
   const handleDeleteChoiceList = (user: UserDBProps) => {
     const newChoiceList = [...mentionedList].filter(({ slackId }) => slackId !== user.slackId);
-    onChoose(newChoiceList);
+    setMentionedList(newChoiceList);
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -77,7 +66,7 @@ const MentionInput = ({ mentionedList, onChoose }: Props) => {
   }, [autoCompleteList]);
 
   return (
-    <div className="relative">
+    <div className="relative mb-1">
       <UserBadgeList users={mentionedList} onClick={handleDeleteChoiceList} />
 
       <Input
