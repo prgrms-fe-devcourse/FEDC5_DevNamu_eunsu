@@ -5,19 +5,15 @@ import { useOverlay } from "@toss/use-overlay";
 
 import { Textarea } from "@/components/ui/textarea.tsx";
 
-import LoginModal from "../Layout/Modals/Login";
-import ProfileModal from "../Layout/Modals/Profile";
+import LoginModal from "../../Layout/Modals/Login";
+import ProfileModal from "../../Layout/Modals/Profile";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils.ts";
 import MentionInput from "@/components/common/mention/MentionInput.tsx";
 import { ANONYMOUS_NICKNAME } from "@/constants/commonConstants.ts";
-import useEditorLogicByProps, {
-  EditorProps,
-  getTypeOfEditor,
-} from "@/hooks/api/useEditorLogicByProps.ts";
 import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
-import useGetUserInfo from "@/apis/auth/useGetUserInfo.ts";
-import useToast from "@/hooks/common/useToast";
+import useToast from "@/hooks/common/useToast.ts";
+import { FormSubmitProps } from "@/hooks/api/useCreateThread.ts";
 
 export interface FormValues {
   anonymous: boolean;
@@ -27,43 +23,38 @@ export interface FormValues {
 interface Props {
   isMention: boolean;
   nickname: string;
-  editorProps: EditorProps;
+  isLogin: boolean;
+  onSubmit: (params: FormSubmitProps) => void;
+  prevContent?: string;
   onEditClose?: () => void;
   authorNickname?: string;
-  channelId?: string;
 }
 
 const EditorTextArea = ({
   isMention,
   nickname,
-  editorProps,
+  isLogin,
+  onSubmit,
+  prevContent,
   onEditClose,
   authorNickname,
 }: Props) => {
-  // TODO: [24/1/10] user는 EditerTextArea를 사용하는 쪽에서 보내주는게 맞다고 생각하지만 빠른 배포를 위해 여기서 불러쓸게요
-  const { user, isPending } = useGetUserInfo();
   const { showToast } = useToast();
   const { open } = useOverlay();
 
   const [mentionedList, setMentionedList] = useState<Array<UserDBProps>>([]);
 
-  const { upload } = useEditorLogicByProps({
-    editorProps,
-    nickname: user?.nickname || nickname,
-    mentionedList: mentionedList.length ? mentionedList : undefined,
-  });
-
   const { register, handleSubmit, watch, setValue, getValues } = useForm({
     defaultValues: {
       anonymous: authorNickname ? authorNickname === ANONYMOUS_NICKNAME : true,
-      content: "prevContent" in editorProps ? editorProps.prevContent : "",
+      content: prevContent || "",
     },
   });
 
   const handleUpload = (formValues: FormValues) => {
     if (!formValues.content.trim()) return;
 
-    if (!user) {
+    if (!isLogin) {
       showToast({
         message: "로그인 한 유저만 글 쓰기가 가능합니다.",
         actionLabel: "로그인",
@@ -76,11 +67,12 @@ const EditorTextArea = ({
       });
       return;
     }
-    upload(formValues);
+
+    onSubmit({ formValues, mentionedList });
     setMentionedList([]);
     setValue("content", "");
     onEditClose?.();
-    gtag("event", `ui사용_에디터_쓰기_${getTypeOfEditor(editorProps)}`);
+    gtag("event", `ui사용_에디터_쓰기`);
   };
 
   const handleKeydown = (event: KeyboardEvent) => {
@@ -94,8 +86,7 @@ const EditorTextArea = ({
   };
 
   const handleClickCheckBox = (e: FormEvent<HTMLInputElement>) => {
-    // TODO: [24/1/11] nickname은 props로 받아오는게 맞다고 생각합니다. 하지만 여러곳에서 수정이 필요해지니 현재 에디터에 user를 가지고 있어서 임시방편으로 수정하겠습니다.
-    if (!e.currentTarget.checked && user?.nickname === ANONYMOUS_NICKNAME) {
+    if (!e.currentTarget.checked && nickname === ANONYMOUS_NICKNAME) {
       gtag("event", "ui사용_익명_여부_토글");
       setValue("anonymous", true);
       open(({ isOpen, close }) => {
@@ -106,15 +97,13 @@ const EditorTextArea = ({
     }
   };
 
-  if (isPending) return <div>로딩 중... </div>;
-
   return (
     <div className="flex w-full flex-col gap-1">
       {isMention && <MentionInput mentionedList={mentionedList} onChoose={setMentionedList} />}
 
       <form className="relative">
         <Textarea
-          placeholder={user ? `내용을 작성해주세요.` : "로그인이 필요합니다."}
+          placeholder={isLogin ? `내용을 작성해주세요.` : "로그인이 필요합니다."}
           className="resize-none overflow-hidden pr-200pxr text-base text-content-5"
           {...register("content")}
           onKeyDown={handleKeydown}

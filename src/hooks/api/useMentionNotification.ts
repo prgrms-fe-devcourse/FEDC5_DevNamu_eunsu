@@ -1,22 +1,25 @@
 import { usePostNotification } from "@/apis/notification/usePostNotification.ts";
 import { usePostMention } from "@/apis/mention/usePostMention.ts";
-import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 import { NOTIFICATION_TYPES } from "@/constants/notification";
+import { UserDBProps } from "@/hooks/api/useUserListByDB.ts";
 
 interface MentionNotificationProps {
+  mentionedList?: UserDBProps[];
   content: string;
   postId: string;
   channelName: string;
 }
 
-interface Props {
-  mentionedList?: UserDBProps[];
-}
-const useMentionNotification = ({ mentionedList }: Props) => {
+const useMentionNotification = () => {
   const { mutateAsync: mentionMutate } = usePostMention();
   const { mutate: notificationMutate } = usePostNotification();
 
-  const mentionNotification = ({ content, postId, channelName }: MentionNotificationProps) => {
+  const mentionNotification = ({
+    mentionedList,
+    content,
+    postId,
+    channelName,
+  }: MentionNotificationProps) => {
     if (!mentionedList) return;
 
     mentionedList.forEach(async (mentionUser) => {

@@ -1,8 +1,6 @@
 import { XIcon } from "lucide-react";
 import { MouseEvent } from "react";
 
-import EditorTextArea from "../EditorTextArea";
-
 import CommentListItem from "./CommentListItem";
 import ThreadListItem from "./ThreadListItem";
 
@@ -13,6 +11,7 @@ import useDeleteComment from "@/apis/comment/useDeleteComment.ts";
 import CommentListItemSkeleton from "@/components/Skelton/CommentListItemSkeleton";
 import ThreadDetailItemSkeleton from "@/components/Skelton/ThreaDetailItemSkeleton";
 import ApiError from "@/components/Error/ApiError";
+import CreateCommentContainer from "@/components/common/editor/CreateCommentContainer.tsx";
 
 interface Props {
   threadId: string | undefined;
@@ -94,15 +93,14 @@ const ThreadDetailView = ({ threadId, onClose, className }: Props) => {
 
           <div className="w-full pl-2 pr-2">
             {thread && (
-              <EditorTextArea
+              <CreateCommentContainer
                 isMention={true}
                 nickname={thread.nickname}
-                editorProps={{
-                  channelId: thread.channel._id,
-                  channelName: thread.channel.name,
-                  postId: thread._id,
-                  postAuthorId: thread.author?._id,
-                }}
+                postId={thread._id}
+                isLogin={!!user}
+                channelId={thread.channel._id}
+                channelName={thread.channel.name}
+                postAuthorId={thread.author?._id}
               />
             )}
           </div>
